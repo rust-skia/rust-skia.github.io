@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AttributeType",""],["AttributeUsage",""],["VertexMode",""]],"struct":[["Attribute",""],["Bone",""],["BuilderFlags",""]],"type":[["BoneIndices",""],["BoneWeights",""],["Builder",""],["Vertices",""]]});

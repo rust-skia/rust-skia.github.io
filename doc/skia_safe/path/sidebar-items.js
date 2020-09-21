@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AddPathMode",""],["ArcSize",""],["Convexity",""],["Direction",""],["FillType",""],["Verb",""]],"struct":[["Iter",""],["RawIter",""],["SegmentMask",""]],"type":[["Path",""]]});

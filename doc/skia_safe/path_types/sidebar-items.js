@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PathConvexityType",""],["PathDirection",""],["PathFillType",""],["PathVerb",""]],"struct":[["PathSegmentMask",""]]});

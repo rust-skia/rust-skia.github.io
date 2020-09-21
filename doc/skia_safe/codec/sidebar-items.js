@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EncodedOrigin",""],["Result",""],["SelectionPolicy",""],["ZeroInitialized",""]],"fn":[["result_to_string",""]],"struct":[["Options",""]],"type":[["Codec",""]]});

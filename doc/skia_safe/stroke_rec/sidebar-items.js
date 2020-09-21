@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["InitStyle",""],["Style",""]],"type":[["StrokeRec",""]]});

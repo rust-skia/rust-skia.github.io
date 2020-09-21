@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["safe_com_add_ref",""],["safe_com_release",""]],"struct":[["BackendContext",""],["ID3D12CommandQueue",""],["ID3D12Device",""],["ID3D12Resource",""],["IDXGIAdapter1",""],["TextureResourceInfo",""],["cp",""]],"type":[["D3D12_RESOURCE_STATES",""],["DXGI_FORMAT",""],["ResourceStateEnum",""]]});

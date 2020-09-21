@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["skia_safe"] = [{"text":"impl Neg for V2","synthetic":false,"types":[]},{"text":"impl Neg for V3","synthetic":false,"types":[]},{"text":"impl Neg for V4","synthetic":false,"types":[]},{"text":"impl Neg for IPoint","synthetic":false,"types":[]},{"text":"impl Neg for Point","synthetic":false,"types":[]},{"text":"impl Neg for Point3","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
