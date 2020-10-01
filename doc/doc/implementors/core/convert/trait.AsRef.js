@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["skia_safe"] = [{"text":"impl AsRef&lt;Color4f&gt; for Color4f","synthetic":false,"types":[]},{"text":"impl AsRef&lt;IRect&gt; for IRect","synthetic":false,"types":[]},{"text":"impl AsRef&lt;Rect&gt; for Rect","synthetic":false,"types":[]},{"text":"impl AsRef&lt;RRect&gt; for RRect","synthetic":false,"types":[]},{"text":"impl AsRef&lt;[TextBox]&gt; for TextBoxes","synthetic":false,"types":[]},{"text":"impl&lt;'a&gt; AsRef&lt;[LineMetrics&lt;'a&gt;]&gt; for Borrows&lt;'a, Handle&lt;LineMetricsVector&gt;&gt;","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

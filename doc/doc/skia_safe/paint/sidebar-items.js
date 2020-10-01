@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Cap",""],["Join",""],["Style",""]],"type":[["Paint",""]]});

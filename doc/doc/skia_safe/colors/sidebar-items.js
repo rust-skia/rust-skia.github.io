@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["BLACK",""],["BLUE",""],["CYAN",""],["DARK_GREY",""],["GREEN",""],["GREY",""],["LIGHT_GREY",""],["MAGENTA",""],["RED",""],["TRANSPARENT",""],["WHITE",""],["YELLOW",""]]});

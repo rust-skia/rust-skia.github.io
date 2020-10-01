@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["new",""]],"mod":[["variable",""]],"type":[["RuntimeEffect",""],["Variable",""],["Varying",""]]});

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["skia_safe"] = [{"text":"impl&lt;'lt&gt; DerefMut for OwnedCanvas&lt;'lt&gt;","synthetic":false,"types":[]},{"text":"impl&lt;'a&gt; DerefMut for AutoRestoredCanvas&lt;'a&gt;","synthetic":false,"types":[]},{"text":"impl&lt;'a, H&gt; DerefMut for Borrows&lt;'a, H&gt;","synthetic":false,"types":[]},{"text":"impl DerefMut for Canvas","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

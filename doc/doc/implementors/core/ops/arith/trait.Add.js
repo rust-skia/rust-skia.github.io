@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["skia_safe"] = [{"text":"impl Add&lt;V2&gt; for V2","synthetic":false,"types":[]},{"text":"impl Add&lt;V3&gt; for V3","synthetic":false,"types":[]},{"text":"impl Add&lt;V4&gt; for V4","synthetic":false,"types":[]},{"text":"impl Add&lt;IPoint&gt; for IPoint","synthetic":false,"types":[]},{"text":"impl Add&lt;ISize&gt; for IPoint","synthetic":false,"types":[]},{"text":"impl Add&lt;Point&gt; for Point","synthetic":false,"types":[]},{"text":"impl Add&lt;Size&gt; for Point","synthetic":false,"types":[]},{"text":"impl Add&lt;Point3&gt; for Point3","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
