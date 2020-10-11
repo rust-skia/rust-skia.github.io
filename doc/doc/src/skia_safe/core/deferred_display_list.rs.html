@@ -13,17 +13,37 @@
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkDeferredDisplayList</span>;
 
 <span class="comment">// TODO: complete wrapper</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DeferredDisplayList</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkDeferredDisplayList</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DeferredDisplayList</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkDeferredDisplayList</span><span class="op">&gt;</span>;
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">DeferredDisplayList</span> {}
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">DeferredDisplayList</span> {}
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkDeferredDisplayList</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkDeferredDisplayList_delete</span>(<span class="self">self</span>) }
+<span class="kw">impl</span> <span class="ident">NativeRefCounted</span> <span class="kw">for</span> <span class="ident">SkDeferredDisplayList</span> {
+    <span class="kw">fn</span> <span class="ident">_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkDeferredDisplayList_ref</span>(<span class="self">self</span>) }
+    }
+
+    <span class="kw">fn</span> <span class="ident">_unref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkDeferredDisplayList_unref</span>(<span class="self">self</span>) }
+    }
+
+    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkDeferredDisplayList_unique</span>(<span class="self">self</span>) }
     }
 }
 </pre></div>

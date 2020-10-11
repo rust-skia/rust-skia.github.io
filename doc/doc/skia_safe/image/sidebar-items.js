@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["BitDepth",""],["CachingHint",""],["CompressionType",""]],"type":[["Image",""]]});
+initSidebarItems({"enum":[["BitDepth",""],["CachingHint",""],["CompressionType",""],["MipmapMode",""],["SamplingMode",""]],"struct":[["CubicResampler",""],["FilterOptions",""]],"type":[["Image",""]]});

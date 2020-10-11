@@ -230,28 +230,36 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interop</span>::<span class="ident">AsStr</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">interop</span>, <span class="ident">ColorFilter</span>, <span class="ident">Data</span>, <span class="ident">Matrix</span>, <span class="ident">Shader</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-    <span class="ident">SkRefCntBase</span>, <span class="ident">SkRuntimeEffect</span>, <span class="ident">SkRuntimeEffect_Variable</span>, <span class="ident">SkRuntimeEffect_Varying</span>,
+    <span class="ident">SkRefCntBase</span>, <span class="ident">SkRuntimeEffect</span>, <span class="ident">SkRuntimeEffect_Uniform</span>, <span class="ident">SkRuntimeEffect_Varying</span>,
 };
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CStr</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Variable</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRuntimeEffect_Variable</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Variable</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Variable</span> {}
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Uniform</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRuntimeEffect_Uniform</span><span class="op">&gt;</span>;
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkRuntimeEffect_Variable</span> {
+<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use Uniform instead&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Variable</span> <span class="op">=</span> <span class="ident">Uniform</span>;
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Uniform</span> {}
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Uniform</span> {}
+
+<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkRuntimeEffect_Uniform</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;native type SkRuntimeEffect::Variable can&#39;t be owned by Rust&quot;</span>);
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;native type SkRuntimeEffect::Uniform can&#39;t be owned by Rust&quot;</span>);
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRuntimeEffect_Variable</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRuntimeEffect_Uniform</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fName</span>.<span class="ident">as_str</span>()
     }
@@ -260,11 +268,7 @@
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fOffset</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">qualifier</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">variable</span>::<span class="ident">Qualifier</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fQualifier</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">variable</span>::<span class="ident">Type</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">uniform</span>::<span class="ident">Type</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fType</span>
     }
 
@@ -272,8 +276,8 @@
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fCount</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">variable</span>::<span class="ident">Flags</span> {
-        <span class="ident">variable</span>::<span class="ident">Flags</span>::<span class="ident">from_bits</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFlags</span>).<span class="ident">unwrap</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">uniform</span>::<span class="ident">Flags</span> {
+        <span class="ident">uniform</span>::<span class="ident">Flags</span>::<span class="ident">from_bits</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFlags</span>).<span class="ident">unwrap</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">marker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
@@ -286,7 +290,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">variable</span>::<span class="ident">Flags</span>::<span class="ident">ARRAY</span>)
+        <span class="self">self</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">uniform</span>::<span class="ident">Flags</span>::<span class="ident">ARRAY</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size_in_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
@@ -294,27 +298,21 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">variable</span> {
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">uniform</span> {
     <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Variable_Qualifier</span> <span class="kw">as</span> <span class="ident">Qualifier</span>;
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_qualifier_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Qualifier</span>::<span class="ident">In</span>;
-    }
-
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Variable_Type</span> <span class="kw">as</span> <span class="ident">Type</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Uniform_Type</span> <span class="kw">as</span> <span class="ident">Type</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_type_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">Bool</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">Float2x2</span>;
     }
 
     <span class="macro">bitflags</span><span class="macro">!</span> {
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Flags</span> : <span class="ident">u32</span> {
-            <span class="kw">const</span> <span class="ident">ARRAY</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Variable_Flags_kArray_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
-            <span class="kw">const</span> <span class="ident">MARKER</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Variable_Flags_kMarker_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
-            <span class="kw">const</span> <span class="ident">MARKER_NORMALS</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Variable_Flags_kMarkerNormals_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
-            <span class="kw">const</span> <span class="ident">SRGB_UNPREMUL</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Variable_Flags_kSRGBUnpremul_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+            <span class="kw">const</span> <span class="ident">ARRAY</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Uniform_Flags_kArray_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+            <span class="kw">const</span> <span class="ident">MARKER</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Uniform_Flags_kMarker_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+            <span class="kw">const</span> <span class="ident">MARKER_NORMALS</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Uniform_Flags_kMarkerNormals_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+            <span class="kw">const</span> <span class="ident">SRGB_UNPREMUL</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkRuntimeEffect_Uniform_Flags_kSRGBUnpremul_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
         }
     }
 }
@@ -409,20 +407,25 @@
         <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkRuntimeEffect_hash</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use uniform_size() instead&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">input_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">inputSize</span>() }
+        <span class="self">self</span>.<span class="ident">uniform_size</span>()
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;removed without replacement&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uniform_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;removed without replacement&quot;</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uniform_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">uniformSize</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inputs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Variable</span>] {
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use uniforms() instead&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inputs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Uniform</span>] {
+        <span class="self">self</span>.<span class="ident">uniforms</span>()
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uniforms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Uniform</span>] {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">C_SkRuntimeEffect_inputs</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">count</span>);
-            <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">Variable</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span>), <span class="ident">count</span>)
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">C_SkRuntimeEffect_uniforms</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">count</span>);
+            <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">Uniform</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span>), <span class="ident">count</span>)
         }
     }
 
@@ -443,10 +446,15 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_input</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Variable</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">findInput</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">as_ptr</span>()) }
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use find_uniform()&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_input</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Uniform</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">find_uniform</span>(<span class="ident">name</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_uniform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Uniform</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">findUniform</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">as_ptr</span>()) }
             .<span class="ident">into_option</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">Variable</span>::<span class="ident">from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span> }))
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">Uniform</span>::<span class="ident">from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span> }))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_child</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {

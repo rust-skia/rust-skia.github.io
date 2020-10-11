@@ -84,21 +84,6 @@
 <span id="81">81</span>
 <span id="82">82</span>
 <span id="83">83</span>
-<span id="84">84</span>
-<span id="85">85</span>
-<span id="86">86</span>
-<span id="87">87</span>
-<span id="88">88</span>
-<span id="89">89</span>
-<span id="90">90</span>
-<span id="91">91</span>
-<span id="92">92</span>
-<span id="93">93</span>
-<span id="94">94</span>
-<span id="95">95</span>
-<span id="96">96</span>
-<span id="97">97</span>
-<span id="98">98</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
@@ -112,10 +97,14 @@
 
 <span class="comment">// TODO: this should be a newtype(bool) I guess with implementations</span>
 <span class="comment">//       of From&lt;bool&gt; and Deref?</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">GrMipMapped</span> <span class="kw">as</span> <span class="ident">MipMapped</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">GrMipmapped</span> <span class="kw">as</span> <span class="ident">Mipmapped</span>;
+
+<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use Mipmapped (with a lowercase &#39;m&#39;)&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">GrMipmapped</span> <span class="kw">as</span> <span class="ident">MipMapped</span>;
+
 <span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_mip_mapped_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">MipMapped</span>::<span class="ident">Yes</span>;
+<span class="kw">fn</span> <span class="ident">test_mipmapped_naming</span>() {
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Mipmapped</span>::<span class="ident">Yes</span>;
 }
 
 <span class="comment">// TODO: this should be a newtype(bool) I guess with implementations</span>
@@ -142,17 +131,8 @@
 
 <span class="comment">// Note: BackendState is in gl/types.rs/</span>
 
-<span class="comment">// i32 on Windows, u32 on macOS, so we&#39;d prefer to mal it to unsigned type in Rust.</span>
-<span class="macro">bitflags</span><span class="macro">!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FlushFlags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">GrFlushFlags_kNone_GrFlushFlags</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">SYNC_CPU</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">GrFlushFlags_kSyncCpu_GrFlushFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-    }
-}
-
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FlushInfo</span> {
-    <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">FlushFlags</span>,
     <span class="comment">// TODO: wrap access to the following fields in a safe way:</span>
     <span class="ident">num_semaphores</span>: <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>,
     <span class="ident">signal_semaphores</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">sb</span>::<span class="ident">GrBackendSemaphore</span>,
@@ -165,22 +145,12 @@
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FlushInfo</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">flags</span>: <span class="ident">FlushFlags</span>::<span class="ident">NONE</span>,
             <span class="ident">num_semaphores</span>: <span class="number">0</span>,
             <span class="ident">signal_semaphores</span>: <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
             <span class="ident">finished_proc</span>: <span class="prelude-val">None</span>,
             <span class="ident">finished_context</span>: <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
             <span class="ident">submitted_proc</span>: <span class="prelude-val">None</span>,
             <span class="ident">submitted_context</span>: <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
-        }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FlushFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FlushInfo</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">FlushFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flags</span>,
-            ..<span class="ident">Default</span>::<span class="ident">default</span>()
         }
     }
 }
