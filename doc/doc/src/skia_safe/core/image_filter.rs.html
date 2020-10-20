@@ -191,6 +191,12 @@
 <span id="188">188</span>
 <span id="189">189</span>
 <span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ColorFilter</span>, <span class="ident">FilterQuality</span>, <span class="ident">IRect</span>, <span class="ident">Matrix</span>, <span class="ident">NativeFlattenable</span>, <span class="ident">Rect</span>};
@@ -213,16 +219,21 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">CropRect</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">CropRect</span>::<span class="ident">from_native</span>(<span class="ident">SkImageFilter_CropRect</span> {
+        <span class="ident">CropRect</span>::<span class="ident">from_native_c</span>(<span class="ident">SkImageFilter_CropRect</span> {
             <span class="ident">fRect</span>: <span class="ident">Rect</span>::<span class="ident">default</span>().<span class="ident">into_native</span>(),
             <span class="ident">fFlags</span>: <span class="number">0</span>,
         })
     }
 }
 
+<span class="attribute">#[<span class="ident">test</span>]</span>
+<span class="kw">fn</span> <span class="ident">test_crop_rect_default</span>() {
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">CropRect</span>::<span class="ident">default</span>();
+}
+
 <span class="kw">impl</span> <span class="ident">CropRect</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">crop_rect</span>::<span class="ident">CropEdge</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">CropRect</span>::<span class="ident">from_native</span>(<span class="ident">SkImageFilter_CropRect</span> {
+        <span class="ident">CropRect</span>::<span class="ident">from_native_c</span>(<span class="ident">SkImageFilter_CropRect</span> {
             <span class="ident">fRect</span>: <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">into_native</span>(),
             <span class="ident">fFlags</span>: <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">crop_rect</span>::<span class="ident">CropEdge</span>::<span class="ident">HAS_ALL</span>).<span class="ident">bits</span>(),
         })
@@ -306,8 +317,9 @@
         <span class="ident">map_direction</span>: <span class="ident">MapDirection</span>,
         <span class="ident">input_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">IRect</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IRect</span> {
-        <span class="ident">IRect</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">filterBounds</span>(
+        <span class="ident">IRect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb</span>::<span class="ident">C_SkImageFilter_filterBounds</span>(
+                <span class="self">self</span>.<span class="ident">native</span>(),
                 <span class="ident">src</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
                 <span class="ident">ctm</span>.<span class="ident">native</span>(),
                 <span class="ident">map_direction</span>,
@@ -359,7 +371,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_fast_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bounds</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
-        <span class="ident">Rect</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> {
+        <span class="ident">Rect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb</span>::<span class="ident">C_SkImageFilter_computeFastBounds</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">bounds</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
         })
     }

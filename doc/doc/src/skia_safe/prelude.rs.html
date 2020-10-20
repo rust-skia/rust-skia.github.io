@@ -902,6 +902,8 @@
 <span id="899">899</span>
 <span id="900">900</span>
 <span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
     <span class="ident">C_SkRefCntBase_ref</span>, <span class="ident">C_SkRefCntBase_unique</span>, <span class="ident">C_SkRefCntBase_unref</span>, <span class="ident">SkNVRefCnt</span>, <span class="ident">SkRefCnt</span>,
@@ -1147,8 +1149,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span><span class="op">&gt;</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Wrap a native instance into a handle.</span>
-    <span class="doccomment">/// TODO: rename to wrap_native() and mark as unsafe.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native</span>(<span class="ident">n</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native_c</span>(<span class="ident">n</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Handle</span>(<span class="ident">n</span>, <span class="ident">PhantomData</span>)
     }
 
@@ -1167,7 +1168,7 @@
     <span class="doccomment">/// function that expects a pointer that points to</span>
     <span class="doccomment">/// uninitialized memory of the native type.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">construct</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="self">self</span>::<span class="ident">construct</span>(<span class="ident">construct</span>))
+        <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>::<span class="ident">construct</span>(<span class="ident">construct</span>))
     }
 
     <span class="doccomment">/// Replaces the native instance with the one from this Handle, and</span>
@@ -1222,7 +1223,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span> <span class="op">+</span> <span class="ident">NativeClone</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
+        <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
     }
 }
 
@@ -1560,7 +1561,10 @@
     }
 
     <span class="doccomment">/// Copies the native value to an equivalent Rust value.</span>
-    <span class="kw">fn</span> <span class="ident">from_native</span>(<span class="ident">nt</span>: <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The `_c` suffix is to remind callers that functions that return a native value from a C++</span>
+    <span class="doccomment">/// ABI can&#39;t be used. For example, C++ member functions must be wrapped in a extern &quot;C&quot; function.</span>
+    <span class="kw">fn</span> <span class="ident">from_native_c</span>(<span class="ident">nt</span>: <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">transmute_copy</span>::<span class="op">&lt;</span><span class="ident">NT</span>, <span class="self">Self</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">nt</span>) };
         <span class="comment">// don&#39;t drop, the Rust type takes over.</span>
         <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">nt</span>);
@@ -1594,7 +1598,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">construct</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">NT</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="self">self</span>::<span class="ident">construct</span>(<span class="ident">construct</span>))
+        <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>::<span class="ident">construct</span>(<span class="ident">construct</span>))
     }
 }
 

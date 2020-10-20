@@ -1262,6 +1262,15 @@
 <span id="1259">1259</span>
 <span id="1260">1260</span>
 <span id="1261">1261</span>
+<span id="1262">1262</span>
+<span id="1263">1263</span>
+<span id="1264">1264</span>
+<span id="1265">1265</span>
+<span id="1266">1266</span>
+<span id="1267">1267</span>
+<span id="1268">1268</span>
+<span id="1269">1269</span>
+<span id="1270">1270</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">gpu</span>;
@@ -1836,12 +1845,12 @@
     <span class="comment">// Note: quickReject() functions are implemented as a trait.</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_clip_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getLocalClipBounds</span>() });
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getLocalClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
         <span class="ident">r</span>.<span class="ident">is_empty</span>().<span class="ident">if_false_some</span>(<span class="ident">r</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device_clip_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getDeviceClipBounds</span>() });
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getDeviceClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
         <span class="ident">r</span>.<span class="ident">is_empty</span>().<span class="ident">if_false_some</span>(<span class="ident">r</span>)
     }
 
@@ -2275,7 +2284,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_to_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">M44</span> {
-        <span class="ident">M44</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getLocalToDevice</span>() })
+        <span class="ident">M44</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getLocalToDevice</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">m</span>) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
@@ -2522,6 +2531,15 @@
         <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="ident">ClipOp</span>::<span class="ident">Difference</span>, <span class="prelude-val">None</span>);
         <span class="comment">// both</span>
         <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="ident">ClipOp</span>::<span class="ident">Difference</span>, <span class="bool-val">true</span>);
+    }
+
+    <span class="doccomment">/// Regression test for: https://github.com/rust-skia/rust-skia/issues/427</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_local_and_device_clip_bounds</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">100</span>, <span class="number">100</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">device_clip_bounds</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">local_clip_bounds</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">local_to_device</span>();
     }
 }
 </pre></div>

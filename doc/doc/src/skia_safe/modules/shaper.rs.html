@@ -707,6 +707,8 @@
 <span id="704">704</span>
 <span id="705">705</span>
 <span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scalar</span>, <span class="ident">Font</span>, <span class="ident">FontMgr</span>, <span class="ident">FourByteTag</span>, <span class="ident">Point</span>, <span class="ident">TextBlob</span>};
@@ -896,7 +898,7 @@
 
 <span class="kw">impl</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper_ScriptRunIterator</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_script</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FourByteTag</span> {
-        <span class="ident">FourByteTag</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> {
+        <span class="ident">FourByteTag</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb</span>::<span class="ident">C_SkShaper_ScriptRunIterator_currentScript</span>(<span class="self">self</span>.<span class="ident">native</span>())
         })
     }
@@ -1008,7 +1010,7 @@
             <span class="ident">RunInfo</span> {
                 <span class="ident">font</span>: <span class="ident">Font</span>::<span class="ident">from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ri</span>.<span class="ident">fFont</span> }),
                 <span class="ident">bidi_level</span>: <span class="ident">ri</span>.<span class="ident">fBidiLevel</span>,
-                <span class="ident">advance</span>: <span class="ident">Vector</span>::<span class="ident">from_native</span>(<span class="ident">ri</span>.<span class="ident">fAdvance</span>),
+                <span class="ident">advance</span>: <span class="ident">Vector</span>::<span class="ident">from_native_c</span>(<span class="ident">ri</span>.<span class="ident">fAdvance</span>),
                 <span class="ident">glyph_count</span>: <span class="ident">ri</span>.<span class="ident">glyphCount</span>,
                 <span class="ident">utf8_range</span>: <span class="ident">utf8_range</span>.<span class="ident">fBegin</span>..<span class="ident">utf8_range</span>.<span class="ident">fBegin</span> <span class="op">+</span> <span class="ident">utf8_range</span>.<span class="ident">fSize</span>,
             }
@@ -1075,7 +1077,7 @@
                 ),
                 <span class="ident">offsets</span>,
                 <span class="ident">clusters</span>,
-                <span class="ident">point</span>: <span class="ident">Point</span>::<span class="ident">from_native</span>(<span class="ident">buffer</span>.<span class="ident">point</span>),
+                <span class="ident">point</span>: <span class="ident">Point</span>::<span class="ident">from_native_c</span>(<span class="ident">buffer</span>.<span class="ident">point</span>),
             }
         }
 
@@ -1319,7 +1321,9 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end_point</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
-        <span class="ident">Point</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTextBlobBuilderRunHandler_endPoint</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
+        <span class="ident">Point</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb</span>::<span class="ident">C_SkTextBlobBuilderRunHandler_endPoint</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+        })
     }
 }
 

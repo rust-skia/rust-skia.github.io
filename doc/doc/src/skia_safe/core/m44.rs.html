@@ -842,13 +842,15 @@
 <span id="839">839</span>
 <span id="840">840</span>
 <span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scalar</span>, <span class="ident">Matrix</span>, <span class="ident">Matrix44</span>, <span class="ident">Scalars</span>};
 <span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">_core</span>::<span class="ident">ops</span>::{<span class="ident">AddAssign</span>, <span class="ident">MulAssign</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">Sk3LookAt</span>, <span class="ident">Sk3Perspective</span>, <span class="ident">SkM44</span>, <span class="ident">SkV2</span>, <span class="ident">SkV3</span>, <span class="ident">SkV4</span>};
+<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkM44</span>, <span class="ident">SkV2</span>, <span class="ident">SkV3</span>, <span class="ident">SkV4</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">f32</span>,
     <span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">Div</span>, <span class="ident">DivAssign</span>, <span class="ident">Index</span>, <span class="ident">Mul</span>, <span class="ident">Neg</span>, <span class="ident">Sub</span>, <span class="ident">SubAssign</span>},
@@ -1262,7 +1264,7 @@
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">M44</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_M44_equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">other</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkM44_equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">other</span>.<span class="ident">native</span>()) }
     }
 }
 
@@ -1555,7 +1557,7 @@
 
     <span class="attribute">#[<span class="ident">warn</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transpose</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">M44</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">transpose</span>() })
+        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkM44_transpose</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">m</span>) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
@@ -1563,7 +1565,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>, <span class="ident">w</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">V4</span> {
-        <span class="ident">V4</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">map</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>, <span class="ident">w</span>) })
+        <span class="ident">V4</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkM44_map</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>, <span class="ident">w</span>) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_m33</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
@@ -1603,11 +1605,13 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">look_at</span>(<span class="ident">eye</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>, <span class="ident">center</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>, <span class="ident">up</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">Sk3LookAt</span>(<span class="ident">eye</span>.<span class="ident">native</span>(), <span class="ident">center</span>.<span class="ident">native</span>(), <span class="ident">up</span>.<span class="ident">native</span>()) })
+        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb</span>::<span class="ident">C_Sk3LookAt</span>(<span class="ident">eye</span>.<span class="ident">native</span>(), <span class="ident">center</span>.<span class="ident">native</span>(), <span class="ident">up</span>.<span class="ident">native</span>(), <span class="ident">m</span>)
+        })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perspective</span>(<span class="ident">near</span>: <span class="ident">f32</span>, <span class="ident">far</span>: <span class="ident">f32</span>, <span class="ident">angle</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">Sk3Perspective</span>(<span class="ident">near</span>, <span class="ident">far</span>, <span class="ident">angle</span>) })
+        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_Sk3Perspective</span>(<span class="ident">near</span>, <span class="ident">far</span>, <span class="ident">angle</span>, <span class="ident">m</span>) })
     }
 
     <span class="comment">// helper</span>

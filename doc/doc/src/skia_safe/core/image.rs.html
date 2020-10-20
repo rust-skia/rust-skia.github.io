@@ -792,6 +792,12 @@
 <span id="789">789</span>
 <span id="790">790</span>
 <span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">gpu</span>;
@@ -1210,7 +1216,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorType</span> {
-        <span class="ident">ColorType</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">colorType</span>() })
+        <span class="ident">ColorType</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">colorType</span>() })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
@@ -1357,13 +1363,19 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_texture</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">flush_pending_gr_context_io</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">gpu</span>::<span class="ident">BackendTexture</span>, <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>) {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">gpu</span>::<span class="ident">BackendTexture</span>, <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>::<span class="ident">TopLeft</span>;
-        <span class="kw">let</span> <span class="ident">texture</span> <span class="op">=</span> <span class="ident">gpu</span>::<span class="ident">BackendTexture</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">getBackendTexture</span>(<span class="ident">flush_pending_gr_context_io</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">origin</span>)
-        });
-        (<span class="ident">texture</span>, <span class="ident">origin</span>)
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_texture</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">GrBackendTexture</span>::<span class="ident">new</span>() };
+        <span class="kw">unsafe</span> {
+            <span class="ident">sb</span>::<span class="ident">C_SkImage_getBackendTexture</span>(
+                <span class="self">self</span>.<span class="ident">native</span>(),
+                <span class="ident">flush_pending_gr_context_io</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">origin</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">backend_texture</span>,
+            );
+            <span class="ident">gpu</span>::<span class="ident">BackendTexture</span>::<span class="ident">from_native_if_valid</span>(<span class="ident">backend_texture</span>)
+        }
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> (<span class="ident">texture</span>, <span class="ident">origin</span>))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(

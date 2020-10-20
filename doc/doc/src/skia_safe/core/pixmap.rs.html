@@ -278,7 +278,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPixmap</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Pixmap</span>::<span class="ident">from_native</span>(<span class="ident">SkPixmap</span> {
+        <span class="ident">Pixmap</span>::<span class="ident">from_native_c</span>(<span class="ident">SkPixmap</span> {
             <span class="ident">fPixels</span>: <span class="ident">ptr</span>::<span class="ident">null</span>(),
             <span class="ident">fRowBytes</span>: <span class="number">0</span>,
             <span class="ident">fInfo</span>: <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ii</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkImageInfo_Construct</span>(<span class="ident">ii</span>) }),
@@ -298,7 +298,7 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">row_bytes</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">width</span> <span class="op">*</span> <span class="ident">info</span>.<span class="ident">bytes_per_pixel</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pixels</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">height</span> <span class="op">*</span> <span class="ident">row_bytes</span>);
 
-        <span class="kw">let</span> <span class="ident">pm</span> <span class="op">=</span> <span class="ident">Pixmap</span>::<span class="ident">from_native</span>(<span class="ident">SkPixmap</span> {
+        <span class="kw">let</span> <span class="ident">pm</span> <span class="op">=</span> <span class="ident">Pixmap</span>::<span class="ident">from_native_c</span>(<span class="ident">SkPixmap</span> {
             <span class="ident">fPixels</span>: <span class="ident">pixels</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
             <span class="ident">fRowBytes</span>: <span class="ident">row_bytes</span>,
             <span class="ident">fInfo</span>: <span class="ident">info</span>.<span class="ident">native</span>().<span class="ident">clone</span>(),
@@ -392,7 +392,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="self">self</span>.<span class="ident">assert_pixel_exists</span>(<span class="ident">p</span>);
-        <span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getColor</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) })
+        <span class="ident">Color</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getColor</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpha_f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
