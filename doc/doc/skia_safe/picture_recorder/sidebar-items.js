@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["RecordFlags",""]],"type":[["PictureRecorder",""]]});
+initSidebarItems({"type":[["PictureRecorder",""]]});

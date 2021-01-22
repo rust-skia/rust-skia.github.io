@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["from_picture",""]]});
+initSidebarItems({});

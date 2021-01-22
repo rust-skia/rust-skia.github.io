@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["new",""]],"struct":[["ArithmeticFPInputs",""]]});
+initSidebarItems({"struct":[["ArithmeticFPInputs",""]]});

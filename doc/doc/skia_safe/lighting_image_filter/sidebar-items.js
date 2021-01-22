@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["distant_lit_diffuse",""],["distant_lit_specular",""],["point_lit_diffuse",""],["point_lit_specular",""],["spot_lit_diffuse",""],["spot_lit_specular",""]]});
+initSidebarItems({});

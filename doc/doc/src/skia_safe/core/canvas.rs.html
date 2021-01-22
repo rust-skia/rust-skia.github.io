@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\core\canvas.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>canvas.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\canvas.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>canvas.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -1271,6 +1271,9 @@
 <span id="1268">1268</span>
 <span id="1269">1269</span>
 <span id="1270">1270</span>
+<span id="1271">1271</span>
+<span id="1272">1272</span>
+<span id="1273">1273</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">gpu</span>;
@@ -1303,11 +1306,11 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SaveLayerRec</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="comment">// note: we _must_ store _references_ to the</span>
-    <span class="comment">// native types here, because not all of them</span>
-    <span class="comment">// are native transmutable, like ImageFilter or Image,</span>
-    <span class="comment">// which are represented as ref counted pointers and</span>
-    <span class="comment">// so we would store a reference to a pointer only.</span>
+    <span class="comment">// note: we _must_ store _references_ to the</span>
+    <span class="comment">// native types here, because not all of them</span>
+    <span class="comment">// are native transmutable, like ImageFilter or Image,</span>
+    <span class="comment">// which are represented as ref counted pointers and</span>
+    <span class="comment">// so we would store a reference to a pointer only.</span>
     <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SkRect</span><span class="op">&gt;</span>,
     <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SkPaint</span><span class="op">&gt;</span>,
     <span class="ident">backdrop</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SkImageFilter</span><span class="op">&gt;</span>,
@@ -1389,8 +1392,8 @@
     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SrcRectConstraint</span>::<span class="ident">Fast</span>;
 }
 
-<span class="doccomment">/// Provides access to Canvas&#39;s pixels.</span>
-<span class="doccomment">/// Returned by Canvas::access_top_layer_pixels()</span>
+<span class="doccomment">/// Provides access to Canvas&#39;s pixels.</span>
+<span class="doccomment">/// Returned by Canvas::access_top_layer_pixels()</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TopLayerPixels</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>],
     <span class="kw">pub</span> <span class="ident">info</span>: <span class="ident">ImageInfo</span>,
@@ -1398,9 +1401,9 @@
     <span class="kw">pub</span> <span class="ident">origin</span>: <span class="ident">IPoint</span>,
 }
 
-<span class="doccomment">/// The canvas type that is returned when it is owned by another instance,</span>
-<span class="doccomment">/// like Surface, for example. For these cases, the Canvas&#39; reference that is</span>
-<span class="doccomment">/// returned is bound to the lifetime of the owner.</span>
+<span class="doccomment">/// The canvas type that is returned when it is owned by another instance,</span>
+<span class="doccomment">/// like Surface, for example. For these cases, the Canvas&#39; reference that is</span>
+<span class="doccomment">/// returned is bound to the lifetime of the owner.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Canvas</span>(<span class="ident">SkCanvas</span>);
 
@@ -1414,10 +1417,10 @@
     }
 }
 
-<span class="doccomment">/// A type representing a canvas that is owned and dropped</span>
-<span class="doccomment">/// when it goes out of scope _and_ is bound to the lifetime of another</span>
-<span class="doccomment">/// instance.</span>
-<span class="doccomment">/// Function resolvement is done via the Deref trait.</span>
+<span class="doccomment">/// A type representing a canvas that is owned and dropped</span>
+<span class="doccomment">/// when it goes out of scope _and_ is bound to the lifetime of another</span>
+<span class="doccomment">/// instance.</span>
+<span class="doccomment">/// Function resolvement is done via the Deref trait.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">ptr</span>::<span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Canvas</span><span class="op">&gt;</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;lt</span> ()<span class="op">&gt;</span>);
 
@@ -1448,20 +1451,12 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">deprecated</span>(
-    <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.34.0&quot;</span>,
-    <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use `&amp;mut canvas` to pass an exclusive reference.&quot;</span>
-)]</span>
 <span class="kw">impl</span> <span class="ident">AsMut</span><span class="op">&lt;</span><span class="ident">Canvas</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
     <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Canvas</span> {
         <span class="self">self</span>
     }
 }
 
-<span class="attribute">#[<span class="ident">deprecated</span>(
-    <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.34.0&quot;</span>,
-    <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use `&amp;mut canvas` to pass an exclusive reference.&quot;</span>
-)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span><span class="ident">Canvas</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Canvas</span> {
         <span class="self">self</span>.<span class="ident">deref_mut</span>()
@@ -1469,7 +1464,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Canvas</span> {
-    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
+    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_raster_direct</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span><span class="op">&gt;</span>(
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>],
@@ -1505,8 +1500,8 @@
     }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_ret_no_self</span>)]</span>
-    <span class="comment">// Decided to call this variant new, because it seems to be the simplest reasonable one.</span>
-    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
+    <span class="comment">// Decided to call this variant new, because it seems to be the simplest reasonable one.</span>
+    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(
         <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>,
         <span class="ident">props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
@@ -1526,7 +1521,7 @@
         }
     }
 
-    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
+    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bitmap</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">props_ptr</span> <span class="op">=</span> <span class="ident">props</span>.<span class="ident">native_ptr_or_null</span>();
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">props_ptr</span>.<span class="ident">is_null</span>() {
@@ -1561,8 +1556,8 @@
         <span class="ident">size</span>
     }
 
-    <span class="comment">// Note: implementation creates new canvas, it only takes SkSurfaceProps from &amp;self if no props are given.</span>
-    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
+    <span class="comment">// Note: implementation creates new canvas, it only takes SkSurfaceProps from &amp;self if no props are given.</span>
+    <span class="comment">// TODO: Support impl Into&lt;Option&lt;&amp;&#39;a SurfaceProps&gt;&gt;?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
@@ -1573,20 +1568,31 @@
         })
     }
 
-    <span class="comment">// TODO: test ref count consistency assuming it is not increased in the native part.</span>
+    <span class="comment">// TODO: test ref count consistency assuming it is not increased in the native part.</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.36.0&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Removed, only recording_context() is supported.&quot;</span>
+    )]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gpu_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu</span>::<span class="ident">Context</span><span class="op">&gt;</span> {
-        <span class="ident">gpu</span>::<span class="ident">Context</span>::<span class="ident">from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getGrContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gpu_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Removed&quot;</span>);
     }
 
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">/// This function is unsafe because it is not clear how exactly the lifetime of the canvas</span>
-    <span class="doccomment">/// relates to surface returned.</span>
-    <span class="doccomment">/// TODO: It might be possible to make this safe by returning a _kind of_ reference to the</span>
-    <span class="doccomment">///       Surface that can not be cloned and stays bound to the lifetime of canvas.</span>
-    <span class="doccomment">///       But even then, the Surface might exist twice then, which is confusing, but</span>
-    <span class="doccomment">///       probably safe, because the first instance is borrowed by the canvas.</span>
-    <span class="doccomment">/// See also `OwnedCanvas`, `Surface::canvas()`.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recording_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu</span>::<span class="ident">RecordingContext</span><span class="op">&gt;</span> {
+        <span class="ident">gpu</span>::<span class="ident">RecordingContext</span>::<span class="ident">from_unshared_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb</span>::<span class="ident">C_SkCanvas_recordingContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+        })
+    }
+
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">/// This function is unsafe because it is not clear how exactly the lifetime of the canvas</span>
+    <span class="doccomment">/// relates to surface returned.</span>
+    <span class="doccomment">/// TODO: It might be possible to make this safe by returning a _kind of_ reference to the</span>
+    <span class="doccomment">///       Surface that can not be cloned and stays bound to the lifetime of canvas.</span>
+    <span class="doccomment">///       But even then, the Surface might exist twice then, which is confusing, but</span>
+    <span class="doccomment">///       probably safe, because the first instance is borrowed by the canvas.</span>
+    <span class="doccomment">/// See also `OwnedCanvas`, `Surface::canvas()`.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">surface</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
         <span class="ident">Surface</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getSurface</span>())
     }
@@ -1616,7 +1622,7 @@
         }
     }
 
-    <span class="comment">// TODO: accessTopRasterHandle()</span>
+    <span class="comment">// TODO: accessTopRasterHandle()</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap</span> <span class="op">=</span> <span class="ident">Pixmap</span>::<span class="ident">default</span>();
@@ -1658,7 +1664,7 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels2</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>(), <span class="ident">src</span>.<span class="ident">x</span>, <span class="ident">src</span>.<span class="ident">y</span>) }
     }
 
-    <span class="comment">// TODO: that (pixels, row_bytes) pair is probably worth abstracting over.</span>
+    <span class="comment">// TODO: that (pixels, row_bytes) pair is probably worth abstracting over.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
@@ -1690,13 +1696,13 @@
         }
     }
 
-    <span class="comment">// The count can be read via save_count() at any time.</span>
+    <span class="comment">// The count can be read via save_count() at any time.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">save</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">save</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>() }
     }
 
-    <span class="comment">// Note: The save_layer(bounds, paint) variants</span>
-    <span class="comment">// have been replaced with SaveLayerRec.</span>
+    <span class="comment">// Note: The save_layer(bounds, paint) variants</span>
+    <span class="comment">// have been replaced with SaveLayerRec.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">save_layer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layer_rec</span>: <span class="kw-2">&amp;</span><span class="ident">SaveLayerRec</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">saveLayer1</span>(<span class="ident">layer_rec</span>.<span class="ident">native</span>()) }
             .<span class="ident">try_into</span>()
@@ -1737,7 +1743,7 @@
         <span class="self">self</span>
     }
 
-    <span class="comment">// impl Into&lt;Option&lt;Point&gt;&gt;?</span>
+    <span class="comment">// impl Into&lt;Option&lt;Point&gt;&gt;?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">degrees</span>: <span class="ident">scalar</span>, <span class="ident">point</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">point</span> {
             <span class="prelude-val">Some</span>(<span class="ident">point</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rotate1</span>(<span class="ident">degrees</span>, <span class="ident">point</span>.<span class="ident">x</span>, <span class="ident">point</span>.<span class="ident">y</span>) },
@@ -1842,7 +1848,7 @@
         <span class="self">self</span>
     }
 
-    <span class="comment">// Note: quickReject() functions are implemented as a trait.</span>
+    <span class="comment">// Note: quickReject() functions are implemented as a trait.</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_clip_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getLocalClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
@@ -2144,10 +2150,10 @@
         <span class="self">self</span>
     }
 
-    <span class="comment">// TODO: drawSimpleText?</span>
+    <span class="comment">// TODO: drawSimpleText?</span>
 
-    <span class="comment">// rust specific, based on drawSimpleText with fixed UTF8 encoding,</span>
-    <span class="comment">// implementation is similar to Font&#39;s *_str methods.</span>
+    <span class="comment">// rust specific, based on drawSimpleText with fixed UTF8 encoding,</span>
+    <span class="comment">// implementation is similar to Font&#39;s *_str methods.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_str</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
@@ -2241,7 +2247,7 @@
         <span class="self">self</span>
     }
 
-    <span class="comment">// TODO: drawAtlas</span>
+    <span class="comment">// TODO: drawAtlas</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_drawable</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">drawable</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Drawable</span>, <span class="ident">matrix</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Matrix</span><span class="op">&gt;</span>) {
         <span class="kw">unsafe</span> {
@@ -2289,15 +2295,15 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">matrix</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">default</span>();
-        <span class="comment">// TODO: why is Matrix not safe to return from getTotalMatrix()</span>
-        <span class="comment">// testcase `test_total_matrix` below crashes with an access violation.</span>
+        <span class="comment">// TODO: why is Matrix not safe to return from getTotalMatrix()</span>
+        <span class="comment">// testcase `test_total_matrix` below crashes with an access violation.</span>
         <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getTotalMatrix</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">matrix</span>.<span class="ident">native_mut</span>()) };
         <span class="ident">matrix</span>
     }
 
-    <span class="comment">//</span>
-    <span class="comment">// internal helper</span>
-    <span class="comment">//</span>
+    <span class="comment">//</span>
+    <span class="comment">// internal helper</span>
+    <span class="comment">//</span>
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">own_from_native_ptr</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">native</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkCanvas</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">native</span>.<span class="ident">is_null</span>() {
@@ -2327,9 +2333,9 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// Lattice</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// Lattice</span>
+<span class="comment">//</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">lattice</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
@@ -2357,10 +2363,10 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rect_types</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rect_types</span> {
                 <span class="kw">let</span> <span class="ident">rect_count</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">x_divs</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>) <span class="op">*</span> (<span class="self">self</span>.<span class="ident">y_divs</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>);
                 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">rect_count</span>, <span class="ident">rect_types</span>.<span class="ident">len</span>());
-                <span class="comment">// even though rect types may not include any FixedColor refs,</span>
-                <span class="comment">// we expect the colors slice with a proper size here, this</span>
-                <span class="comment">// saves us for going over the types array and looking for FixedColor</span>
-                <span class="comment">// entries.</span>
+                <span class="comment">// even though rect types may not include any FixedColor refs,</span>
+                <span class="comment">// we expect the colors slice with a proper size here, this</span>
+                <span class="comment">// saves us for going over the types array and looking for FixedColor</span>
+                <span class="comment">// entries.</span>
                 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">rect_count</span>, <span class="self">self</span>.<span class="ident">colors</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>());
             }
 
@@ -2388,12 +2394,12 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// AutoRestoredCanvas</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// AutoRestoredCanvas</span>
+<span class="comment">//</span>
 
-<span class="doccomment">/// A reference to a Canvas that restores the Canvas&#39;s state when</span>
-<span class="doccomment">/// it&#39;s being dropped.</span>
+<span class="doccomment">/// A reference to a Canvas that restores the Canvas&#39;s state when</span>
+<span class="doccomment">/// it&#39;s being dropped.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AutoRestoredCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">canvas</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Canvas</span>,
     <span class="ident">restore</span>: <span class="ident">SkAutoCanvasRestore</span>,
@@ -2437,7 +2443,7 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AutoCanvasRestore</span> {}
 
 <span class="kw">impl</span> <span class="ident">AutoCanvasRestore</span> {
-    <span class="comment">// TODO: rename to save(), add a method to Canvas, perhaps named auto_restored()?</span>
+    <span class="comment">// TODO: rename to save(), add a method to Canvas, perhaps named auto_restored()?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guard</span>(<span class="ident">canvas</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Canvas</span>, <span class="ident">do_save</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AutoRestoredCanvas</span> {
         <span class="kw">let</span> <span class="ident">restore</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">acr</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb</span>::<span class="ident">C_SkAutoCanvasRestore_Construct</span>(<span class="ident">acr</span>, <span class="ident">canvas</span>.<span class="ident">native_mut</span>(), <span class="ident">do_save</span>)
@@ -2478,8 +2484,8 @@
             <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color</span>::<span class="ident">RED</span>);
         }
 
-        <span class="comment">// TODO: equals to 0xff0000ff on macOS, but why? Endianess should be the same.</span>
-        <span class="comment">// assert_eq!(0xffff0000, pixels[0]);</span>
+        <span class="comment">// TODO: equals to 0xff0000ff on macOS, but why? Endianess should be the same.</span>
+        <span class="comment">// assert_eq!(0xffff0000, pixels[0]);</span>
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -2525,15 +2531,15 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">clip_options_overloads</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">OwnedCanvas</span>::<span class="ident">default</span>();
-        <span class="comment">// do_anti_alias</span>
+        <span class="comment">// do_anti_alias</span>
         <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="prelude-val">None</span>, <span class="bool-val">true</span>);
-        <span class="comment">// clip_op</span>
+        <span class="comment">// clip_op</span>
         <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="ident">ClipOp</span>::<span class="ident">Difference</span>, <span class="prelude-val">None</span>);
-        <span class="comment">// both</span>
+        <span class="comment">// both</span>
         <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="ident">ClipOp</span>::<span class="ident">Difference</span>, <span class="bool-val">true</span>);
     }
 
-    <span class="doccomment">/// Regression test for: https://github.com/rust-skia/rust-skia/issues/427</span>
+    <span class="doccomment">/// Regression test for: https://github.com/rust-skia/rust-skia/issues/427</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_local_and_device_clip_bounds</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">100</span>, <span class="number">100</span>)).<span class="ident">unwrap</span>();

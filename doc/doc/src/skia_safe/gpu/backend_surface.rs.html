@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\gpu\backend_surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>backend_surface.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\gpu\backend_surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>backend_surface.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -497,6 +497,19 @@
 <span id="494">494</span>
 <span id="495">495</span>
 <span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">d3d</span>;
@@ -528,25 +541,29 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">BackendFormat</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>()
-    }
-}
-
 <span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">GrBackendFormat</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;The creation of invalid BackendFormats isn&#39;t supported anymore&quot;</span>,
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>
+    )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span>::<span class="ident">new_invalid</span>()
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_Construct</span>(<span class="ident">bf</span>) })
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_gl</span>(<span class="ident">format</span>: <span class="ident">gl</span>::<span class="ident">Enum</span>, <span class="ident">target</span>: <span class="ident">gl</span>::<span class="ident">Enum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_ConstructGL</span>(<span class="ident">bf</span>, <span class="ident">format</span>, <span class="ident">target</span>) })
+            .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span>(<span class="ident">format</span>: <span class="ident">vk</span>::<span class="ident">Format</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_ConstructVk</span>(<span class="ident">bf</span>, <span class="ident">format</span>) })
+            .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
@@ -554,11 +571,14 @@
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_ConstructVk2</span>(<span class="ident">bf</span>, <span class="ident">conversion_info</span>.<span class="ident">native</span>())
         })
+        .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_metal</span>(<span class="ident">format</span>: <span class="ident">mtl</span>::<span class="ident">PixelFormat</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_ConstructMtl</span>(<span class="ident">bf</span>, <span class="ident">format</span>) })
+            .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
@@ -566,27 +586,15 @@
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_ConstructDxgi</span>(<span class="ident">bf</span>, <span class="ident">format</span>.<span class="ident">into_native</span>())
         })
-    }
-
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.19.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use backend()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_api</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendAPI</span> {
-        <span class="self">self</span>.<span class="ident">backend</span>()
+        .<span class="ident">assert_valid</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendAPI</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackend</span>
     }
 
-    <span class="comment">// texture_type() would return a private type.</span>
-
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channel_mask</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">channelMask</span>() }
-    }
-
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.19.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use as_gl_format()&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gl</span>::<span class="ident">Enum</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">as_gl_format</span>() <span class="kw">as</span> <span class="kw">_</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
@@ -597,12 +605,6 @@
         }
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.19.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use as_vk_format()&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vulkan_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk</span>::<span class="ident">Format</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">as_vk_format</span>()
-    }
-
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_vk_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk</span>::<span class="ident">Format</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">vk</span>::<span class="ident">Format</span>::<span class="ident">UNDEFINED</span>;
@@ -610,8 +612,10 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mtl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">mtl</span>::<span class="ident">PixelFormat</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asMtlFormat</span>() }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mtl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl</span>::<span class="ident">PixelFormat</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">pixel_format</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asMtlFormat</span>() };
+        <span class="comment">// Mtl&#39;s PixelFormat == 0 is invalid.</span>
+        (<span class="ident">pixel_format</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">if_true_some</span>(<span class="ident">pixel_format</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
@@ -621,14 +625,28 @@
             .<span class="ident">if_true_some</span>(<span class="ident">d3d</span>::<span class="ident">DXGI_FORMAT</span>::<span class="ident">from_native_c</span>(<span class="ident">f</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_texture_2d</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_texture_2d</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new_invalid</span>();
         <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendFormat_makeTexture2D</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">new</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">new</span>.<span class="ident">is_valid</span>().<span class="ident">if_true_some</span>(<span class="ident">new</span>)
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="ident">new</span>.<span class="ident">native</span>()));
+        <span class="ident">new</span>
     }
 
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Invalid BackendFormats are not supported anymore&quot;</span>,
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>
+    )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fValid</span>
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">format</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendFormat</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">format</span>.<span class="ident">fValid</span>
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">assert_valid</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="self">self</span>.<span class="ident">native</span>()));
+        <span class="self">self</span>
     }
 }
 
@@ -648,8 +666,13 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">GrBackendTexture</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">BackendTexture</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendTexture_Construct</span>(<span class="ident">t</span>) })
+    }
+
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_gl</span>(
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">mipmapped</span>: <span class="kw">super</span>::<span class="ident">Mipmapped</span>,
@@ -662,6 +685,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">vk_info</span>: <span class="kw-2">&amp;</span><span class="ident">vk</span>::<span class="ident">ImageInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">from_native_if_valid</span>(<span class="ident">construct</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> {
             <span class="ident">sb</span>::<span class="ident">C_GrBackendTexture_ConstructVk</span>(<span class="ident">texture</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">vk_info</span>.<span class="ident">native</span>())
@@ -670,6 +694,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_metal</span>(
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">mipmapped</span>: <span class="kw">super</span>::<span class="ident">Mipmapped</span>,
@@ -700,8 +725,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_native_if_valid</span>(
         <span class="ident">backend_texture</span>: <span class="ident">GrBackendTexture</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendTexture</span><span class="op">&gt;</span> {
-        <span class="ident">backend_texture</span>
-            .<span class="ident">fIsValid</span>
+        <span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">backend_texture</span>)
             .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">BackendTexture</span>::<span class="ident">from_native_c</span>(<span class="ident">backend_texture</span>))
     }
 
@@ -791,18 +815,27 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendFormat</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendFormat</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat</span>::<span class="ident">new_invalid</span>();
         <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_GrBackendTexture_getBackendFormat</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">format</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">format</span>.<span class="ident">is_valid</span>().<span class="ident">if_true_some</span>(<span class="ident">format</span>)
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">BackendFormat</span>::<span class="ident">native_is_valid</span>(<span class="ident">format</span>.<span class="ident">native</span>()));
+        <span class="ident">format</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isProtected</span>() }
     }
 
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Invalid BackendTextures aren&#39;t supported anymore&quot;</span>,
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>
+    )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsValid</span>
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">texture</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendTexture</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">texture</span>.<span class="ident">fIsValid</span>
     }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">wrong_self_convention</span>)]</span>
@@ -829,7 +862,7 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">GrBackendRenderTarget</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">BackendRenderTarget</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_gl</span>(
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
@@ -884,19 +917,9 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_d3d</span>(
-        (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
-        <span class="ident">sample_cnt</span>: <span class="ident">i32</span>,
-        <span class="ident">d3d_info</span>: <span class="kw-2">&amp;</span><span class="ident">d3d</span>::<span class="ident">TextureResourceInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_d3d</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">d3d_info</span>: <span class="kw-2">&amp;</span><span class="ident">d3d</span>::<span class="ident">TextureResourceInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">brt</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_GrBackendRenderTarget_ConstructD3D</span>(
-                <span class="ident">brt</span>,
-                <span class="ident">width</span>,
-                <span class="ident">height</span>,
-                <span class="ident">sample_cnt</span>,
-                <span class="ident">d3d_info</span>.<span class="ident">native</span>(),
-            )
+            <span class="ident">sb</span>::<span class="ident">C_GrBackendRenderTarget_ConstructD3D</span>(<span class="ident">brt</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">d3d_info</span>.<span class="ident">native</span>())
         })
     }
 
@@ -904,9 +927,7 @@
         <span class="ident">native</span>: <span class="ident">GrBackendRenderTarget</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendRenderTarget</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">backend_render_target</span> <span class="op">=</span> <span class="ident">BackendRenderTarget</span>::<span class="ident">from_native_c</span>(<span class="ident">native</span>);
-        <span class="ident">backend_render_target</span>
-            .<span class="ident">is_valid</span>()
-            .<span class="ident">if_true_some</span>(<span class="ident">backend_render_target</span>)
+        <span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="ident">backend_render_target</span>.<span class="ident">native</span>()).<span class="ident">if_true_some</span>(<span class="ident">backend_render_target</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
@@ -990,8 +1011,13 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isProtected</span>() }
     }
 
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;BackendRenderTargets must be valid.&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsValid</span>
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">rt</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendRenderTarget</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">rt</span>.<span class="ident">fIsValid</span>
     }
 }
 </pre></div>

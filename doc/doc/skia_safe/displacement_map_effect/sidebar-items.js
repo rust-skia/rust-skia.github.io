@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ChannelSelector",""]],"fn":[["new",""]]});
+initSidebarItems({});

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["BitDepth",""],["CachingHint",""],["CompressionType",""],["MipmapMode",""],["SamplingMode",""]],"struct":[["CubicResampler",""],["FilterOptions",""]],"type":[["Image",""]]});
+initSidebarItems({"enum":[["BitDepth",""],["CachingHint",""],["CompressionType",""],["MipmapMode",""],["SamplingMode",""]],"struct":[["CubicResampler","Specify B and C (each between 0...1) to create a shader that applies the corresponding cubic reconstruction filter to the image."],["FilterOptions",""]],"type":[["Image",""]]});

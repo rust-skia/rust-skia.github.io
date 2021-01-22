@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\core\color.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>color.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\color.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>color.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -409,14 +409,14 @@
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkColor</span>, <span class="ident">SkColor4f</span>, <span class="ident">SkHSVToColor</span>, <span class="ident">SkPMColor</span>, <span class="ident">SkRGBToHSV</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">BitAnd</span>, <span class="ident">BitOr</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">Mul</span>};
 
-<span class="comment">// TODO: What should we do with SkAlpha?</span>
-<span class="comment">// It does not seem to be used, but if we want to export it, we&#39;d</span>
-<span class="comment">// like to define Alpha::TRANSPARENT and Alpha::OPAQUE.</span>
-<span class="comment">// pub type Alpha = u8;</span>
+<span class="comment">// TODO: What should we do with SkAlpha?</span>
+<span class="comment">// It does not seem to be used, but if we want to export it, we&#39;d</span>
+<span class="comment">// like to define Alpha::TRANSPARENT and Alpha::OPAQUE.</span>
+<span class="comment">// pub type Alpha = u8;</span>
 
-<span class="comment">// Note: SkColor _is_ a u32, and therefore its components are</span>
-<span class="comment">// endian dependent, so we can&#39;t expose it as (transmuted) individual</span>
-<span class="comment">// argb fields.</span>
+<span class="comment">// Note: SkColor _is_ a u32, and therefore its components are</span>
+<span class="comment">// endian dependent, so we can&#39;t expose it as (transmuted) individual</span>
+<span class="comment">// argb fields.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Color</span>(<span class="ident">SkColor</span>);
@@ -439,9 +439,9 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// Bitwise operators.</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// Bitwise operators.</span>
+<span class="comment">//</span>
 
 <span class="kw">impl</span> <span class="ident">BitOr</span> <span class="kw">for</span> <span class="ident">Color</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
@@ -480,8 +480,8 @@
         <span class="self">Self</span>(<span class="ident">argb</span>)
     }
 
-    <span class="comment">// note: we don&#39;t use the u8cpu type in the arguments here, because we trust the Rust</span>
-    <span class="comment">// compiler to optimize the storage type.</span>
+    <span class="comment">// note: we don&#39;t use the u8cpu type in the arguments here, because we trust the Rust</span>
+    <span class="comment">// compiler to optimize the storage type.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_argb</span>(<span class="ident">a</span>: <span class="ident">u8</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
         <span class="self">Self</span>(((<span class="ident">a</span> <span class="kw">as</span> <span class="ident">u8cpu</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>) <span class="op">|</span> ((<span class="ident">r</span> <span class="kw">as</span> <span class="ident">u8cpu</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="op">|</span> ((<span class="ident">g</span> <span class="kw">as</span> <span class="ident">u8cpu</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> (<span class="ident">b</span> <span class="kw">as</span> <span class="ident">u8cpu</span>))
     }
@@ -616,7 +616,7 @@
     }
 }
 
-<span class="comment">// TODO: SkRGBA4f</span>
+<span class="comment">// TODO: SkRGBA4f</span>
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
@@ -695,8 +695,8 @@
     }
 }
 
-<span class="comment">// Add all Color::From implementations to Color4f, so that</span>
-<span class="comment">// function signatures can promote Into&lt;Color&gt; to Into&lt;Color4f&gt;.</span>
+<span class="comment">// Add all Color::From implementations to Color4f, so that</span>
+<span class="comment">// function signatures can promote Into&lt;Color&gt; to Into&lt;Color4f&gt;.</span>
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -715,12 +715,12 @@
         <span class="self">Self</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>, <span class="ident">a</span> }
     }
 
-    <span class="comment">// corresponding Skia function: vec()</span>
+    <span class="comment">// corresponding Skia function: vec()</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="number">4</span>] {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref</span>(<span class="self">self</span>) }
     }
 
-    <span class="comment">// corresponding Skia function: vec()</span>
+    <span class="comment">// corresponding Skia function: vec()</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="number">4</span>] {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref_mut</span>(<span class="self">self</span>) }
     }
@@ -730,8 +730,8 @@
         <span class="self">self</span>.<span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="number">1.0</span>
     }
 
-    <span class="comment">// TODO: This is the copied implementation, it would probably be better</span>
-    <span class="comment">//       to call the Skia function.</span>
+    <span class="comment">// TODO: This is the copied implementation, it would probably be better</span>
+    <span class="comment">//       to call the Skia function.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fits_in_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">a</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1.0</span>);
         <span class="self">self</span>.<span class="ident">r</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span>
@@ -753,11 +753,11 @@
         <span class="ident">Color</span>::<span class="ident">from_argb</span>(<span class="ident">a</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
     }
 
-    <span class="comment">// TODO: FromPMColor</span>
-    <span class="comment">// TODO: premul()</span>
-    <span class="comment">// TODO: unpremul()</span>
-    <span class="comment">// TODO: toBytes_RGBA()</span>
-    <span class="comment">// TODO: FromBytes_RGBA</span>
+    <span class="comment">// TODO: FromPMColor</span>
+    <span class="comment">// TODO: premul()</span>
+    <span class="comment">// TODO: unpremul()</span>
+    <span class="comment">// TODO: toBytes_RGBA()</span>
+    <span class="comment">// TODO: FromBytes_RGBA</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {

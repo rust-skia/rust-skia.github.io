@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["new",""]]});
+initSidebarItems({});

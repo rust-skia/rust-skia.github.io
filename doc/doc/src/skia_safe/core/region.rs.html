@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\core\region.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>region.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\region.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>region.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -502,17 +502,6 @@
 <span id="499">499</span>
 <span id="500">500</span>
 <span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
-<span id="510">510</span>
-<span id="511">511</span>
-<span id="512">512</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Contains</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">IVector</span>, <span class="ident">Path</span>, <span class="ident">QuickReject</span>};
@@ -603,11 +592,6 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRect</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.19.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use set_rect()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rect_ltbr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">top</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>, <span class="ident">bottom</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">set_rect</span>(<span class="ident">IRect</span>::<span class="ident">new</span>(<span class="ident">left</span>, <span class="ident">top</span>, <span class="ident">right</span>, <span class="ident">bottom</span>))
-    }
-
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rects</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rects</span>: <span class="kw-2">&amp;</span>[<span class="ident">IRect</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
@@ -623,7 +607,7 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setPath</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">clip</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="comment">// there is also a trait for intersects() below.</span>
+    <span class="comment">// there is also a trait for intersects() below.</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">intersects</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
@@ -633,7 +617,7 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">intersects1</span>(<span class="ident">other</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="comment">// contains() trait below.</span>
+    <span class="comment">// contains() trait below.</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains</span>(<span class="ident">point</span>.<span class="ident">x</span>, <span class="ident">point</span>.<span class="ident">y</span>) }
@@ -652,13 +636,7 @@
         <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkRegion_quickContains</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">r</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.19.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use quick_contains()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_contains_ltrb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">top</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>, <span class="ident">bottom</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">IRect</span>::<span class="ident">new</span>(<span class="ident">left</span>, <span class="ident">top</span>, <span class="ident">right</span>, <span class="ident">bottom</span>);
-        <span class="self">self</span>.<span class="ident">quick_contains</span>(<span class="ident">rect</span>)
-    }
-
-    <span class="comment">// see also the quick_reject() trait below.</span>
+    <span class="comment">// see also the quick_reject() trait below.</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">rect</span>.<span class="ident">as_ref</span>();
@@ -732,9 +710,9 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// combine overloads (static)</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// combine overloads (static)</span>
+<span class="comment">//</span>
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
     <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
@@ -788,9 +766,9 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// intersects overloads</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// intersects overloads</span>
+<span class="comment">//</span>
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
@@ -808,9 +786,9 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// contains overloads</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// contains overloads</span>
+<span class="comment">//</span>
 
 <span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
     <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -830,9 +808,9 @@
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// quick_reject overloads</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// quick_reject overloads</span>
+<span class="comment">//</span>
 
 <span class="kw">impl</span> <span class="ident">QuickReject</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
     <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
