@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["compute_tonal_colors",""],["draw_shadow",""]],"struct":[["ShadowFlags",""]]});
+initSidebarItems({"fn":[["compute_tonal_colors",""],["draw_shadow",""],["local_bounds",""]],"struct":[["ShadowFlags",""]]});

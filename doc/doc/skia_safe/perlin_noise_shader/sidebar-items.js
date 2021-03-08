@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["fractal_noise",""],["improved_noise",""],["turbulence",""]]});
+initSidebarItems({"fn":[["fractal_noise",""],["turbulence",""]]});
