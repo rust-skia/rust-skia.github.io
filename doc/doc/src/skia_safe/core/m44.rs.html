@@ -844,6 +844,23 @@
 <span id="841">841</span>
 <span id="842">842</span>
 <span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
@@ -1294,20 +1311,20 @@
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">m0</span>: <span class="ident">scalar</span>,
-        <span class="ident">m1</span>: <span class="ident">scalar</span>,
-        <span class="ident">m2</span>: <span class="ident">scalar</span>,
-        <span class="ident">m3</span>: <span class="ident">scalar</span>,
         <span class="ident">m4</span>: <span class="ident">scalar</span>,
-        <span class="ident">m5</span>: <span class="ident">scalar</span>,
-        <span class="ident">m6</span>: <span class="ident">scalar</span>,
-        <span class="ident">m7</span>: <span class="ident">scalar</span>,
         <span class="ident">m8</span>: <span class="ident">scalar</span>,
-        <span class="ident">m9</span>: <span class="ident">scalar</span>,
-        <span class="ident">m10</span>: <span class="ident">scalar</span>,
-        <span class="ident">m11</span>: <span class="ident">scalar</span>,
         <span class="ident">m12</span>: <span class="ident">scalar</span>,
+        <span class="ident">m1</span>: <span class="ident">scalar</span>,
+        <span class="ident">m5</span>: <span class="ident">scalar</span>,
+        <span class="ident">m9</span>: <span class="ident">scalar</span>,
         <span class="ident">m13</span>: <span class="ident">scalar</span>,
+        <span class="ident">m2</span>: <span class="ident">scalar</span>,
+        <span class="ident">m6</span>: <span class="ident">scalar</span>,
+        <span class="ident">m10</span>: <span class="ident">scalar</span>,
         <span class="ident">m14</span>: <span class="ident">scalar</span>,
+        <span class="ident">m3</span>: <span class="ident">scalar</span>,
+        <span class="ident">m7</span>: <span class="ident">scalar</span>,
+        <span class="ident">m11</span>: <span class="ident">scalar</span>,
         <span class="ident">m15</span>: <span class="ident">scalar</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
@@ -1686,6 +1703,23 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rm</span>: [<span class="ident">f32</span>; <span class="number">16</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
         <span class="ident">m</span>.<span class="ident">as_col_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rm</span>);
         <span class="ident">M44</span>::<span class="ident">col_major</span>(<span class="kw-2">&amp;</span><span class="ident">rm</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">matrix</span>, <span class="ident">Matrix</span>, <span class="ident">Rect</span>, <span class="ident">M44</span>};
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert_from_matrix_and_back</span>() {
+        <span class="comment">// taken from skulpin&#39;s physics example.</span>
+        <span class="kw">let</span> <span class="ident">vr</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="op">-</span><span class="number">4.5</span>, <span class="op">-</span><span class="number">4.0</span>, <span class="number">4.5</span>, <span class="number">2.0</span>);
+        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1350.0</span>, <span class="number">900.0</span>);
+
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">from_rect_to_rect</span>(<span class="ident">vr</span>, <span class="ident">dst</span>, <span class="ident">matrix</span>::<span class="ident">ScaleToFit</span>::<span class="ident">Center</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">m44</span> <span class="op">=</span> <span class="ident">M44</span>::<span class="ident">from</span>(<span class="ident">m</span>);
+        <span class="kw">let</span> <span class="ident">m3</span> <span class="op">=</span> <span class="ident">m44</span>.<span class="ident">to_m33</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">m</span>, <span class="ident">m3</span>);
     }
 }
 </pre></div>
