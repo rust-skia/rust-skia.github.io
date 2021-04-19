@@ -306,8 +306,33 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interop</span>::{<span class="ident">MemoryStream</span>, <span class="ident">NativeStreamBase</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interop</span>::{<span class="ident">MemoryStream</span>, <span class="ident">NativeStreamBase</span>, <span class="ident">StreamAsset</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">font_arguments</span>, <span class="ident">interop</span>, <span class="ident">FontArguments</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">font_parameters</span>::<span class="ident">VariationAxis</span>, <span class="ident">Data</span>, <span class="ident">FontStyle</span>, <span class="ident">GlyphId</span>, <span class="ident">Rect</span>, <span class="ident">Unichar</span>};
@@ -415,9 +440,9 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_name</span>(<span class="ident">family_name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">familiy_name</span> <span class="op">=</span> <span class="ident">ffi</span>::<span class="ident">CString</span>::<span class="ident">new</span>(<span class="ident">family_name</span>.<span class="ident">as_ref</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">family_name</span> <span class="op">=</span> <span class="ident">ffi</span>::<span class="ident">CString</span>::<span class="ident">new</span>(<span class="ident">family_name</span>.<span class="ident">as_ref</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>;
         <span class="ident">Typeface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkTypeface_MakeFromName</span>(<span class="ident">familiy_name</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">*</span><span class="ident">font_style</span>.<span class="ident">native</span>())
+            <span class="ident">sb</span>::<span class="ident">C_SkTypeface_MakeFromName</span>(<span class="ident">family_name</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">*</span><span class="ident">font_style</span>.<span class="ident">native</span>())
         })
     }
 
@@ -546,7 +571,19 @@
             .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">as_str</span>().<span class="ident">into</span>())
     }
 
-    <span class="comment">// TODO: openStream()</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_font_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ttc_index</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="ident">StreamAsset</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_openStream</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ttc_index</span>) })
+            .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">stream</span><span class="op">|</span> {
+                <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkStreamAsset_getLength</span>(<span class="ident">stream</span>.<span class="ident">native</span>()) };
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0u8</span>; <span class="ident">length</span>];
+                <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>();
+                <span class="kw">let</span> <span class="ident">read</span> <span class="op">=</span>
+                    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkStream_read</span>(<span class="ident">stream</span>, <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) };
+                (<span class="ident">read</span> <span class="op">=</span><span class="op">=</span> <span class="ident">data</span>.<span class="ident">len</span>()).<span class="ident">if_true_some</span>((<span class="ident">data</span>, <span class="ident">ttc_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()))
+            })
+    }
+
     <span class="comment">// TODO: createScalerContext()</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
@@ -582,35 +619,49 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">serialize_and_deserialize_default_typeface</span>() {
-    <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
-    <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior</span>::<span class="ident">DoIncludeData</span>);
-    <span class="comment">// On Android, the deserialized typeface name changes from sans-serif to Roboto.</span>
-    <span class="comment">// (which is probably OK, because Roboto _is_ the default font, so we do another</span>
-    <span class="comment">// serialization / deserialization and compare the family name with already deserialized</span>
-    <span class="comment">// one.)</span>
-    <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">serialized2</span> <span class="op">=</span> <span class="ident">deserialized</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior</span>::<span class="ident">DoIncludeData</span>);
-    <span class="kw">let</span> <span class="ident">deserialized2</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized2</span>).<span class="ident">unwrap</span>();
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">SerializeBehavior</span>, <span class="ident">Typeface</span>};
 
-    <span class="comment">// why aren&#39;t they not equal?</span>
-    <span class="comment">// assert!(Typeface::equal(&amp;tf, &amp;deserialized));</span>
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">deserialized</span>.<span class="ident">family_name</span>(), <span class="ident">deserialized2</span>.<span class="ident">family_name</span>());
-}
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">serialize_and_deserialize_default_typeface</span>() {
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior</span>::<span class="ident">DoIncludeData</span>);
+        <span class="comment">// On Android, the deserialized typeface name changes from sans-serif to Roboto.</span>
+        <span class="comment">// (which is probably OK, because Roboto _is_ the default font, so we do another</span>
+        <span class="comment">// serialization / deserialization and compare the family name with already deserialized</span>
+        <span class="comment">// one.)</span>
+        <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">serialized2</span> <span class="op">=</span> <span class="ident">deserialized</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior</span>::<span class="ident">DoIncludeData</span>);
+        <span class="kw">let</span> <span class="ident">deserialized2</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized2</span>).<span class="ident">unwrap</span>();
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">family_name_iterator_owns_the_strings_and_returns_at_least_one_name_for_the_default_typeface</span>() {
-    <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
-    <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">new_family_name_iterator</span>();
-    <span class="ident">drop</span>(<span class="ident">tf</span>);
-
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">false</span>;
-    <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="ident">family_names</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;family: {}, language: {}&quot;</span>, <span class="ident">name</span>.<span class="ident">string</span>, <span class="ident">name</span>.<span class="ident">language</span>);
-        <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">true</span>
+        <span class="comment">// why aren&#39;t they not equal?</span>
+        <span class="comment">// assert!(Typeface::equal(&amp;tf, &amp;deserialized));</span>
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">deserialized</span>.<span class="ident">family_name</span>(), <span class="ident">deserialized2</span>.<span class="ident">family_name</span>());
     }
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">any</span>);
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">family_name_iterator_owns_the_strings_and_returns_at_least_one_name_for_the_default_typeface</span>(
+    ) {
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">new_family_name_iterator</span>();
+        <span class="ident">drop</span>(<span class="ident">tf</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="ident">family_names</span> {
+            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;family: {}, language: {}&quot;</span>, <span class="ident">name</span>.<span class="ident">string</span>, <span class="ident">name</span>.<span class="ident">language</span>);
+            <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">true</span>
+        }
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">any</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">get_font_data_of_default</span>() {
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> (<span class="ident">data</span>, <span class="ident">_ttc_index</span>) <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">to_font_data</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">is_empty</span>());
+    }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

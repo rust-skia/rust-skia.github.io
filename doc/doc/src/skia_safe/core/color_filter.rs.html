@@ -179,6 +179,13 @@
 <span id="176">176</span>
 <span id="177">177</span>
 <span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scalar</span>, <span class="ident">BlendMode</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">NativeFlattenable</span>};
@@ -327,36 +334,44 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">color_mode_roundtrip</span>() {
-    <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">CYAN</span>;
-    <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">ColorBurn</span>;
-    <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">color_filters</span>::<span class="ident">blend</span>(<span class="ident">color</span>, <span class="ident">mode</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> (<span class="ident">c</span>, <span class="ident">m</span>) <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">to_a_color_mode</span>().<span class="ident">unwrap</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">color</span>, <span class="ident">c</span>);
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mode</span>, <span class="ident">m</span>);
-}
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">ref_count</span>() {
-    <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">CYAN</span>;
-    <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">ColorBurn</span>;
-    <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">color_filters</span>::<span class="ident">blend</span>(<span class="ident">color</span>, <span class="ident">mode</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">native</span>().<span class="ident">_ref_cnt</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">rc</span>);
-}
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">color_filters</span>, <span class="ident">BlendMode</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>};
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">filter_color</span>() {
-    <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">CYAN</span>;
-    <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">ColorBurn</span>;
-    <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">color_filters</span>::<span class="ident">blend</span>(<span class="ident">color</span>, <span class="ident">mode</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">_fc</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">filter_color</span>(<span class="ident">Color</span>::<span class="ident">DARK_GRAY</span>);
-    <span class="kw">let</span> <span class="ident">_fc</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">filter_color4f</span>(
-        <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>),
-        <span class="kw-2">&amp;</span><span class="ident">ColorSpace</span>::<span class="ident">new_srgb</span>(),
-        <span class="prelude-val">None</span>,
-    );
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">color_mode_roundtrip</span>() {
+        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">CYAN</span>;
+        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">ColorBurn</span>;
+        <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">color_filters</span>::<span class="ident">blend</span>(<span class="ident">color</span>, <span class="ident">mode</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> (<span class="ident">c</span>, <span class="ident">m</span>) <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">to_a_color_mode</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">color</span>, <span class="ident">c</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mode</span>, <span class="ident">m</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">ref_count</span>() {
+        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">CYAN</span>;
+        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">ColorBurn</span>;
+        <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">color_filters</span>::<span class="ident">blend</span>(<span class="ident">color</span>, <span class="ident">mode</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">native</span>().<span class="ident">_ref_cnt</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">rc</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">filter_color</span>() {
+        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">CYAN</span>;
+        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">ColorBurn</span>;
+        <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">color_filters</span>::<span class="ident">blend</span>(<span class="ident">color</span>, <span class="ident">mode</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_fc</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">filter_color</span>(<span class="ident">Color</span>::<span class="ident">DARK_GRAY</span>);
+        <span class="kw">let</span> <span class="ident">_fc</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">filter_color4f</span>(
+            <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>),
+            <span class="kw-2">&amp;</span><span class="ident">ColorSpace</span>::<span class="ident">new_srgb</span>(),
+            <span class="prelude-val">None</span>,
+        );
+    }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -155,14 +155,12 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
-<span id="155">155</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">iter</span>, <span class="ident">slice</span>};
-
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">BackendFormat</span>, <span class="ident">BackendTexture</span>, <span class="ident">Mipmapped</span>, <span class="ident">SurfaceOrigin</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">YUVAInfo</span>, <span class="ident">YUVColorSpace</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">GrYUVABackendTextureInfo</span>, <span class="ident">GrYUVABackendTextures</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>;
 
 <span class="doccomment">/// A description of a set [BackendTexture]s that hold the planar data described by a [YUVAInfo].</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">YUVABackendTextureInfo</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">GrYUVABackendTextureInfo</span><span class="op">&gt;</span>;
@@ -285,10 +283,10 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">textures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">BackendTexture</span>] {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">textures</span> <span class="op">=</span> <span class="ident">BackendTexture</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb</span>::<span class="ident">C_GrYUVABackendTextures_textures</span>(
+            <span class="kw">let</span> <span class="ident">textures</span> <span class="op">=</span> <span class="ident">BackendTexture</span>::<span class="ident">from_native_ptr</span>(<span class="ident">sb</span>::<span class="ident">C_GrYUVABackendTextures_textures</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
             ));
-            <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">textures</span>, <span class="self">self</span>.<span class="ident">num_planes</span>())
+            <span class="ident">safer</span>::<span class="ident">from_raw_parts</span>(<span class="ident">textures</span>, <span class="self">self</span>.<span class="ident">num_planes</span>())
         }
     }
 
@@ -313,4 +311,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

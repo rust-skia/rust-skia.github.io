@@ -315,17 +315,16 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pdf</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">DynamicMemoryWStream</span>, <span class="ident">SetStr</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scalar</span>, <span class="ident">DateTime</span>, <span class="ident">Document</span>};
-    <span class="kw">use</span> <span class="ident">interop</span>::<span class="ident">AsStr</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::{
+        <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">AsStr</span>, <span class="ident">DynamicMemoryWStream</span>, <span class="ident">SetStr</span>},
+        <span class="ident">prelude</span>::<span class="kw-2">*</span>,
+        <span class="ident">scalar</span>, <span class="ident">DateTime</span>, <span class="ident">Document</span>,
+    };
     <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
     <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkPDF_AttributeList</span>, <span class="ident">SkPDF_Metadata</span>, <span class="ident">SkPDF_StructureElementNode</span>};
-    <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>::<span class="ident">CString</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>, <span class="ident">slice</span>};
+    <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>::<span class="ident">CString</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>};
 
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkPDF_DocumentStructureType</span> <span class="kw">as</span> <span class="ident">DocumentStructureType</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -505,12 +504,9 @@
 
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">child_vector</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">StructureElementNode</span>] {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>();
-            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span>
-                <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPDF_StructureElementNode_getChildVector</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span>) };
-            <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="kw-2">&amp;</span>[]
-            } <span class="kw">else</span> {
-                <span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">len</span>) }
+            <span class="kw">unsafe</span> {
+                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">C_SkPDF_StructureElementNode_getChildVector</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span>);
+                <span class="ident">safer</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">len</span>)
             }
         }
 
@@ -635,4 +631,5 @@
     <span class="ident">_al</span>.<span class="ident">append_string_array</span>(<span class="string">&quot;Owner&quot;</span>, <span class="string">&quot;Name&quot;</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>]);
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -711,10 +711,18 @@
 <span id="708">708</span>
 <span id="709">709</span>
 <span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scalar</span>, <span class="ident">Font</span>, <span class="ident">FontMgr</span>, <span class="ident">FourByteTag</span>, <span class="ident">Point</span>, <span class="ident">TextBlob</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">run_handler</span>::<span class="ident">RunHandler</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
     <span class="ident">RustRunHandler</span>, <span class="ident">SkShaper</span>, <span class="ident">SkShaper_BiDiRunIterator</span>, <span class="ident">SkShaper_FontRunIterator</span>,
@@ -724,6 +732,8 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CStr</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">run_handler</span>::<span class="ident">RunHandler</span>;
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Shaper</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper</span><span class="op">&gt;</span>;
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Shaper</span> {}
@@ -735,13 +745,13 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Shaper</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>(<span class="prelude-val">None</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Shaper</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_primitive</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkShaper_MakePrimitive</span>() }).<span class="ident">unwrap</span>()
     }
@@ -764,12 +774,20 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkShaper_Make</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>()) }).<span class="ident">unwrap</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">purge_harf_buzz_cache</span>() {
+        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">SkShaper_PurgeHarfBuzzCache</span>() }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_core_text</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkShaper_MakeCoreText</span>() })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkShaper_Make</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>()) }).<span class="ident">unwrap</span>()
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">purge_caches</span>() {
+        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">SkShaper_PurgeCaches</span>() }
     }
 }
 
@@ -1074,9 +1092,9 @@
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">clusters</span><span class="op">|</span> <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">clusters</span>.<span class="ident">as_ptr</span>(), <span class="ident">glyph_count</span>));
 
             <span class="ident">Buffer</span> {
-                <span class="ident">glyphs</span>: <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">glyph_count</span>),
-                <span class="ident">positions</span>: <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(
-                    <span class="ident">Point</span>::<span class="ident">from_native_ref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">buffer</span>.<span class="ident">positions</span>),
+                <span class="ident">glyphs</span>: <span class="ident">safer</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">glyph_count</span>),
+                <span class="ident">positions</span>: <span class="ident">safer</span>::<span class="ident">from_raw_parts_mut</span>(
+                    <span class="ident">Point</span>::<span class="ident">from_native_ptr_mut</span>(<span class="ident">buffer</span>.<span class="ident">positions</span>),
                     <span class="ident">glyph_count</span>,
                 ),
                 <span class="ident">offsets</span>,
@@ -1423,4 +1441,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

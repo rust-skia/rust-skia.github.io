@@ -845,6 +845,29 @@
 <span id="842">842</span>
 <span id="843">843</span>
 <span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">scalar_</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Point</span>, <span class="ident">Point3</span>, <span class="ident">RSXform</span>, <span class="ident">Rect</span>, <span class="ident">Scalar</span>, <span class="ident">Size</span>, <span class="ident">Vector</span>};
@@ -854,10 +877,6 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkApplyPerspectiveClip</span> <span class="kw">as</span> <span class="ident">ApplyPerspectiveClip</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_apply_perspective_clip_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ApplyPerspectiveClip</span>::<span class="ident">Yes</span>;
-}
 
 <span class="macro">bitflags</span><span class="macro">!</span> {
     <span class="comment">// m85: On Windows the SkMatrix_TypeMask is defined as i32,</span>
@@ -877,10 +896,6 @@
 }
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkMatrix_ScaleToFit</span> <span class="kw">as</span> <span class="ident">ScaleToFit</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_matrix_scale_to_fit_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ScaleToFit</span>::<span class="ident">End</span>;
-}
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
@@ -890,10 +905,6 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">SkMatrix</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_matrix_layout</span>() {
-    <span class="ident">Matrix</span>::<span class="ident">test_layout</span>()
-}
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -988,41 +999,55 @@
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.33.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use Matrix::scale()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_scale</span>(<span class="ident">scale</span>: (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_scale</span>(<span class="ident">scale</span>: (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">scale</span>(<span class="ident">scale</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
         <span class="ident">m</span>.<span class="ident">set_scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>), <span class="prelude-val">None</span>);
         <span class="ident">m</span>
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.33.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use Matrix::translate()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trans</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trans</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">translate</span>(<span class="ident">d</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
         <span class="ident">m</span>.<span class="ident">set_translate</span>(<span class="ident">d</span>);
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_deg</span>(<span class="ident">deg</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_deg</span>(<span class="ident">deg</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
         <span class="ident">m</span>.<span class="ident">set_rotate</span>(<span class="ident">deg</span>, <span class="prelude-val">None</span>);
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_deg_pivot</span>(<span class="ident">deg</span>: <span class="ident">scalar</span>, <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_deg_pivot</span>(<span class="ident">deg</span>: <span class="ident">scalar</span>, <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
         <span class="ident">m</span>.<span class="ident">set_rotate</span>(<span class="ident">deg</span>, <span class="ident">pivot</span>.<span class="ident">into</span>());
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_rad</span>(<span class="ident">rad</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_rad</span>(<span class="ident">rad</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">rotate_deg</span>(<span class="ident">scalar_</span>::<span class="ident">radians_to_degrees</span>(<span class="ident">rad</span>))
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skew</span>((<span class="ident">kx</span>, <span class="ident">ky</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
+        <span class="ident">m</span>.<span class="ident">set_skew</span>((<span class="ident">kx</span>, <span class="ident">ky</span>), <span class="prelude-val">None</span>);
+        <span class="ident">m</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_to_rect</span>(
+        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
+        <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
+        <span class="ident">scale_to_fit</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScaleToFit</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="self">Self</span>::<span class="ident">from_rect_to_rect</span>(<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">scale_to_fit</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ScaleToFit</span>::<span class="ident">Fill</span>))
     }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
@@ -1036,8 +1061,8 @@
         <span class="ident">pers_0</span>: <span class="ident">scalar</span>,
         <span class="ident">pers_1</span>: <span class="ident">scalar</span>,
         <span class="ident">pers_2</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new</span>();
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
         <span class="ident">m</span>.<span class="ident">set_all</span>(
             <span class="ident">scale_x</span>, <span class="ident">skew_x</span>, <span class="ident">trans_x</span>, <span class="ident">skew_y</span>, <span class="ident">scale_y</span>, <span class="ident">trans_y</span>, <span class="ident">pers_0</span>, <span class="ident">pers_1</span>, <span class="ident">pers_2</span>,
         );
@@ -1259,7 +1284,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setConcat</span>(<span class="ident">a</span>.<span class="ident">native</span>(), <span class="ident">b</span>.<span class="ident">native</span>());
         }
@@ -1306,7 +1331,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preConcat</span>(<span class="ident">other</span>.<span class="ident">native</span>());
         }
@@ -1388,8 +1413,8 @@
         <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">stf</span>: <span class="ident">ScaleToFit</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Matrix</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new_identity</span>();
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new_identity</span>();
         <span class="ident">m</span>.<span class="ident">set_rect_to_rect</span>(<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">stf</span>).<span class="ident">if_true_some</span>(<span class="ident">m</span>)
     }
 
@@ -1664,31 +1689,53 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IDENTITY</span>: <span class="ident">Matrix</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new_identity</span>();
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_get_set_trait_compilation</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new_identity</span>();
-    <span class="kw">let</span> <span class="ident">_x</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">get</span>(<span class="ident">AffineMember</span>::<span class="ident">ScaleX</span>);
-    <span class="ident">m</span>.<span class="ident">set</span>(<span class="ident">AffineMember</span>::<span class="ident">ScaleX</span>, <span class="number">1.0</span>);
-}
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">AffineMember</span>, <span class="ident">ApplyPerspectiveClip</span>, <span class="ident">Matrix</span>, <span class="ident">ScaleToFit</span>, <span class="ident">TypeMask</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">float_cmp</span>)]</span>
-<span class="kw">fn</span> <span class="ident">test_tuple_to_vector</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new_identity</span>();
-    <span class="ident">m</span>.<span class="ident">set_translate</span>((<span class="number">10.0</span>, <span class="number">11.0</span>));
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">10.0</span>, <span class="ident">m</span>.<span class="ident">translate_x</span>());
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">11.0</span>, <span class="ident">m</span>.<span class="ident">translate_y</span>());
-}
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_apply_perspective_clip_naming</span>() {
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ApplyPerspectiveClip</span>::<span class="ident">Yes</span>;
+    }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">setting_a_matrix_component_recomputes_typemask</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">default</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">TypeMask</span>::<span class="ident">IDENTITY</span>, <span class="ident">m</span>.<span class="ident">get_type</span>());
-    <span class="ident">m</span>.<span class="ident">set_persp_x</span>(<span class="number">0.1</span>);
-    <span class="macro">assert_eq</span><span class="macro">!</span>(
-        <span class="ident">TypeMask</span>::<span class="ident">TRANSLATE</span> <span class="op">|</span> <span class="ident">TypeMask</span>::<span class="ident">SCALE</span> <span class="op">|</span> <span class="ident">TypeMask</span>::<span class="ident">AFFINE</span> <span class="op">|</span> <span class="ident">TypeMask</span>::<span class="ident">PERSPECTIVE</span>,
-        <span class="ident">m</span>.<span class="ident">get_type</span>()
-    );
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_matrix_scale_to_fit_naming</span>() {
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ScaleToFit</span>::<span class="ident">End</span>;
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_matrix_layout</span>() {
+        <span class="ident">Matrix</span>::<span class="ident">test_layout</span>()
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_get_set_trait_compilation</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new_identity</span>();
+        <span class="kw">let</span> <span class="ident">_x</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">get</span>(<span class="ident">AffineMember</span>::<span class="ident">ScaleX</span>);
+        <span class="ident">m</span>.<span class="ident">set</span>(<span class="ident">AffineMember</span>::<span class="ident">ScaleX</span>, <span class="number">1.0</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">float_cmp</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">test_tuple_to_vector</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">new_identity</span>();
+        <span class="ident">m</span>.<span class="ident">set_translate</span>((<span class="number">10.0</span>, <span class="number">11.0</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">10.0</span>, <span class="ident">m</span>.<span class="ident">translate_x</span>());
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">11.0</span>, <span class="ident">m</span>.<span class="ident">translate_y</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">setting_a_matrix_component_recomputes_typemask</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">default</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">TypeMask</span>::<span class="ident">IDENTITY</span>, <span class="ident">m</span>.<span class="ident">get_type</span>());
+        <span class="ident">m</span>.<span class="ident">set_persp_x</span>(<span class="number">0.1</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">TypeMask</span>::<span class="ident">TRANSLATE</span> <span class="op">|</span> <span class="ident">TypeMask</span>::<span class="ident">SCALE</span> <span class="op">|</span> <span class="ident">TypeMask</span>::<span class="ident">AFFINE</span> <span class="op">|</span> <span class="ident">TypeMask</span>::<span class="ident">PERSPECTIVE</span>,
+            <span class="ident">m</span>.<span class="ident">get_type</span>()
+        );
+    }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

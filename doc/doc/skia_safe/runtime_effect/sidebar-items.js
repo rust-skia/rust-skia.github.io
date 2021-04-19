@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["new",""]],"mod":[["uniform",""]],"type":[["RuntimeEffect",""],["Uniform",""],["Variable",""],["Varying",""]]});
+initSidebarItems({"fn":[["new",""],["new_with_options",""]],"mod":[["uniform",""]],"struct":[["Options",""]],"type":[["RuntimeEffect",""],["Uniform",""],["Variable",""],["Varying",""]]});

@@ -257,17 +257,110 @@
 <span id="254">254</span>
 <span id="255">255</span>
 <span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">AlphaType</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">ImageInfo</span>,
     <span class="ident">SamplingOptions</span>,
 };
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkPixmap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ptr</span>, <span class="ident">slice</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">TryInto</span>, <span class="ident">ffi</span>::<span class="ident">c_void</span>, <span class="ident">mem</span>, <span class="ident">os</span>::<span class="ident">raw</span>, <span class="ident">ptr</span>};
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Pixmap</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPixmap</span><span class="op">&gt;</span>;
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Pixmap</span> {}
@@ -279,9 +372,9 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPixmap</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Pixmap</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Pixmap</span>::<span class="ident">from_native_c</span>(<span class="ident">SkPixmap</span> {
+        <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="ident">SkPixmap</span> {
             <span class="ident">fPixels</span>: <span class="ident">ptr</span>::<span class="ident">null</span>(),
             <span class="ident">fRowBytes</span>: <span class="number">0</span>,
             <span class="ident">fInfo</span>: <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ii</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkImageInfo_Construct</span>(<span class="ident">ii</span>) }),
@@ -289,7 +382,7 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPixmap</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Pixmap</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span><span class="op">&gt;</span>(
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> [<span class="ident">u8</span>],
@@ -446,9 +539,7 @@
         <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
         <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="ident">pixels</span>.<span class="ident">elements_size_of</span>()
-            <span class="op">!</span><span class="op">=</span> (<span class="ident">usize</span>::<span class="ident">try_from</span>(<span class="ident">dst_info</span>.<span class="ident">height</span>()).<span class="ident">unwrap</span>() <span class="op">*</span> <span class="ident">dst_row_bytes</span>)
-        {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">dst_info</span>.<span class="ident">valid_pixels</span>(<span class="ident">dst_row_bytes</span>, <span class="ident">pixels</span>) {
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
 
@@ -465,6 +556,33 @@
         }
     }
 
+    <span class="doccomment">/// Access the underlying pixels as a byte array. This is a rust-skia specific function.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">addr</span>() }.<span class="ident">into_option</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compute_byte_size</span>();
+        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">len</span>) });
+    }
+
+    <span class="doccomment">/// Access the underlying pixels. This is a rust-skia specific function.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The `Pixel` type must implement the _unsafe_ trait [`Pixel`] and must return `true` in</span>
+    <span class="doccomment">/// [`Pixel::matches_color_type()`] when matched against the [`ColorType`] of this Pixmap&#39;s</span>
+    <span class="doccomment">/// pixels.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Pixel</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">P</span>]<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">addr</span>() }.<span class="ident">into_option</span>()<span class="question-mark">?</span>;
+
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">info</span>();
+        <span class="kw">let</span> <span class="ident">ct</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">color_type</span>();
+        <span class="kw">let</span> <span class="ident">pixel_size</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>();
+
+        <span class="kw">if</span> <span class="ident">info</span>.<span class="ident">bytes_per_pixel</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">pixel_size</span> <span class="op">&amp;&amp;</span> <span class="ident">P</span>::<span class="ident">matches_color_type</span>(<span class="ident">ct</span>) {
+            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compute_byte_size</span>() <span class="op">/</span> <span class="ident">pixel_size</span>;
+            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">P</span>, <span class="ident">len</span>) });
+        }
+
+        <span class="prelude-val">None</span>
+    }
+
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_pixmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">row_bytes</span>();
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">try_from</span>(<span class="ident">dst</span>.<span class="ident">height</span>()).<span class="ident">unwrap</span>() <span class="op">*</span> <span class="ident">row_bytes</span>;
@@ -472,7 +590,7 @@
             <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">writable_addr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">raw</span>::<span class="ident">c_char</span>;
             <span class="self">self</span>.<span class="ident">read_pixels</span>(
                 <span class="ident">dst</span>.<span class="ident">info</span>(),
-                <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">addr</span>, <span class="ident">len</span>),
+                <span class="ident">safer</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">addr</span>, <span class="ident">len</span>),
                 <span class="ident">row_bytes</span>,
                 <span class="ident">src</span>,
             )
@@ -514,5 +632,78 @@
         }
     }
 }
+
+<span class="doccomment">/// Implement this trait to use a pixel type in [`Handle&lt;Pixmap&gt;::pixels()`].</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Pixel</span>: <span class="ident">Copy</span> {
+    <span class="doccomment">/// `true` if the type matches the color type&#39;s format.</span>
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">_ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">u8</span> {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(<span class="ident">ct</span>, <span class="ident">ColorType</span>::<span class="ident">Alpha8</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">Gray8</span>)
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="number">2</span>] {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(<span class="ident">ct</span>, <span class="ident">ColorType</span>::<span class="ident">R8G8UNorm</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">A16UNorm</span>)
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> (<span class="ident">u8</span>, <span class="ident">u8</span>) {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(<span class="ident">ct</span>, <span class="ident">ColorType</span>::<span class="ident">R8G8UNorm</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">A16UNorm</span>)
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="number">4</span>] {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(
+            <span class="ident">ct</span>,
+            <span class="ident">ColorType</span>::<span class="ident">RGBA8888</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">RGB888x</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">BGRA8888</span>
+        )
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>) {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(
+            <span class="ident">ct</span>,
+            <span class="ident">ColorType</span>::<span class="ident">RGBA8888</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">RGB888x</span> <span class="op">|</span> <span class="ident">ColorType</span>::<span class="ident">BGRA8888</span>
+        )
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> [<span class="ident">f32</span>; <span class="number">4</span>] {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(<span class="ident">ct</span>, <span class="ident">ColorType</span>::<span class="ident">RGBAF32</span>)
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> (<span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>) {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="macro">matches</span><span class="macro">!</span>(<span class="ident">ct</span>, <span class="ident">ColorType</span>::<span class="ident">RGBAF32</span>)
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ColorType</span>::<span class="ident">n32</span>()
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">Color</span> {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ColorType</span>::<span class="ident">n32</span>()
+    }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
+    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ColorType</span>::<span class="ident">RGBAF32</span>
+    }
+}
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

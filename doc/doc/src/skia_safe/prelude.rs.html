@@ -926,6 +926,50 @@
 <span id="923">923</span>
 <span id="924">924</span>
 <span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
     <span class="ident">C_SkRefCntBase_ref</span>, <span class="ident">C_SkRefCntBase_unique</span>, <span class="ident">C_SkRefCntBase_unref</span>, <span class="ident">SkNVRefCnt</span>, <span class="ident">SkRefCnt</span>,
@@ -1184,6 +1228,17 @@
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native_ref_mut</span>(<span class="ident">n</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref_mut</span>(<span class="ident">n</span>) }
+    }
+
+    <span class="doccomment">/// Converts a pointer to a native value into a pointer to the Rust value.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native_ptr</span>(<span class="ident">np</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span> {
+        <span class="ident">np</span> <span class="kw">as</span> <span class="kw">_</span>
+    }
+
+    <span class="doccomment">/// Converts a pointer to a mutable native value into a pointer to the mutable Rust value.</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native_ptr_mut</span>(<span class="ident">np</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">np</span> <span class="kw">as</span> <span class="kw">_</span>
     }
 
     <span class="doccomment">/// Constructs a C++ object in place by calling a</span>
@@ -1535,17 +1590,6 @@
     }
 }
 
-<span class="doccomment">/// Trait to compute how many bytes the elements of this type occupy in memory.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">ElementsSizeOf</span> {
-    <span class="kw">fn</span> <span class="ident">elements_size_of</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>;
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">ElementsSizeOf</span> <span class="kw">for</span> [<span class="ident">N</span>] {
-    <span class="kw">fn</span> <span class="ident">elements_size_of</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="self">self</span>.<span class="ident">len</span>()
-    }
-}
-
 <span class="doccomment">/// Tag the type to automatically implement get() functions for</span>
 <span class="doccomment">/// all Index implementations.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IndexGet</span> {}
@@ -1625,6 +1669,16 @@
     <span class="doccomment">/// transmuted reference to the native mutable value.</span>
     <span class="kw">fn</span> <span class="ident">from_native_ref_mut</span>(<span class="ident">nt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref_mut</span>(<span class="ident">nt</span>) }
+    }
+
+    <span class="doccomment">/// Converts a pointer to a native value into a pointer to the Rust value.</span>
+    <span class="kw">fn</span> <span class="ident">from_native_ptr</span>(<span class="ident">np</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span> {
+        <span class="ident">np</span> <span class="kw">as</span> <span class="kw">_</span>
+    }
+
+    <span class="doccomment">/// Converts a pointer to a mutable native value into a pointer to the mutable Rust value.</span>
+    <span class="kw">fn</span> <span class="ident">from_native_ptr_mut</span>(<span class="ident">np</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">np</span> <span class="kw">as</span> <span class="kw">_</span>
     }
 
     <span class="doccomment">/// Runs a test that proves that the native and the rust</span>
@@ -1852,5 +1906,40 @@
         }
     }
 }
+
+<span class="doccomment">/// Functions that are (supposedly) _safer_ variants of the ones Rust provides.</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">safer</span> {
+    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
+
+    <span class="doccomment">/// Invokes [slice::from_raw_parts] with the `ptr` only when `len` != 0, otherwise passes</span>
+    <span class="doccomment">/// `ptr::NonNull::dangling()` as recommended.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `len` != 0 and `ptr` is `null`.</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>] {
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">dangling</span>().<span class="ident">as_ptr</span>()
+        } <span class="kw">else</span> {
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+            <span class="ident">ptr</span>
+        };
+        <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">len</span>)
+    }
+
+    <span class="doccomment">/// Invokes [slice::from_raw_parts_mut] with the `ptr` only if `len` != 0, otherwise passes</span>
+    <span class="doccomment">/// `ptr::NonNull::dangling()` as recommended.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `len` != 0 and `ptr` is `null`.</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>] {
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">dangling</span>().<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>
+        } <span class="kw">else</span> {
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+            <span class="ident">ptr</span>
+        };
+        <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="ident">len</span>)
+    }
+}
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "skia_safe";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="skia_safe"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
