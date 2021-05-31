@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\paragraph\text_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_style.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\paragraph\text_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_style.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -491,6 +491,43 @@
 <span id="488">488</span>
 <span id="489">489</span>
 <span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FontFamilies</span>, <span class="ident">TextBaseline</span>, <span class="ident">TextShadow</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -501,7 +538,7 @@
     <span class="ident">Color</span>, <span class="ident">FontMetrics</span>, <span class="ident">FontStyle</span>, <span class="ident">Paint</span>, <span class="ident">Typeface</span>,
 };
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Range</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ops</span>::<span class="ident">Range</span>};
 
 <span class="macro">bitflags</span><span class="macro">!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextDecoration</span>: <span class="ident">u32</span> {
@@ -543,6 +580,7 @@
     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">StyleType</span>::<span class="ident">LetterSpacing</span>;
 }
 
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Decoration</span> {
     <span class="kw">pub</span> <span class="ident">ty</span>: <span class="ident">TextDecoration</span>,
@@ -583,13 +621,22 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">name</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">name</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">value</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">value</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;FontFeature&quot;</span>)
+            .<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>())
+            .<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value</span>())
+            .<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">FontFeature</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fName</span>.<span class="ident">as_str</span>()
     }
@@ -599,7 +646,8 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PlaceholderStyle</span> {
     <span class="kw">pub</span> <span class="ident">width</span>: <span class="ident">scalar</span>,
     <span class="kw">pub</span> <span class="ident">height</span>: <span class="ident">scalar</span>,
@@ -663,6 +711,30 @@
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextStyle&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;color&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">color</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;foreground&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">foreground</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;background&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">background</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;decoration&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">decoration</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_style</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;shadows&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">shadows</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_features&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_features</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_size</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_families&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_families</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;height&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">height</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;height_override&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">height_override</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;letter_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">letter_spacing</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;word_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">word_spacing</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;typeface&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">typeface</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;locale&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">locale</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;text_baseline&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">text_baseline</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_placeholder&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_placeholder</span>())
+            .<span class="ident">finish</span>()
     }
 }
 
@@ -894,7 +966,8 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextRange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_TEXT</span>: <span class="ident">TextRange</span> <span class="op">=</span> <span class="ident">EMPTY_RANGE</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Block</span> {
     <span class="kw">pub</span> <span class="ident">range</span>: <span class="ident">TextRange</span>,
     <span class="kw">pub</span> <span class="ident">style</span>: <span class="ident">TextStyle</span>,
@@ -936,7 +1009,8 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_BLOCK</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">EMPTY_INDEX</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_BLOCKS</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">EMPTY_RANGE</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Placeholder</span> {
     <span class="kw">pub</span> <span class="ident">range</span>: <span class="ident">TextRange</span>,
     <span class="kw">pub</span> <span class="ident">style</span>: <span class="ident">PlaceholderStyle</span>,
@@ -983,5 +1057,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe"></div>
-    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-search-js="../../../../search-index.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
