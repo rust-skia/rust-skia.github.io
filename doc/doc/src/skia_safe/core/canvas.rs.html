@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\canvas.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>canvas.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -2304,7 +2304,7 @@
 <span id="2301">2301</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">gpu</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::gpu</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">u8cpu</span>, <span class="ident">Bitmap</span>, <span class="ident">BlendMode</span>, <span class="ident">ClipOp</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">Data</span>, <span class="ident">Drawable</span>,
     <span class="ident">FilterMode</span>, <span class="ident">Font</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">Image</span>, <span class="ident">ImageFilter</span>, <span class="ident">ImageInfo</span>, <span class="ident">Matrix</span>, <span class="ident">Paint</span>, <span class="ident">Path</span>,
@@ -2316,26 +2316,26 @@
     <span class="ident">SkAutoCanvasRestore</span>, <span class="ident">SkCanvas</span>, <span class="ident">SkCanvas_SaveLayerRec</span>, <span class="ident">SkImageFilter</span>, <span class="ident">SkPaint</span>, <span class="ident">SkRect</span>,
 };
 <span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">convert</span>::<span class="ident">TryInto</span>,
-    <span class="ident">ffi</span>::<span class="ident">CString</span>,
+    <span class="ident">convert::TryInto</span>,
+    <span class="ident">ffi::CString</span>,
     <span class="ident">fmt</span>,
-    <span class="ident">marker</span>::<span class="ident">PhantomData</span>,
+    <span class="ident">marker::PhantomData</span>,
     <span class="ident">mem</span>,
     <span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>},
     <span class="ident">ptr</span>, <span class="ident">slice</span>,
 };
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">lattice</span>::<span class="ident">Lattice</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">lattice::Lattice</span>;
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="doccomment">/// [`SaveLayerFlags`] provides options that may be used in any combination in [`SaveLayerRec`],</span>
     <span class="doccomment">/// defining how layer allocated by [`Canvas::save_layer()`] operates. It may be set to zero,</span>
     <span class="doccomment">/// [`PRESERVE_LCD_TEXT`], [`INIT_WITH_PREVIOUS`], or both flags.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SaveLayerFlags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">PRESERVE_LCD_TEXT</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkCanvas_SaveLayerFlagsSet_kPreserveLCDText_SaveLayerFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">PRESERVE_LCD_TEXT</span> <span class="op">=</span> <span class="ident">sb::SkCanvas_SaveLayerFlagsSet_kPreserveLCDText_SaveLayerFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
         <span class="doccomment">/// initializes with previous contents</span>
-        <span class="kw">const</span> <span class="ident">INIT_WITH_PREVIOUS</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkCanvas_SaveLayerFlagsSet_kInitWithPrevious_SaveLayerFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">F16_COLOR_TYPE</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkCanvas_SaveLayerFlagsSet_kF16ColorType</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">INIT_WITH_PREVIOUS</span> <span class="op">=</span> <span class="ident">sb::SkCanvas_SaveLayerFlagsSet_kInitWithPrevious_SaveLayerFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">F16_COLOR_TYPE</span> <span class="op">=</span> <span class="ident">sb::SkCanvas_SaveLayerFlagsSet_kF16ColorType</span> <span class="kw">as</span> <span class="kw">_</span>;
     }
 }
 
@@ -2355,17 +2355,17 @@
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_save_layer_rec_layout</span>() {
-    <span class="ident">SaveLayerRec</span>::<span class="ident">test_layout</span>()
+    <span class="ident">SaveLayerRec::test_layout</span>()
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SaveLayerRec</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SaveLayerRec</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SaveLayerRec&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>.<span class="ident">map</span>(<span class="ident">Rect</span>::<span class="ident">from_native_ref</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;paint&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">paint</span>.<span class="ident">map</span>(<span class="ident">Paint</span>::<span class="ident">from_native_ref</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>.<span class="ident">map</span>(<span class="ident">Rect::from_native_ref</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;paint&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">paint</span>.<span class="ident">map</span>(<span class="ident">Paint::from_native_ref</span>))
             .<span class="ident">field</span>(
                 <span class="string">&quot;backdrop&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="ident">ImageFilter</span>::<span class="ident">from_unshared_ptr_ref</span>(<span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">backdrop</span>.<span class="ident">as_ptr_or_null</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)),
+                <span class="kw-2">&amp;</span><span class="ident">ImageFilter::from_unshared_ptr_ref</span>(<span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">backdrop</span>.<span class="ident">as_ptr_or_null</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)),
             )
             .<span class="ident">field</span>(<span class="string">&quot;flags&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">flags</span>)
             .<span class="ident">finish</span>()
@@ -2382,7 +2382,7 @@
             <span class="ident">bounds</span>: <span class="prelude-val">None</span>,
             <span class="ident">paint</span>: <span class="prelude-val">None</span>,
             <span class="ident">backdrop</span>: <span class="prelude-val">None</span>,
-            <span class="ident">flags</span>: <span class="ident">SaveLayerFlags</span>::<span class="ident">empty</span>(),
+            <span class="ident">flags</span>: <span class="ident">SaveLayerFlags::empty</span>(),
         }
     }
 }
@@ -2438,21 +2438,21 @@
 }
 
 <span class="doccomment">/// Selects if an array of points are drawn as discrete points, as lines, or as an open polygon.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCanvas_PointMode</span> <span class="kw">as</span> <span class="ident">PointMode</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCanvas_PointMode</span> <span class="kw">as</span> <span class="ident">PointMode</span>;
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_canvas_point_mode_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PointMode</span>::<span class="ident">Polygon</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PointMode::Polygon</span>;
 }
 
 <span class="doccomment">/// [`SrcRectConstraint`] controls the behavior at the edge of source [`Rect`], provided to</span>
 <span class="doccomment">/// [`Canvas::draw_image_rect()`] when there is any filtering. If kStrict is set, then extra code is</span>
 <span class="doccomment">/// used to ensure it nevers samples outside of the src-rect.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCanvas_SrcRectConstraint</span> <span class="kw">as</span> <span class="ident">SrcRectConstraint</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCanvas_SrcRectConstraint</span> <span class="kw">as</span> <span class="ident">SrcRectConstraint</span>;
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_src_rect_constraint_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SrcRectConstraint</span>::<span class="ident">Fast</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SrcRectConstraint::Fast</span>;
 }
 
 <span class="doccomment">/// Provides access to Canvas&#39;s pixels.</span>
@@ -2503,8 +2503,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Canvas&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;image_info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">image_info</span>())
             .<span class="ident">field</span>(<span class="string">&quot;props&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">props</span>())
@@ -2522,18 +2522,18 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Access to the [`Canvas`] functions are resolved with the [`Deref`] trait.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">ptr</span>::<span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Canvas</span><span class="op">&gt;</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;lt</span> ()<span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">Canvas</span><span class="op">&gt;</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;lt</span> ()<span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">Canvas</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>() }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_mut</span>() }
     }
 }
@@ -2544,7 +2544,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_destructor</span>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_delete</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_delete</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 }
 
@@ -2556,13 +2556,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_empty_constructor</span>
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_newEmpty</span>() };
-        <span class="ident">Canvas</span>::<span class="ident">own_from_native_ptr</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>()
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_newEmpty</span>() };
+        <span class="ident">Canvas::own_from_native_ptr</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;OwnedCanvas&quot;</span>).<span class="ident">field</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="ident">Canvas</span>).<span class="ident">finish</span>()
     }
 }
@@ -2612,14 +2612,14 @@
         <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">row_bytes</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">info</span>.<span class="ident">min_row_bytes</span>());
         <span class="kw">if</span> <span class="ident">info</span>.<span class="ident">valid_pixels</span>(<span class="ident">row_bytes</span>, <span class="ident">pixels</span>) {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="ident">sb</span>::<span class="ident">C_SkCanvas_MakeRasterDirect</span>(
+                <span class="ident">sb::C_SkCanvas_MakeRasterDirect</span>(
                     <span class="ident">info</span>.<span class="ident">native</span>(),
                     <span class="ident">pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
                     <span class="ident">row_bytes</span>,
                     <span class="ident">props</span>.<span class="ident">native_ptr_or_null</span>(),
                 )
             };
-            <span class="self">Self</span>::<span class="ident">own_from_native_ptr</span>(<span class="ident">ptr</span>)
+            <span class="self">Self</span><span class="ident">::own_from_native_ptr</span>(<span class="ident">ptr</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         }
@@ -2652,11 +2652,11 @@
         <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> <span class="kw-2">mut</span> [<span class="ident">u32</span>],
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">new_n32_premul</span>(<span class="ident">size</span>, <span class="prelude-val">None</span>);
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::new_n32_premul</span>(<span class="ident">size</span>, <span class="prelude-val">None</span>);
         <span class="kw">let</span> <span class="ident">pixels_ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> <span class="op">=</span> <span class="ident">pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>;
         <span class="kw">let</span> <span class="ident">pixels_u8</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>] <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">pixels_ptr</span>, <span class="ident">mem</span>::<span class="ident">size_of_val</span>(<span class="ident">pixels</span>)) };
-        <span class="self">Self</span>::<span class="ident">from_raster_direct</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="ident">pixels_u8</span>, <span class="ident">row_bytes</span>, <span class="prelude-val">None</span>)
+            <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">pixels_ptr</span>, <span class="ident">mem::size_of_val</span>(<span class="ident">pixels</span>)) };
+        <span class="self">Self</span><span class="ident">::from_raster_direct</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="ident">pixels_u8</span>, <span class="ident">row_bytes</span>, <span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Creates [`Canvas`] of the specified dimensions without a [`Surface`].</span>
@@ -2673,7 +2673,7 @@
     <span class="doccomment">/// Returns [`Canvas`] placeholder with dimensions</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_int_int_const_SkSurfaceProps_star</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_ret_no_self</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::new_ret_no_self</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(
         <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>,
         <span class="ident">props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
@@ -2681,13 +2681,13 @@
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
         <span class="kw">if</span> <span class="ident">size</span>.<span class="ident">width</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">size</span>.<span class="ident">height</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="ident">sb</span>::<span class="ident">C_SkCanvas_newWidthHeightAndProps</span>(
+                <span class="ident">sb::C_SkCanvas_newWidthHeightAndProps</span>(
                     <span class="ident">size</span>.<span class="ident">width</span>,
                     <span class="ident">size</span>.<span class="ident">height</span>,
                     <span class="ident">props</span>.<span class="ident">native_ptr_or_null</span>(),
                 )
             };
-            <span class="ident">Canvas</span>::<span class="ident">own_from_native_ptr</span>(<span class="ident">ptr</span>)
+            <span class="ident">Canvas::own_from_native_ptr</span>(<span class="ident">ptr</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         }
@@ -2707,11 +2707,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bitmap</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">props_ptr</span> <span class="op">=</span> <span class="ident">props</span>.<span class="ident">native_ptr_or_null</span>();
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">props_ptr</span>.<span class="ident">is_null</span>() {
-            <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_newFromBitmap</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>()) }
+            <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_newFromBitmap</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>()) }
         } <span class="kw">else</span> {
-            <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_newFromBitmapAndProps</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>(), <span class="ident">props_ptr</span>) }
+            <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_newFromBitmapAndProps</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>(), <span class="ident">props_ptr</span>) }
         };
-        <span class="ident">Canvas</span>::<span class="ident">own_from_native_ptr</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>()
+        <span class="ident">Canvas::own_from_native_ptr</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>()
     }
 
     <span class="doccomment">/// Returns [`ImageInfo`] for [`Canvas`]. If [`Canvas`] is not associated with raster surface or</span>
@@ -2721,8 +2721,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_imageInfo</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ImageInfo</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ii</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_imageInfo</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">ii</span>.<span class="ident">native_mut</span>()) };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ii</span> <span class="op">=</span> <span class="ident">ImageInfo::default</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_imageInfo</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">ii</span>.<span class="ident">native_mut</span>()) };
         <span class="ident">ii</span>
     }
 
@@ -2734,7 +2734,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_getProps</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sp</span> <span class="op">=</span> <span class="ident">SurfaceProps</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sp</span> <span class="op">=</span> <span class="ident">SurfaceProps::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getProps</span>(<span class="ident">sp</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">sp</span>)
     }
 
@@ -2760,8 +2760,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_getBaseLayerSize</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">base_layer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">ISize</span>::<span class="ident">default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getBaseLayerSize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">size</span>.<span class="ident">native_mut</span>()) }
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">ISize::default</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_getBaseLayerSize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">size</span>.<span class="ident">native_mut</span>()) }
         <span class="ident">size</span>
     }
 
@@ -2783,8 +2783,8 @@
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
-        <span class="ident">Surface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkCanvas_makeSurface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">props</span>.<span class="ident">native_ptr_or_null</span>())
+        <span class="ident">Surface::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkCanvas_makeSurface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">props</span>.<span class="ident">native_ptr_or_null</span>())
         })
     }
 
@@ -2794,9 +2794,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_recordingContext</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recording_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu</span>::<span class="ident">RecordingContext</span><span class="op">&gt;</span> {
-        <span class="ident">gpu</span>::<span class="ident">RecordingContext</span>::<span class="ident">from_unshared_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkCanvas_recordingContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recording_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::RecordingContext</span><span class="op">&gt;</span> {
+        <span class="ident">gpu::RecordingContext::from_unshared_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkCanvas_recordingContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
         })
     }
 
@@ -2812,7 +2812,7 @@
         <span class="comment">//       Surface that can not be cloned and stays bound to the lifetime of canvas.</span>
         <span class="comment">//       But even then, the Surface might exist twice then, which is confusing, but</span>
         <span class="comment">//       probably safe, because the first instance is borrowed by the canvas.</span>
-        <span class="ident">Surface</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getSurface</span>())
+        <span class="ident">Surface::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getSurface</span>())
     }
 
     <span class="doccomment">/// Returns the pixel base address, [`ImageInfo`], `row_bytes`, and origin if the pixels</span>
@@ -2826,9 +2826,9 @@
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_accessTopLayerPixels_a</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_accessTopLayerPixels_b</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">access_top_layer_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TopLayerPixels</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::default</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">IPoint</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">IPoint::default</span>();
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">accessTopLayerPixels</span>(
                 <span class="ident">info</span>.<span class="ident">native_mut</span>(),
@@ -2838,7 +2838,7 @@
         };
         <span class="kw">if</span> <span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>() {
             <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">row_bytes</span>);
-            <span class="kw">let</span> <span class="ident">pixels</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">size</span>) };
+            <span class="kw">let</span> <span class="ident">pixels</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">size</span>) };
             <span class="prelude-val">Some</span>(<span class="ident">TopLayerPixels</span> {
                 <span class="ident">pixels</span>,
                 <span class="ident">info</span>,
@@ -2866,7 +2866,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_peekPixels</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap</span> <span class="op">=</span> <span class="ident">Pixmap</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap</span> <span class="op">=</span> <span class="ident">Pixmap::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">peekPixels</span>(<span class="ident">pixmap</span>.<span class="ident">native_mut</span>()) }
             .<span class="ident">if_true_then_some</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">pixmap</span>.<span class="ident">borrows</span>(<span class="self">self</span>))
     }
@@ -3374,7 +3374,7 @@
         <span class="ident">irect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
         <span class="ident">op</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ClipOp</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">irect</span>.<span class="ident">as_ref</span>());
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect::from</span>(<span class="kw-2">*</span><span class="ident">irect</span>.<span class="ident">as_ref</span>());
         <span class="self">self</span>.<span class="ident">clip_rect</span>(<span class="ident">r</span>, <span class="ident">op</span>, <span class="bool-val">false</span>)
     }
 
@@ -3437,10 +3437,10 @@
         <span class="ident">op</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ClipOp</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkCanvas_clipShader</span>(
+            <span class="ident">sb::C_SkCanvas_clipShader</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">shader</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
-                <span class="ident">op</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ClipOp</span>::<span class="ident">Intersect</span>),
+                <span class="ident">op</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ClipOp::Intersect</span>),
             )
         }
         <span class="self">self</span>
@@ -3474,7 +3474,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_getLocalClipBounds</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_clip_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getLocalClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_getLocalClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
         <span class="ident">r</span>.<span class="ident">is_empty</span>().<span class="ident">if_false_some</span>(<span class="ident">r</span>)
     }
 
@@ -3487,7 +3487,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_getDeviceClipBounds</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device_clip_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getDeviceClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_getDeviceClipBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) });
         <span class="ident">r</span>.<span class="ident">is_empty</span>().<span class="ident">if_false_some</span>(<span class="ident">r</span>)
     }
 
@@ -3513,7 +3513,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - `color` [`Color4f`] representing unpremultiplied color.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">draw_color</span>(<span class="ident">color</span>, <span class="ident">BlendMode</span>::<span class="ident">Src</span>)
+        <span class="self">self</span>.<span class="ident">draw_color</span>(<span class="ident">color</span>, <span class="ident">BlendMode::Src</span>)
     }
 
     <span class="doccomment">/// Makes [`Canvas`] contents undefined. Subsequent calls that read [`Canvas`] pixels,</span>
@@ -3528,7 +3528,7 @@
     <span class="doccomment">/// It is not necessary to call `discard()` once done with [`Canvas`];</span>
     <span class="doccomment">/// any cached data is deleted when owning [`Surface`] or `BaseDevice` is deleted.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">discard</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_discard</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_discard</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
         <span class="self">self</span>
     }
 
@@ -3644,7 +3644,7 @@
     <span class="doccomment">/// - `rect` rectangle to draw</span>
     <span class="doccomment">/// - `paint` stroke or fill, blend, color, and so on, used to draw</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_irect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>, <span class="ident">paint</span>: <span class="kw-2">&amp;</span><span class="ident">Paint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">draw_rect</span>(<span class="ident">Rect</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">rect</span>.<span class="ident">as_ref</span>()), <span class="ident">paint</span>)
+        <span class="self">self</span>.<span class="ident">draw_rect</span>(<span class="ident">Rect::from</span>(<span class="kw-2">*</span><span class="ident">rect</span>.<span class="ident">as_ref</span>()), <span class="ident">paint</span>)
     }
 
     <span class="doccomment">/// Draws [`Region`] region using clip, [`Matrix`], and [`Paint`] `paint`.</span>
@@ -3849,7 +3849,7 @@
         <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">left_top</span> <span class="op">=</span> <span class="ident">left_top</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">draw_image_with_sampling_options</span>(<span class="ident">image</span>, <span class="ident">left_top</span>, <span class="ident">SamplingOptions</span>::<span class="ident">default</span>(), <span class="ident">paint</span>)
+        <span class="self">self</span>.<span class="ident">draw_image_with_sampling_options</span>(<span class="ident">image</span>, <span class="ident">left_top</span>, <span class="ident">SamplingOptions::default</span>(), <span class="ident">paint</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_image_rect</span>(
@@ -3863,7 +3863,7 @@
             <span class="ident">image</span>,
             <span class="ident">src</span>,
             <span class="ident">dst</span>,
-            <span class="ident">SamplingOptions</span>::<span class="ident">default</span>(),
+            <span class="ident">SamplingOptions::default</span>(),
             <span class="ident">paint</span>,
         )
     }
@@ -4044,7 +4044,7 @@
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">drawSimpleText</span>(
                 <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
                 <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">TextEncoding</span>::<span class="ident">UTF8</span>.<span class="ident">into_native</span>(),
+                <span class="ident">TextEncoding::UTF8</span>.<span class="ident">into_native</span>(),
                 <span class="ident">origin</span>.<span class="ident">x</span>,
                 <span class="ident">origin</span>.<span class="ident">y</span>,
                 <span class="ident">font</span>.<span class="ident">native</span>(),
@@ -4137,7 +4137,7 @@
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">drawVertices</span>(
                 <span class="ident">vertices</span>.<span class="ident">native</span>(),
-                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">BlendMode</span>::<span class="ident">Modulate</span>),
+                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">BlendMode::Modulate</span>),
                 <span class="ident">paint</span>.<span class="ident">native_ptr_or_null</span>(),
             )
         }
@@ -4183,8 +4183,8 @@
                 <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
                 <span class="ident">tex_coords</span>
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">tc</span><span class="op">|</span> <span class="ident">tc</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>())
-                    .<span class="ident">unwrap_or</span>(<span class="ident">ptr</span>::<span class="ident">null</span>()),
-                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">BlendMode</span>::<span class="ident">Modulate</span>),
+                    .<span class="ident">unwrap_or</span>(<span class="ident">ptr::null</span>()),
+                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">BlendMode::Modulate</span>),
                 <span class="ident">paint</span>.<span class="ident">native</span>(),
             )
         }
@@ -4246,7 +4246,7 @@
         <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">CString</span>::<span class="ident">new</span>(<span class="ident">key</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">key</span>).<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">drawAnnotation</span>(
                 <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
@@ -4266,7 +4266,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_isClipEmpty</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_clip_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_isClipEmpty</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_isClipEmpty</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="doccomment">/// Returns `true` if clip is [`Rect`] and not empty.</span>
@@ -4276,7 +4276,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: https://fiddle.skia.org/c/@Canvas_isClipRect</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_clip_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_isClipRect</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_isClipRect</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="doccomment">/// Returns the current transform from local coordinates to the &#39;device&#39;, which for most</span>
@@ -4284,7 +4284,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns transformation from local coordinates to device / pixels.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_to_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">M44</span> {
-        <span class="ident">M44</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getLocalToDevice</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">m</span>) })
+        <span class="ident">M44::construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_getLocalToDevice</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">m</span>) })
     }
 
     <span class="doccomment">/// Throws away the 3rd row and column in the matrix, so be warned.</span>
@@ -4305,8 +4305,8 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use local_to_device() or local_to_device_as_3x3() instead&quot;</span>
     )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">matrix</span> <span class="op">=</span> <span class="ident">Matrix</span>::<span class="ident">default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCanvas_getTotalMatrix</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">matrix</span>.<span class="ident">native_mut</span>()) };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">matrix</span> <span class="op">=</span> <span class="ident">Matrix::default</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCanvas_getTotalMatrix</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">matrix</span>.<span class="ident">native_mut</span>()) };
         <span class="ident">matrix</span>
     }
 
@@ -4317,7 +4317,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">own_from_native_ptr</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(<span class="ident">native</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkCanvas</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OwnedCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">native</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">OwnedCanvas</span>::<span class="op">&lt;</span><span class="lifetime">&#39;lt</span><span class="op">&gt;</span>(
-                <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">new</span>(<span class="self">Self</span>::<span class="ident">borrow_from_native_mut</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">native</span> })).<span class="ident">unwrap</span>(),
+                <span class="ident">ptr::NonNull::new</span>(<span class="self">Self</span><span class="ident">::borrow_from_native_mut</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">native</span> })).<span class="ident">unwrap</span>(),
                 <span class="ident">PhantomData</span>,
             ))
         } <span class="kw">else</span> {
@@ -4383,11 +4383,11 @@
 <span class="comment">//</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">lattice</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Color</span>, <span class="ident">IRect</span>};
     <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-    <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkCanvas_Lattice</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+    <span class="kw">use</span> <span class="ident">skia_bindings::SkCanvas_Lattice</span>;
+    <span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
     <span class="doccomment">/// [`Lattice`] divides [`crate::Bitmap`] or [`crate::Image`] into a rectangular grid.</span>
     <span class="doccomment">/// Grid entries on even columns and even rows are fixed; these entries are</span>
@@ -4420,12 +4420,12 @@
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ref</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rect_types</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rect_types</span> {
                 <span class="kw">let</span> <span class="ident">rect_count</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">x_divs</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>) <span class="op">*</span> (<span class="self">self</span>.<span class="ident">y_divs</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">rect_count</span>, <span class="ident">rect_types</span>.<span class="ident">len</span>());
+                <span class="macro">assert_eq!</span>(<span class="ident">rect_count</span>, <span class="ident">rect_types</span>.<span class="ident">len</span>());
                 <span class="comment">// even though rect types may not include any FixedColor refs,</span>
                 <span class="comment">// we expect the colors slice with a proper size here, this</span>
                 <span class="comment">// saves us for going over the types array and looking for FixedColor</span>
                 <span class="comment">// entries.</span>
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">rect_count</span>, <span class="self">self</span>.<span class="ident">colors</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>());
+                <span class="macro">assert_eq!</span>(<span class="ident">rect_count</span>, <span class="self">self</span>.<span class="ident">colors</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>());
             }
 
             <span class="kw">let</span> <span class="ident">native</span> <span class="op">=</span> <span class="ident">SkCanvas_Lattice</span> {
@@ -4446,11 +4446,11 @@
 
     <span class="doccomment">/// Optional setting per rectangular grid entry to make it transparent,</span>
     <span class="doccomment">/// or to fill the grid entry with a color.</span>
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCanvas_Lattice_RectType</span> <span class="kw">as</span> <span class="ident">RectType</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCanvas_Lattice_RectType</span> <span class="kw">as</span> <span class="ident">RectType</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_lattice_rect_type_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">RectType</span>::<span class="ident">FixedColor</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">RectType::FixedColor</span>;
     }
 }
 
@@ -4465,13 +4465,13 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">AutoRestoredCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">Canvas</span>;
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="self">self</span>.<span class="ident">canvas</span>
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">AutoRestoredCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="self">self</span>.<span class="ident">canvas</span>
     }
 }
@@ -4489,7 +4489,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">AutoRestoredCanvas</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Restores [`Canvas`] to saved state. Drop is called when container goes out of scope.</span>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkAutoCanvasRestore_destruct</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkAutoCanvasRestore_destruct</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 }
 
@@ -4497,7 +4497,7 @@
     <span class="doccomment">/// Restores [`Canvas`] to saved state immediately. Subsequent calls and [`Self::drop()`] have</span>
     <span class="doccomment">/// no effect.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">restore</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkAutoCanvasRestore_restore</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkAutoCanvasRestore_restore</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 }
 
@@ -4512,7 +4512,7 @@
     <span class="doccomment">/// Returns utility to restore [`Canvas`] state on destructor</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guard</span>(<span class="ident">canvas</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Canvas</span>, <span class="ident">do_save</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AutoRestoredCanvas</span> {
         <span class="kw">let</span> <span class="ident">restore</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">acr</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkAutoCanvasRestore_Construct</span>(<span class="ident">acr</span>, <span class="ident">canvas</span>.<span class="ident">native_mut</span>(), <span class="ident">do_save</span>)
+            <span class="ident">sb::C_SkAutoCanvasRestore_Construct</span>(<span class="ident">acr</span>, <span class="ident">canvas</span>.<span class="ident">native_mut</span>(), <span class="ident">do_save</span>)
         });
 
         <span class="ident">AutoRestoredCanvas</span> { <span class="ident">canvas</span>, <span class="ident">restore</span> }
@@ -4522,32 +4522,32 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">canvas</span>::<span class="ident">SaveLayerFlags</span>, <span class="ident">canvas</span>::<span class="ident">SaveLayerRec</span>, <span class="ident">AlphaType</span>, <span class="ident">Canvas</span>, <span class="ident">ClipOp</span>, <span class="ident">Color</span>, <span class="ident">ColorType</span>,
+        <span class="ident">canvas::SaveLayerFlags</span>, <span class="ident">canvas::SaveLayerRec</span>, <span class="ident">AlphaType</span>, <span class="ident">Canvas</span>, <span class="ident">ClipOp</span>, <span class="ident">Color</span>, <span class="ident">ColorType</span>,
         <span class="ident">ImageInfo</span>, <span class="ident">OwnedCanvas</span>, <span class="ident">Rect</span>,
     };
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_raster_direct_creation_and_clear_in_memory</span>() {
-        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">new</span>((<span class="number">2</span>, <span class="number">2</span>), <span class="ident">ColorType</span>::<span class="ident">RGBA8888</span>, <span class="ident">AlphaType</span>::<span class="ident">Unpremul</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">8</span>, <span class="ident">info</span>.<span class="ident">min_row_bytes</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">8</span> <span class="op">*</span> <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::new</span>((<span class="number">2</span>, <span class="number">2</span>), <span class="ident">ColorType::RGBA8888</span>, <span class="ident">AlphaType::Unpremul</span>, <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">8</span>, <span class="ident">info</span>.<span class="ident">min_row_bytes</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">8</span> <span class="op">*</span> <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas</span>::<span class="ident">from_raster_direct</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="ident">bytes</span>.<span class="ident">as_mut</span>(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-            <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color</span>::<span class="ident">RED</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::from_raster_direct</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="ident">bytes</span>.<span class="ident">as_mut</span>(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
+            <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color::RED</span>);
         }
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0xff</span>, <span class="ident">bytes</span>[<span class="number">0</span>]);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x00</span>, <span class="ident">bytes</span>[<span class="number">1</span>]);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x00</span>, <span class="ident">bytes</span>[<span class="number">2</span>]);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0xff</span>, <span class="ident">bytes</span>[<span class="number">3</span>]);
+        <span class="macro">assert_eq!</span>(<span class="number">0xff</span>, <span class="ident">bytes</span>[<span class="number">0</span>]);
+        <span class="macro">assert_eq!</span>(<span class="number">0x00</span>, <span class="ident">bytes</span>[<span class="number">1</span>]);
+        <span class="macro">assert_eq!</span>(<span class="number">0x00</span>, <span class="ident">bytes</span>[<span class="number">2</span>]);
+        <span class="macro">assert_eq!</span>(<span class="number">0xff</span>, <span class="ident">bytes</span>[<span class="number">3</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_raster_direct_n32_creation_and_clear_in_memory</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span>: [<span class="ident">u32</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span>: [<span class="ident">u32</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas</span>::<span class="ident">from_raster_direct_n32</span>((<span class="number">2</span>, <span class="number">2</span>), <span class="ident">pixels</span>.<span class="ident">as_mut</span>(), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-            <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color</span>::<span class="ident">RED</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::from_raster_direct_n32</span>((<span class="number">2</span>, <span class="number">2</span>), <span class="ident">pixels</span>.<span class="ident">as_mut</span>(), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
+            <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color::RED</span>);
         }
 
         <span class="comment">// TODO: equals to 0xff0000ff on macOS, but why? Endianness should be the same.</span>
@@ -4556,54 +4556,54 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_empty_canvas_creation</span>() {
-        <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">OwnedCanvas</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">OwnedCanvas::default</span>();
         <span class="ident">drop</span>(<span class="ident">canvas</span>)
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_save_layer_rec_lifetimes</span>() {
-        <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect::default</span>();
         {
-            <span class="kw">let</span> <span class="ident">_rec</span> <span class="op">=</span> <span class="ident">SaveLayerRec</span>::<span class="ident">default</span>()
-                .<span class="ident">flags</span>(<span class="ident">SaveLayerFlags</span>::<span class="ident">PRESERVE_LCD_TEXT</span>)
+            <span class="kw">let</span> <span class="ident">_rec</span> <span class="op">=</span> <span class="ident">SaveLayerRec::default</span>()
+                .<span class="ident">flags</span>(<span class="ident">SaveLayerFlags::PRESERVE_LCD_TEXT</span>)
                 .<span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="ident">rect</span>);
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_make_surface</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span>: [<span class="ident">u32</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas</span>::<span class="ident">from_raster_direct_n32</span>((<span class="number">2</span>, <span class="number">2</span>), <span class="ident">pixels</span>.<span class="ident">as_mut</span>(), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span>: [<span class="ident">u32</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::from_raster_direct_n32</span>((<span class="number">2</span>, <span class="number">2</span>), <span class="ident">pixels</span>.<span class="ident">as_mut</span>(), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">ii</span> <span class="op">=</span> <span class="ident">canvas</span>.<span class="ident">image_info</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">canvas</span>.<span class="ident">new_surface</span>(<span class="kw-2">&amp;</span><span class="ident">ii</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
         <span class="ident">drop</span>(<span class="ident">canvas</span>);
 
         <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">canvas</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
-        <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color</span>::<span class="ident">RED</span>);
+        <span class="macro">dbg!</span>(<span class="ident">canvas</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
+        <span class="ident">canvas</span>.<span class="ident">clear</span>(<span class="ident">Color::RED</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">clip_options_overloads</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">OwnedCanvas</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">OwnedCanvas::default</span>();
         <span class="comment">// do_anti_alias</span>
-        <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="prelude-val">None</span>, <span class="bool-val">true</span>);
+        <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect::default</span>(), <span class="prelude-val">None</span>, <span class="bool-val">true</span>);
         <span class="comment">// clip_op</span>
-        <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="ident">ClipOp</span>::<span class="ident">Difference</span>, <span class="prelude-val">None</span>);
+        <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect::default</span>(), <span class="ident">ClipOp::Difference</span>, <span class="prelude-val">None</span>);
         <span class="comment">// both</span>
-        <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect</span>::<span class="ident">default</span>(), <span class="ident">ClipOp</span>::<span class="ident">Difference</span>, <span class="bool-val">true</span>);
+        <span class="ident">c</span>.<span class="ident">clip_rect</span>(<span class="ident">Rect::default</span>(), <span class="ident">ClipOp::Difference</span>, <span class="bool-val">true</span>);
     }
 
     <span class="doccomment">/// Regression test for: https://github.com/rust-skia/rust-skia/issues/427</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_local_and_device_clip_bounds</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">100</span>, <span class="number">100</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::Surface::new_raster_n32_premul</span>((<span class="number">100</span>, <span class="number">100</span>)).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">device_clip_bounds</span>();
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">local_clip_bounds</span>();
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">local_to_device</span>();
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

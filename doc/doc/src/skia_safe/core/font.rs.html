@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\font.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>font.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -428,7 +428,7 @@
 <span id="425">425</span>
 <span id="426">426</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">scalar</span>, <span class="ident">FontHinting</span>, <span class="ident">FontMetrics</span>, <span class="ident">GlyphId</span>, <span class="ident">Paint</span>, <span class="ident">Path</span>, <span class="ident">Point</span>, <span class="ident">Rect</span>, <span class="ident">TextEncoding</span>, <span class="ident">Typeface</span>,
     <span class="ident">Unichar</span>,
@@ -437,10 +437,10 @@
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkFont</span>, <span class="ident">SkFont_PrivFlags</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ptr</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkFont_Edging</span> <span class="kw">as</span> <span class="ident">Edging</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkFont_Edging</span> <span class="kw">as</span> <span class="ident">Edging</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_font_edging_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Edging</span>::<span class="ident">Alias</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Edging::Alias</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Font</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkFont</span><span class="op">&gt;</span>;
@@ -449,24 +449,24 @@
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkFont</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkFont_destruct</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFont_destruct</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkFont</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkFont_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFont_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Font</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkFont</span>::<span class="ident">new</span>() })
+        <span class="self">Self</span><span class="ident">::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkFont::new</span>() })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Font</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Font</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Font&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;is_force_auto_hinting&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_force_auto_hinting</span>())
             .<span class="ident">field</span>(<span class="string">&quot;is_embedded_bitmaps&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_embedded_bitmaps</span>())
@@ -488,16 +488,16 @@
 
 <span class="kw">impl</span> <span class="ident">Font</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">typeface</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_typeface</span>(<span class="ident">typeface</span>, <span class="ident">size</span>)
+        <span class="self">Self</span><span class="ident">::from_typeface</span>(<span class="ident">typeface</span>, <span class="ident">size</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_typeface</span>(<span class="ident">typeface</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">size</span>.<span class="ident">into</span>() {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">font</span><span class="op">|</span> <span class="kw">unsafe</span> {
-                <span class="ident">sb</span>::<span class="ident">C_SkFont_ConstructFromTypeface</span>(<span class="ident">font</span>, <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">font</span><span class="op">|</span> <span class="kw">unsafe</span> {
+                <span class="ident">sb::C_SkFont_ConstructFromTypeface</span>(<span class="ident">font</span>, <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
             }),
-            <span class="prelude-val">Some</span>(<span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">font</span><span class="op">|</span> <span class="kw">unsafe</span> {
-                <span class="ident">sb</span>::<span class="ident">C_SkFont_ConstructFromTypefaceWithSize</span>(<span class="ident">font</span>, <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">size</span>)
+            <span class="prelude-val">Some</span>(<span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">font</span><span class="op">|</span> <span class="kw">unsafe</span> {
+                <span class="ident">sb::C_SkFont_ConstructFromTypefaceWithSize</span>(<span class="ident">font</span>, <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">size</span>)
             }),
         }
     }
@@ -508,8 +508,8 @@
         <span class="ident">scale</span>: <span class="ident">scalar</span>,
         <span class="ident">skew</span>: <span class="ident">scalar</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">font</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkFont_ConstructFromTypefaceWithSizeScaleAndSkew</span>(
+        <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">font</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkFont_ConstructFromTypefaceWithSizeScaleAndSkew</span>(
                 <span class="ident">font</span>,
                 <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
                 <span class="ident">size</span>,
@@ -520,31 +520,31 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_force_auto_hinting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb</span>::<span class="ident">SkFont_PrivFlags_kForceAutoHinting_PrivFlag</span>)
+        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb::SkFont_PrivFlags_kForceAutoHinting_PrivFlag</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_embedded_bitmaps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb</span>::<span class="ident">SkFont_PrivFlags_kEmbeddedBitmaps_PrivFlag</span>)
+        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb::SkFont_PrivFlags_kEmbeddedBitmaps_PrivFlag</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_subpixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb</span>::<span class="ident">SkFont_PrivFlags_kSubpixel_PrivFlag</span>)
+        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb::SkFont_PrivFlags_kSubpixel_PrivFlag</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_linear_metrics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb</span>::<span class="ident">SkFont_PrivFlags_kLinearMetrics_PrivFlag</span>)
+        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb::SkFont_PrivFlags_kLinearMetrics_PrivFlag</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_embolden</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb</span>::<span class="ident">SkFont_PrivFlags_kEmbolden_PrivFlag</span>)
+        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb::SkFont_PrivFlags_kEmbolden_PrivFlag</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_baseline_snap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb</span>::<span class="ident">SkFont_PrivFlags_kBaselineSnap_PrivFlag</span>)
+        <span class="self">self</span>.<span class="ident">has_flag</span>(<span class="ident">sb::SkFont_PrivFlags_kBaselineSnap_PrivFlag</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">has_flag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">flag</span>: <span class="ident">SkFont_PrivFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        (<span class="ident">SkFont_PrivFlags</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFlags</span>) <span class="op">&amp;</span> <span class="ident">flag</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
+        (<span class="ident">SkFont_PrivFlags::from</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFlags</span>) <span class="op">&amp;</span> <span class="ident">flag</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_force_auto_hinting</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">force_auto_hinting</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -578,7 +578,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">edging</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Edging</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkFont_getEdging</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFont_getEdging</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_edging</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">edging</span>: <span class="ident">Edging</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -592,26 +592,26 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hinting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FontHinting</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkFont_getHinting</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFont_getHinting</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">size</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">size</span>.<span class="ident">is_infinite</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">size</span>.<span class="ident">is_nan</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">font</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">SkFont</span>::<span class="ident">new</span>() };
-            <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkFont_makeWithSize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">size</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">font</span>) }
-            <span class="prelude-val">Some</span>(<span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="ident">font</span>))
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">font</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">SkFont::new</span>() };
+            <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFont_makeWithSize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">size</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">font</span>) }
+            <span class="prelude-val">Some</span>(<span class="self">Self</span><span class="ident">::from_native_c</span>(<span class="ident">font</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTypeface</span>.<span class="ident">fPtr</span>)
+        <span class="ident">Typeface::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTypeface</span>.<span class="ident">fPtr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface_or_default</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Typeface</span> {
-        <span class="ident">Typeface</span>::<span class="ident">from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getTypefaceOrDefault</span>() }).<span class="ident">unwrap</span>()
+        <span class="ident">Typeface::from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getTypefaceOrDefault</span>() }).<span class="ident">unwrap</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
@@ -627,7 +627,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_typeface</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tf</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkFont_setTypeface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">tf</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFont_setTypeface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">tf</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>()) }
         <span class="self">self</span>
     }
 
@@ -647,7 +647,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">str_to_glyphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">text_to_glyphs</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding</span>::<span class="ident">UTF8</span>, <span class="ident">glyphs</span>)
+        <span class="self">self</span>.<span class="ident">text_to_glyphs</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding::UTF8</span>, <span class="ident">glyphs</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text_to_glyphs</span>(
@@ -666,7 +666,7 @@
                     <span class="comment">// don&#39;t fail if glyphs.len() is too large to fit into an i32.</span>
                     <span class="ident">glyphs</span>
                         .<span class="ident">len</span>()
-                        .<span class="ident">min</span>(<span class="ident">i32</span>::<span class="ident">max_value</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+                        .<span class="ident">min</span>(<span class="ident">i32::max_value</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
                         .<span class="ident">try_into</span>()
                         .<span class="ident">unwrap</span>(),
                 )
@@ -676,7 +676,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">count_text</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding</span>::<span class="ident">UTF8</span>)
+        <span class="self">self</span>.<span class="ident">count_text</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding::UTF8</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_text</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
@@ -686,8 +686,8 @@
                     <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
                     <span class="ident">text</span>.<span class="ident">len</span>(),
                     <span class="ident">encoding</span>.<span class="ident">into_native</span>(),
-                    <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
-                    <span class="ident">i32</span>::<span class="ident">max_value</span>(),
+                    <span class="ident">ptr::null_mut</span>(),
+                    <span class="ident">i32::max_value</span>(),
                 )
                 .<span class="ident">try_into</span>()
                 .<span class="ident">unwrap</span>()
@@ -697,21 +697,21 @@
     <span class="comment">// convenience function</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">str_to_glyphs_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlyphId</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>();
-        <span class="self">self</span>.<span class="ident">text_to_glyphs_vec</span>(<span class="ident">str</span>, <span class="ident">TextEncoding</span>::<span class="ident">UTF8</span>)
+        <span class="self">self</span>.<span class="ident">text_to_glyphs_vec</span>(<span class="ident">str</span>, <span class="ident">TextEncoding::UTF8</span>)
     }
 
     <span class="comment">// convenience function</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text_to_glyphs_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlyphId</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">glyphs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlyphId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Default</span>::<span class="ident">default</span>(); <span class="ident">count</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">glyphs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlyphId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Default::default</span>(); <span class="ident">count</span>];
         <span class="kw">let</span> <span class="ident">resulting_count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">text_to_glyphs</span>(<span class="ident">text</span>, <span class="ident">encoding</span>, <span class="ident">glyphs</span>.<span class="ident">as_mut_slice</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="ident">resulting_count</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="ident">resulting_count</span>);
         <span class="ident">glyphs</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">measure_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">scalar</span>, <span class="ident">Rect</span>) {
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>();
-        <span class="self">self</span>.<span class="ident">measure_text</span>(<span class="ident">bytes</span>, <span class="ident">TextEncoding</span>::<span class="ident">UTF8</span>, <span class="ident">paint</span>)
+        <span class="self">self</span>.<span class="ident">measure_text</span>(<span class="ident">bytes</span>, <span class="ident">TextEncoding::UTF8</span>, <span class="ident">paint</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">measure_text</span>(
@@ -720,7 +720,7 @@
         <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>,
         <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">scalar</span>, <span class="ident">Rect</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">Rect::default</span>();
         <span class="kw">let</span> <span class="ident">width</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">measureText</span>(
                 <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
@@ -739,7 +739,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unichar_to_glyphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uni</span>: <span class="kw-2">&amp;</span>[<span class="ident">Unichar</span>], <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>]) {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">uni</span>.<span class="ident">len</span>(), <span class="ident">glyphs</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">uni</span>.<span class="ident">len</span>(), <span class="ident">glyphs</span>.<span class="ident">len</span>());
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">unicharsToGlyphs</span>(
                 <span class="ident">uni</span>.<span class="ident">as_ptr</span>(),
@@ -764,10 +764,10 @@
 
         {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">slice</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">widths</span> {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="ident">slice</span>.<span class="ident">len</span>())
+                <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="ident">slice</span>.<span class="ident">len</span>())
             };
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">slice</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bounds</span> {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="ident">slice</span>.<span class="ident">len</span>())
+                <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="ident">slice</span>.<span class="ident">len</span>())
             };
         }
 
@@ -792,7 +792,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span>[<span class="ident">GlyphId</span>], <span class="ident">pos</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>], <span class="ident">origin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">glyphs</span>.<span class="ident">len</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="ident">pos</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="ident">pos</span>.<span class="ident">len</span>());
 
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">origin</span>.<span class="ident">unwrap_or_default</span>();
 
@@ -808,7 +808,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_x_pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span>[<span class="ident">GlyphId</span>], <span class="ident">x_pos</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">scalar</span>], <span class="ident">origin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">glyphs</span>.<span class="ident">len</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="ident">x_pos</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="ident">x_pos</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">origin</span>.<span class="ident">unwrap_or_default</span>();
 
         <span class="kw">unsafe</span> {
@@ -822,7 +822,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">glyph_id</span>: <span class="ident">GlyphId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getPath</span>(<span class="ident">glyph_id</span>, <span class="ident">path</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">path</span>)
     }
 
@@ -831,29 +831,29 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metrics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">scalar</span>, <span class="ident">FontMetrics</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">line_spacing</span> <span class="op">=</span> <span class="number">0.0</span>;
         <span class="kw">let</span> <span class="ident">fm</span> <span class="op">=</span>
-            <span class="ident">FontMetrics</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">fm</span><span class="op">|</span> <span class="ident">line_spacing</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMetrics</span>(<span class="ident">fm</span>) });
+            <span class="ident">FontMetrics::construct</span>(<span class="op">|</span><span class="ident">fm</span><span class="op">|</span> <span class="ident">line_spacing</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMetrics</span>(<span class="ident">fm</span>) });
         (<span class="ident">line_spacing</span>, <span class="ident">fm</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spacing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMetrics</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMetrics</span>(<span class="ident">ptr::null_mut</span>()) }
     }
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_flags</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">font</span> <span class="op">=</span> <span class="ident">Font</span>::<span class="ident">new</span>(<span class="ident">Typeface</span>::<span class="ident">default</span>(), <span class="number">10.0</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">font</span> <span class="op">=</span> <span class="ident">Font::new</span>(<span class="ident">Typeface::default</span>(), <span class="number">10.0</span>);
 
     <span class="ident">font</span>.<span class="ident">set_force_auto_hinting</span>(<span class="bool-val">true</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">font</span>.<span class="ident">is_force_auto_hinting</span>());
+    <span class="macro">assert!</span>(<span class="ident">font</span>.<span class="ident">is_force_auto_hinting</span>());
     <span class="ident">font</span>.<span class="ident">set_force_auto_hinting</span>(<span class="bool-val">false</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">font</span>.<span class="ident">is_force_auto_hinting</span>());
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">font</span>.<span class="ident">is_force_auto_hinting</span>());
 
     <span class="ident">font</span>.<span class="ident">set_embolden</span>(<span class="bool-val">true</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">font</span>.<span class="ident">is_embolden</span>());
+    <span class="macro">assert!</span>(<span class="ident">font</span>.<span class="ident">is_embolden</span>());
     <span class="ident">font</span>.<span class="ident">set_embolden</span>(<span class="bool-val">false</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">font</span>.<span class="ident">is_embolden</span>());
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">font</span>.<span class="ident">is_embolden</span>());
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

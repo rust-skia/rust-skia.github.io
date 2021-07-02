@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\effects\image_filters.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>image_filters.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -964,14 +964,14 @@
 
 <span class="kw">impl</span> <span class="ident">CropRect</span> {
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_CROP_RECT</span>: <span class="ident">CropRect</span> <span class="op">=</span> <span class="ident">CropRect</span>(<span class="ident">Rect</span> {
-        <span class="ident">left</span>: <span class="ident">scalar</span>::<span class="ident">NEG_INFINITY</span>,
-        <span class="ident">top</span>: <span class="ident">scalar</span>::<span class="ident">NEG_INFINITY</span>,
-        <span class="ident">right</span>: <span class="ident">scalar</span>::<span class="ident">INFINITY</span>,
-        <span class="ident">bottom</span>: <span class="ident">scalar</span>::<span class="ident">INFINITY</span>,
+        <span class="ident">left</span>: <span class="ident">scalar::NEG_INFINITY</span>,
+        <span class="ident">top</span>: <span class="ident">scalar::NEG_INFINITY</span>,
+        <span class="ident">right</span>: <span class="ident">scalar::INFINITY</span>,
+        <span class="ident">bottom</span>: <span class="ident">scalar::INFINITY</span>,
     });
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="self">Self</span>::<span class="ident">NO_CROP_RECT</span> {
+        <span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="self">Self</span><span class="ident">::NO_CROP_RECT</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="number">0</span>)
@@ -981,13 +981,13 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">CropRect</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">CropRect</span>::<span class="ident">NO_CROP_RECT</span>
+        <span class="ident">CropRect::NO_CROP_RECT</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CropRect</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">opt</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">opt</span>.<span class="ident">unwrap_or</span>(<span class="self">Self</span>::<span class="ident">NO_CROP_RECT</span>)
+        <span class="ident">opt</span>.<span class="ident">unwrap_or</span>(<span class="self">Self</span><span class="ident">::NO_CROP_RECT</span>)
     }
 }
 
@@ -999,13 +999,13 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CropRect</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">Rect</span>::<span class="ident">from</span>(<span class="ident">r</span>))
+        <span class="self">Self</span>(<span class="ident">Rect::from</span>(<span class="ident">r</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CropRect</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::from</span>(<span class="kw-2">*</span><span class="ident">r</span>)
     }
 }
 
@@ -1028,8 +1028,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_AlphaThreshold</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_AlphaThreshold</span>(
             <span class="ident">region</span>.<span class="ident">native</span>(),
             <span class="ident">inner_min</span>,
             <span class="ident">outer_max</span>,
@@ -1039,7 +1039,7 @@
     })
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arithmetic</span>(
     <span class="ident">k1</span>: <span class="ident">scalar</span>,
     <span class="ident">k2</span>: <span class="ident">scalar</span>,
@@ -1050,8 +1050,8 @@
     <span class="ident">foreground</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Arithmetic</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Arithmetic</span>(
             <span class="ident">k1</span>,
             <span class="ident">k2</span>,
             <span class="ident">k3</span>,
@@ -1070,8 +1070,8 @@
     <span class="ident">foreground</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Blend</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Blend</span>(
             <span class="ident">mode</span>,
             <span class="ident">background</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
             <span class="ident">foreground</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1086,11 +1086,11 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Blur</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Blur</span>(
             <span class="ident">sigma_x</span>,
             <span class="ident">sigma_y</span>,
-            <span class="ident">tile_mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">TileMode</span>::<span class="ident">Decal</span>),
+            <span class="ident">tile_mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">TileMode::Decal</span>),
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
             <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
         )
@@ -1102,8 +1102,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_ColorFilter</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_ColorFilter</span>(
             <span class="ident">cf</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
             <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
@@ -1115,8 +1115,8 @@
     <span class="ident">outer</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span>,
     <span class="ident">inner</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Compose</span>(<span class="ident">outer</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">inner</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Compose</span>(<span class="ident">outer</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">inner</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
     })
 }
 
@@ -1127,8 +1127,8 @@
     <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_DisplacementMap</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_DisplacementMap</span>(
             <span class="ident">x_channel_selector</span>,
             <span class="ident">y_channel_selector</span>,
             <span class="ident">scale</span>,
@@ -1148,8 +1148,8 @@
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
     <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>.<span class="ident">into</span>();
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_DropShadow</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_DropShadow</span>(
             <span class="ident">delta</span>.<span class="ident">x</span>,
             <span class="ident">delta</span>.<span class="ident">y</span>,
             <span class="ident">sigma_x</span>,
@@ -1170,8 +1170,8 @@
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
     <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>.<span class="ident">into</span>();
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_DropShadowOnly</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_DropShadowOnly</span>(
             <span class="ident">delta</span>.<span class="ident">x</span>,
             <span class="ident">delta</span>.<span class="ident">y</span>,
             <span class="ident">sigma_x</span>,
@@ -1190,7 +1190,7 @@
     <span class="ident">sampling_options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">image</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">image_rect</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">from_iwh</span>(<span class="ident">image</span>.<span class="ident">width</span>(), <span class="ident">image</span>.<span class="ident">height</span>());
+    <span class="kw">let</span> <span class="ident">image_rect</span> <span class="op">=</span> <span class="ident">Rect::from_iwh</span>(<span class="ident">image</span>.<span class="ident">width</span>(), <span class="ident">image</span>.<span class="ident">height</span>());
     <span class="kw">let</span> <span class="ident">src_rect</span> <span class="op">=</span> <span class="ident">src_rect</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">image_rect</span>);
     <span class="kw">let</span> <span class="ident">dst_rect</span> <span class="op">=</span> <span class="ident">dst_rect</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">image_rect</span>);
     <span class="kw">let</span> <span class="ident">sampling_options</span>: <span class="ident">SamplingOptions</span> <span class="op">=</span> <span class="ident">sampling_options</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
@@ -1201,8 +1201,8 @@
         .<span class="ident">into</span>()
     });
 
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Image</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Image</span>(
             <span class="ident">image</span>.<span class="ident">into_ptr</span>(),
             <span class="ident">src_rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
             <span class="ident">dst_rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
@@ -1217,8 +1217,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Magnifier</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Magnifier</span>(
             <span class="ident">src_rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
             <span class="ident">inset</span>,
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1227,7 +1227,7 @@
     })
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix_convolution</span>(
     <span class="ident">kernel_size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>,
     <span class="ident">kernel</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>],
@@ -1240,12 +1240,12 @@
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">kernel_size</span> <span class="op">=</span> <span class="ident">kernel_size</span>.<span class="ident">into</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(
+    <span class="macro">assert_eq!</span>(
         (<span class="ident">kernel_size</span>.<span class="ident">width</span> <span class="op">*</span> <span class="ident">kernel_size</span>.<span class="ident">height</span>) <span class="kw">as</span> <span class="ident">usize</span>,
         <span class="ident">kernel</span>.<span class="ident">len</span>()
     );
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_MatrixConvolution</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_MatrixConvolution</span>(
             <span class="ident">kernel_size</span>.<span class="ident">native</span>(),
             <span class="ident">kernel</span>.<span class="ident">as_ptr</span>(),
             <span class="ident">gain</span>,
@@ -1264,8 +1264,8 @@
     <span class="ident">sampling_options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span>,
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_MatrixTransform</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_MatrixTransform</span>(
             <span class="ident">matrix</span>.<span class="ident">native</span>(),
             <span class="ident">sampling_options</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1279,8 +1279,8 @@
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">filter_ptrs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkImageFilter</span><span class="op">&gt;</span> <span class="op">=</span>
         <span class="ident">filters</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">into_ptr_or_null</span>()).<span class="ident">collect</span>();
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Merge</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Merge</span>(
             <span class="ident">filter_ptrs</span>.<span class="ident">as_ptr</span>(),
             <span class="ident">filter_ptrs</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
             <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
@@ -1294,8 +1294,8 @@
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Offset</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Offset</span>(
             <span class="ident">delta</span>.<span class="ident">x</span>,
             <span class="ident">delta</span>.<span class="ident">y</span>,
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1305,8 +1305,8 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">paint</span>(<span class="ident">paint</span>: <span class="kw-2">&amp;</span><span class="ident">Paint</span>, <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Paint</span>(<span class="ident">paint</span>.<span class="ident">native</span>(), <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>())
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Paint</span>(<span class="ident">paint</span>.<span class="ident">native</span>(), <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>())
     })
 }
 
@@ -1318,15 +1318,15 @@
     <span class="kw">let</span> <span class="ident">picture_rect</span> <span class="op">=</span> <span class="ident">picture</span>.<span class="ident">cull_rect</span>();
     <span class="kw">let</span> <span class="ident">target_rect</span> <span class="op">=</span> <span class="ident">target_rect</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">picture_rect</span>);
 
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Picture</span>(<span class="ident">picture</span>.<span class="ident">into_ptr</span>(), <span class="ident">target_rect</span>.<span class="ident">native</span>())
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Picture</span>(<span class="ident">picture</span>.<span class="ident">into_ptr</span>(), <span class="ident">target_rect</span>.<span class="ident">native</span>())
     })
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkImageFilters_Dither</span> <span class="kw">as</span> <span class="ident">Dither</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkImageFilters_Dither</span> <span class="kw">as</span> <span class="ident">Dither</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shader</span>(<span class="ident">shader</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>, <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">shader_with_dither</span>(<span class="ident">shader</span>, <span class="ident">Dither</span>::<span class="ident">No</span>, <span class="ident">crop_rect</span>)
+    <span class="ident">shader_with_dither</span>(<span class="ident">shader</span>, <span class="ident">Dither::No</span>, <span class="ident">crop_rect</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shader_with_dither</span>(
@@ -1334,8 +1334,8 @@
     <span class="ident">dither</span>: <span class="ident">Dither</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Shader</span>(<span class="ident">shader</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">dither</span>, <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>())
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Shader</span>(<span class="ident">shader</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">dither</span>, <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>())
     })
 }
 
@@ -1344,8 +1344,8 @@
     <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Tile</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Tile</span>(
             <span class="ident">src</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
             <span class="ident">dst</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1358,8 +1358,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Dilate</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Dilate</span>(
             <span class="ident">radius_x</span>,
             <span class="ident">radius_y</span>,
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1373,8 +1373,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_Erode</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_Erode</span>(
             <span class="ident">radius_x</span>,
             <span class="ident">radius_y</span>,
             <span class="ident">input</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -1391,8 +1391,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_DistantLitDiffuse</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_DistantLitDiffuse</span>(
             <span class="ident">direction</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">light_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
             <span class="ident">surface_scale</span>,
@@ -1411,8 +1411,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_PointLitDiffuse</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_PointLitDiffuse</span>(
             <span class="ident">location</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">light_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
             <span class="ident">surface_scale</span>,
@@ -1423,7 +1423,7 @@
     })
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spot_lit_diffuse</span>(
     <span class="ident">location</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
     <span class="ident">target</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
@@ -1435,8 +1435,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_SpotLitDiffuse</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_SpotLitDiffuse</span>(
             <span class="ident">location</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">target</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">specular_exponent</span>,
@@ -1459,8 +1459,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_ImageFilters_DistantLitSpecular</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_ImageFilters_DistantLitSpecular</span>(
             <span class="ident">direction</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">light_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
             <span class="ident">surface_scale</span>,
@@ -1481,8 +1481,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_PointLitSpecular</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_PointLitSpecular</span>(
             <span class="ident">location</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">light_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
             <span class="ident">surface_scale</span>,
@@ -1494,7 +1494,7 @@
     })
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spot_lit_specular</span>(
     <span class="ident">location</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
     <span class="ident">target</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
@@ -1507,8 +1507,8 @@
     <span class="ident">input</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-    <span class="ident">ImageFilter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkImageFilters_SpotLitSpecular</span>(
+    <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
+        <span class="ident">sb::C_SkImageFilters_SpotLitSpecular</span>(
             <span class="ident">location</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">target</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
             <span class="ident">specular_exponent</span>,
@@ -1563,7 +1563,7 @@
         <span class="self">self</span>,
         <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">IRect</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">sigma</span>: (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">tile_mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">TileMode</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">tile_mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::TileMode</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">blur</span>(<span class="ident">sigma</span>, <span class="ident">tile_mode</span>, <span class="self">self</span>, <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">into</span>()))
     }
@@ -1632,7 +1632,7 @@
         )
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spot_lit_diffuse_lighting</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">IRect</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -1697,7 +1697,7 @@
         )
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spot_lit_specular_lighting</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">IRect</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -1733,7 +1733,7 @@
         <span class="ident">magnifier</span>(<span class="ident">src_rect</span>, <span class="ident">inset</span>, <span class="self">self</span>, <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">into</span>()))
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix_convolution</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">IRect</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -1742,7 +1742,7 @@
         <span class="ident">gain</span>: <span class="ident">scalar</span>,
         <span class="ident">bias</span>: <span class="ident">scalar</span>,
         <span class="ident">kernel_offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
-        <span class="ident">tile_mode</span>: <span class="kw">crate</span>::<span class="ident">TileMode</span>,
+        <span class="ident">tile_mode</span>: <span class="kw">crate</span><span class="ident">::TileMode</span>,
         <span class="ident">convolve_alpha</span>: <span class="ident">bool</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">matrix_convolution</span>(
@@ -1790,14 +1790,14 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_paint</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">paint</span>: <span class="kw-2">&amp;</span><span class="ident">Paint</span>, <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">IRect</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">self</span>::<span class="ident">paint</span>(<span class="ident">paint</span>, <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">into</span>()))
+        <span class="self">self</span><span class="ident">::paint</span>(<span class="ident">paint</span>, <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">into</span>()))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_picture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">picture</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Picture</span><span class="op">&gt;</span>,
         <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Rect</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">self</span>::<span class="ident">picture</span>(<span class="ident">picture</span>, <span class="ident">crop_rect</span>)
+        <span class="self">self</span><span class="ident">::picture</span>(<span class="ident">picture</span>, <span class="ident">crop_rect</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tile</span>(<span class="self">self</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
@@ -1857,16 +1857,16 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">CropRect</span>, <span class="ident">Dither</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="ident">NativeTransmutable</span>, <span class="ident">IRect</span>, <span class="ident">Rect</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude::NativeTransmutable</span>, <span class="ident">IRect</span>, <span class="ident">Rect</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_dither_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Dither</span>::<span class="ident">Yes</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Dither::Yes</span>;
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_crop_rect_layout</span>() {
-        <span class="kw">super</span>::<span class="ident">CropRect</span>::<span class="ident">test_layout</span>();
+        <span class="kw">super</span><span class="ident">::CropRect::test_layout</span>();
     }
 
     <span class="kw">fn</span> <span class="ident">cr</span>(<span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CropRect</span> {
@@ -1875,27 +1875,27 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_crop_conversion_options</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="prelude-val">None</span>), <span class="ident">CropRect</span>::<span class="ident">NO_CROP_RECT</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="ident">CropRect</span>::<span class="ident">NO_CROP_RECT</span>), <span class="ident">CropRect</span>::<span class="ident">NO_CROP_RECT</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="kw-2">&amp;</span><span class="ident">CropRect</span>::<span class="ident">NO_CROP_RECT</span>), <span class="ident">CropRect</span>::<span class="ident">NO_CROP_RECT</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="prelude-val">None</span>), <span class="ident">CropRect::NO_CROP_RECT</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="ident">CropRect::NO_CROP_RECT</span>), <span class="ident">CropRect::NO_CROP_RECT</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="kw-2">&amp;</span><span class="ident">CropRect::NO_CROP_RECT</span>), <span class="ident">CropRect::NO_CROP_RECT</span>);
         <span class="kw">let</span> <span class="ident">irect</span> <span class="op">=</span> <span class="ident">IRect</span> {
             <span class="ident">left</span>: <span class="number">1</span>,
             <span class="ident">top</span>: <span class="number">2</span>,
             <span class="ident">right</span>: <span class="number">3</span>,
             <span class="ident">bottom</span>: <span class="number">4</span>,
         };
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="ident">irect</span>), <span class="ident">CropRect</span>(<span class="ident">Rect</span>::<span class="ident">from</span>(<span class="ident">irect</span>)));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="kw-2">&amp;</span><span class="ident">irect</span>), <span class="ident">CropRect</span>(<span class="ident">Rect</span>::<span class="ident">from</span>(<span class="ident">irect</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="ident">irect</span>), <span class="ident">CropRect</span>(<span class="ident">Rect::from</span>(<span class="ident">irect</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="kw-2">&amp;</span><span class="ident">irect</span>), <span class="ident">CropRect</span>(<span class="ident">Rect::from</span>(<span class="ident">irect</span>)));
         <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect</span> {
             <span class="ident">left</span>: <span class="number">1.0</span>,
             <span class="ident">top</span>: <span class="number">2.0</span>,
             <span class="ident">right</span>: <span class="number">3.0</span>,
             <span class="ident">bottom</span>: <span class="number">4.0</span>,
         };
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="ident">rect</span>), <span class="ident">CropRect</span>(<span class="ident">rect</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cr</span>(<span class="kw-2">&amp;</span><span class="ident">rect</span>), <span class="ident">CropRect</span>(<span class="ident">rect</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="ident">rect</span>), <span class="ident">CropRect</span>(<span class="ident">rect</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">cr</span>(<span class="kw-2">&amp;</span><span class="ident">rect</span>), <span class="ident">CropRect</span>(<span class="ident">rect</span>));
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

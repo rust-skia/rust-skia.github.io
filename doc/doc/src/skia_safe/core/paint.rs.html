@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\paint.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>paint.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -387,27 +387,27 @@
     <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">BlendMode</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorFilter</span>, <span class="ident">ColorSpace</span>, <span class="ident">ImageFilter</span>,
     <span class="ident">MaskFilter</span>, <span class="ident">Path</span>, <span class="ident">PathEffect</span>, <span class="ident">Rect</span>, <span class="ident">Shader</span>,
 };
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkPaint</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
+<span class="kw">use</span> <span class="ident">std::hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
+<span class="kw">use</span> <span class="ident">std::ptr</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkPaint_Style</span> <span class="kw">as</span> <span class="ident">Style</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkPaint_Style</span> <span class="kw">as</span> <span class="ident">Style</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_style_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Style</span>::<span class="ident">Fill</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Style::Fill</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkPaint_Cap</span> <span class="kw">as</span> <span class="ident">Cap</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkPaint_Cap</span> <span class="kw">as</span> <span class="ident">Cap</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_cap_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Cap</span>::<span class="ident">Butt</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Cap::Butt</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkPaint_Join</span> <span class="kw">as</span> <span class="ident">Join</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkPaint_Join</span> <span class="kw">as</span> <span class="ident">Join</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_join_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Join</span>::<span class="ident">Miter</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Join::Miter</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Paint</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPaint</span><span class="op">&gt;</span>;
@@ -416,19 +416,19 @@
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPaint</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_destruct</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_destruct</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkPaint</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkPaint</span>::<span class="ident">new2</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">SkPaint::new2</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkPaint</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
@@ -440,12 +440,12 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPaint</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Paint</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkPaint</span>::<span class="ident">new</span>() })
+        <span class="ident">Paint::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkPaint::new</span>() })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Paint</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Paint</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Paint&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;is_anti_alias&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_anti_alias</span>())
             .<span class="ident">field</span>(<span class="string">&quot;is_dither&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_dither</span>())
@@ -470,8 +470,8 @@
         <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Paint</span> {
         <span class="kw">let</span> <span class="ident">color_space</span> <span class="op">=</span> <span class="ident">color_space</span>.<span class="ident">into</span>();
-        <span class="ident">Paint</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="ident">SkPaint</span>::<span class="ident">new1</span>(
+        <span class="ident">Paint::from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="ident">SkPaint::new1</span>(
                 <span class="ident">color</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
                 <span class="ident">color_space</span>.<span class="ident">native_ptr_or_null_mut_force</span>(),
             )
@@ -512,7 +512,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Style</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_getStyle</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_getStyle</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_style</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">style</span>: <span class="ident">Style</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -530,7 +530,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color4f</span> {
-        <span class="ident">Color4f</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fColor4f</span>)
+        <span class="ident">Color4f::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fColor4f</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -559,7 +559,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_getAlpha</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_getAlpha</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_f</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -568,7 +568,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set_alpha_f</span>(<span class="ident">f32</span>::<span class="ident">from</span>(<span class="ident">alpha</span>) <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="number">255.0</span>))
+        <span class="self">self</span>.<span class="ident">set_alpha_f</span>(<span class="ident">f32::from</span>(<span class="ident">alpha</span>) <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="number">255.0</span>))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_argb</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="ident">u8</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -598,7 +598,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stroke_cap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cap</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_getStrokeCap</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_getStrokeCap</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_stroke_cap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cap</span>: <span class="ident">Cap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -607,7 +607,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stroke_join</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Join</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_getStrokeJoin</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_getStrokeJoin</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_stroke_join</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">join</span>: <span class="ident">Join</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -621,11 +621,11 @@
         <span class="ident">cull_rect</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">res_scale</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Path::default</span>();
 
         <span class="kw">let</span> <span class="ident">cull_rect_ptr</span> <span class="op">=</span> <span class="ident">cull_rect</span>
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">native</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>)
-            .<span class="ident">unwrap_or</span>(<span class="ident">ptr</span>::<span class="ident">null</span>());
+            .<span class="ident">unwrap_or</span>(<span class="ident">ptr::null</span>());
 
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getFillPath</span>(
@@ -639,31 +639,31 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shader</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
-        <span class="ident">Shader</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fShader</span>.<span class="ident">fPtr</span>)
+        <span class="ident">Shader::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fShader</span>.<span class="ident">fPtr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_shader</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">shader</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_setShader</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">shader</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_setShader</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">shader</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>()) }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
-        <span class="ident">ColorFilter</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fColorFilter</span>.<span class="ident">fPtr</span>)
+        <span class="ident">ColorFilter::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fColorFilter</span>.<span class="ident">fPtr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_filter</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color_filter</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkPaint_setColorFilter</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">color_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+            <span class="ident">sb::C_SkPaint_setColorFilter</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">color_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlendMode</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPaint_getBlendMode</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPaint_getBlendMode</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_src_over</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">blend_mode</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">BlendMode</span>::<span class="ident">SrcOver</span>
+        <span class="self">self</span>.<span class="ident">blend_mode</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">BlendMode::SrcOver</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_blend_mode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -677,34 +677,34 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">path_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-        <span class="ident">PathEffect</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPathEffect</span>.<span class="ident">fPtr</span>)
+        <span class="ident">PathEffect::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPathEffect</span>.<span class="ident">fPtr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path_effect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path_effect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkPaint_setPathEffect</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">path_effect</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+            <span class="ident">sb::C_SkPaint_setPathEffect</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">path_effect</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mask_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MaskFilter</span><span class="op">&gt;</span> {
-        <span class="ident">MaskFilter</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMaskFilter</span>.<span class="ident">fPtr</span>)
+        <span class="ident">MaskFilter::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMaskFilter</span>.<span class="ident">fPtr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_mask_filter</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mask_filter</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MaskFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkPaint_setMaskFilter</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">mask_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+            <span class="ident">sb::C_SkPaint_setMaskFilter</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">mask_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
-        <span class="ident">ImageFilter</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fImageFilter</span>.<span class="ident">fPtr</span>)
+        <span class="ident">ImageFilter::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fImageFilter</span>.<span class="ident">fPtr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_image_filter</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image_filter</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkPaint_setImageFilter</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">image_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+            <span class="ident">sb::C_SkPaint_setImageFilter</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">image_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         }
         <span class="self">self</span>
     }
@@ -716,54 +716,54 @@
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">default_creation</span>() {
-    <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint</span>::<span class="ident">default</span>();
+    <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
     <span class="ident">drop</span>(<span class="ident">paint</span>)
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">method_chaining_compiles</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint</span>::<span class="ident">default</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
     <span class="kw">let</span> <span class="ident">_paint</span> <span class="op">=</span> <span class="ident">paint</span>.<span class="ident">reset</span>().<span class="ident">reset</span>();
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">union_flags</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint</span>::<span class="ident">default</span>();
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_anti_alias</span>());
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_dither</span>());
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">paint</span>.<span class="ident">style</span>(), <span class="ident">Style</span>::<span class="ident">Fill</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_anti_alias</span>());
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_dither</span>());
+    <span class="macro">assert_eq!</span>(<span class="ident">paint</span>.<span class="ident">style</span>(), <span class="ident">Style::Fill</span>);
 
     {
         <span class="ident">paint</span>.<span class="ident">set_anti_alias</span>(<span class="bool-val">true</span>);
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">paint</span>.<span class="ident">is_anti_alias</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_dither</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">paint</span>.<span class="ident">style</span>(), <span class="ident">Style</span>::<span class="ident">Fill</span>);
+        <span class="macro">assert!</span>(<span class="ident">paint</span>.<span class="ident">is_anti_alias</span>());
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_dither</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">paint</span>.<span class="ident">style</span>(), <span class="ident">Style::Fill</span>);
 
         <span class="ident">paint</span>.<span class="ident">set_anti_alias</span>(<span class="bool-val">false</span>);
     }
 
     {
-        <span class="ident">paint</span>.<span class="ident">set_style</span>(<span class="ident">Style</span>::<span class="ident">StrokeAndFill</span>);
+        <span class="ident">paint</span>.<span class="ident">set_style</span>(<span class="ident">Style::StrokeAndFill</span>);
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_anti_alias</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_dither</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">paint</span>.<span class="ident">style</span>(), <span class="ident">Style</span>::<span class="ident">StrokeAndFill</span>);
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_anti_alias</span>());
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">paint</span>.<span class="ident">is_dither</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">paint</span>.<span class="ident">style</span>(), <span class="ident">Style::StrokeAndFill</span>);
 
-        <span class="ident">paint</span>.<span class="ident">set_style</span>(<span class="ident">Style</span>::<span class="ident">Fill</span>);
+        <span class="ident">paint</span>.<span class="ident">set_style</span>(<span class="ident">Style::Fill</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">set_color4f_color_space</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint</span>::<span class="ident">default</span>();
-    <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">from</span>(<span class="ident">Color</span>::<span class="ident">DARK_GRAY</span>);
-    <span class="kw">let</span> <span class="ident">color_space</span> <span class="op">=</span> <span class="ident">ColorSpace</span>::<span class="ident">new_srgb</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
+    <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color4f::from</span>(<span class="ident">Color::DARK_GRAY</span>);
+    <span class="kw">let</span> <span class="ident">color_space</span> <span class="op">=</span> <span class="ident">ColorSpace::new_srgb</span>();
     <span class="ident">paint</span>.<span class="ident">set_color4f</span>(<span class="kw-2">&amp;</span><span class="ident">color</span>, <span class="prelude-val">None</span>);
     <span class="ident">paint</span>.<span class="ident">set_color4f</span>(<span class="kw-2">&amp;</span><span class="ident">color</span>, <span class="kw-2">&amp;</span><span class="ident">color_space</span>);
-    <span class="kw">let</span> <span class="ident">color2</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">from</span>(<span class="ident">Color</span>::<span class="ident">DARK_GRAY</span>);
+    <span class="kw">let</span> <span class="ident">color2</span> <span class="op">=</span> <span class="ident">Color4f::from</span>(<span class="ident">Color::DARK_GRAY</span>);
     <span class="ident">paint</span>.<span class="ident">set_color4f</span>(<span class="ident">color2</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">color_space</span>));
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

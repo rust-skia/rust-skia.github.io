@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\yuva_info.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>yuva_info.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -316,7 +316,7 @@
 <span id="313">313</span>
 <span id="314">314</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">image_info</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::image_info</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">EncodedOrigin</span>, <span class="ident">ISize</span>, <span class="ident">Matrix</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkYUVAInfo</span>, <span class="ident">SkYUVAInfo_Subsampling</span>};
 
@@ -330,7 +330,7 @@
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkYUVAInfo</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_destruct</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_destruct</span>(<span class="self">self</span>) }
     }
 }
 
@@ -345,7 +345,7 @@
 <span class="doccomment">/// RG                       0:R,    1:G</span>
 <span class="doccomment">/// RGB                      0:R,    1:G, 2:B</span>
 <span class="doccomment">/// RGBA                     0:R,    1:G, 2:B, 3:A</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkYUVAInfo_PlaneConfig</span> <span class="kw">as</span> <span class="ident">PlaneConfig</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkYUVAInfo_PlaneConfig</span> <span class="kw">as</span> <span class="ident">PlaneConfig</span>;
 
 <span class="doccomment">/// UV subsampling is also specified in the enum value names using J:a:b notation (e.g. 4:2:0 is</span>
 <span class="doccomment">/// 1/2 horizontal and 1/2 vertical resolution for U and V). If alpha is present it is not sub-</span>
@@ -354,13 +354,13 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Subsampling</span> {
-    <span class="ident">Unknown</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">kUnknown</span> <span class="kw">as</span> <span class="kw">_</span>,
-    <span class="ident">S444</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">k444</span> <span class="kw">as</span> <span class="kw">_</span>,
-    <span class="ident">S422</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">k422</span> <span class="kw">as</span> <span class="kw">_</span>,
-    <span class="ident">S420</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">k420</span> <span class="kw">as</span> <span class="kw">_</span>,
-    <span class="ident">S440</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">k440</span> <span class="kw">as</span> <span class="kw">_</span>,
-    <span class="ident">S411</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">k411</span> <span class="kw">as</span> <span class="kw">_</span>,
-    <span class="ident">S410</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling</span>::<span class="ident">k410</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">Unknown</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::kUnknown</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">S444</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::k444</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">S422</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::k422</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">S420</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::k420</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">S440</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::k440</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">S411</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::k411</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="ident">S410</span> <span class="op">=</span> <span class="ident">SkYUVAInfo_Subsampling::k410</span> <span class="kw">as</span> <span class="kw">_</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">SkYUVAInfo_Subsampling</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Subsampling</span> {}
@@ -368,12 +368,12 @@
 <span class="doccomment">/// Describes how subsampled chroma values are sited relative to luma values.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Currently only centered siting is supported but will expand to support additional sitings.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkYUVAInfo_Siting</span> <span class="kw">as</span> <span class="ident">Siting</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkYUVAInfo_Siting</span> <span class="kw">as</span> <span class="ident">Siting</span>;
 
 <span class="doccomment">/// Ratio of Y/A values to U/V values in x and y.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subsampling_factors</span>(<span class="ident">subsampling</span>: <span class="ident">Subsampling</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">i32</span>, <span class="ident">i32</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">factors</span>: [<span class="ident">i32</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
-    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_SubsamplingFactors</span>(<span class="ident">subsampling</span>.<span class="ident">into_native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">factors</span>[<span class="number">0</span>]) };
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">factors</span>: [<span class="ident">i32</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
+    <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_SubsamplingFactors</span>(<span class="ident">subsampling</span>.<span class="ident">into_native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">factors</span>[<span class="number">0</span>]) };
     (<span class="ident">factors</span>[<span class="number">0</span>], <span class="ident">factors</span>[<span class="number">1</span>])
 }
 
@@ -385,9 +385,9 @@
     <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>,
     <span class="ident">plane_index</span>: <span class="ident">usize</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">i32</span>, <span class="ident">i32</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">factors</span>: [<span class="ident">i32</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">factors</span>: [<span class="ident">i32</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
     <span class="kw">unsafe</span> {
-        <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_PlaneSubsamplingFactors</span>(
+        <span class="ident">sb::C_SkYUVAInfo_PlaneSubsamplingFactors</span>(
             <span class="ident">plane</span>,
             <span class="ident">subsampling</span>.<span class="ident">into_native</span>(),
             <span class="ident">plane_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
@@ -407,9 +407,9 @@
     <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>,
     <span class="ident">origin</span>: <span class="ident">EncodedOrigin</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plane_dimensions</span> <span class="op">=</span> [<span class="ident">ISize</span>::<span class="ident">default</span>(); <span class="ident">YUVAInfo</span>::<span class="ident">MAX_PLANES</span>];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plane_dimensions</span> <span class="op">=</span> [<span class="ident">ISize::default</span>(); <span class="ident">YUVAInfo::MAX_PLANES</span>];
     <span class="kw">let</span> <span class="ident">size</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="ident">SkYUVAInfo</span>::<span class="ident">PlaneDimensions</span>(
+        <span class="ident">SkYUVAInfo::PlaneDimensions</span>(
             <span class="ident">image_dimensions</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
             <span class="ident">config</span>,
             <span class="ident">subsampling</span>.<span class="ident">into_native</span>(),
@@ -425,7 +425,7 @@
 
 <span class="doccomment">/// Number of planes for a given [PlaneConfig].</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_NumPlanes</span>(<span class="ident">config</span>) }
+    <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_NumPlanes</span>(<span class="ident">config</span>) }
         .<span class="ident">try_into</span>()
         .<span class="ident">unwrap</span>()
 }
@@ -434,7 +434,7 @@
 <span class="doccomment">/// invalid).</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_in_plane</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     (<span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">num_planes</span>(<span class="ident">config</span>)).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_NumChannelsInPlane</span>(<span class="ident">config</span>, <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_NumChannelsInPlane</span>(<span class="ident">config</span>, <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
     })
@@ -442,23 +442,23 @@
 
 <span class="doccomment">/// Does the [PlaneConfig] have alpha values?</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alpha</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">SkYUVAInfo_HasAlpha</span>(<span class="ident">config</span>) }
+    <span class="kw">unsafe</span> { <span class="ident">sb::SkYUVAInfo_HasAlpha</span>(<span class="ident">config</span>) }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">yi</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_Construct</span>(<span class="ident">yi</span>) })
+        <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">yi</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_Construct</span>(<span class="ident">yi</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">rhs</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">rhs</span>.<span class="ident">native</span>()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;YUVAInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;dimensions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dimensions</span>())
             .<span class="ident">field</span>(<span class="string">&quot;plane_config&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">plane_config</span>())
@@ -471,7 +471,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">YUVAInfo</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_PLANES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkYUVAInfo_kMaxPlanes</span> <span class="kw">as</span> <span class="kw">_</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_PLANES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">sb::SkYUVAInfo_kMaxPlanes</span> <span class="kw">as</span> <span class="kw">_</span>;
 
     <span class="doccomment">/// `dimensions` should specify the size of the full resolution image (after planes have been</span>
     <span class="doccomment">/// oriented to how the image is displayed as indicated by `origin`).</span>
@@ -479,17 +479,17 @@
         <span class="ident">dimensions</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>,
         <span class="ident">config</span>: <span class="ident">PlaneConfig</span>,
         <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>,
-        <span class="ident">color_space</span>: <span class="ident">image_info</span>::<span class="ident">YUVColorSpace</span>,
+        <span class="ident">color_space</span>: <span class="ident">image_info::YUVColorSpace</span>,
         <span class="ident">origin</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EncodedOrigin</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">siting_xy</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Siting</span>, <span class="ident">Siting</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">origin</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">EncodedOrigin</span>::<span class="ident">TopLeft</span>);
+        <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">origin</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">EncodedOrigin::TopLeft</span>);
         <span class="kw">let</span> (<span class="ident">siting_x</span>, <span class="ident">siting_y</span>) <span class="op">=</span> <span class="ident">siting_xy</span>
             .<span class="ident">into</span>()
-            .<span class="ident">unwrap_or</span>((<span class="ident">Siting</span>::<span class="ident">Centered</span>, <span class="ident">Siting</span>::<span class="ident">Centered</span>));
+            .<span class="ident">unwrap_or</span>((<span class="ident">Siting::Centered</span>, <span class="ident">Siting::Centered</span>));
 
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">SkYUVAInfo</span>::<span class="ident">new</span>(
+            <span class="ident">SkYUVAInfo::new</span>(
                 <span class="ident">dimensions</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
                 <span class="ident">config</span>,
                 <span class="ident">subsampling</span>.<span class="ident">into_native</span>(),
@@ -499,7 +499,7 @@
                 <span class="ident">siting_y</span>,
             )
         };
-        <span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="ident">n</span>))
+        <span class="self">Self</span><span class="ident">::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="self">Self</span><span class="ident">::from_native_c</span>(<span class="ident">n</span>))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PlaneConfig</span> {
@@ -507,7 +507,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subsampling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Subsampling</span> {
-        <span class="ident">Subsampling</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fSubsampling</span>)
+        <span class="ident">Subsampling::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fSubsampling</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_subsampling_factors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">plane_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">i32</span>, <span class="ident">i32</span>) {
@@ -517,7 +517,7 @@
     <span class="doccomment">/// Dimensions of the full resolution image (after planes have been oriented to how the image</span>
     <span class="doccomment">/// is displayed as indicated by fOrigin).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
-        <span class="ident">ISize</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDimensions</span>)
+        <span class="ident">ISize::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDimensions</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
@@ -528,7 +528,7 @@
         <span class="self">self</span>.<span class="ident">dimensions</span>().<span class="ident">height</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">image_info</span>::<span class="ident">YUVColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">image_info::YUVColorSpace</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fYUVColorSpace</span>
     }
 
@@ -538,7 +538,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EncodedOrigin</span> {
-        <span class="ident">EncodedOrigin</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fOrigin</span>)
+        <span class="ident">EncodedOrigin::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fOrigin</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
@@ -552,7 +552,7 @@
     <span class="doccomment">/// Returns the dimensions for each plane. Dimensions are as stored in memory, before</span>
     <span class="doccomment">/// transformation to image display space as indicated by [origin(&amp;self)].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>::<span class="ident">plane_dimensions</span>(
+        <span class="self">self</span><span class="ident">::plane_dimensions</span>(
             <span class="self">self</span>.<span class="ident">dimensions</span>(),
             <span class="self">self</span>.<span class="ident">plane_config</span>(),
             <span class="self">self</span>.<span class="ident">subsampling</span>(),
@@ -565,15 +565,15 @@
     <span class="doccomment">/// `SIZE_MAX` and set all planeSizes to `SIZE_MAX`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_total_bytes</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">row_bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">usize</span>; <span class="self">Self</span>::<span class="ident">MAX_PLANES</span>],
-        <span class="ident">plane_sizes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">usize</span>; <span class="self">Self</span>::<span class="ident">MAX_PLANES</span>]<span class="op">&gt;</span>,
+        <span class="ident">row_bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">usize</span>; <span class="self">Self</span><span class="ident">::MAX_PLANES</span>],
+        <span class="ident">plane_sizes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">usize</span>; <span class="self">Self</span><span class="ident">::MAX_PLANES</span>]<span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeTotalBytes</span>(
                 <span class="ident">row_bytes</span>.<span class="ident">as_ptr</span>(),
                 <span class="ident">plane_sizes</span>
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>())
-                    .<span class="ident">unwrap_or</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>()),
+                    .<span class="ident">unwrap_or</span>(<span class="ident">ptr::null_mut</span>()),
             )
         }
     }
@@ -591,45 +591,45 @@
     <span class="doccomment">/// compatible with chroma subsampling (because Y is in the same plane as UV) then the result</span>
     <span class="doccomment">/// will be `None`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_subsampling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">try_construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_makeSubsampling</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">subsampling</span>.<span class="ident">into_native</span>(), <span class="ident">info</span>);
-            <span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">info</span>)
+        <span class="self">Self</span><span class="ident">::try_construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkYUVAInfo_makeSubsampling</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">subsampling</span>.<span class="ident">into_native</span>(), <span class="ident">info</span>);
+            <span class="self">Self</span><span class="ident">::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">info</span>)
         })
     }
 
     <span class="doccomment">/// Returns a [YUVAInfo] that is identical to this one but with the passed dimensions. If the</span>
     <span class="doccomment">/// passed dimensions is empty then the result will be `None`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dimensions</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">try_construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkYUVAInfo_makeDimensions</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">dimensions</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">info</span>);
-            <span class="self">Self</span>::<span class="ident">native_is_valid</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">info</span>)
+        <span class="self">Self</span><span class="ident">::try_construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkYUVAInfo_makeDimensions</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">dimensions</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">info</span>);
+            <span class="self">Self</span><span class="ident">::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">info</span>)
         })
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">SkYUVAInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">info</span>.<span class="ident">fPlaneConfig</span> <span class="op">!</span><span class="op">=</span> <span class="ident">PlaneConfig</span>::<span class="ident">Unknown</span>
+        <span class="ident">info</span>.<span class="ident">fPlaneConfig</span> <span class="op">!</span><span class="op">=</span> <span class="ident">PlaneConfig::Unknown</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="ident">NativeTransmutable</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude::NativeTransmutable</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_plane_config_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">super</span>::<span class="ident">PlaneConfig</span>::<span class="ident">Y_U_V</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::PlaneConfig::Y_U_V</span>;
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_subsampling_layout</span>() {
-        <span class="kw">super</span>::<span class="ident">Subsampling</span>::<span class="ident">test_layout</span>();
+        <span class="kw">super</span><span class="ident">::Subsampling::test_layout</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_siting_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">super</span>::<span class="ident">Siting</span>::<span class="ident">Centered</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::Siting::Centered</span>;
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

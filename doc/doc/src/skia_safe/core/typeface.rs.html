@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\typeface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>typeface.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -354,7 +354,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">font_arguments</span>,
-    <span class="ident">font_parameters</span>::<span class="ident">VariationAxis</span>,
+    <span class="ident">font_parameters::VariationAxis</span>,
     <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">MemoryStream</span>, <span class="ident">NativeStreamBase</span>, <span class="ident">StreamAsset</span>},
     <span class="ident">prelude</span>::<span class="kw-2">*</span>,
     <span class="ident">Data</span>, <span class="ident">FontArguments</span>, <span class="ident">FontStyle</span>, <span class="ident">GlyphId</span>, <span class="ident">Rect</span>, <span class="ident">Unichar</span>,
@@ -362,13 +362,13 @@
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkRefCntBase</span>, <span class="ident">SkTypeface</span>, <span class="ident">SkTypeface_LocalizedStrings</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>};
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontId</span> <span class="op">=</span> <span class="ident">skia_bindings</span>::<span class="ident">SkFontID</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontTableTag</span> <span class="op">=</span> <span class="ident">skia_bindings</span>::<span class="ident">SkFontTableTag</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontId</span> <span class="op">=</span> <span class="ident">skia_bindings::SkFontID</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontTableTag</span> <span class="op">=</span> <span class="ident">skia_bindings::SkFontTableTag</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkTypeface_SerializeBehavior</span> <span class="kw">as</span> <span class="ident">SerializeBehavior</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkTypeface_SerializeBehavior</span> <span class="kw">as</span> <span class="ident">SerializeBehavior</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_typeface_serialize_behavior_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SerializeBehavior</span>::<span class="ident">DontIncludeData</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SerializeBehavior::DontIncludeData</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
@@ -387,12 +387,12 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Typeface</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Typeface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_MakeDefault</span>() }).<span class="ident">unwrap</span>()
+        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_MakeDefault</span>() }).<span class="ident">unwrap</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Typeface</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Typeface</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Typeface&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;font_style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_style</span>())
             .<span class="ident">field</span>(<span class="string">&quot;is_fixed_pitch&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_fixed_pitch</span>())
@@ -406,19 +406,19 @@
 <span class="kw">impl</span> <span class="ident">Typeface</span> {
     <span class="comment">// Canonical new:</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">family_name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_name</span>(<span class="ident">family_name</span>, <span class="ident">font_style</span>)
+        <span class="self">Self</span><span class="ident">::from_name</span>(<span class="ident">family_name</span>, <span class="ident">font_style</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FontStyle</span> {
-        <span class="ident">FontStyle</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fStyle</span>)
+        <span class="ident">FontStyle::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fStyle</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_bold</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_isBold</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_isBold</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_italic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_isItalic</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_isItalic</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_fixed_pitch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -427,15 +427,15 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variation_design_position</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">font_arguments</span>::<span class="ident">variation_position</span>::<span class="ident">Coordinate</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">font_arguments::variation_position::Coordinate</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getVariationDesignPosition</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>(), <span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getVariationDesignPosition</span>(<span class="ident">ptr::null_mut</span>(), <span class="number">0</span>);
             <span class="kw">if</span> <span class="ident">r</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">font_arguments</span>::<span class="ident">variation_position</span>::<span class="ident">Coordinate</span>::<span class="ident">default</span>(); <span class="ident">r</span> <span class="kw">as</span> <span class="kw">_</span>];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">font_arguments::variation_position::Coordinate::default</span>(); <span class="ident">r</span> <span class="kw">as</span> <span class="kw">_</span>];
                 <span class="kw">let</span> <span class="ident">elements</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">native</span>()
                     .<span class="ident">getVariationDesignPosition</span>(<span class="ident">v</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(), <span class="ident">r</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">elements</span>, <span class="ident">r</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">elements</span>, <span class="ident">r</span>);
                 <span class="prelude-val">Some</span>(<span class="ident">v</span>)
             } <span class="kw">else</span> {
                 <span class="prelude-val">None</span>
@@ -447,13 +447,13 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>
                 .<span class="ident">native</span>()
-                .<span class="ident">getVariationDesignParameters</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>(), <span class="number">0</span>);
+                .<span class="ident">getVariationDesignParameters</span>(<span class="ident">ptr::null_mut</span>(), <span class="number">0</span>);
             <span class="kw">if</span> <span class="ident">r</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">VariationAxis</span>::<span class="ident">default</span>(); <span class="ident">r</span> <span class="kw">as</span> <span class="kw">_</span>];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">VariationAxis::default</span>(); <span class="ident">r</span> <span class="kw">as</span> <span class="kw">_</span>];
                 <span class="kw">let</span> <span class="ident">elements</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">native</span>()
                     .<span class="ident">getVariationDesignParameters</span>(<span class="ident">v</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(), <span class="ident">r</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">elements</span>, <span class="ident">r</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">elements</span>, <span class="ident">r</span>);
                 <span class="prelude-val">Some</span>(<span class="ident">v</span>)
             } <span class="kw">else</span> {
                 <span class="prelude-val">None</span>
@@ -470,13 +470,13 @@
     <span class="comment">// Decided not to support PartialEq instead of this function,</span>
     <span class="comment">// because Skia does not support the operator ==.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equal</span>(<span class="ident">face_a</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>, <span class="ident">face_b</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkTypeface</span>::<span class="ident">Equal</span>(<span class="ident">face_a</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">face_b</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">SkTypeface::Equal</span>(<span class="ident">face_a</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">face_b</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_name</span>(<span class="ident">family_name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">family_name</span> <span class="op">=</span> <span class="ident">ffi</span>::<span class="ident">CString</span>::<span class="ident">new</span>(<span class="ident">family_name</span>.<span class="ident">as_ref</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>;
-        <span class="ident">Typeface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkTypeface_MakeFromName</span>(<span class="ident">family_name</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">*</span><span class="ident">font_style</span>.<span class="ident">native</span>())
+        <span class="kw">let</span> <span class="ident">family_name</span> <span class="op">=</span> <span class="ident">ffi::CString::new</span>(<span class="ident">family_name</span>.<span class="ident">as_ref</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>;
+        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkTypeface_MakeFromName</span>(<span class="ident">family_name</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">*</span><span class="ident">font_style</span>.<span class="ident">native</span>())
         })
     }
 
@@ -486,8 +486,8 @@
     <span class="comment">// TODO: MakeFromStream()?</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_data</span>(<span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>, <span class="ident">index</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkTypeface_MakeFromData</span>(
+        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkTypeface_MakeFromData</span>(
                 <span class="ident">data</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
                 <span class="ident">index</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
             )
@@ -495,27 +495,27 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_with_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">arguments</span>: <span class="kw-2">&amp;</span><span class="ident">FontArguments</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_makeClone</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">arguments</span>.<span class="ident">native</span>()) })
+        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_makeClone</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">arguments</span>.<span class="ident">native</span>()) })
     }
 
     <span class="comment">// TODO: serialize(Write)?</span>
 
     <span class="comment">// TODO: return Data as impl Deref&lt;[u8]&gt; / Borrow&lt;[u8]&gt; here?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">behavior</span>: <span class="ident">SerializeBehavior</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Data</span> {
-        <span class="ident">Data</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">behavior</span>) }).<span class="ident">unwrap</span>()
+        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">behavior</span>) }).<span class="ident">unwrap</span>()
     }
 
     <span class="comment">// TODO: Deserialize(Read?)</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">MemoryStream</span>::<span class="ident">from_bytes</span>(<span class="ident">data</span>);
-        <span class="ident">Typeface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkTypeface_MakeDeserialize</span>(<span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>())
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">MemoryStream::from_bytes</span>(<span class="ident">data</span>);
+        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkTypeface_MakeDeserialize</span>(<span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>())
         })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unichars_to_glyphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uni</span>: <span class="kw-2">&amp;</span>[<span class="ident">Unichar</span>], <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>]) {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">uni</span>.<span class="ident">len</span>(), <span class="ident">glyphs</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">uni</span>.<span class="ident">len</span>(), <span class="ident">glyphs</span>.<span class="ident">len</span>());
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">unicharsToGlyphs</span>(
                 <span class="ident">uni</span>.<span class="ident">as_ptr</span>(),
@@ -538,7 +538,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">table_tags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FontTableTag</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FontTableTag</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>; <span class="self">self</span>.<span class="ident">count_tables</span>()];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FontTableTag</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="self">self</span>.<span class="ident">count_tables</span>()];
         (<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getTableTags</span>(<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>()) } <span class="op">!</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">if_true_some</span>(<span class="ident">v</span>)
     }
 
@@ -559,7 +559,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_table_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">FontTableTag</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span> {
-        <span class="ident">Data</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_copyTableData</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">tag</span>) })
+        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_copyTableData</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">tag</span>) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">units_per_em</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
@@ -588,11 +588,11 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_family_name_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">LocalizedString</span><span class="op">&gt;</span> {
-        <span class="ident">LocalizedStringsIter</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">createFamilyNameIterator</span>() }).<span class="ident">unwrap</span>()
+        <span class="ident">LocalizedStringsIter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">createFamilyNameIterator</span>() }).<span class="ident">unwrap</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">family_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">interop</span>::<span class="ident">String</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getFamilyName</span>(<span class="ident">name</span>.<span class="ident">native_mut</span>());
         };
@@ -600,20 +600,20 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_script_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">interop</span>::<span class="ident">String</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getPostScriptName</span>(<span class="ident">name</span>.<span class="ident">native_mut</span>()) }
             .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">as_str</span>().<span class="ident">into</span>())
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_font_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ttc_index</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">StreamAsset</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_openStream</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ttc_index</span>) })
+        <span class="ident">StreamAsset::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_openStream</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ttc_index</span>) })
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">stream</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkStreamAsset_getLength</span>(<span class="ident">stream</span>.<span class="ident">native</span>()) };
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0u8</span>; <span class="ident">length</span>];
+                <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStreamAsset_getLength</span>(<span class="ident">stream</span>.<span class="ident">native</span>()) };
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">length</span>];
                 <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>();
                 <span class="kw">let</span> <span class="ident">read</span> <span class="op">=</span>
-                    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkStream_read</span>(<span class="ident">stream</span>, <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) };
+                    <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStream_read</span>(<span class="ident">stream</span>, <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) };
                 (<span class="ident">read</span> <span class="op">=</span><span class="op">=</span> <span class="ident">data</span>.<span class="ident">len</span>()).<span class="ident">if_true_some</span>((<span class="ident">data</span>, <span class="ident">ttc_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()))
             })
     }
@@ -621,7 +621,7 @@
     <span class="comment">// TODO: createScalerContext()</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
-        <span class="ident">Rect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_getBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+        <span class="ident">Rect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_getBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 }
 
@@ -629,12 +629,12 @@
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkTypeface_LocalizedStrings</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkTypeface_LocalizedStrings_unref</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_LocalizedStrings_unref</span>(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">LocalizedStringsIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">LocalizedStringsIter</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;LocalizedStringsIter&quot;</span>).<span class="ident">finish</span>()
     }
 }
@@ -642,11 +642,11 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">LocalizedStringsIter</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">LocalizedString</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">string</span> <span class="op">=</span> <span class="ident">interop</span>::<span class="ident">String</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">language</span> <span class="op">=</span> <span class="ident">interop</span>::<span class="ident">String</span>::<span class="ident">default</span>();
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">string</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">language</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkTypeface_LocalizedStrings_next</span>(
+            <span class="ident">sb::C_SkTypeface_LocalizedStrings_next</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">string</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">language</span>.<span class="ident">native_mut</span>(),
@@ -665,43 +665,43 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">serialize_and_deserialize_default_typeface</span>() {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior</span>::<span class="ident">DoIncludeData</span>);
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
+        <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior::DoIncludeData</span>);
         <span class="comment">// On Android, the deserialized typeface name changes from sans-serif to Roboto.</span>
         <span class="comment">// (which is probably OK, because Roboto _is_ the default font, so we do another</span>
         <span class="comment">// serialization / deserialization and compare the family name with already deserialized</span>
         <span class="comment">// one.)</span>
-        <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">serialized2</span> <span class="op">=</span> <span class="ident">deserialized</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior</span>::<span class="ident">DoIncludeData</span>);
-        <span class="kw">let</span> <span class="ident">deserialized2</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized2</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">Typeface::deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">serialized2</span> <span class="op">=</span> <span class="ident">deserialized</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior::DoIncludeData</span>);
+        <span class="kw">let</span> <span class="ident">deserialized2</span> <span class="op">=</span> <span class="ident">Typeface::deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized2</span>).<span class="ident">unwrap</span>();
 
         <span class="comment">// why aren&#39;t they not equal?</span>
         <span class="comment">// assert!(Typeface::equal(&amp;tf, &amp;deserialized));</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">deserialized</span>.<span class="ident">family_name</span>(), <span class="ident">deserialized2</span>.<span class="ident">family_name</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">deserialized</span>.<span class="ident">family_name</span>(), <span class="ident">deserialized2</span>.<span class="ident">family_name</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">family_name_iterator_owns_the_strings_and_returns_at_least_one_name_for_the_default_typeface</span>(
     ) {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
         <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">new_family_name_iterator</span>();
         <span class="ident">drop</span>(<span class="ident">tf</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="ident">family_names</span> {
-            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;family: {}, language: {}&quot;</span>, <span class="ident">name</span>.<span class="ident">string</span>, <span class="ident">name</span>.<span class="ident">language</span>);
+            <span class="macro">println!</span>(<span class="string">&quot;family: {}, language: {}&quot;</span>, <span class="ident">name</span>.<span class="ident">string</span>, <span class="ident">name</span>.<span class="ident">language</span>);
             <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">true</span>
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">any</span>);
+        <span class="macro">assert!</span>(<span class="ident">any</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">get_font_data_of_default</span>() {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
         <span class="kw">let</span> (<span class="ident">data</span>, <span class="ident">_ttc_index</span>) <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">to_font_data</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">is_empty</span>());
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">is_empty</span>());
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

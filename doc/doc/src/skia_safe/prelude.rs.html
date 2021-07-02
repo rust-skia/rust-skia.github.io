@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\prelude.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>prelude.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -974,36 +974,36 @@
     <span class="ident">C_SkRefCntBase_ref</span>, <span class="ident">C_SkRefCntBase_unique</span>, <span class="ident">C_SkRefCntBase_unref</span>, <span class="ident">SkNVRefCnt</span>, <span class="ident">SkRefCnt</span>,
     <span class="ident">SkRefCntBase</span>,
 };
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>};
+<span class="kw">use</span> <span class="ident">std::hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
+<span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>;
+<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">mem</span>, <span class="ident">ptr</span>, <span class="ident">slice</span>};
 <span class="comment">// Re-export TryFrom / TryInto to make them available in all modules that use prelude::*.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::{<span class="ident">TryFrom</span>, <span class="ident">TryInto</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">std::convert</span>::{<span class="ident">TryFrom</span>, <span class="ident">TryInto</span>};
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="doccomment">/// Swiss army knife to convert any reference into any other.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">transmute_ref</span><span class="op">&lt;</span><span class="ident">FromT</span>, <span class="ident">ToT</span><span class="op">&gt;</span>(<span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="ident">FromT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ToT</span> {
     <span class="comment">// TODO: can we do this statically for all instantiations of transmute_ref?</span>
-    <span class="macro">debug_assert_eq</span><span class="macro">!</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">FromT</span><span class="op">&gt;</span>(), <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">ToT</span><span class="op">&gt;</span>());
+    <span class="macro">debug_assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">FromT</span><span class="op">&gt;</span>(), <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">ToT</span><span class="op">&gt;</span>());
     <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">from</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">FromT</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">ToT</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">transmute_ref_mut</span><span class="op">&lt;</span><span class="ident">FromT</span>, <span class="ident">ToT</span><span class="op">&gt;</span>(<span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FromT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ToT</span> {
     <span class="comment">// TODO: can we do this statically for all instantiations of transmute_ref_mut?</span>
-    <span class="macro">debug_assert_eq</span><span class="macro">!</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">FromT</span><span class="op">&gt;</span>(), <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">ToT</span><span class="op">&gt;</span>());
+    <span class="macro">debug_assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">FromT</span><span class="op">&gt;</span>(), <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">ToT</span><span class="op">&gt;</span>());
     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">from</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FromT</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ToT</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">IntoOption</span> {
     <span class="kw">type</span> <span class="ident">Target</span>;
-    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Target</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Target</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">IntoOption</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Target</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Target</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Some</span>(<span class="self">self</span>)
         } <span class="kw">else</span> {
@@ -1013,17 +1013,17 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">IntoOption</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Target</span><span class="op">&gt;</span> {
-        <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">new</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Target</span><span class="op">&gt;</span> {
+        <span class="ident">ptr::NonNull::new</span>(<span class="self">self</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">IntoOption</span> <span class="kw">for</span> <span class="ident">bool</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Target</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Target</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(())
         } <span class="kw">else</span> {
@@ -1065,7 +1065,7 @@
     <span class="comment">// the problem here is that the binding generator represents std::atomic as an u8 (we</span>
     <span class="comment">// are lucky that the C alignment rules make space for an i32), so to get the ref</span>
     <span class="comment">// counter, we need to get the u8 pointer to fRefCnt and interpret it as an i32 pointer.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_ptr_alignment</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
     <span class="kw">fn</span> <span class="ident">ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fRefCnt</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>;
@@ -1083,7 +1083,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">RefCount</span> <span class="kw">for</span> <span class="ident">SkNVRefCnt</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_ptr_alignment</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
     <span class="kw">fn</span> <span class="ident">ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fRefCnt</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>;
@@ -1097,7 +1097,7 @@
     <span class="kw">fn</span> <span class="ident">_unref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
     <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
     <span class="kw">fn</span> <span class="ident">_ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="macro">unimplemented</span><span class="macro">!</span>();
+        <span class="macro">unimplemented!</span>();
     }
 }
 
@@ -1114,7 +1114,7 @@
         <span class="kw">unsafe</span> { <span class="ident">C_SkRefCntBase_unique</span>(<span class="self">self</span>) }
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_ptr_alignment</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
     <span class="kw">fn</span> <span class="ident">_ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fRefCnt</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>;
@@ -1133,8 +1133,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Default implementation assumes that the base class ptr is the same as the</span>
     <span class="doccomment">/// ptr to self.</span>
-    <span class="kw">fn</span> <span class="ident">ref_counted_base</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Base</span> {
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Base</span>) }
+    <span class="kw">fn</span> <span class="ident">ref_counted_base</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Base</span> {
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Base</span>) }
     }
 }
 
@@ -1208,7 +1208,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>
+        <span class="self">self</span>
     }
 }
 
@@ -1243,7 +1243,7 @@
     <span class="doccomment">/// function that expects a pointer that points to</span>
     <span class="doccomment">/// uninitialized memory of the native type.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">construct</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">try_construct</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
+        <span class="self">Self</span><span class="ident">::try_construct</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
             <span class="ident">construct</span>(<span class="ident">i</span>);
             <span class="bool-val">true</span>
         })
@@ -1251,20 +1251,20 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_construct</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">self</span>::<span class="ident">try_construct</span>(<span class="ident">construct</span>).<span class="ident">map</span>(<span class="self">Self</span>::<span class="ident">from_native_c</span>)
+        <span class="self">self</span><span class="ident">::try_construct</span>(<span class="ident">construct</span>).<span class="ident">map</span>(<span class="self">Self</span><span class="ident">::from_native_c</span>)
     }
 
     <span class="doccomment">/// Replaces the native instance with the one from this Handle, and returns the replaced one</span>
     <span class="doccomment">/// wrapped in a Rust Handle without dropping either one.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">replace_native</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">native</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">mem</span>::<span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>, <span class="ident">native</span>);
+        <span class="ident">mem::swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>, <span class="ident">native</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the wrapper and returns the native type.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_native</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>, <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() });
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>, <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() });
+        <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">r</span>
     }
 }
@@ -1290,7 +1290,7 @@
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_construct</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">instance</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">instance</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
     <span class="ident">construct</span>(<span class="ident">instance</span>.<span class="ident">as_mut_ptr</span>()).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">instance</span>.<span class="ident">assume_init</span>() })
 }
 
@@ -1312,7 +1312,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span> <span class="op">+</span> <span class="ident">NativeClone</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native_c</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
+        <span class="self">Self</span><span class="ident">::from_native_c</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
     }
 }
 
@@ -1338,16 +1338,16 @@
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">first</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">native</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">N</span>)
-            .<span class="ident">unwrap_or</span>(<span class="ident">ptr</span>::<span class="ident">null</span>());
-        <span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">len</span>()) }
+            .<span class="ident">unwrap_or</span>(<span class="ident">ptr::null</span>());
+        <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">len</span>()) }
     }
 
     <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">N</span>] {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">first_mut</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>)
-            .<span class="ident">unwrap_or</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>());
-        <span class="kw">unsafe</span> { <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">len</span>()) }
+            .<span class="ident">unwrap_or</span>(<span class="ident">ptr::null_mut</span>());
+        <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">len</span>()) }
     }
 }
 
@@ -1369,14 +1369,14 @@
     <span class="kw">fn</span> <span class="ident">native_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">N</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handle</span>.<span class="ident">native</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">native_ptr_or_null_mut_force</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handle</span>.<span class="ident">native_mut_force</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null_mut</span>(),
         }
     }
 }
@@ -1388,7 +1388,7 @@
     <span class="kw">fn</span> <span class="ident">native_ptr_or_null_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handle</span>.<span class="ident">native_mut</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null_mut</span>(),
         }
     }
 }
@@ -1408,7 +1408,7 @@
     <span class="kw">fn</span> <span class="ident">native_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">N</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handle</span>.<span class="ident">native</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 }
@@ -1420,7 +1420,7 @@
     <span class="kw">fn</span> <span class="ident">native_ptr_or_null_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handle</span>.<span class="ident">native_mut</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null_mut</span>(),
         }
     }
 }
@@ -1428,7 +1428,7 @@
 <span class="doccomment">/// A wrapper type that represents a native type with a pointer to</span>
 <span class="doccomment">/// the native object.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span><span class="op">&gt;</span>(<span class="ident">ptr</span>::<span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span><span class="op">&gt;</span>(<span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeDrop</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
@@ -1451,12 +1451,12 @@
     <span class="doccomment">/// From this time on, the handle owns the object that the pointer points</span>
     <span class="doccomment">/// to and will call its NativeDrop implementation if it goes out of scope.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="self">Self</span>)
+        <span class="ident">ptr::NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="self">Self</span>)
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_ptr</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ptr</span>();
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="self">self</span>);
+        <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">p</span>
     }
 }
@@ -1464,7 +1464,7 @@
 <span class="doccomment">/// A wrapper type represented by a reference counted pointer</span>
 <span class="doccomment">/// to the native type.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">Native</span>: <span class="ident">NativeRefCounted</span><span class="op">&gt;</span>(<span class="ident">ptr</span>::<span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Native</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">Native</span>: <span class="ident">NativeRefCounted</span><span class="op">&gt;</span>(<span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">Native</span><span class="op">&gt;</span>);
 
 <span class="doccomment">/// A reference counted handle is cheap to clone, so we do support a conversion</span>
 <span class="doccomment">/// from a reference to a ref counter to an owned handle.</span>
@@ -1476,7 +1476,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeRefCounted</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>
+        <span class="self">self</span>
     }
 }
 
@@ -1486,7 +1486,7 @@
     <span class="doccomment">/// Does not increase the reference count.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="self">Self</span>)
+        <span class="ident">ptr::NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="self">Self</span>)
     }
 
     <span class="doccomment">/// Creates an RCHandle from a pointer.</span>
@@ -1494,7 +1494,7 @@
     <span class="doccomment">/// Increases the reference count.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_unshared_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> {
+        <span class="ident">ptr::NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> {
             <span class="kw">unsafe</span> { <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">_ref</span>() };
             <span class="self">Self</span>(<span class="ident">ptr</span>)
         })
@@ -1509,24 +1509,24 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">tests</span>)]</span>
 <span class="kw">mod</span> <span class="ident">rc_handle_tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="ident">RCHandle</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Typeface</span>;
-    <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkTypeface</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude::RCHandle</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Typeface</span>;
+    <span class="kw">use</span> <span class="ident">skia_bindings::SkTypeface</span>;
+    <span class="kw">use</span> <span class="ident">std::ptr</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">rc_native_ref_null</span>() {
-        <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkTypeface</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>();
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">r</span>.<span class="ident">is_none</span>())
+        <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkTypeface</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Typeface::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>);
+        <span class="macro">assert!</span>(<span class="ident">r</span>.<span class="ident">is_none</span>())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">rc_native_ref_non_null</span>() {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
         <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkTypeface</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Typeface</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">r</span>.<span class="ident">is_some</span>())
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Typeface::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>);
+        <span class="macro">assert!</span>(<span class="ident">r</span>.<span class="ident">is_some</span>())
     }
 }
 
@@ -1572,7 +1572,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeRefCounted</span><span class="op">&gt;</span> <span class="ident">IntoPtr</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">into_ptr</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ptr</span>();
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="self">self</span>);
+        <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">ptr</span>
     }
 }
@@ -1584,7 +1584,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeRefCounted</span><span class="op">&gt;</span> <span class="ident">IntoPtrOrNull</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">into_ptr_or_null</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span> {
-        <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">rc</span><span class="op">|</span> <span class="ident">rc</span>.<span class="ident">into_ptr</span>()).<span class="ident">unwrap_or</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>())
+        <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">rc</span><span class="op">|</span> <span class="ident">rc</span>.<span class="ident">into_ptr</span>()).<span class="ident">unwrap_or</span>(<span class="ident">ptr::null_mut</span>())
     }
 }
 
@@ -1643,17 +1643,17 @@
     <span class="doccomment">/// The `_c` suffix is to remind callers that functions that return a native value from a C++</span>
     <span class="doccomment">/// ABI can&#39;t be used. For example, C++ member functions must be wrapped in a extern &quot;C&quot; function.</span>
     <span class="kw">fn</span> <span class="ident">from_native_c</span>(<span class="ident">nt</span>: <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">transmute_copy</span>::<span class="op">&lt;</span><span class="ident">NT</span>, <span class="self">Self</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">nt</span>) };
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::transmute_copy</span>::<span class="op">&lt;</span><span class="ident">NT</span>, <span class="self">Self</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">nt</span>) };
         <span class="comment">// don&#39;t drop, the Rust type takes over.</span>
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">nt</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">nt</span>);
         <span class="ident">r</span>
     }
 
     <span class="doccomment">/// Copies the rust type to an equivalent instance of the native type.</span>
     <span class="kw">fn</span> <span class="ident">into_native</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NT</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">transmute_copy</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NT</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) };
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::transmute_copy</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NT</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) };
         <span class="comment">// don&#39;t drop, the native type takes over.</span>
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="self">self</span>);
+        <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">r</span>
     }
 
@@ -1682,11 +1682,11 @@
     <span class="doccomment">/// Runs a test that proves that the native and the rust</span>
     <span class="doccomment">/// type are of the same size.</span>
     <span class="kw">fn</span> <span class="ident">test_layout</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(), <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">NT</span><span class="op">&gt;</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(), <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">NT</span><span class="op">&gt;</span>());
     }
 
     <span class="kw">fn</span> <span class="ident">construct</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">NT</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">try_construct</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
+        <span class="self">Self</span><span class="ident">::try_construct</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
             <span class="ident">construct</span>(<span class="ident">i</span>);
             <span class="bool-val">true</span>
         })
@@ -1694,7 +1694,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">try_construct</span>(<span class="ident">construct</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">NT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">self</span>::<span class="ident">try_construct</span>(<span class="ident">construct</span>).<span class="ident">map</span>(<span class="self">Self</span>::<span class="ident">from_native_c</span>)
+        <span class="self">self</span><span class="ident">::try_construct</span>(<span class="ident">construct</span>).<span class="ident">map</span>(<span class="self">Self</span><span class="ident">::from_native_c</span>)
     }
 }
 
@@ -1753,7 +1753,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 }
@@ -1762,7 +1762,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null_mut</span>(),
         }
     }
 }
@@ -1771,7 +1771,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">slice</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 }
@@ -1780,7 +1780,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">slice</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 }
@@ -1789,7 +1789,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null_mut</span>(),
         }
     }
 }
@@ -1798,7 +1798,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 }
@@ -1807,7 +1807,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null</span>(),
         }
     }
 }
@@ -1816,7 +1816,7 @@
     <span class="kw">fn</span> <span class="ident">as_ptr_or_null_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">E</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr::null_mut</span>(),
         }
     }
 }
@@ -1828,7 +1828,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">H</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">H</span>;
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -1836,7 +1836,7 @@
 <span class="comment">// TODO: this is most likely unsafe because someone could replace the</span>
 <span class="comment">// value the reference is pointing to.</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -1907,8 +1907,8 @@
 
 <span class="doccomment">/// Functions that are (supposedly) _safer_ variants of the ones Rust provides.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">safer</span> {
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
+    <span class="kw">use</span> <span class="ident">core::slice</span>;
+    <span class="kw">use</span> <span class="ident">std::ptr</span>;
 
     <span class="doccomment">/// Invokes [slice::from_raw_parts] with the `ptr` only when `len` != 0, otherwise passes</span>
     <span class="doccomment">/// `ptr::NonNull::dangling()` as recommended.</span>
@@ -1916,12 +1916,12 @@
     <span class="doccomment">/// Panics if `len` != 0 and `ptr` is `null`.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>] {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">dangling</span>().<span class="ident">as_ptr</span>()
+            <span class="ident">ptr::NonNull::dangling</span>().<span class="ident">as_ptr</span>()
         } <span class="kw">else</span> {
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
             <span class="ident">ptr</span>
         };
-        <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">len</span>)
+        <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">len</span>)
     }
 
     <span class="doccomment">/// Invokes [slice::from_raw_parts_mut] with the `ptr` only if `len` != 0, otherwise passes</span>
@@ -1930,14 +1930,14 @@
     <span class="doccomment">/// Panics if `len` != 0 and `ptr` is `null`.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">ptr</span>::<span class="ident">NonNull</span>::<span class="ident">dangling</span>().<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>
+            <span class="ident">ptr::NonNull::dangling</span>().<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>
         } <span class="kw">else</span> {
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
             <span class="ident">ptr</span>
         };
-        <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="ident">len</span>)
+        <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="ident">len</span>)
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="skia_safe" data-search-js="../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="skia_safe" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\codec\_codec.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>_codec.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -308,26 +308,26 @@
 <span id="305">305</span>
 <span id="306">306</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">yuva_pixmap_info</span>::<span class="ident">SupportedDataTypes</span>, <span class="ident">Image</span>, <span class="ident">YUVAPixmapInfo</span>, <span class="ident">YUVAPixmaps</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">yuva_pixmap_info::SupportedDataTypes</span>, <span class="ident">Image</span>, <span class="ident">YUVAPixmapInfo</span>, <span class="ident">YUVAPixmaps</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Data</span>, <span class="ident">EncodedImageFormat</span>, <span class="ident">EncodedOrigin</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">ImageInfo</span>, <span class="ident">Pixmap</span>};
-<span class="kw">use</span> <span class="ident">ffi</span>::<span class="ident">CStr</span>;
+<span class="kw">use</span> <span class="ident">ffi::CStr</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkCodec</span>, <span class="ident">SkCodec_Options</span>, <span class="ident">SkRefCntBase</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCodec_Result</span> <span class="kw">as</span> <span class="prelude-ty">Result</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCodec_Result</span> <span class="kw">as</span> <span class="prelude-ty">Result</span>;
 
 <span class="comment">// TODO: implement Display</span>
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">result_to_string</span>(<span class="ident">result</span>: <span class="prelude-ty">Result</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-    <span class="kw">unsafe</span> { <span class="ident">CStr</span>::<span class="ident">from_ptr</span>(<span class="ident">skia_bindings</span>::<span class="ident">SkCodec_ResultToString</span>(<span class="ident">result</span>)) }
+    <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">skia_bindings::SkCodec_ResultToString</span>(<span class="ident">result</span>)) }
         .<span class="ident">to_str</span>()
         .<span class="ident">unwrap</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCodec_SelectionPolicy</span> <span class="kw">as</span> <span class="ident">SelectionPolicy</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCodec_SelectionPolicy</span> <span class="kw">as</span> <span class="ident">SelectionPolicy</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCodec_ZeroInitialized</span> <span class="kw">as</span> <span class="ident">ZeroInitialized</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCodec_ZeroInitialized</span> <span class="kw">as</span> <span class="ident">ZeroInitialized</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Options</span> {
@@ -337,7 +337,7 @@
     <span class="kw">pub</span> <span class="ident">prior_frame</span>: <span class="ident">usize</span>,
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkCodec_SkScanlineOrder</span> <span class="kw">as</span> <span class="ident">ScanlineOrder</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkCodec_SkScanlineOrder</span> <span class="kw">as</span> <span class="ident">ScanlineOrder</span>;
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Codec</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkCodec</span><span class="op">&gt;</span>;
 
@@ -347,8 +347,8 @@
     <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">SkRefCntBase</span>;
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Codec</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Codec</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Codec&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">info</span>())
             .<span class="ident">field</span>(<span class="string">&quot;dimensions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dimensions</span>())
@@ -366,43 +366,43 @@
     <span class="comment">// TODO: wrap from_data with SkPngChunkReader</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_data</span>(<span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Codec</span><span class="op">&gt;</span> {
-        <span class="ident">Codec</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_MakeFromData</span>(<span class="ident">data</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>()) })
+        <span class="ident">Codec::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_MakeFromData</span>(<span class="ident">data</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>()) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ImageInfo</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getInfo</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">info</span>.<span class="ident">native_mut</span>()) };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::default</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getInfo</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">info</span>.<span class="ident">native_mut</span>()) };
         <span class="ident">info</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
-        <span class="ident">ISize</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_dimensions</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+        <span class="ident">ISize::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_dimensions</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IRect</span> {
-        <span class="ident">IRect</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_bounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+        <span class="ident">IRect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_bounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
     <span class="comment">// TODO: getICCProfile</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EncodedOrigin</span> {
-        <span class="ident">EncodedOrigin</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getOrigin</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+        <span class="ident">EncodedOrigin::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getOrigin</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_scaled_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">desired_scale</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
-        <span class="ident">ISize</span>::<span class="ident">from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkCodec_getScaledDimensions</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">desired_scale</span>)
+        <span class="ident">ISize::from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkCodec_getScaledDimensions</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">desired_scale</span>)
         })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">valid_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">desired_subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">desired_subset</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">desired_subset</span>.<span class="ident">as_ref</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getValidSubset</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">desired_subset</span>.<span class="ident">native_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getValidSubset</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">desired_subset</span>.<span class="ident">native_mut</span>()) }
             .<span class="ident">if_true_some</span>(<span class="ident">desired_subset</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encoded_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EncodedImageFormat</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getEncodedFormat</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getEncodedFormat</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_pixels_with_options</span>(
@@ -412,9 +412,9 @@
         <span class="ident">row_bytes</span>: <span class="ident">usize</span>,
         <span class="ident">options</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Options</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">pixels</span>.<span class="ident">len</span>(), <span class="ident">info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">row_bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">pixels</span>.<span class="ident">len</span>(), <span class="ident">info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">row_bytes</span>));
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">native_options</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="self">Self</span>::<span class="ident">native_options</span>(<span class="ident">options</span>));
+            <span class="kw">let</span> <span class="ident">native_options</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="self">Self</span><span class="ident">::native_options</span>(<span class="ident">options</span>));
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getPixels</span>(
                 <span class="ident">info</span>.<span class="ident">native</span>(),
                 <span class="ident">pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
@@ -428,24 +428,24 @@
         <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.33.1&quot;</span>,
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use the safe variant get_pixels_with_options().&quot;</span>
     )]</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">missing_safety_doc</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_pixels</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">pixels</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi</span>::<span class="ident">c_void</span>,
+        <span class="ident">pixels</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span>,
         <span class="ident">row_bytes</span>: <span class="ident">usize</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>()
-            .<span class="ident">getPixels</span>(<span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">pixels</span>, <span class="ident">row_bytes</span>, <span class="ident">ptr</span>::<span class="ident">null</span>())
+            .<span class="ident">getPixels</span>(<span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">pixels</span>, <span class="ident">row_bytes</span>, <span class="ident">ptr::null</span>())
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">missing_safety_doc</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_pixels_to_pixmap</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">pixmap</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>,
         <span class="ident">options</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Options</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
-        <span class="kw">let</span> <span class="ident">native_options</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="self">Self</span>::<span class="ident">native_options</span>(<span class="ident">options</span>));
+        <span class="kw">let</span> <span class="ident">native_options</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="self">Self</span><span class="ident">::native_options</span>(<span class="ident">options</span>));
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getPixels</span>(
             <span class="ident">pixmap</span>.<span class="ident">info</span>().<span class="ident">native</span>(),
             <span class="ident">pixmap</span>.<span class="ident">writable_addr</span>(),
@@ -467,14 +467,14 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">info</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageInfo</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Options</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Image</span>, <span class="prelude-ty">Result</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Image</span>, <span class="prelude-ty">Result</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">info</span>());
         <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">options</span>
             .<span class="ident">into</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">native_options</span>(<span class="ident">options</span>) });
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="prelude-ty">Result</span>::<span class="ident">InternalError</span>;
-        <span class="ident">Image</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkCodec_getImage</span>(
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::native_options</span>(<span class="ident">options</span>) });
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Result::InternalError</span>;
+        <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkCodec_getImage</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">info</span>.<span class="ident">native</span>(),
                 <span class="ident">options</span>.<span class="ident">as_ptr_or_null</span>(),
@@ -488,13 +488,13 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">supported_data_types</span>: <span class="kw-2">&amp;</span><span class="ident">SupportedDataTypes</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">YUVAPixmapInfo</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap_info</span> <span class="op">=</span> <span class="ident">YUVAPixmapInfo</span>::<span class="ident">new_invalid</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap_info</span> <span class="op">=</span> <span class="ident">YUVAPixmapInfo::new_invalid</span>();
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">queryYUVAInfo</span>(<span class="ident">supported_data_types</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pixmap_info</span>)
         };
-        (<span class="ident">r</span> <span class="op">&amp;&amp;</span> <span class="ident">YUVAPixmapInfo</span>::<span class="ident">native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">pixmap_info</span>))
-            .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">YUVAPixmapInfo</span>::<span class="ident">from_native_c</span>(<span class="ident">pixmap_info</span>))
+        (<span class="ident">r</span> <span class="op">&amp;&amp;</span> <span class="ident">YUVAPixmapInfo::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">pixmap_info</span>))
+            .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">YUVAPixmapInfo::from_native_c</span>(<span class="ident">pixmap_info</span>))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_yuva_planes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pixmaps</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmaps</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
@@ -509,11 +509,11 @@
         <span class="ident">options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Options</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">dst_info</span>.<span class="ident">valid_pixels</span>(<span class="ident">row_bytes</span>, <span class="ident">dst</span>) {
-            <span class="kw">return</span> <span class="prelude-ty">Result</span>::<span class="ident">InvalidParameters</span>;
+            <span class="kw">return</span> <span class="ident">Result::InvalidParameters</span>;
         }
         <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">options</span>
             .<span class="ident">into</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">native_options</span>(<span class="ident">options</span>) });
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::native_options</span>(<span class="ident">options</span>) });
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">startIncrementalDecode</span>(
                 <span class="ident">dst_info</span>.<span class="ident">native</span>(),
@@ -525,9 +525,9 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">incremental_decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="prelude-ty">Result</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rows_decoded</span> <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_incrementalDecode</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rows_decoded</span>) };
-        <span class="kw">if</span> <span class="ident">r</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-ty">Result</span>::<span class="ident">IncompleteInput</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rows_decoded</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_incrementalDecode</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rows_decoded</span>) };
+        <span class="kw">if</span> <span class="ident">r</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Result::IncompleteInput</span> {
             (<span class="ident">r</span>, <span class="prelude-val">Some</span>(<span class="ident">rows_decoded</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()))
         } <span class="kw">else</span> {
             (<span class="ident">r</span>, <span class="prelude-val">None</span>)
@@ -541,7 +541,7 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
         <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">options</span>
             .<span class="ident">into</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">native_options</span>(<span class="ident">options</span>) });
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">options</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::native_options</span>(<span class="ident">options</span>) });
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">startScanlineDecode</span>(<span class="ident">dst_info</span>.<span class="ident">native</span>(), <span class="ident">options</span>.<span class="ident">as_ptr_or_null</span>())
@@ -549,7 +549,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_scanlines</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">count_lines</span>: <span class="ident">usize</span>, <span class="ident">row_bytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">mem</span>::<span class="ident">size_of_val</span>(<span class="ident">dst</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident">count_lines</span> <span class="op">*</span> <span class="ident">row_bytes</span>);
+        <span class="macro">assert!</span>(<span class="ident">mem::size_of_val</span>(<span class="ident">dst</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident">count_lines</span> <span class="op">*</span> <span class="ident">row_bytes</span>);
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getScanlines</span>(
                 <span class="ident">dst</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
@@ -569,11 +569,11 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scanline_order</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ScanlineOrder</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getScanlineOrder</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getScanlineOrder</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_scanline</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_nextScanline</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_nextScanline</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_scanline</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input_scanline</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
@@ -581,7 +581,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_frame_count</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getFrameCount</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getFrameCount</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
     }
@@ -591,7 +591,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_repetition_count</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">const</span> <span class="ident">REPETITION_COUNT_INFINITE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="op">-</span><span class="number">1</span>;
-        <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkCodec_getRepetitionCount</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) };
+        <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkCodec_getRepetitionCount</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) };
         <span class="kw">if</span> <span class="ident">count</span> <span class="op">!</span><span class="op">=</span> <span class="ident">REPETITION_COUNT_INFINITE</span> {
             <span class="prelude-val">Some</span>(<span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
         } <span class="kw">else</span> {
@@ -608,12 +608,12 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_naming</span>() {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="prelude-ty">Result</span>::<span class="ident">IncompleteInput</span>;
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SelectionPolicy</span>::<span class="ident">PreferStillImage</span>;
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ZeroInitialized</span>::<span class="ident">Yes</span>;
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ScanlineOrder</span>::<span class="ident">BottomUp</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Result::IncompleteInput</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SelectionPolicy::PreferStillImage</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ZeroInitialized::Yes</span>;
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ScanlineOrder::BottomUp</span>;
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

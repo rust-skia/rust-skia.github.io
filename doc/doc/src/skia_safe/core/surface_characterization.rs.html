@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\surface_characterization.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface_characterization.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -205,10 +205,10 @@
 <span id="202">202</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">gpu</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::gpu</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">ColorSpace</span>, <span class="ident">SurfaceProps</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkSurfaceCharacterization</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SurfaceCharacterization</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkSurfaceCharacterization</span><span class="op">&gt;</span>;
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">SurfaceCharacterization</span> {}
@@ -216,32 +216,32 @@
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkSurfaceCharacterization</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_destruct</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurfaceCharacterization_destruct</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkSurfaceCharacterization</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_CopyConstruct</span>(<span class="ident">sc</span>, <span class="self">self</span>) })
+        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurfaceCharacterization_CopyConstruct</span>(<span class="ident">sc</span>, <span class="self">self</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkSurfaceCharacterization</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurfaceCharacterization_equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SurfaceCharacterization</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">SurfaceCharacterization</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_Construct</span>(<span class="ident">sc</span>)
+        <span class="ident">SurfaceCharacterization::construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurfaceCharacterization_Construct</span>(<span class="ident">sc</span>)
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SurfaceCharacterization</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SurfaceCharacterization</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SurfaceCharacterization&quot;</span>);
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>
@@ -271,10 +271,10 @@
 <span class="comment">//       layout differs, should we support that?</span>
 <span class="kw">impl</span> <span class="ident">SurfaceCharacterization</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resized</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resized</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_createResized</span>(
+        <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurfaceCharacterization_createResized</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
                 <span class="ident">size</span>.<span class="ident">width</span>,
                 <span class="ident">size</span>.<span class="ident">height</span>,
@@ -284,9 +284,9 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">characterization</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">characterization</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::default</span>();
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_createColorSpace</span>(
+            <span class="ident">sb::C_SkSurfaceCharacterization_createColorSpace</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
                 <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
                 <span class="ident">characterization</span>.<span class="ident">native_mut</span>(),
@@ -298,11 +298,11 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_backend_format</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">color_type</span>: <span class="kw">crate</span>::<span class="ident">ColorType</span>,
-        <span class="ident">backend_format</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendFormat</span>,
+        <span class="ident">color_type</span>: <span class="kw">crate</span><span class="ident">::ColorType</span>,
+        <span class="ident">backend_format</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendFormat</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_createBackendFormat</span>(
+        <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurfaceCharacterization_createBackendFormat</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
                 <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
                 <span class="ident">backend_format</span>.<span class="ident">native</span>(),
@@ -313,8 +313,8 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_fbo0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uses_glfbo0</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_createFBO0</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">uses_glfbo0</span>, <span class="ident">sc</span>)
+        <span class="self">Self</span><span class="ident">::construct</span>(<span class="op">|</span><span class="ident">sc</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurfaceCharacterization_createFBO0</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">uses_glfbo0</span>, <span class="ident">sc</span>)
         })
     }
 }
@@ -328,24 +328,24 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">image_info</span>().<span class="ident">color_type</span>() <span class="op">!</span><span class="op">=</span> <span class="kw">crate</span>::<span class="ident">ColorType</span>::<span class="ident">Unknown</span>
+        <span class="self">self</span>.<span class="ident">image_info</span>().<span class="ident">color_type</span>() <span class="op">!</span><span class="op">=</span> <span class="kw">crate</span><span class="ident">::ColorType::Unknown</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw">crate</span>::<span class="ident">ImageInfo</span> {
-        <span class="kw">crate</span>::<span class="ident">ImageInfo</span>::<span class="ident">from_native_ref</span>(<span class="kw">unsafe</span> {
-            <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb</span>::<span class="ident">C_SkSurfaceCharacterization_imageInfo</span>(<span class="self">self</span>.<span class="ident">native</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw">crate</span><span class="ident">::ImageInfo</span> {
+        <span class="kw">crate</span><span class="ident">::ImageInfo::from_native_ref</span>(<span class="kw">unsafe</span> {
+            <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkSurfaceCharacterization_imageInfo</span>(<span class="self">self</span>.<span class="ident">native</span>())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendFormat</span> {
-        <span class="ident">gpu</span>::<span class="ident">BackendFormat</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackendFormat</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">gpu::BackendFormat</span> {
+        <span class="ident">gpu::BackendFormat::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackendFormat</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gpu::SurfaceOrigin</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fOrigin</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">ISize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::ISize</span> {
         <span class="self">self</span>.<span class="ident">image_info</span>().<span class="ident">dimensions</span>()
     }
 
@@ -357,7 +357,7 @@
         <span class="self">self</span>.<span class="ident">image_info</span>().<span class="ident">height</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">ColorType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::ColorType</span> {
         <span class="self">self</span>.<span class="ident">image_info</span>().<span class="ident">color_type</span>()
     }
 
@@ -366,28 +366,28 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_textureable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsTextureable</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkSurfaceCharacterization_Textureable</span>::<span class="ident">kYes</span>
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsTextureable</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sb::SkSurfaceCharacterization_Textureable::kYes</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_mip_mapped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsMipMapped</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkSurfaceCharacterization_MipMapped</span>::<span class="ident">kYes</span>
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsMipMapped</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sb::SkSurfaceCharacterization_MipMapped::kYes</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uses_glfbo0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fUsesGLFBO0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkSurfaceCharacterization_UsesGLFBO0</span>::<span class="ident">kYes</span>
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fUsesGLFBO0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sb::SkSurfaceCharacterization_UsesGLFBO0::kYes</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vk_rt_supports_input_attachment</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fVkRTSupportsInputAttachment</span>
-            <span class="op">=</span><span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkSurfaceCharacterization_VkRTSupportsInputAttachment</span>::<span class="ident">kYes</span>
+            <span class="op">=</span><span class="op">=</span> <span class="ident">sb::SkSurfaceCharacterization_VkRTSupportsInputAttachment::kYes</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vulkan_secondary_cb_compatible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fVulkanSecondaryCBCompatible</span>
-            <span class="op">=</span><span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkSurfaceCharacterization_VulkanSecondaryCBCompatible</span>::<span class="ident">kYes</span>
+            <span class="op">=</span><span class="op">=</span> <span class="ident">sb::SkSurfaceCharacterization_VulkanSecondaryCBCompatible::kYes</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gpu</span>::<span class="ident">Protected</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gpu::Protected</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsProtected</span>
     }
 
@@ -398,14 +398,14 @@
 
 <span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkSurfaceCharacterization</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">surface_props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span> {
-        <span class="ident">SurfaceProps</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fSurfaceProps</span>)
+        <span class="ident">SurfaceProps::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fSurfaceProps</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_compatible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_compatible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isCompatible</span>(<span class="ident">backend_texture</span>.<span class="ident">native</span>()) }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
