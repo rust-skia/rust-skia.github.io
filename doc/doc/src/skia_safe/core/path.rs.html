@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\path.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>path.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1077,17 +1076,7 @@
 <span id="1074">1074</span>
 <span id="1075">1075</span>
 <span id="1076">1076</span>
-<span id="1077">1077</span>
-<span id="1078">1078</span>
-<span id="1079">1079</span>
-<span id="1080">1080</span>
-<span id="1081">1081</span>
-<span id="1082">1082</span>
-<span id="1083">1083</span>
-<span id="1084">1084</span>
-<span id="1085">1085</span>
-<span id="1086">1086</span>
-</pre><div class="example-wrap"><pre class="rust ">
+</pre><pre class="rust">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">interop::DynamicMemoryWStream</span>, <span class="ident">matrix::ApplyPerspectiveClip</span>, <span class="ident">path_types</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>,
     <span class="ident">Data</span>, <span class="ident">Matrix</span>, <span class="ident">PathDirection</span>, <span class="ident">PathFillType</span>, <span class="ident">Point</span>, <span class="ident">RRect</span>, <span class="ident">Rect</span>, <span class="ident">Vector</span>,
@@ -1102,24 +1091,15 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types::PathFillType</span> <span class="kw">as</span> <span class="ident">FillType</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPath_ArcSize</span> <span class="kw">as</span> <span class="ident">ArcSize</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_arc_size_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArcSize::Small</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">ArcSize::Small</span>, <span class="ident">arc_size_naming</span>);
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPath_AddPathMode</span> <span class="kw">as</span> <span class="ident">AddPathMode</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_add_path_mode_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">AddPathMode::Append</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">AddPathMode::Append</span>, <span class="ident">append_naming</span>);
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types::PathSegmentMask</span> <span class="kw">as</span> <span class="ident">SegmentMask</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPath_Verb</span> <span class="kw">as</span> <span class="ident">Verb</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_verb_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Verb::Line</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">Verb::Line</span>, <span class="ident">verb_naming</span>);
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">SkPath_Iter</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPath</span><span class="op">&gt;</span><span class="op">&gt;</span>);
@@ -1272,8 +1252,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Path</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPath</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Path</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Path</span> {}
+<span class="macro">unsafe_send_sync!</span>(<span class="ident">Path</span>);
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPath</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
@@ -2175,5 +2154,4 @@
     <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">path</span>.<span class="ident">bounds</span>(), <span class="ident">r</span>);
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

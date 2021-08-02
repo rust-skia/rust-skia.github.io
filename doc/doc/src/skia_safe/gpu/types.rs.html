@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\gpu\types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -62,40 +61,12 @@
 <span id="59">59</span>
 <span id="60">60</span>
 <span id="61">61</span>
-<span id="62">62</span>
-<span id="63">63</span>
-<span id="64">64</span>
-<span id="65">65</span>
-<span id="66">66</span>
-<span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
-<span id="82">82</span>
-<span id="83">83</span>
-<span id="84">84</span>
-<span id="85">85</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
+</pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">std::ptr</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::GrBackendApi</span> <span class="kw">as</span> <span class="ident">BackendAPI</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_backend_api_layout</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">BackendAPI::Dawn</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">BackendAPI::Dawn</span>, <span class="ident">backend_api_naming</span>);
 
 <span class="comment">// TODO: this should be a newtype(bool) I guess with implementations</span>
 <span class="comment">//       of From&lt;bool&gt; and Deref?</span>
@@ -103,33 +74,20 @@
 
 <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use Mipmapped (with a lowercase &#39;m&#39;)&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::GrMipmapped</span> <span class="kw">as</span> <span class="ident">MipMapped</span>;
-
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_mipmapped_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Mipmapped::Yes</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">Mipmapped::Yes</span>, <span class="ident">mipmapped_naming</span>);
 
 <span class="comment">// TODO: this should be a newtype(bool) I guess with implementations</span>
 <span class="comment">//       of From&lt;bool&gt; and Deref?</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::GrRenderable</span> <span class="kw">as</span> <span class="ident">Renderable</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_renderable_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Renderable::No</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">Renderable::No</span>, <span class="ident">renderable_naming</span>);
 
 <span class="comment">// TODO: this should be a newtype(bool) I guess with implementations</span>
 <span class="comment">//       of From&lt;bool&gt; and Deref?</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::GrProtected</span> <span class="kw">as</span> <span class="ident">Protected</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_protected_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Protected::Yes</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">Protected::Yes</span>, <span class="ident">protected_naming</span>);
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::GrSurfaceOrigin</span> <span class="kw">as</span> <span class="ident">SurfaceOrigin</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_surface_origin_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SurfaceOrigin::TopLeft</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">SurfaceOrigin::BottomLeft</span>, <span class="ident">surface_origin_naming</span>);
 
 <span class="comment">// Note: BackendState is in gl/types.rs/</span>
 
@@ -159,19 +117,11 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb::GrFlushInfo</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FlushInfo</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_flush_info_layout</span>() {
-    <span class="ident">FlushInfo::test_layout</span>();
-}
+<span class="macro">native_transmutable!</span>(<span class="ident">sb::GrFlushInfo</span>, <span class="ident">FlushInfo</span>, <span class="ident">flush_info_layout</span>);
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::GrSemaphoresSubmitted</span> <span class="kw">as</span> <span class="ident">SemaphoresSubmitted</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_semaphores_submitted_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">SemaphoresSubmitted::Yes</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">SemaphoresSubmitted::Yes</span>, <span class="ident">semaphores_submitted_naming</span>);
 
 <span class="comment">// TODO: wrap GrPrepareForExternalIORequests</span>
 </pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\paragraph\font_collection.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>font_collection.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -244,27 +243,15 @@
 <span id="241">241</span>
 <span id="242">242</span>
 <span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-</pre><div class="example-wrap"><pre class="rust ">
+</pre><pre class="rust">
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">FromStrs</span>},
+    <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">FromStrs</span>, <span class="ident">VecSink</span>},
     <span class="ident">prelude</span>::<span class="kw-2">*</span>,
     <span class="ident">textlayout::ParagraphCache</span>,
     <span class="ident">FontMgr</span>, <span class="ident">FontStyle</span>, <span class="ident">Typeface</span>, <span class="ident">Unichar</span>,
 };
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">skia_textlayout_FontCollection</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>};
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontCollection</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">skia_textlayout_FontCollection</span><span class="op">&gt;</span>;
 
@@ -369,16 +356,28 @@
         <span class="ident">font_style</span>: <span class="ident">FontStyle</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">interop::Strings::from_strs</span>(<span class="ident">family_names</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">typefaces</span> <span class="op">=</span> <span class="ident">Typefaces::new</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">typefaces</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set_typefaces</span> <span class="op">=</span> <span class="op">|</span><span class="ident">tfs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">sb::sk_sp</span><span class="op">&lt;</span><span class="ident">sb::SkTypeface</span><span class="op">&gt;</span>]<span class="op">|</span> {
+            <span class="ident">typefaces</span> <span class="op">=</span> <span class="ident">tfs</span>
+                .<span class="ident">iter_mut</span>()
+                .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">sp</span><span class="op">|</span> {
+                    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sp</span>.<span class="ident">fPtr</span>;
+                    <span class="ident">sp</span>.<span class="ident">fPtr</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+                    <span class="ident">Typeface::from_ptr</span>(<span class="ident">ptr</span>)
+                })
+                .<span class="ident">collect</span>()
+        };
+
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_FontCollection_findTypefaces</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">family_names</span>.<span class="ident">native</span>(),
                 <span class="ident">font_style</span>.<span class="ident">into_native</span>(),
-                <span class="ident">typefaces</span>.<span class="ident">native_mut</span>(),
+                <span class="ident">VecSink::new_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">set_typefaces</span>).<span class="ident">native_mut</span>(),
             )
         };
-        <span class="ident">typefaces</span>.<span class="ident">into_vec</span>()
+        <span class="ident">typefaces</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_fallback_char</span>(
@@ -428,30 +427,6 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_caches</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">clearCaches</span>() }
-    }
-}
-
-<span class="kw">type</span> <span class="ident">Typefaces</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::Typefaces</span><span class="op">&gt;</span>;
-
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb::Typefaces</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_Typefaces_destruct</span>(<span class="self">self</span>) }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Typefaces</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Typefaces::construct</span>(<span class="op">|</span><span class="ident">tf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_Typefaces_construct</span>(<span class="ident">tf</span>) })
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_vec</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_Typefaces_count</span>(<span class="self">self</span>.<span class="ident">native</span>()) };
-        (<span class="number">0</span>..<span class="ident">count</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
-                <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_Typefaces_release</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">i</span>) })
-                    .<span class="ident">unwrap</span>()
-            })
-            .<span class="ident">collect</span>()
     }
 }
 
@@ -513,5 +488,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
-    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

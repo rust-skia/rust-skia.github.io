@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\paragraph\text_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_style.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -523,12 +522,7 @@
 <span id="520">520</span>
 <span id="521">521</span>
 <span id="522">522</span>
-<span id="523">523</span>
-<span id="524">524</span>
-<span id="525">525</span>
-<span id="526">526</span>
-<span id="527">527</span>
-</pre><div class="example-wrap"><pre class="rust ">
+</pre><pre class="rust">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FontFamilies</span>, <span class="ident">TextBaseline</span>, <span class="ident">TextShadow</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">AsStr</span>, <span class="ident">FromStrs</span>, <span class="ident">SetStr</span>},
@@ -590,24 +584,17 @@
     <span class="kw">pub</span> <span class="ident">thickness_multiplier</span>: <span class="ident">scalar</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_Decoration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Decoration</span> {}
-
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">decoration_layout</span>() {
-    <span class="ident">Decoration::test_layout</span>();
-}
+<span class="macro">native_transmutable!</span>(
+    <span class="ident">sb::skia_textlayout_Decoration</span>,
+    <span class="ident">Decoration</span>,
+    <span class="ident">decoration_layout</span>
+);
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::skia_textlayout_PlaceholderAlignment</span> <span class="kw">as</span> <span class="ident">PlaceholderAlignment</span>;
-
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">placeholder_alignment_member_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PlaceholderAlignment::Baseline</span>;
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PlaceholderAlignment::AboveBaseline</span>;
-}
+<span class="macro">variant_name!</span>(<span class="ident">PlaceholderAlignment::Baseline</span>, <span class="ident">placeholder_alignment_naming</span>);
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontFeature</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_FontFeature</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {}
+<span class="macro">unsafe_send_sync!</span>(<span class="ident">FontFeature</span>);
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_FontFeature</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
@@ -656,11 +643,11 @@
     <span class="kw">pub</span> <span class="ident">baseline_offset</span>: <span class="ident">scalar</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_PlaceholderStyle</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PlaceholderStyle</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">placeholder_style_layout</span>() {
-    <span class="ident">PlaceholderStyle::test_layout</span>()
-}
+<span class="macro">native_transmutable!</span>(
+    <span class="ident">sb::skia_textlayout_PlaceholderStyle</span>,
+    <span class="ident">PlaceholderStyle</span>,
+    <span class="ident">placeholder_style_layout</span>
+);
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">PlaceholderStyle</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -687,8 +674,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextStyle</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_TextStyle</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {}
+<span class="macro">unsafe_send_sync!</span>(<span class="ident">TextStyle</span>);
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_TextStyle</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
@@ -708,7 +694,7 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_TextStyle</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span><span class="ident">::new</span>()
     }
@@ -728,6 +714,7 @@
             .<span class="ident">field</span>(<span class="string">&quot;font_families&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_families</span>())
             .<span class="ident">field</span>(<span class="string">&quot;height&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">height</span>())
             .<span class="ident">field</span>(<span class="string">&quot;height_override&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">height_override</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;half_leading&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">half_leading</span>())
             .<span class="ident">field</span>(<span class="string">&quot;letter_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">letter_spacing</span>())
             .<span class="ident">field</span>(<span class="string">&quot;word_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">word_spacing</span>())
             .<span class="ident">field</span>(<span class="string">&quot;typeface&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">typeface</span>())
@@ -738,7 +725,7 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_TextStyle</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">TextStyle</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">TextStyle::construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_Construct</span>(<span class="ident">ts</span>) })
     }
@@ -817,10 +804,9 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shadows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">TextShadow</span>] {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ts</span>: <span class="kw-2">&amp;</span><span class="ident">sb::TextShadows</span> <span class="op">=</span> <span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextShadows</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cnt</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">TextShadow::from_native_ptr</span>(<span class="ident">sb::C_TextShadows_ptr_count</span>(<span class="ident">ts</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cnt</span>));
-            <span class="ident">safer::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">cnt</span>)
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb::C_TextStyle_getShadows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextShadows</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">count</span>);
+            <span class="ident">safer::from_raw_parts</span>(<span class="ident">TextShadow::from_native_ptr</span>(<span class="ident">ptr</span>), <span class="ident">count</span>)
         }
     }
 
@@ -836,10 +822,9 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_features</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">FontFeature</span>] {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ff</span>: <span class="kw-2">&amp;</span><span class="ident">sb::FontFeatures</span> <span class="op">=</span> <span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontFeatures</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cnt</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">FontFeature::from_native_ptr</span>(<span class="ident">sb::C_FontFeatures_ptr_count</span>(<span class="ident">ff</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cnt</span>));
-            <span class="ident">safer::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">cnt</span>)
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb::C_TextStyle_getFontFeatures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontFeatures</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">count</span>);
+            <span class="ident">safer::from_raw_parts</span>(<span class="ident">FontFeature::from_native_ptr</span>(<span class="ident">ptr</span>), <span class="ident">count</span>)
         }
     }
 
@@ -899,6 +884,15 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height_override</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fHeightOverride</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_half_leading</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">half_leading</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fHalfLeading</span> <span class="op">=</span> <span class="ident">half_leading</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">half_leading</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fHalfLeading</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_letter_spacing</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">letter_spacing</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -973,11 +967,7 @@
     <span class="kw">pub</span> <span class="ident">style</span>: <span class="ident">TextStyle</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Block</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">block_layout</span>() {
-    <span class="ident">Block::test_layout</span>()
-}
+<span class="macro">native_transmutable!</span>(<span class="ident">sb::skia_textlayout_Block</span>, <span class="ident">Block</span>, <span class="ident">block_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Block</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -1019,12 +1009,11 @@
     <span class="kw">pub</span> <span class="ident">text_before</span>: <span class="ident">TextRange</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_Placeholder</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Placeholder</span> {}
-
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">placeholder_layout</span>() {
-    <span class="ident">Placeholder::test_layout</span>()
-}
+<span class="macro">native_transmutable!</span>(
+    <span class="ident">sb::skia_textlayout_Placeholder</span>,
+    <span class="ident">Placeholder</span>,
+    <span class="ident">placeholder_layout</span>
+);
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Placeholder</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -1057,5 +1046,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
-    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
