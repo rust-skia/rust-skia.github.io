@@ -395,6 +395,11 @@
 <span id="393">393</span>
 <span id="394">394</span>
 <span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
 </pre><pre class="rust">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::d3d</span>;
@@ -616,11 +621,16 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perform_deferred_cleanup</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">not_used</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perform_deferred_cleanup</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">not_used</span>: <span class="ident">Duration</span>,
+        <span class="ident">scratch_resources_only</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrDirectContext_performDeferredCleanup</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">not_used</span>.<span class="ident">as_millis</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+                <span class="ident">scratch_resources_only</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>),
             )
         }
         <span class="self">self</span>

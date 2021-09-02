@@ -56,11 +56,30 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">BlurStyle</span>, <span class="ident">CoverageMode</span>, <span class="ident">Matrix</span>, <span class="ident">NativeFlattenable</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">BlurStyle</span>, <span class="ident">CoverageMode</span>, <span class="ident">Matrix</span>, <span class="ident">NativeFlattenable</span>, <span class="ident">Rect</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkFlattenable</span>, <span class="ident">SkMaskFilter</span>, <span class="ident">SkRefCntBase</span>};
 <span class="kw">use</span> <span class="ident">std::fmt</span>;
 
+<span class="doccomment">/// MaskFilter is the base class for object that perform transformations on the mask before drawing</span>
+<span class="doccomment">/// it. An example subclass is Blur.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">MaskFilter</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkMaskFilter</span><span class="op">&gt;</span>;
 <span class="macro">unsafe_send_sync!</span>(<span class="ident">MaskFilter</span>);
 
@@ -88,6 +107,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">MaskFilter</span> {
+    <span class="doccomment">/// Create a blur mask filter.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `style`       The [`BlurStyle`] to use</span>
+    <span class="doccomment">/// - `sigma`       Standard deviation of the Gaussian blur to apply. Must be &gt; 0.</span>
+    <span class="doccomment">/// - `respect_ctm` if `true` the blur&#39;s sigma is modified by the `ctm`.</span>
+    <span class="doccomment">/// Returns the new blur mask filter</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blur</span>(
         <span class="ident">style</span>: <span class="ident">BlurStyle</span>,
         <span class="ident">sigma</span>: <span class="ident">scalar</span>,
@@ -95,6 +120,15 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="self">Self</span><span class="ident">::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkMaskFilter_MakeBlur</span>(<span class="ident">style</span>, <span class="ident">sigma</span>, <span class="ident">respect_ctm</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">true</span>))
+        })
+    }
+
+    <span class="doccomment">/// Returns the approximate bounds that would result from filtering the `src` rect. The actual</span>
+    <span class="doccomment">/// result may be different, but it should be contained within the returned bounds.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">approximate_filtered_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
+        <span class="ident">Rect::from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native</span>()
+                .<span class="ident">approximateFilteredBounds</span>(<span class="ident">src</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
         })
     }
 

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ChildType",""]],"mod":[["uniform",""]],"struct":[["Options",""]],"type":[["Child",""],["RuntimeEffect",""],["Uniform",""],["Variable",""],["Varying",""]]});
+initSidebarItems({"enum":[["ChildPtr",""],["ChildType",""]],"mod":[["uniform",""]],"struct":[["Options",""]],"type":[["Child",""],["RuntimeEffect",""],["Uniform",""],["Variable",""],["Varying",""]]});

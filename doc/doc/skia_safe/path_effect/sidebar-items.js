@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["point_data",""]],"struct":[["DashInfo",""],["PointData",""]],"type":[["PathEffect",""]]});
+initSidebarItems({"struct":[["DashInfo",""]],"type":[["PathEffect",""]]});

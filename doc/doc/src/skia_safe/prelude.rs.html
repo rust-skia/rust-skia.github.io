@@ -979,6 +979,12 @@
 <span id="977">977</span>
 <span id="978">978</span>
 <span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
     <span class="ident">C_SkRefCntBase_ref</span>, <span class="ident">C_SkRefCntBase_unique</span>, <span class="ident">C_SkRefCntBase_unref</span>, <span class="ident">SkNVRefCnt</span>, <span class="ident">SkRefCnt</span>,
@@ -989,7 +995,8 @@
     <span class="ident">marker::PhantomData</span>,
     <span class="ident">mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>},
     <span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>},
-    <span class="ident">ptr</span>, <span class="ident">slice</span>,
+    <span class="ident">ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>},
+    <span class="ident">slice</span>,
 };
 
 <span class="comment">// Re-export TryFrom / TryInto to make them available in all modules that use prelude::*.</span>
@@ -1522,6 +1529,11 @@
     <span class="doccomment">/// to the native type.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_unshared_ptr_ref</span>(<span class="ident">n</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref</span>(<span class="ident">n</span>) }
+    }
+
+    <span class="doccomment">/// Returns the pointer to the handle.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
 

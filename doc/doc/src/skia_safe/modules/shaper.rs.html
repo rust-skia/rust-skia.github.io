@@ -754,6 +754,26 @@
 <span id="752">752</span>
 <span id="753">753</span>
 <span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Font</span>, <span class="ident">FontMgr</span>, <span class="ident">FourByteTag</span>, <span class="ident">Point</span>, <span class="ident">TextBlob</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
@@ -792,18 +812,27 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_shaper_driven_wrapper</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
+        <span class="kw">crate</span><span class="ident">::icu::init</span>();
+
         <span class="self">Self</span><span class="ident">::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkShaper_MakeShaperDrivenWrapper</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_shape_then_wrap</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
+        <span class="kw">crate</span><span class="ident">::icu::init</span>();
+
         <span class="self">Self</span><span class="ident">::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkShaper_MakeShapeThenWrap</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_shape_dont_wrap_or_reorder</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
+        <span class="kw">crate</span><span class="ident">::icu::init</span>();
+
         <span class="self">Self</span><span class="ident">::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkShaper_MakeShapeDontWrapOrReorder</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         })
@@ -814,10 +843,16 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_core_text</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
+        <span class="kw">crate</span><span class="ident">::icu::init</span>();
+
         <span class="self">Self</span><span class="ident">::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_MakeCoreText</span>() })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
+        <span class="kw">crate</span><span class="ident">::icu::init</span>();
+
         <span class="self">Self</span><span class="ident">::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_Make</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>()) }).<span class="ident">unwrap</span>()
     }
 
@@ -1469,27 +1504,25 @@
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">icu</span> {
 
-    <span class="doccomment">/// On Windows, this function writes the file `icudtl.dat` into the current</span>
-    <span class="doccomment">/// executable&#39;s directory making sure that it&#39;s available when text shaping is used in Skia.</span>
+    <span class="doccomment">/// On Windows, and if the default feature &quot;embed-icudtl&quot; is _not_ set, this function writes the</span>
+    <span class="doccomment">/// file `icudtl.dat` into the current executable&#39;s directory making sure that it&#39;s available</span>
+    <span class="doccomment">/// when text shaping is used in Skia.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If your executable directory can not be written to, make sure that `icudtl.dat` is</span>
     <span class="doccomment">/// available.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that it is currently not possible to load `icudtl.dat` from another location.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the default feature &quot;embed-icudtl&quot; is set, the `icudtl.dat` file is directly used from</span>
+    <span class="doccomment">/// memory, so no `icudtl.dat` file is needed.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
         <span class="ident">skia_bindings::icu::init</span>();
-
-        <span class="comment">// Since m80, there is an initialization problem of icu in the module skparagraph,</span>
-        <span class="comment">// which we do not understand yet, but powering up an harfbuzz Shaper compensates</span>
-        <span class="comment">// for that.</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;textlayout&quot;</span>))]</span>
-        <span class="kw">crate</span><span class="ident">::Shaper::new</span>(<span class="prelude-val">None</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_text_blob_builder_run_handler</span>() {
-        <span class="ident">skia_bindings::icu::init</span>();
+        <span class="ident">init</span>();
         <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;العربية&quot;</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">text_blob_builder_run_handler</span> <span class="op">=</span>
             <span class="kw">crate</span><span class="ident">::shaper::TextBlobBuilderRunHandler::new</span>(<span class="ident">str</span>, <span class="kw">crate</span><span class="ident">::Point::default</span>());
@@ -1507,6 +1540,13 @@
         <span class="kw">let</span> <span class="ident">blob</span> <span class="op">=</span> <span class="ident">text_blob_builder_run_handler</span>.<span class="ident">make_blob</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">blob</span>.<span class="ident">bounds</span>();
         <span class="macro">assert!</span>(<span class="ident">bounds</span>.<span class="ident">width</span>() <span class="op">&gt;</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="ident">bounds</span>.<span class="ident">height</span>() <span class="op">&gt;</span> <span class="number">0.0</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
+    <span class="kw">fn</span> <span class="ident">icu_init_is_idempotent</span>() {
+        <span class="ident">init</span>();
+        <span class="ident">init</span>();
     }
 }
 </pre></div>

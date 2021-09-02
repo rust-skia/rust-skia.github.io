@@ -829,30 +829,8 @@
 <span id="827">827</span>
 <span id="828">828</span>
 <span id="829">829</span>
-<span id="830">830</span>
-<span id="831">831</span>
-<span id="832">832</span>
-<span id="833">833</span>
-<span id="834">834</span>
-<span id="835">835</span>
-<span id="836">836</span>
-<span id="837">837</span>
-<span id="838">838</span>
-<span id="839">839</span>
-<span id="840">840</span>
-<span id="841">841</span>
-<span id="842">842</span>
-<span id="843">843</span>
-<span id="844">844</span>
-<span id="845">845</span>
-<span id="846">846</span>
-<span id="847">847</span>
-<span id="848">848</span>
-<span id="849">849</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Rect</span>};
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scalar</span>, <span class="ident">Matrix</span>, <span class="ident">Matrix44</span>, <span class="ident">Scalars</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Matrix</span>, <span class="ident">Rect</span>, <span class="ident">Scalars</span>};
 <span class="kw">use</span> <span class="ident">bitflags::_core::ops</span>::{<span class="ident">AddAssign</span>, <span class="ident">MulAssign</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkM44</span>, <span class="ident">SkV2</span>, <span class="ident">SkV3</span>, <span class="ident">SkV4</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -1607,15 +1585,6 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preScale1</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>) };
         <span class="self">self</span>
     }
-
-    <span class="comment">// helper</span>
-
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_matrix44</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix44</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix44::default</span>();
-        <span class="ident">m</span>.<span class="ident">set_col_major</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mat</span>);
-        <span class="ident">m</span>
-    }
 }
 
 <span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">M44</span> {
@@ -1671,15 +1640,6 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Matrix</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">M44</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">m</span>: <span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">M44::from</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>)
-    }
-}
-
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Matrix44</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">M44</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix44</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rm</span>: [<span class="ident">f32</span>; <span class="number">16</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
-        <span class="ident">m</span>.<span class="ident">as_col_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rm</span>);
-        <span class="ident">M44::col_major</span>(<span class="kw-2">&amp;</span><span class="ident">rm</span>)
     }
 }
 
