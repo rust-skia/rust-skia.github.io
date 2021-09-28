@@ -938,7 +938,7 @@
 <span id="938">938</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">BlendMode</span>, <span class="ident">Color</span>, <span class="ident">ColorChannel</span>, <span class="ident">ColorFilter</span>, <span class="ident">CubicResampler</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>,
+    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Blender</span>, <span class="ident">Color</span>, <span class="ident">ColorChannel</span>, <span class="ident">ColorFilter</span>, <span class="ident">CubicResampler</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>,
     <span class="ident">ISize</span>, <span class="ident">Image</span>, <span class="ident">ImageFilter</span>, <span class="ident">Matrix</span>, <span class="ident">Paint</span>, <span class="ident">Picture</span>, <span class="ident">Point3</span>, <span class="ident">Rect</span>, <span class="ident">Region</span>, <span class="ident">SamplingOptions</span>,
     <span class="ident">Shader</span>, <span class="ident">TileMode</span>, <span class="ident">Vector</span>,
 };
@@ -1053,14 +1053,14 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend</span>(
-    <span class="ident">mode</span>: <span class="ident">BlendMode</span>,
+    <span class="ident">mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Blender</span><span class="op">&gt;</span>,
     <span class="ident">background</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">foreground</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">crop_rect</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CropRect</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImageFilter</span><span class="op">&gt;</span> {
     <span class="ident">ImageFilter::from_ptr</span>(<span class="kw">unsafe</span> {
         <span class="ident">sb::C_SkImageFilters_Blend</span>(
-            <span class="ident">mode</span>,
+            <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
             <span class="ident">background</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
             <span class="ident">foreground</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
             <span class="ident">crop_rect</span>.<span class="ident">into</span>().<span class="ident">native</span>(),

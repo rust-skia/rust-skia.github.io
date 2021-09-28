@@ -132,6 +132,14 @@
 <span id="132">132</span>
 <span id="133">133</span>
 <span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">gradient_shader</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Color</span>, <span class="ident">ColorFilter</span>, <span class="ident">Image</span>, <span class="ident">Matrix</span>, <span class="ident">NativeFlattenable</span>,
@@ -241,7 +249,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">shaders</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">BlendMode</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">Shader</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Blender</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">Shader</span>};
     <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Shader</span> {
@@ -260,9 +268,17 @@
         .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend</span>(<span class="ident">mode</span>: <span class="ident">BlendMode</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Shader</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend</span>(
+        <span class="ident">blender</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Blender</span><span class="op">&gt;</span>,
+        <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>,
+        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Shader</span> {
         <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaders_Blend</span>(<span class="ident">mode</span>, <span class="ident">dst</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">src</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+            <span class="ident">sb::C_SkShaders_Blend</span>(
+                <span class="ident">blender</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
+                <span class="ident">dst</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
+                <span class="ident">src</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
+            )
         })
         .<span class="ident">unwrap</span>()
     }
