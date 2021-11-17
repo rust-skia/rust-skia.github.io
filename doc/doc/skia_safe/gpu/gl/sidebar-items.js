@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Format",""],["Standard",""]],"struct":[["BackendState",""],["FramebufferInfo",""],["TextureInfo",""]],"type":[["Enum",""],["Extensions",""],["Interface",""],["UInt",""]]});
+initSidebarItems({"enum":[["Format",""],["Standard",""]],"struct":[["BackendState",""],["FramebufferInfo",""],["SurfaceInfo",""],["TextureInfo",""]],"type":[["Enum",""],["Extensions",""],["Interface",""],["UInt",""]]});
