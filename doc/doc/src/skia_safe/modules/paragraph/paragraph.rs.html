@@ -201,6 +201,23 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">PositionWithAffinity</span>, <span class="ident">RectHeightStyle</span>, <span class="ident">RectWidthStyle</span>, <span class="ident">TextBox</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">interop::VecSink</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">textlayout::LineMetrics</span>, <span class="ident">Canvas</span>, <span class="ident">Point</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
@@ -334,10 +351,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_line_metrics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LineMetrics</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LineMetrics</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set_lm</span> <span class="op">=</span> <span class="op">|</span><span class="ident">lms</span>: <span class="kw-2">&amp;</span>[<span class="ident">sb::skia_textlayout_LineMetrics</span>]<span class="op">|</span> {
-            <span class="ident">result</span> <span class="op">=</span> <span class="ident">lms</span>
-                .<span class="ident">iter</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">lm</span><span class="op">|</span> <span class="ident">LineMetrics::from_native_ref</span>(<span class="ident">lm</span>).<span class="ident">clone</span>())
-                .<span class="ident">collect</span>();
+            <span class="ident">result</span> <span class="op">=</span> <span class="ident">lms</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">LineMetrics::from_native_ref</span>).<span class="ident">collect</span>();
         };
 
         <span class="kw">unsafe</span> {
@@ -402,6 +416,26 @@
         }
 
         <span class="kw">static</span> <span class="ident">LOREM_IPSUM</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at leo at nulla tincidunt placerat. Proin eget purus augue. Quisque et est ullamcorper, pellentesque felis nec, pulvinar massa. Aliquam imperdiet, nulla ut dictum euismod, purus dui pulvinar risus, eu suscipit elit neque ac est. Nullam eleifend justo quis placerat ultricies. Vestibulum ut elementum velit. Praesent et dolor sit amet purus bibendum mattis. Aliquam erat volutpat.&quot;</span>;
+    }
+
+    <span class="doccomment">/// Regression test for &lt;https://github.com/rust-skia/rust-skia/issues/585&gt;</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_style_metrics</span>() {
+        <span class="ident">icu::init</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">style</span> <span class="op">=</span> <span class="ident">ParagraphStyle::new</span>();
+        <span class="kw">let</span> <span class="ident">ts</span> <span class="op">=</span> <span class="ident">TextStyle::new</span>();
+        <span class="ident">style</span>.<span class="ident">set_text_style</span>(<span class="kw-2">&amp;</span><span class="ident">ts</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">font_collection</span> <span class="op">=</span> <span class="ident">FontCollection::new</span>();
+        <span class="ident">font_collection</span>.<span class="ident">set_default_font_manager</span>(<span class="ident">FontMgr::default</span>(), <span class="prelude-val">None</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paragraph_builder</span> <span class="op">=</span> <span class="ident">ParagraphBuilder::new</span>(<span class="kw-2">&amp;</span><span class="ident">style</span>, <span class="ident">font_collection</span>);
+        <span class="ident">paragraph_builder</span>.<span class="ident">add_text</span>(<span class="string">&quot;Lorem ipsum dolor sit amet\n&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paragraph</span> <span class="op">=</span> <span class="ident">paragraph_builder</span>.<span class="ident">build</span>();
+        <span class="ident">paragraph</span>.<span class="ident">layout</span>(<span class="number">100.0</span>);
+
+        <span class="kw">let</span> <span class="ident">line_metrics</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">paragraph</span>.<span class="ident">get_line_metrics</span>()[<span class="number">0</span>];
+        <span class="ident">line_metrics</span>.<span class="ident">get_style_metrics</span>(<span class="ident">line_metrics</span>.<span class="ident">start_index</span>..<span class="ident">line_metrics</span>.<span class="ident">end_index</span>);
     }
 }
 </code></pre></div>
