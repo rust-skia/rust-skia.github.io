@@ -438,13 +438,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkYUVAPixmapInfo</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmapInfo_equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">YUVAPixmapInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">plane_infos</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">plane_infos</span>().<span class="ident">collect</span>();
         <span class="kw">let</span> <span class="ident">row_bytes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">row_bytes_iter</span>().<span class="ident">collect</span>();
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;YUVAPixmapInfo&quot;</span>)
@@ -471,7 +471,7 @@
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span>,
         <span class="ident">color_types</span>: <span class="kw-2">&amp;</span>[<span class="ident">ColorType</span>],
         <span class="ident">row_bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">usize</span>]<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">color_types</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">info</span>.<span class="ident">num_planes</span>() {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -509,7 +509,7 @@
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span>,
         <span class="ident">data_type</span>: <span class="ident">DataType</span>,
         <span class="ident">row_bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">usize</span>]<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">row_bytes_array</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>];
         <span class="kw">let</span> <span class="ident">row_bytes_ptr</span> <span class="op">=</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">row_bytes</span>) <span class="op">=</span> <span class="ident">row_bytes</span> {
@@ -525,39 +525,39 @@
         <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="ident">info</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
         <span class="ident">YUVAInfo::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fYUVAInfo</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">YUVColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">YUVColorSpace</span> {
         <span class="self">self</span>.<span class="ident">yuva_info</span>().<span class="ident">yuv_color_space</span>()
     }
 
     <span class="doccomment">/// The number of [Pixmap] planes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">yuva_info</span>().<span class="ident">num_planes</span>()
     }
 
     <span class="doccomment">/// The per-YUV`[A]` channel data type.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DataType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DataType</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDataType</span>
     }
 
     <span class="doccomment">/// Row bytes for the ith plane. Returns `None` if `i` &gt;= [`Self::num_planes()`] or this</span>
     <span class="doccomment">/// [YUVAPixmapInfo] is invalid.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         (<span class="ident">i</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">num_planes</span>()).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAPixmapInfo_rowBytes</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
         })
     }
 
     <span class="doccomment">/// Row bytes for all planes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes_iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">usize</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes_iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">usize</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span> {
         (<span class="number">0</span>..<span class="self">self</span>.<span class="ident">num_planes</span>()).<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">row_bytes</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>())
     }
 
     <span class="doccomment">/// Image info for the ith plane, or `None` if `i` &gt;= [`Self::num_planes()`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ImageInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ImageInfo</span><span class="op">&gt;</span> {
         (<span class="ident">i</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">num_planes</span>()).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> {
             <span class="ident">ImageInfo::from_native_ref</span>(<span class="kw">unsafe</span> {
                 <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkYUVAPixmapInfo_planeInfo</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
@@ -566,7 +566,7 @@
     }
 
     <span class="doccomment">/// An iterator of all planes&#39; image infos.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_infos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_infos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span><span class="op">&gt;</span> {
         (<span class="number">0</span>..<span class="self">self</span>.<span class="ident">num_planes</span>()).<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">plane_info</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>())
     }
 
@@ -576,7 +576,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_total_bytes</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">plane_sizes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">usize</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>]<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    ) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeTotalBytes</span>(
                 <span class="ident">plane_sizes</span>
@@ -594,7 +594,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_pixmaps_from_single_allocation</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">memory</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">Pixmap</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>]<span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">Pixmap</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>]<span class="op">&gt;</span> {
         <span class="comment">// Can&#39;t return a Vec&lt;Pixmap&gt; because Pixmaps can&#39;t be cloned.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmaps</span>: [<span class="ident">Pixmap</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="self">self</span>.<span class="ident">native</span>()
@@ -603,18 +603,18 @@
     }
 
     <span class="doccomment">/// Is this valid and does it use color types allowed by the passed [SupportedDataTypes]?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_supported</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">data_types</span>: <span class="kw-2">&amp;</span><span class="ident">SupportedDataTypes</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_supported</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">data_types</span>: <span class="kw-2">&amp;</span><span class="ident">SupportedDataTypes</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isSupported</span>(<span class="ident">data_types</span>.<span class="ident">native</span>()) }
     }
 
     <span class="doccomment">/// Returns `true` if this has been configured with a non-empty dimensioned [YUVAInfo] with</span>
     <span class="doccomment">/// compatible color types and row bytes.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SkYUVAPixmapInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SkYUVAPixmapInfo</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmapInfo_isValid</span>(<span class="ident">info</span>) }
     }
 
     <span class="doccomment">/// Creates a native default instance that is invalid.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SkYUVAPixmapInfo</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() -&gt; <span class="ident">SkYUVAPixmapInfo</span> {
         <span class="ident">construct</span>(<span class="op">|</span><span class="ident">pi</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmapInfo_Construct</span>(<span class="ident">pi</span>) })
     }
 }
@@ -631,13 +631,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkYUVAPixmaps</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">construct</span>(<span class="op">|</span><span class="ident">pixmaps</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmaps_MakeCopy</span>(<span class="self">self</span>, <span class="ident">pixmaps</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">YUVAPixmaps</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;YUVAPixmaps&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;planes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">planes</span>())
             .<span class="ident">field</span>(<span class="string">&quot;yuva_info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">yuva_info</span>())
@@ -649,12 +649,12 @@
 <span class="kw">impl</span> <span class="ident">YUVAPixmaps</span> {
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_PLANES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">YUVAPixmapInfo::MAX_PLANES</span>;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recommended_rgba_color_type</span>(<span class="ident">dt</span>: <span class="ident">DataType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recommended_rgba_color_type</span>(<span class="ident">dt</span>: <span class="ident">DataType</span>) -&gt; <span class="ident">ColorType</span> {
         <span class="ident">ColorType::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::SkYUVAPixmaps::RecommendedRGBAColorType</span>(<span class="ident">dt</span>) })
     }
 
     <span class="doccomment">/// Allocate space for pixmaps&#39; pixels in the [YUVAPixmaps].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmapInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmapInfo</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::try_construct</span>(<span class="op">|</span><span class="ident">pixmaps</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAPixmaps_Allocate</span>(<span class="ident">pixmaps</span>, <span class="ident">info</span>.<span class="ident">native</span>());
             <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="ident">pixmaps</span>)
@@ -663,7 +663,7 @@
 
     <span class="doccomment">/// Use storage in [Data] as backing store for pixmaps&#39; pixels. [Data] is retained by the</span>
     <span class="doccomment">/// [YUVAPixmaps].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_data</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmapInfo</span>, <span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_data</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmapInfo</span>, <span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::try_construct</span>(<span class="op">|</span><span class="ident">pixmaps</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAPixmaps_FromData</span>(<span class="ident">pixmaps</span>, <span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">data</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>());
             <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="ident">pixmaps</span>)
@@ -674,7 +674,7 @@
     <span class="doccomment">/// allocated while pixmaps are in use. There must be at least</span>
     <span class="doccomment">/// [YUVAPixmapInfo::computeTotalBytes(&amp;self)] allocated starting at memory.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_external_memory</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmapInfo</span>, <span class="ident">memory</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_external_memory</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAPixmapInfo</span>, <span class="ident">memory</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::try_construct</span>(<span class="op">|</span><span class="ident">pixmaps</span><span class="op">|</span> {
             <span class="ident">sb::C_SkYUVAPixmaps_FromExternalMemory</span>(<span class="ident">pixmaps</span>, <span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">memory</span>);
             <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="ident">pixmaps</span>)
@@ -689,34 +689,34 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_external_pixmaps</span>(
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span>,
         <span class="ident">pixmaps</span>: <span class="kw-2">&amp;</span>[<span class="ident">Pixmap</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>],
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::try_construct</span>(<span class="op">|</span><span class="ident">pms</span><span class="op">|</span> {
             <span class="ident">sb::C_SkYUVAPixmaps_FromExternalPixmaps</span>(<span class="ident">pms</span>, <span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">pixmaps</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>());
             <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="ident">pms</span>)
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
         <span class="ident">YUVAInfo::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fYUVAInfo</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DataType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DataType</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDataType</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixmaps_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">YUVAPixmapInfo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixmaps_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">YUVAPixmapInfo</span> {
         <span class="ident">YUVAPixmapInfo::construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAPixmaps_pixmapsInfo</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">info</span>)
         })
     }
 
     <span class="doccomment">/// Number of pixmap planes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">yuva_info</span>().<span class="ident">num_planes</span>()
     }
 
     <span class="doccomment">/// Access the [Pixmap] planes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Pixmap</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Pixmap</span>] {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">planes</span> <span class="op">=</span> <span class="ident">Pixmap::from_native_ptr</span>(<span class="ident">sb::C_SkYUVAPixmaps_planes</span>(<span class="self">self</span>.<span class="ident">native</span>()));
             <span class="ident">safer::from_raw_parts</span>(<span class="ident">planes</span>, <span class="self">self</span>.<span class="ident">num_planes</span>())
@@ -724,11 +724,11 @@
     }
 
     <span class="doccomment">/// Get the ith [Pixmap] plane. `Pixmap` will be default initialized if i &gt;= numPlanes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Pixmap</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Pixmap</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">planes</span>()[<span class="ident">i</span>]
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">pixmaps</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SkYUVAPixmaps</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">pixmaps</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SkYUVAPixmaps</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmaps_isValid</span>(<span class="ident">pixmaps</span>) }
     }
 }
@@ -756,7 +756,7 @@
 
     <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SupportedDataTypes</span> {
         <span class="doccomment">/// Defaults to nothing supported.</span>
-        <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
             <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">sdt</span><span class="op">|</span> <span class="kw">unsafe</span> {
                 <span class="ident">sb::C_SkYUVAPixmapInfo_SupportedDataTypes_Construct</span>(<span class="ident">sdt</span>)
             })
@@ -764,7 +764,7 @@
     }
 
     <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SupportedDataTypes</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SupportedDataType&quot;</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;data_type_support&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDataTypeSupport</span>)
                 .<span class="ident">finish</span>()
@@ -774,7 +774,7 @@
     <span class="kw">impl</span> <span class="ident">SupportedDataTypes</span> {
         <span class="doccomment">/// Init based on texture formats supported by the context.</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_context</span>(<span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::gpu::RecordingContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_context</span>(<span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::gpu::RecordingContext</span>) -&gt; <span class="self">Self</span> {
             <span class="ident">Handle::from_native_c</span>(<span class="kw">unsafe</span> {
                 <span class="ident">sb::SkYUVAPixmapInfo_SupportedDataTypes::new</span>(
                     <span class="ident">context</span>.<span class="ident">native</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sb::GrImageContext</span>
@@ -783,13 +783,13 @@
         }
 
         <span class="doccomment">/// All legal combinations of [PlaneConfig] and [DataType] are supported.</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() -&gt; <span class="self">Self</span> {
             <span class="ident">Handle::construct</span>(<span class="op">|</span><span class="ident">sdt</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmapInfo_SupportedDataTypes_All</span>(<span class="ident">sdt</span>) })
         }
 
         <span class="doccomment">/// Checks whether there is a supported combination of color types for planes structured</span>
         <span class="doccomment">/// as indicated by [PlaneConfig] with channel data types as indicated by [DataType].</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supported</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pc</span>: <span class="ident">PlaneConfig</span>, <span class="ident">dt</span>: <span class="ident">DataType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supported</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pc</span>: <span class="ident">PlaneConfig</span>, <span class="ident">dt</span>: <span class="ident">DataType</span>) -&gt; <span class="ident">bool</span> {
             <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAPixmapInfo_SupportedDataTypes_supported</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">pc</span>, <span class="ident">dt</span>) }
         }
 
@@ -805,7 +805,7 @@
 
     <span class="doccomment">/// Gets the default [ColorType] to use with `num_channels` channels, each represented as [DataType].</span>
     <span class="doccomment">/// Returns [ColorType::Unknown] if no such color type.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_color_type_for_data_type</span>(<span class="ident">dt</span>: <span class="ident">DataType</span>, <span class="ident">num_channels</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_color_type_for_data_type</span>(<span class="ident">dt</span>: <span class="ident">DataType</span>, <span class="ident">num_channels</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ColorType</span> {
         <span class="ident">ColorType::from_native_c</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAPixmapInfo_DefaultColorTypeForDataType</span>(<span class="ident">dt</span>, <span class="ident">num_channels</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
         })
@@ -815,7 +815,7 @@
     <span class="doccomment">/// that can be stored in a plane of this color type and what the [DataType] is of those channels.</span>
     <span class="doccomment">/// If the [ColorType] is not supported as a YUVA plane the number of channels is reported as 0</span>
     <span class="doccomment">/// and the [DataType] returned should be ignored.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_and_data_type</span>(<span class="ident">color_type</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="ident">DataType</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_and_data_type</span>(<span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; (<span class="ident">usize</span>, <span class="ident">DataType</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data_type</span> <span class="op">=</span> <span class="ident">DataType::Float16</span>;
         <span class="kw">let</span> <span class="ident">channels</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAPixmapInfo_NumChannelsAndDataType</span>(<span class="ident">color_type</span>.<span class="ident">into_native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">data_type</span>)

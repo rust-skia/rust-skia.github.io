@@ -250,7 +250,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BackendContext&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;native&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>)
             .<span class="ident">finish</span>()
@@ -271,7 +271,7 @@
         <span class="ident">device</span>: <span class="ident">Device</span>,
         (<span class="ident">queue</span>, <span class="ident">queue_index</span>): (<span class="ident">Queue</span>, <span class="ident">usize</span>),
         <span class="ident">get_proc</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">GetProc</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendContext</span> {
+    ) -&gt; <span class="ident">BackendContext</span> {
         <span class="ident"><span class="self">Self</span>::new_with_extensions</span>(
             <span class="ident">instance</span>,
             <span class="ident">physical_device</span>,
@@ -294,7 +294,7 @@
         <span class="ident">get_proc</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">GetProc</span>,
         <span class="ident">instance_extensions</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
         <span class="ident">device_extensions</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="comment">// pin the extensions string in memory and provide pointers to the NewWithExtension function,</span>
         <span class="comment">// but there is no need to retain them, because because the implementations copies these strings, too.</span>
         <span class="kw">let</span> <span class="ident">instance_extensions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">instance_extensions</span>
@@ -330,7 +330,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_protected_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">protected_context</span>: <span class="ident">gpu::Protected</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_protected_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">protected_context</span>: <span class="ident">gpu::Protected</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrVkBackendContext_setProtectedContext</span>(
                 <span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
@@ -340,7 +340,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_api_version</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">version</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Version</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_api_version</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">version</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Version</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrVkBackendContext_setMaxAPIVersion</span>(
                 <span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
@@ -350,7 +350,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">begin_resolving</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Drop</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">begin_resolving</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Drop</span> {
         <span class="ident"><span class="self">Self</span>::begin_resolving_proc</span>(<span class="self">self</span>.<span class="ident">get_proc</span>)
     }
 
@@ -361,7 +361,7 @@
     <span class="comment">// of relying on a global extern &quot;C&quot; function.</span>
     <span class="comment">// TODO: This is a mess, highly unsafe, and needs to be simplified / rewritten</span>
     <span class="comment">//       by someone who understands Rust better.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">begin_resolving_proc</span>(<span class="ident">get_proc_trait_object</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">GetProc</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Drop</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">begin_resolving_proc</span>(<span class="ident">get_proc_trait_object</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">GetProc</span>) -&gt; <span class="kw">impl</span> <span class="ident">Drop</span> {
         <span class="ident">THREAD_LOCAL_GET_PROC</span>
             .<span class="ident">with</span>(<span class="op">|</span><span class="ident">get_proc</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">get_proc</span>.<span class="ident">borrow_mut</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">mem::transmute</span>(<span class="ident">get_proc_trait_object</span>)));
 
@@ -396,10 +396,10 @@
     <span class="ident">name</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::c_char</span>,
     <span class="ident">instance</span>: <span class="ident">Instance</span>,
     <span class="ident">device</span>: <span class="ident">Device</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::c_void</span> {
+) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::c_void</span> {
     <span class="ident">THREAD_LOCAL_GET_PROC</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">get_proc</span><span class="op">|</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">get_proc</span>.<span class="ident">borrow</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">get_proc</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">get_proc</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">get_proc_trait_object</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">GetProc</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">get_proc</span>);
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">device</span>.<span class="ident">is_null</span>() {
                     <span class="ident">get_proc_trait_object</span>(<span class="ident">GetProcOf::Device</span>(<span class="ident">device</span>, <span class="ident">name</span>))
@@ -408,7 +408,7 @@
                     <span class="ident">get_proc_trait_object</span>(<span class="ident">GetProcOf::Instance</span>(<span class="ident">instance</span>, <span class="ident">name</span>))
                 }
             }
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Vulkan GetProc called outside of a thread local resolvement context.&quot;</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Vulkan GetProc called outside of a thread local resolvement context.&quot;</span>),
         }
     })
 }

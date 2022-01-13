@@ -427,13 +427,13 @@
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlob_unref</span>(<span class="self">self</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlob_unique</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextBlob</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextBlob&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>())
             .<span class="ident">field</span>(<span class="string">&quot;unique_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">unique_id</span>())
@@ -442,20 +442,20 @@
 }
 
 <span class="kw">impl</span> <span class="ident">TextBlob</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::from_str</span>(<span class="ident">str</span>, <span class="ident">font</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Rect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Rect</span> {
         <span class="ident">Rect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBounds</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unique_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unique_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fUniqueID</span>
     }
 
     <span class="comment">// TODO: consider to provide an inplace variant.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_intercepts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bounds</span>: [<span class="ident">scalar</span>; <span class="number">2</span>], <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_intercepts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bounds</span>: [<span class="ident">scalar</span>; <span class="number">2</span>], <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getIntercepts</span>(
                 <span class="ident">bounds</span>.<span class="ident">as_ptr</span>(),
@@ -473,11 +473,11 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::from_text</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding::UTF8</span>, <span class="ident">font</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_text</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_text</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
         <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkTextBlob_MakeFromText</span>(
                 <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
@@ -494,7 +494,7 @@
         <span class="ident">const_y</span>: <span class="ident">scalar</span>,
         <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
         <span class="ident">encoding</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextEncoding</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">encoding</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
         <span class="comment">// TODO: avoid that verification somehow.</span>
         <span class="macro">assert_eq!</span>(<span class="ident">x_pos</span>.<span class="ident">len</span>(), <span class="ident">font</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>));
@@ -515,7 +515,7 @@
         <span class="ident">pos</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>],
         <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
         <span class="ident">encoding</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextEncoding</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">encoding</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
         <span class="comment">// TODO: avoid that verification somehow.</span>
         <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">len</span>(), <span class="ident">font</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>));
@@ -535,7 +535,7 @@
         <span class="ident">xform</span>: <span class="kw-2">&amp;</span>[<span class="ident">RSXform</span>],
         <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
         <span class="ident">encoding</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextEncoding</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">encoding</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
         <span class="comment">// TODO: avoid that verification somehow.</span>
         <span class="macro">assert_eq!</span>(<span class="ident">xform</span>.<span class="ident">len</span>(), <span class="ident">font</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>));
@@ -561,17 +561,17 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextBlobBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextBlobBuilder&quot;</span>).<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">TextBlobBuilder</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkTextBlobBuilder::new</span>() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
         <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlobBuilder_make</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
     }
 
@@ -581,7 +581,7 @@
         <span class="ident">count</span>: <span class="ident">usize</span>,
         <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>] {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>] {
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRun</span>(
@@ -601,7 +601,7 @@
         <span class="ident">count</span>: <span class="ident">usize</span>,
         <span class="ident">y</span>: <span class="ident">scalar</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">scalar</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">scalar</span>]) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunPosH</span>(
                 <span class="ident">font</span>.<span class="ident">native</span>(),
@@ -621,7 +621,7 @@
         <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
         <span class="ident">count</span>: <span class="ident">usize</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>]) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunPos</span>(
                 <span class="ident">font</span>.<span class="ident">native</span>(),
@@ -639,7 +639,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
         <span class="ident">count</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">RSXform</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">RSXform</span>]) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>
                 .<span class="ident">native_mut</span>()
@@ -658,7 +658,7 @@
         <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunText</span>(
@@ -684,7 +684,7 @@
         <span class="ident">y</span>: <span class="ident">scalar</span>,
         <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">scalar</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">scalar</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunTextPosH</span>(
                 <span class="ident">font</span>.<span class="ident">native</span>(),
@@ -708,7 +708,7 @@
         <span class="ident">count</span>: <span class="ident">usize</span>,
         <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunTextPos</span>(
                 <span class="ident">font</span>.<span class="ident">native</span>(),
@@ -731,7 +731,7 @@
         <span class="ident">count</span>: <span class="ident">usize</span>,
         <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
         <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">RSXform</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">RSXform</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u32</span>]) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunTextPos</span>(
                 <span class="ident">font</span>.<span class="ident">native</span>(),
@@ -757,7 +757,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextBlobRun&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;typeface&quot;</span>, <span class="self">self</span>.<span class="ident">typeface</span>())
             .<span class="ident">field</span>(<span class="string">&quot;glyph_indices&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">glyph_indices</span>)
@@ -766,13 +766,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
         <span class="ident">Typeface::from_unshared_ptr_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">typeface</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkTextBlob_Iter</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">text_blob</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TextBlob</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">text_blob</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TextBlob</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Handle::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkTextBlob_Iter::new</span>(<span class="ident">text_blob</span>.<span class="ident">native</span>()) })
             .<span class="ident">borrows</span>(<span class="ident">text_blob</span>)
     }
@@ -786,7 +786,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkTextBlob_Iter</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">run</span> <span class="op">=</span> <span class="ident">SkTextBlob_Iter_Run</span> {
             <span class="ident">fTypeface</span>: <span class="ident">ptr::null_mut</span>(),
             <span class="ident">fGlyphCount</span>: <span class="number">0</span>,

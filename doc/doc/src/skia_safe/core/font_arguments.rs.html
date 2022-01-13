@@ -167,13 +167,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FontArguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">FontArguments::new</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FontArguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;FontArguments&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;collection_index&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">collection_index</span>())
             .<span class="ident">field</span>(
@@ -185,13 +185,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">FontArguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">fa</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkFontArguments_construct</span>(<span class="ident">fa</span>);
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_collection_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">collection_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_collection_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">collection_index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fCollectionIndex</span> <span class="op">=</span> <span class="ident">collection_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
         <span class="self">self</span>
     }
@@ -200,7 +200,7 @@
     <span class="comment">// because it borrows the coordinates referenced by VariationPosition.</span>
     <span class="comment">//</span>
     <span class="comment">// If we would return `Self`, position&#39;s Coordinates would not be borrowed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_variation_design_position</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">position</span>: <span class="ident">VariationPosition</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FontArguments</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_variation_design_position</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">position</span>: <span class="ident">VariationPosition</span>) -&gt; <span class="ident">FontArguments</span> {
         <span class="kw">let</span> <span class="ident">position</span> <span class="op">=</span> <span class="ident">SkFontArguments_VariationPosition</span> {
             <span class="ident">coordinates</span>: <span class="ident">position</span>.<span class="ident">coordinates</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
             <span class="ident">coordinateCount</span>: <span class="ident">position</span>.<span class="ident">coordinates</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
@@ -213,11 +213,11 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">collection_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">collection_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fCollectionIndex</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variation_design_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VariationPosition</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variation_design_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">VariationPosition</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">position</span> <span class="op">=</span> <span class="ident">sb::C_SkFontArguments_getVariationDesignPosition</span>(<span class="self">self</span>.<span class="ident">native</span>());
             <span class="ident">VariationPosition</span> {

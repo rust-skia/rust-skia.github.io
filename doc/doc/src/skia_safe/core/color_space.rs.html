@@ -326,61 +326,61 @@
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_unref</span>(<span class="self">self</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_unique</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">skia_bindings::SkColorSpace_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ColorSpace&quot;</span>).<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ColorSpace</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_srgb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_srgb</span>() -&gt; <span class="ident">ColorSpace</span> {
         <span class="ident">ColorSpace::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_MakeSRGB</span>() }).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_srgb_linear</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_srgb_linear</span>() -&gt; <span class="ident">ColorSpace</span> {
         <span class="ident">ColorSpace::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_MakeSRGBLinear</span>() }).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_xyzd50_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XYZD50Hash</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_xyzd50_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">XYZD50Hash</span> {
         <span class="ident">XYZD50Hash</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fToXYZD50Hash</span>)
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_linear_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_linear_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ColorSpace</span> {
         <span class="ident">ColorSpace::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_makeLinearGamma</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_srgb_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_srgb_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ColorSpace</span> {
         <span class="ident">ColorSpace::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_makeSRGBGamma</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_color_spin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_color_spin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ColorSpace</span> {
         <span class="ident">ColorSpace::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_makeColorSpin</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_srgb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_srgb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isSRGB</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Data</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Data</span> {
         <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
     }
 
     <span class="comment">// TODO: writeToMemory()?</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) -&gt; <span class="ident">ColorSpace</span> {
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">as_bytes</span>();
         <span class="ident">ColorSpace::from_ptr</span>(<span class="kw">unsafe</span> {
@@ -401,7 +401,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">impl</span> <span class="ident">RefCount</span> <span class="kw">for</span> <span class="ident">SkColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">_base</span>.<span class="ident">ref_cnt</span>()
     }
 }
@@ -426,7 +426,7 @@
     <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">ColorSpace::deserialize</span>(<span class="ident">serialized</span>);
     <span class="macro">assert_eq!</span>(<span class="number">3</span>, <span class="ident">deserialized</span>.<span class="ident">native</span>().<span class="ident">ref_cnt</span>());
 
-    <span class="macro">assert!</span>(<span class="ident">original</span> <span class="op">=</span><span class="op">=</span> <span class="ident">deserialized</span>);
+    <span class="macro">assert!</span>(<span class="ident">original</span> <span class="op">==</span> <span class="ident">deserialized</span>);
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>

@@ -90,7 +90,7 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">SkRSXform</span>, <span class="ident">RSXform</span>, <span class="ident">rsxform_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">RSXform</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">scos</span>: <span class="ident">scalar</span>, <span class="ident">ssin</span>: <span class="ident">scalar</span>, <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">scos</span>: <span class="ident">scalar</span>, <span class="ident">ssin</span>: <span class="ident">scalar</span>, <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">into</span>();
         <span class="self">Self</span> {
             <span class="ident">scos</span>,
@@ -105,7 +105,7 @@
         <span class="ident">radians</span>: <span class="ident">scalar</span>,
         <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
         <span class="ident">a</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">into</span>();
 
@@ -114,8 +114,8 @@
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">c</span>, <span class="ident">s</span>, (<span class="ident">t</span>.<span class="ident">x</span> <span class="op">+</span> <span class="op">-</span><span class="ident">c</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">s</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">y</span>, <span class="ident">t</span>.<span class="ident">y</span> <span class="op">+</span> <span class="op">-</span><span class="ident">s</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">c</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">y</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_stays_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">scos</span> <span class="op">=</span><span class="op">=</span> <span class="number">0.0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">ssin</span> <span class="op">=</span><span class="op">=</span> <span class="number">0.0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_stays_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">scos</span> <span class="op">==</span> <span class="number">0.0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">ssin</span> <span class="op">==</span> <span class="number">0.0</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_identity</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
@@ -130,7 +130,7 @@
         <span class="self">self</span>.<span class="ident">ty</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">y</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_quad</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">Point</span>; <span class="number">4</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_quad</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) -&gt; [<span class="ident">Point</span>; <span class="number">4</span>] {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">quad</span>: [<span class="ident">Point</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="kw">unsafe</span> {
@@ -140,7 +140,7 @@
         <span class="ident">quad</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_tri_strip</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">Point</span>; <span class="number">4</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_tri_strip</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) -&gt; [<span class="ident">Point</span>; <span class="number">4</span>] {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">strip</span>: [<span class="ident">Point</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="kw">unsafe</span> {

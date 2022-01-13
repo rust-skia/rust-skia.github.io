@@ -438,13 +438,13 @@
 <span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">DirectContext</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">RecordingContext</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">DirectContext</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Target</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref_mut</span>(<span class="self">self</span>) }
     }
 }
@@ -462,7 +462,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">DirectContext</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DirectContext&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;base&quot;</span>, <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="ident">RecordingContext</span>)
             .<span class="ident">field</span>(<span class="string">&quot;resource_cache_limits&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">resource_cache_limits</span>())
@@ -485,7 +485,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_gl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">interface</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gl::Interface</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ContextOptions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
         <span class="ident">DirectContext::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrDirectContext_MakeGL</span>(
                 <span class="ident">interface</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
@@ -498,7 +498,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">backend_context</span>: <span class="kw-2">&amp;</span><span class="ident">vk::BackendContext</span>,
         <span class="ident">options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ContextOptions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">end_resolving</span> <span class="op">=</span> <span class="ident">backend_context</span>.<span class="ident">begin_resolving</span>();
             <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">DirectContext::from_ptr</span>(<span class="ident">sb::C_GrDirectContext_MakeVulkan</span>(
@@ -514,7 +514,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_metal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">backend</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::gpu::mtl::BackendContext</span>,
         <span class="ident">options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ContextOptions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
         <span class="ident">DirectContext::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrContext_MakeMetal</span>(<span class="ident">backend</span>.<span class="ident">native</span>(), <span class="ident">options</span>.<span class="ident">into</span>().<span class="ident">native_ptr_or_null</span>())
         })
@@ -525,14 +525,14 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_d3d</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">backend_context</span>: <span class="kw-2">&amp;</span><span class="ident">d3d::BackendContext</span>,
         <span class="ident">options</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ContextOptions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
         <span class="ident">DirectContext::from_ptr</span>(<span class="ident">sb::C_GrDirectContext_MakeDirect3D</span>(
             <span class="ident">backend_context</span>.<span class="ident">native</span>(),
             <span class="ident">options</span>.<span class="ident">into</span>().<span class="ident">native_ptr_or_null</span>(),
         ))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">backend_state</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">backend_state</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">resetContext</span>(<span class="ident">backend_state</span>.<span class="ident">unwrap_or</span>(<span class="ident">sb::kAll_GrBackendState</span>))
@@ -540,12 +540,12 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_gl_texture_bindings</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_gl_texture_bindings</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">resetGLTextureBindings</span>() }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abandon</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abandon</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="comment">// self.native_mut().abandonContext()</span>
             <span class="ident">sb::GrDirectContext_abandonContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>)
@@ -555,18 +555,18 @@
 
     <span class="comment">// TODO: threadSafeProxy()</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">oomed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">oomed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">oomed</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">release_resources_and_abandon</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">release_resources_and_abandon</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::GrDirectContext_releaseResourcesAndAbandonContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>)
         }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_limits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ResourceCacheLimits</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_limits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ResourceCacheLimits</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resources</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resource_bytes</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">unsafe</span> {
@@ -579,11 +579,11 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_limit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_limit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getResourceCacheLimit</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_usage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ResourceCacheUsage</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_usage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ResourceCacheUsage</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resource_count</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resource_bytes</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">unsafe</span> {
@@ -596,7 +596,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_purgeable_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_cache_purgeable_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getResourceCachePurgeableBytes</span>() }
     }
 
@@ -613,7 +613,7 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setResourceCacheLimit</span>(<span class="ident">max_resource_bytes</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">free_gpu_resources</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">free_gpu_resources</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::GrDirectContext_freeGpuResources</span>(<span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>) }
         <span class="self">self</span>
     }
@@ -622,7 +622,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">not_used</span>: <span class="ident">Duration</span>,
         <span class="ident">scratch_resources_only</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrDirectContext_performDeferredCleanup</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
@@ -637,13 +637,13 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">bytes_to_purge</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
         <span class="ident">prefer_scratch_resources</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">match</span> <span class="ident">bytes_to_purge</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">bytes_to_purge</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>
+                <span class="prelude-val">Some</span>(<span class="ident">bytes_to_purge</span>) =&gt; <span class="self">self</span>
                     .<span class="ident">native_mut</span>()
                     .<span class="ident">purgeUnlockedResources</span>(<span class="ident">bytes_to_purge</span>, <span class="ident">prefer_scratch_resources</span>),
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>
+                <span class="prelude-val">None</span> =&gt; <span class="self">self</span>
                     .<span class="ident">native_mut</span>()
                     .<span class="ident">purgeUnlockedResources1</span>(<span class="ident">prefer_scratch_resources</span>),
             }
@@ -653,23 +653,23 @@
 
     <span class="comment">// TODO: wait()</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_and_submit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_and_submit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrDirectContext_flushAndSubmit</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_submit_and_sync_cpu</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_submit_and_sync_cpu</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="ident">FlushInfo::default</span>());
         <span class="self">self</span>.<span class="ident">submit</span>(<span class="bool-val">true</span>);
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use flush()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_with_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">FlushInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SemaphoresSubmitted</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_with_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">FlushInfo</span>) -&gt; <span class="ident">SemaphoresSubmitted</span> {
         <span class="self">self</span>.<span class="ident">flush</span>(<span class="ident">info</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">FlushInfo</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SemaphoresSubmitted</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">FlushInfo</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">SemaphoresSubmitted</span> {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>();
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">info</span>) <span class="op">=</span> <span class="ident">info</span>.<span class="ident">into</span>() {
             <span class="kw">unsafe</span> { <span class="ident">n</span>.<span class="ident">flush</span>(<span class="ident">info</span>.<span class="ident">native</span>()) }
@@ -679,7 +679,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">submit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sync_cpu</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">submit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sync_cpu</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">submit</span>(<span class="ident">sync_cpu</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>)) }
     }
 
@@ -689,12 +689,12 @@
 
     <span class="comment">// TODO: dumpMemoryStatistics()</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_distance_field_text</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_distance_field_text</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">supportsDistanceFieldText</span>() }
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">store_vk_pipeline_cache_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">store_vk_pipeline_cache_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">storeVkPipelineCacheData</span>();
         }
@@ -708,7 +708,7 @@
     <span class="comment">// TODO: wrap updateBackendTexture (several variants)</span>
     <span class="comment">//       introduced in m84</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compressed_backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">compression</span>: <span class="ident">image::CompressionType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendFormat</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compressed_backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">compression</span>: <span class="ident">image::CompressionType</span>) -&gt; <span class="ident">BackendFormat</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_format</span> <span class="op">=</span> <span class="ident">BackendFormat::new_invalid</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrDirectContext_compressedBackendFormat</span>(
@@ -732,7 +732,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">BackendTexture</span>,
         <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">BackendSurfaceMutableState</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">set_backend_texture_state_and_return_previous</span>(<span class="ident">backend_texture</span>, <span class="ident">state</span>)
             .<span class="ident">is_some</span>()
     }
@@ -741,7 +741,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">BackendTexture</span>,
         <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">BackendSurfaceMutableState</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendSurfaceMutableState</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendSurfaceMutableState</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">previous</span> <span class="op">=</span> <span class="ident">BackendSurfaceMutableState::default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setBackendTextureState</span>(
@@ -760,7 +760,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">target</span>: <span class="kw-2">&amp;</span><span class="ident">BackendRenderTarget</span>,
         <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">BackendSurfaceMutableState</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">set_backend_render_target_state_and_return_previous</span>(<span class="ident">target</span>, <span class="ident">state</span>)
             .<span class="ident">is_some</span>()
     }
@@ -769,7 +769,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">target</span>: <span class="kw-2">&amp;</span><span class="ident">BackendRenderTarget</span>,
         <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">BackendSurfaceMutableState</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendSurfaceMutableState</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendSurfaceMutableState</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">previous</span> <span class="op">=</span> <span class="ident">BackendSurfaceMutableState::default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setBackendRenderTargetState</span>(
@@ -785,14 +785,14 @@
 
     <span class="comment">// TODO: wrap deleteBackendTexture(),</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">precompile_shader</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">precompile_shader</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">precompileShader</span>(<span class="ident">key</span>.<span class="ident">native</span>(), <span class="ident">data</span>.<span class="ident">native</span>())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DirectContextId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DirectContextId</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">DirectContextId</span> { <span class="ident">id</span>: <span class="number">0</span> };
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrDirectContext_directContextId</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">id</span>.<span class="ident">native_mut</span>()) }
         <span class="ident">id</span>

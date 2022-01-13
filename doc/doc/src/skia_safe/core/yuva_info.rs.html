@@ -347,7 +347,7 @@
 <span class="macro">variant_name!</span>(<span class="ident">Siting::Centered</span>, <span class="ident">siting_naming</span>);
 
 <span class="doccomment">/// Ratio of Y/A values to U/V values in x and y.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subsampling_factors</span>(<span class="ident">subsampling</span>: <span class="ident">Subsampling</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">i32</span>, <span class="ident">i32</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subsampling_factors</span>(<span class="ident">subsampling</span>: <span class="ident">Subsampling</span>) -&gt; (<span class="ident">i32</span>, <span class="ident">i32</span>) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">factors</span>: [<span class="ident">i32</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
     <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_SubsamplingFactors</span>(<span class="ident">subsampling</span>.<span class="ident">into_native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">factors</span>[<span class="number">0</span>]) };
     (<span class="ident">factors</span>[<span class="number">0</span>], <span class="ident">factors</span>[<span class="number">1</span>])
@@ -360,7 +360,7 @@
     <span class="ident">plane</span>: <span class="ident">PlaneConfig</span>,
     <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>,
     <span class="ident">plane_index</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">i32</span>, <span class="ident">i32</span>) {
+) -&gt; (<span class="ident">i32</span>, <span class="ident">i32</span>) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">factors</span>: [<span class="ident">i32</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
     <span class="kw">unsafe</span> {
         <span class="ident">sb::C_SkYUVAInfo_PlaneSubsamplingFactors</span>(
@@ -382,7 +382,7 @@
     <span class="ident">config</span>: <span class="ident">PlaneConfig</span>,
     <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>,
     <span class="ident">origin</span>: <span class="ident">EncodedOrigin</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plane_dimensions</span> <span class="op">=</span> [<span class="ident">ISize::default</span>(); <span class="ident">YUVAInfo::MAX_PLANES</span>];
     <span class="kw">let</span> <span class="ident">size</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="ident">SkYUVAInfo::PlaneDimensions</span>(
@@ -400,7 +400,7 @@
 }
 
 <span class="doccomment">/// Number of planes for a given [PlaneConfig].</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_NumPlanes</span>(<span class="ident">config</span>) }
         .<span class="ident">try_into</span>()
         .<span class="ident">unwrap</span>()
@@ -408,7 +408,7 @@
 
 <span class="doccomment">/// Number of Y, U, V, A channels in the ith plane for a given [PlaneConfig] (or [None] if i is</span>
 <span class="doccomment">/// invalid).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_in_plane</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_in_plane</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     (<span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">num_planes</span>(<span class="ident">config</span>)).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_NumChannelsInPlane</span>(<span class="ident">config</span>, <span class="ident">i</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()) }
             .<span class="ident">try_into</span>()
@@ -417,24 +417,24 @@
 }
 
 <span class="doccomment">/// Does the [PlaneConfig] have alpha values?</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alpha</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alpha</span>(<span class="ident">config</span>: <span class="ident">PlaneConfig</span>) -&gt; <span class="ident">bool</span> {
     <span class="kw">unsafe</span> { <span class="ident">sb::SkYUVAInfo_HasAlpha</span>(<span class="ident">config</span>) }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">yi</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_Construct</span>(<span class="ident">yi</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkYUVAInfo_equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">rhs</span>.<span class="ident">native</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">YUVAInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;YUVAInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;dimensions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dimensions</span>())
             .<span class="ident">field</span>(<span class="string">&quot;plane_config&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">plane_config</span>())
@@ -458,7 +458,7 @@
         <span class="ident">color_space</span>: <span class="ident">image_info::YUVColorSpace</span>,
         <span class="ident">origin</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EncodedOrigin</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">siting_xy</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Siting</span>, <span class="ident">Siting</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">origin</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">EncodedOrigin::TopLeft</span>);
         <span class="kw">let</span> (<span class="ident">siting_x</span>, <span class="ident">siting_y</span>) <span class="op">=</span> <span class="ident">siting_xy</span>
             .<span class="ident">into</span>()
@@ -478,56 +478,56 @@
         <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="ident">n</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PlaneConfig</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PlaneConfig</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPlaneConfig</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subsampling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Subsampling</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subsampling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Subsampling</span> {
         <span class="ident">Subsampling::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fSubsampling</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_subsampling_factors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">plane_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">i32</span>, <span class="ident">i32</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_subsampling_factors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">plane_index</span>: <span class="ident">usize</span>) -&gt; (<span class="ident">i32</span>, <span class="ident">i32</span>) {
         <span class="ident">plane_subsampling_factors</span>(<span class="self">self</span>.<span class="ident">plane_config</span>(), <span class="self">self</span>.<span class="ident">subsampling</span>(), <span class="ident">plane_index</span>)
     }
 
     <span class="doccomment">/// Dimensions of the full resolution image (after planes have been oriented to how the image</span>
     <span class="doccomment">/// is displayed as indicated by fOrigin).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
         <span class="ident">ISize::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDimensions</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">dimensions</span>().<span class="ident">width</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">dimensions</span>().<span class="ident">height</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">image_info::YUVColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">image_info::YUVColorSpace</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fYUVColorSpace</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">siting_xy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Siting</span>, <span class="ident">Siting</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">siting_xy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">Siting</span>, <span class="ident">Siting</span>) {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>();
         (<span class="ident">n</span>.<span class="ident">fSitingX</span>, <span class="ident">n</span>.<span class="ident">fSitingY</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EncodedOrigin</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">EncodedOrigin</span> {
         <span class="ident">EncodedOrigin::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fOrigin</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">origin_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Matrix</span> {
         <span class="self">self</span>.<span class="ident">origin</span>().<span class="ident">to_matrix</span>((<span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>()))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">has_alpha</span>(<span class="self">self</span>.<span class="ident">plane_config</span>())
     }
 
     <span class="doccomment">/// Returns the dimensions for each plane. Dimensions are as stored in memory, before</span>
     <span class="doccomment">/// transformation to image display space as indicated by [origin(&amp;self)].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">self</span>::plane_dimensions</span>(
             <span class="self">self</span>.<span class="ident">dimensions</span>(),
             <span class="self">self</span>.<span class="ident">plane_config</span>(),
@@ -543,7 +543,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">row_bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">usize</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>],
         <span class="ident">plane_sizes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">usize</span>; <span class="ident"><span class="self">Self</span>::MAX_PLANES</span>]<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    ) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeTotalBytes</span>(
                 <span class="ident">row_bytes</span>.<span class="ident">as_ptr</span>(),
@@ -554,11 +554,11 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">num_planes</span>(<span class="self">self</span>.<span class="ident">plane_config</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_in_plane</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_channels_in_plane</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="ident">num_channels_in_plane</span>(<span class="self">self</span>.<span class="ident">plane_config</span>(), <span class="ident">i</span>)
     }
 
@@ -566,7 +566,7 @@
     <span class="doccomment">/// passed [Subsampling] is not [Subsampling::S444] and this info&#39;s [PlaneConfig] is not</span>
     <span class="doccomment">/// compatible with chroma subsampling (because Y is in the same plane as UV) then the result</span>
     <span class="doccomment">/// will be `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_subsampling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_subsampling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">subsampling</span>: <span class="ident">Subsampling</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::try_construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAInfo_makeSubsampling</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">subsampling</span>.<span class="ident">into_native</span>(), <span class="ident">info</span>);
             <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">info</span>)
@@ -575,14 +575,14 @@
 
     <span class="doccomment">/// Returns a [YUVAInfo] that is identical to this one but with the passed dimensions. If the</span>
     <span class="doccomment">/// passed dimensions is empty then the result will be `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dimensions</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dimensions</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::try_construct</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkYUVAInfo_makeDimensions</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">dimensions</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">info</span>);
             <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">info</span>)
         })
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">SkYUVAInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">SkYUVAInfo</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">info</span>.<span class="ident">fPlaneConfig</span> <span class="op">!</span><span class="op">=</span> <span class="ident">PlaneConfig::Unknown</span>
     }
 }

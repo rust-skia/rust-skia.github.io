@@ -156,7 +156,7 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wio::com::ComPtr</span> <span class="kw">as</span> <span class="ident">cp</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">safe_com_add_ref</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">winapi::Interface</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">safe_com_add_ref</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">winapi::Interface</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
     <span class="kw">if</span> <span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>() {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">IUnknown</span>)).<span class="ident">AddRef</span>() };
     }
@@ -185,7 +185,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Alloc</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Alloc&quot;</span>).<span class="ident">finish</span>()
     }
 }
@@ -200,7 +200,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MemoryAllocator</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MemoryAllocator&quot;</span>).<span class="ident">finish</span>()
     }
 }
@@ -220,7 +220,7 @@
 <span class="macro">unsafe_send_sync!</span>(<span class="ident">TextureResourceInfo</span>);
 
 <span class="kw">impl</span> <span class="ident">TextureResourceInfo</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_resource</span>(<span class="ident">resource</span>: <span class="ident">cp</span><span class="op">&lt;</span><span class="ident">ID3D12Resource</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_resource</span>(<span class="ident">resource</span>: <span class="ident">cp</span><span class="op">&lt;</span><span class="ident">ID3D12Resource</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">resource</span>,
             <span class="ident">alloc</span>: <span class="prelude-val">None</span>,
@@ -233,7 +233,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_state</span>(<span class="self">self</span>, <span class="ident">resource_state</span>: <span class="ident">D3D12_RESOURCE_STATES</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_state</span>(<span class="self">self</span>, <span class="ident">resource_state</span>: <span class="ident">D3D12_RESOURCE_STATES</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">resource_state</span>,
             ..<span class="self">self</span>
@@ -242,7 +242,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">cp</span><span class="op">&lt;</span><span class="ident">ID3D12Resource</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TextureResourceInfo</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">resource</span>: <span class="ident">cp</span><span class="op">&lt;</span><span class="ident">ID3D12Resource</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">resource</span>: <span class="ident">cp</span><span class="op">&lt;</span><span class="ident">ID3D12Resource</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_resource</span>(<span class="ident">resource</span>)
     }
 }
@@ -276,7 +276,7 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">GrD3DSurfaceInfo</span>, <span class="ident">SurfaceInfo</span>, <span class="ident">surface_info_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SurfaceInfo</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">sample_count</span>: <span class="number">1</span>,
             <span class="ident">level_count</span>: <span class="number">0</span>,

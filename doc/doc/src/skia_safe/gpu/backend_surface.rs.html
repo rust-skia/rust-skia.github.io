@@ -574,6 +574,20 @@
 <span id="574">574</span>
 <span id="575">575</span>
 <span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
 </pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::d3d</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
@@ -599,13 +613,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">GrBackendFormat</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">GrBackendFormat::new</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BackendFormat</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BackendFormat&quot;</span>);
         <span class="ident">d</span>.<span class="ident">field</span>(<span class="string">&quot;backend&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">backend</span>());
         <span class="ident">d</span>.<span class="ident">field</span>(<span class="string">&quot;channel_mask&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">channel_mask</span>());
@@ -626,59 +640,73 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;The creation of invalid BackendFormats isn&#39;t supported anymore&quot;</span>,
         <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new_invalid</span>()
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendFormat_Construct</span>(<span class="ident">bf</span>) })
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_gl</span>(<span class="ident">format</span>: <span class="ident">gl::Enum</span>, <span class="ident">target</span>: <span class="ident">gl::Enum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_gl</span>(<span class="ident">format</span>: <span class="ident">gl::Enum</span>, <span class="ident">target</span>: <span class="ident">gl::Enum</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendFormat_ConstructGL</span>(<span class="ident">bf</span>, <span class="ident">format</span>, <span class="ident">target</span>) })
             .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span>(<span class="ident">format</span>: <span class="ident">vk::Format</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendFormat_ConstructVk</span>(<span class="ident">bf</span>, <span class="ident">format</span>) })
-            .<span class="ident">assert_valid</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span>(
+        <span class="ident">format</span>: <span class="ident">vk::Format</span>,
+        <span class="ident">will_use_drm_format_modifiers</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">will_use_drm_format_modifiers</span> <span class="op">=</span> <span class="ident">will_use_drm_format_modifiers</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>);
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_GrBackendFormat_ConstructVk</span>(<span class="ident">bf</span>, <span class="ident">format</span>, <span class="ident">will_use_drm_format_modifiers</span>)
+        })
+        .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_vulkan_ycbcr</span>(<span class="ident">conversion_info</span>: <span class="kw-2">&amp;</span><span class="ident">vk::YcbcrConversionInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_vulkan_ycbcr</span>(
+        <span class="ident">conversion_info</span>: <span class="kw-2">&amp;</span><span class="ident">vk::YcbcrConversionInfo</span>,
+        <span class="ident">will_use_drm_format_modifiers</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">will_use_drm_format_modifiers</span> <span class="op">=</span> <span class="ident">will_use_drm_format_modifiers</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>);
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrBackendFormat_ConstructVk2</span>(<span class="ident">bf</span>, <span class="ident">conversion_info</span>.<span class="ident">native</span>())
+            <span class="ident">sb::C_GrBackendFormat_ConstructVk2</span>(
+                <span class="ident">bf</span>,
+                <span class="ident">conversion_info</span>.<span class="ident">native</span>(),
+                <span class="ident">will_use_drm_format_modifiers</span>,
+            )
         })
         .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_metal</span>(<span class="ident">format</span>: <span class="ident">mtl::PixelFormat</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_metal</span>(<span class="ident">format</span>: <span class="ident">mtl::PixelFormat</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendFormat_ConstructMtl</span>(<span class="ident">bf</span>, <span class="ident">format</span>) })
             .<span class="ident">assert_valid</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_dxgi</span>(<span class="ident">format</span>: <span class="ident">d3d::DXGI_FORMAT</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_dxgi</span>(<span class="ident">format</span>: <span class="ident">d3d::DXGI_FORMAT</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bf</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendFormat_ConstructDxgi</span>(<span class="ident">bf</span>, <span class="ident">format</span>.<span class="ident">into_native</span>())
         })
         .<span class="ident">assert_valid</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendAPI</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendAPI</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackend</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channel_mask</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channel_mask</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">channelMask</span>() }
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_gl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gl::Format</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_gl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">gl::Format</span> {
         <span class="kw">unsafe</span> {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::map_clone</span>)]</span>
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asGLFormat</span>()
@@ -686,26 +714,26 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_vk_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk::Format</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_vk_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk::Format</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">vk::Format::UNDEFINED</span>;
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asVkFormat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span>) }.<span class="ident">if_true_some</span>(<span class="ident">r</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mtl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl::PixelFormat</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mtl_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl::PixelFormat</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">pixel_format</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asMtlFormat</span>() };
         <span class="comment">// Mtl&#39;s PixelFormat == 0 is invalid.</span>
         (<span class="ident">pixel_format</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">if_true_some</span>(<span class="ident">pixel_format</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_dxgi_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">d3d::DXGI_FORMAT</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_dxgi_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">d3d::DXGI_FORMAT</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">sb::DXGI_FORMAT::DXGI_FORMAT_UNKNOWN</span>;
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asDxgiFormat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>) }
             .<span class="ident">if_true_some</span>(<span class="ident">d3d::DXGI_FORMAT::from_native_c</span>(<span class="ident">f</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_texture_2d</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_texture_2d</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_invalid</span>();
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendFormat_makeTexture2D</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">new</span>.<span class="ident">native_mut</span>()) };
         <span class="macro">assert!</span>(<span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="ident">new</span>.<span class="ident">native</span>()));
@@ -716,15 +744,15 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Invalid BackendFormats are not supported anymore&quot;</span>,
         <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fValid</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">format</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendFormat</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">format</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendFormat</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">format</span>.<span class="ident">fValid</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">assert_valid</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">assert_valid</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="macro">assert!</span>(<span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="self">self</span>.<span class="ident">native</span>()));
         <span class="self">self</span>
     }
@@ -740,13 +768,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">GrBackendTexture</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">construct</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendTexture_CopyConstruct</span>(<span class="ident">texture</span>, <span class="self">self</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BackendTexture</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BackendTexture&quot;</span>);
         <span class="ident">d</span>.<span class="ident">field</span>(<span class="string">&quot;dimensions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dimensions</span>());
         <span class="ident">d</span>.<span class="ident">field</span>(<span class="string">&quot;mipmapped&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mipmapped</span>());
@@ -769,7 +797,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">BackendTexture</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_invalid</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendTexture_Construct</span>(<span class="ident">t</span>) })
     }
 
@@ -779,7 +807,7 @@
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">mipmapped</span>: <span class="ident"><span class="kw">super</span>::Mipmapped</span>,
         <span class="ident">gl_info</span>: <span class="ident">gl::TextureInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_native_if_valid</span>(<span class="ident">construct</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> {
             <span class="ident">sb::C_GrBackendTexture_ConstructGL</span>(<span class="ident">texture</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">mipmapped</span>, <span class="ident">gl_info</span>.<span class="ident">native</span>())
         }))
@@ -788,7 +816,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">vk_info</span>: <span class="kw-2">&amp;</span><span class="ident">vk::ImageInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_vulkan</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">vk_info</span>: <span class="kw-2">&amp;</span><span class="ident">vk::ImageInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_native_if_valid</span>(<span class="ident">construct</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> {
             <span class="ident">sb::C_GrBackendTexture_ConstructVk</span>(<span class="ident">texture</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">vk_info</span>.<span class="ident">native</span>())
         }))
@@ -801,7 +829,7 @@
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">mipmapped</span>: <span class="ident"><span class="kw">super</span>::Mipmapped</span>,
         <span class="ident">mtl_info</span>: <span class="kw-2">&amp;</span><span class="ident">mtl::TextureInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_native_if_valid</span>(<span class="ident">construct</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> {
             <span class="ident">sb::C_GrBackendTexture_ConstructMtl</span>(
                 <span class="ident">texture</span>,
@@ -815,7 +843,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_d3d</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">d3d_info</span>: <span class="kw-2">&amp;</span><span class="ident">d3d::TextureResourceInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_d3d</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">d3d_info</span>: <span class="kw-2">&amp;</span><span class="ident">d3d::TextureResourceInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident"><span class="self">Self</span>::from_native_if_valid</span>(<span class="ident">construct</span>(<span class="op">|</span><span class="ident">texture</span><span class="op">|</span> {
                 <span class="ident">sb::C_GrBackendTexture_ConstructD3D</span>(<span class="ident">texture</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">d3d_info</span>.<span class="ident">native</span>())
@@ -826,42 +854,42 @@
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_native_if_valid</span>(
         <span class="ident">backend_texture</span>: <span class="ident">GrBackendTexture</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendTexture</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendTexture</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">backend_texture</span>)
             .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">BackendTexture::from_native_c</span>(<span class="ident">backend_texture</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
         <span class="ident">ISize::new</span>(<span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fWidth</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fHeight</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mipmapped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mipmapped</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mipmapped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Mipmapped</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMipmapped</span>
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use has_mipmaps()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mip_maps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mip_maps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">has_mipmaps</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mipmaps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMipmapped</span> <span class="op">=</span><span class="op">=</span> <span class="ident">GrMipmapped::Yes</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mipmaps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMipmapped</span> <span class="op">==</span> <span class="ident">GrMipmapped::Yes</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendAPI</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendAPI</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackend</span>
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gl_texture_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gl::TextureInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gl_texture_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gl::TextureInfo</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">texture_info</span> <span class="op">=</span> <span class="ident">gl::TextureInfo::default</span>();
             <span class="self">self</span>.<span class="ident">native</span>()
@@ -876,7 +904,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vulkan_image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk::ImageInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vulkan_image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk::ImageInfo</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="comment">// constructor not available.</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">image_info</span> <span class="op">=</span> <span class="ident">vk::ImageInfo::default</span>();
@@ -887,13 +915,13 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_vulkan_image_layout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">vk::ImageLayout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_vulkan_image_layout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">vk::ImageLayout</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setVkImageLayout</span>(<span class="ident">layout</span>) }
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_texture_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl::TextureInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_texture_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl::TextureInfo</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">texture_info</span> <span class="op">=</span> <span class="ident">mtl::TextureInfo::default</span>();
             <span class="self">self</span>.<span class="ident">native</span>()
@@ -903,7 +931,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">d3d_texture_resource_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">d3d::TextureResourceInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">d3d_texture_resource_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">d3d::TextureResourceInfo</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">sb::GrD3DTextureResourceInfo::default</span>();
             <span class="self">self</span>.<span class="ident">native</span>()
@@ -916,19 +944,19 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_d3d_resource_state</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">resource_state</span>: <span class="ident">d3d::ResourceStateEnum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_d3d_resource_state</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">resource_state</span>: <span class="ident">d3d::ResourceStateEnum</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setD3DResourceState</span>(<span class="ident">resource_state</span>) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendFormat</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendFormat</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat::new_invalid</span>();
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrBackendTexture_getBackendFormat</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">format</span>.<span class="ident">native_mut</span>()) };
         <span class="macro">assert!</span>(<span class="ident">BackendFormat::native_is_valid</span>(<span class="ident">format</span>.<span class="ident">native</span>()));
         <span class="ident">format</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isProtected</span>() }
     }
 
@@ -936,16 +964,16 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Invalid BackendTextures aren&#39;t supported anymore&quot;</span>,
         <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsValid</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">texture</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendTexture</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">texture</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendTexture</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">texture</span>.<span class="ident">fIsValid</span>
     }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::wrong_self_convention</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_same_texture</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">texture</span>: <span class="kw-2">&amp;</span><span class="ident">BackendTexture</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_same_texture</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">texture</span>: <span class="kw-2">&amp;</span><span class="ident">BackendTexture</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">isSameTexture</span>(<span class="ident">texture</span>.<span class="ident">native</span>()) }
     }
 }
@@ -960,7 +988,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">GrBackendRenderTarget</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">construct</span>(<span class="op">|</span><span class="ident">render_target</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendRenderTarget_CopyConstruct</span>(<span class="ident">render_target</span>, <span class="self">self</span>)
         })
@@ -968,7 +996,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BackendRenderTarget</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BackendRenderTarget&quot;</span>);
         <span class="ident">d</span>.<span class="ident">field</span>(<span class="string">&quot;dimensions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dimensions</span>());
         <span class="ident">d</span>.<span class="ident">field</span>(<span class="string">&quot;sample_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sample_count</span>());
@@ -999,7 +1027,7 @@
         <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">stencil_bits</span>: <span class="ident">usize</span>,
         <span class="ident">info</span>: <span class="ident">gl::FramebufferInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">target</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendRenderTarget_ConstructGL</span>(
                 <span class="ident">target</span>,
@@ -1017,7 +1045,7 @@
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">vk::ImageInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">target</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendRenderTarget_ConstructVk</span>(
                 <span class="ident">target</span>,
@@ -1034,7 +1062,7 @@
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">sample_cnt</span>: <span class="ident">i32</span>,
         <span class="ident">mtl_info</span>: <span class="kw-2">&amp;</span><span class="ident">mtl::TextureInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">target</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendRenderTarget_ConstructMtl</span>(
                 <span class="ident">target</span>,
@@ -1047,7 +1075,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_d3d</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">d3d_info</span>: <span class="kw-2">&amp;</span><span class="ident">d3d::TextureResourceInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_d3d</span>((<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">d3d_info</span>: <span class="kw-2">&amp;</span><span class="ident">d3d::TextureResourceInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">brt</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendRenderTarget_ConstructD3D</span>(<span class="ident">brt</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">d3d_info</span>.<span class="ident">native</span>())
         })
@@ -1055,65 +1083,65 @@
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native_c_if_valid</span>(
         <span class="ident">native</span>: <span class="ident">GrBackendRenderTarget</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendRenderTarget</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BackendRenderTarget</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">backend_render_target</span> <span class="op">=</span> <span class="ident">BackendRenderTarget::from_native_c</span>(<span class="ident">native</span>);
         <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="ident">backend_render_target</span>.<span class="ident">native</span>()).<span class="ident">if_true_some</span>(<span class="ident">backend_render_target</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
         <span class="ident">ISize::new</span>(<span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fWidth</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fHeight</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sample_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sample_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fSampleCnt</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stencil_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stencil_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fStencilBits</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendAPI</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendAPI</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackend</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_framebuffer_only</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_framebuffer_only</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFramebufferOnly</span>
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gl&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gl_framebuffer_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gl::FramebufferInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gl_framebuffer_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gl::FramebufferInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">gl::FramebufferInfo::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getGLFramebufferInfo</span>(<span class="ident">info</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">info</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vulkan_image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk::ImageInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vulkan_image_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">vk::ImageInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">vk::ImageInfo::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getVkImageInfo</span>(<span class="ident">info</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">info</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vulkan&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_vulkan_image_layout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">vk::ImageLayout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_vulkan_image_layout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">vk::ImageLayout</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setVkImageLayout</span>(<span class="ident">layout</span>) }
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_texture_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl::TextureInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_texture_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">mtl::TextureInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">mtl::TextureInfo::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMtlTextureInfo</span>(<span class="ident">info</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">info</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">d3d_texture_resource_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">d3d::TextureResourceInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">d3d_texture_resource_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">d3d::TextureResourceInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">sb::GrD3DTextureResourceInfo::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getD3DTextureResourceInfo</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">info</span>) }.<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> {
             <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">info</span>.<span class="ident">fResource</span>.<span class="ident">fObject</span>.<span class="ident">is_null</span>());
@@ -1122,12 +1150,12 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;d3d&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_d3d_resource_state</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">resource_state</span>: <span class="ident">d3d::ResourceStateEnum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_d3d_resource_state</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">resource_state</span>: <span class="ident">d3d::ResourceStateEnum</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setD3DResourceState</span>(<span class="ident">resource_state</span>) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendFormat</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendFormat</span> {
         <span class="ident">BackendFormat::construct</span>(<span class="op">|</span><span class="ident">format</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrBackendRenderTarget_getBackendFormat</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">format</span>)
         })
@@ -1137,16 +1165,16 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setMutableState</span>(<span class="ident">state</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_protected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isProtected</span>() }
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;BackendRenderTargets must be valid.&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsValid</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">rt</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendRenderTarget</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">rt</span>: <span class="kw-2">&amp;</span><span class="ident">GrBackendRenderTarget</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">rt</span>.<span class="ident">fIsValid</span>
     }
 }

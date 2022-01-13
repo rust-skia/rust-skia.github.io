@@ -191,17 +191,17 @@
 <span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkFlattenable</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkColorFilter</span> {}
 
 <span class="kw">impl</span> <span class="ident">NativeFlattenable</span> <span class="kw">for</span> <span class="ident">SkColorFilter</span> {
-    <span class="kw">fn</span> <span class="ident">native_flattenable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">SkFlattenable</span> {
+    <span class="kw">fn</span> <span class="ident">native_flattenable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkFlattenable</span> {
         <span class="self">self</span>.<span class="ident">base</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">native_deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">native_deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilter_Deserialize</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ColorFilter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ColorFilter&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;as_a_color_mode&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">to_a_color_mode</span>())
             .<span class="ident">field</span>(<span class="string">&quot;as_a_color_matrix&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">to_a_color_matrix</span>())
@@ -211,23 +211,23 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ColorFilter</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_a_color_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Color</span>, <span class="ident">BlendMode</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_a_color_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Color</span>, <span class="ident">BlendMode</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span>: <span class="ident">Color</span> <span class="op">=</span> <span class="number">0</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mode</span>: <span class="ident">BlendMode</span> <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asAColorMode</span>(<span class="ident">color</span>.<span class="ident">native_mut</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">mode</span>) }
             .<span class="ident">if_true_some</span>((<span class="ident">color</span>, <span class="ident">mode</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_a_color_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">scalar</span>; <span class="number">20</span>]<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_a_color_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">scalar</span>; <span class="number">20</span>]<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">matrix</span>: [<span class="ident">scalar</span>; <span class="number">20</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asAColorMatrix</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">matrix</span>[<span class="number">0</span>]) }.<span class="ident">if_true_some</span>(<span class="ident">matrix</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_alpha_unchanged</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_alpha_unchanged</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isAlphaUnchanged</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filter_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filter_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color</span> {
         <span class="comment">// Color resolves to u32, so the C++ ABI can be used.</span>
         <span class="ident">Color::from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">filterColor</span>(<span class="ident">color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) })
     }
@@ -237,7 +237,7 @@
         <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>,
         <span class="ident">src_color_space</span>: <span class="kw-2">&amp;</span><span class="ident">ColorSpace</span>,
         <span class="ident">dst_color_space</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color4f</span> {
+    ) -&gt; <span class="ident">Color4f</span> {
         <span class="ident">Color4f::from_native_c</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkColorFilter_filterColor4f</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
@@ -248,7 +248,7 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">composed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">inner</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">composed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">inner</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkColorFilter_makeComposed</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">inner</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
         })
@@ -263,43 +263,43 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compose</span>(
         <span class="ident">outer</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>,
         <span class="ident">inner</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkColorFilters_Compose</span>(<span class="ident">outer</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">inner</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix</span>(<span class="ident">color_matrix</span>: <span class="kw-2">&amp;</span><span class="ident">ColorMatrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorFilter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix</span>(<span class="ident">color_matrix</span>: <span class="kw-2">&amp;</span><span class="ident">ColorMatrix</span>) -&gt; <span class="ident">ColorFilter</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilters_Matrix</span>(<span class="ident">color_matrix</span>.<span class="ident">native</span>()) })
             .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix_row_major</span>(<span class="ident">array</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="number">20</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorFilter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix_row_major</span>(<span class="ident">array</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="number">20</span>]) -&gt; <span class="ident">ColorFilter</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilters_MatrixRowMajor</span>(<span class="ident">array</span>.<span class="ident">as_ptr</span>()) })
             .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hsla_matrix_of_color_matrix</span>(<span class="ident">color_matrix</span>: <span class="kw-2">&amp;</span><span class="ident">ColorMatrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorFilter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hsla_matrix_of_color_matrix</span>(<span class="ident">color_matrix</span>: <span class="kw-2">&amp;</span><span class="ident">ColorMatrix</span>) -&gt; <span class="ident">ColorFilter</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkColorFilters_HSLAMatrixOfColorMatrix</span>(<span class="ident">color_matrix</span>.<span class="ident">native</span>())
         })
         .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hsla_matrix</span>(<span class="ident">row_major</span>: <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="number">20</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorFilter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hsla_matrix</span>(<span class="ident">row_major</span>: <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="number">20</span>]) -&gt; <span class="ident">ColorFilter</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilters_HSLAMatrix</span>(<span class="ident">row_major</span>.<span class="ident">as_ptr</span>()) })
             .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend</span>(<span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend</span>(<span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilters_Blend</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">mode</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linear_to_srgb_gamma</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorFilter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linear_to_srgb_gamma</span>() -&gt; <span class="ident">ColorFilter</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilters_LinearToSRGBGamma</span>() }).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">srgb_to_linear_gamma</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorFilter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">srgb_to_linear_gamma</span>() -&gt; <span class="ident">ColorFilter</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorFilters_SRGBToLinearGamma</span>() }).<span class="ident">unwrap</span>()
     }
 
@@ -307,7 +307,7 @@
         <span class="ident">t</span>: <span class="ident">f32</span>,
         <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>,
         <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span> {
         <span class="ident">ColorFilter::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkColorFilters_Lerp</span>(<span class="ident">t</span>, <span class="ident">dst</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">src</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
         })

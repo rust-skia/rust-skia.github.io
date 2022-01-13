@@ -127,13 +127,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">CustomTypefaceBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;CustomTypefaceBuilder&quot;</span>).<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">CustomTypefaceBuilder</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkCustomTypefaceBuilder::new</span>() })
     }
 
@@ -142,19 +142,19 @@
         <span class="ident">glyph_id</span>: <span class="ident">GlyphId</span>,
         <span class="ident">advance</span>: <span class="ident">f32</span>,
         <span class="ident">typeface_glyph</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">TypefaceGlyph</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">match</span> <span class="ident">typeface_glyph</span>.<span class="ident">into</span>() {
-                <span class="ident">TypefaceGlyph::Path</span>(<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">TypefaceGlyph::Path</span>(<span class="ident">path</span>) =&gt; {
                     <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setGlyph</span>(<span class="ident">glyph_id</span>, <span class="ident">advance</span>, <span class="ident">path</span>.<span class="ident">native</span>())
                 }
-                <span class="ident">TypefaceGlyph::PathAndPaint</span>(<span class="ident">_path</span>, <span class="ident">_paint</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">TypefaceGlyph::PathAndPaint</span>(<span class="ident">_path</span>, <span class="ident">_paint</span>) =&gt; {
                     <span class="macro">unimplemented!</span>(<span class="string">&quot;TypefaceGlyph::PathAndPaint is not supported yet, Skia implementation is missing (last checked: m86)&quot;</span>)
                 }
-                <span class="ident">TypefaceGlyph::Image</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">TypefaceGlyph::Image</span> { .. } =&gt; {
                     <span class="macro">unimplemented!</span>(<span class="string">&quot;TypefaceGlyph::PathAndPaint is not supported yet, Skia implementation is missing (last checked: m86)&quot;</span>)
                 }
-                <span class="ident">TypefaceGlyph::Picture</span>(<span class="ident">_picture</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">TypefaceGlyph::Picture</span>(<span class="ident">_picture</span>) =&gt; {
                     <span class="macro">unimplemented!</span>(<span class="string">&quot;TypefaceGlyph::Picture is not supported yet, Skia implementation is missing (last checked: m86)&quot;</span>)
                 }
             }
@@ -166,7 +166,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">font_metrics</span>: <span class="kw-2">&amp;</span><span class="ident">FontMetrics</span>,
         <span class="ident">scale</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">setMetrics</span>(<span class="ident">font_metrics</span>.<span class="ident">native</span>(), <span class="ident">scale</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">1.0</span>))
@@ -174,12 +174,12 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_style</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_style</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setFontStyle</span>(<span class="ident">font_style</span>.<span class="ident">into_native</span>()) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">detach</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">detach</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
         <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkCustomTypefaceBuilder_detach</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
     }
 }
@@ -193,25 +193,25 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Path</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TypefaceGlyph</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Path</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Path</span>(<span class="ident">path</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Path</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Paint</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TypefaceGlyph</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">path</span>, <span class="ident">paint</span>): (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Path</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Paint</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">path</span>, <span class="ident">paint</span>): (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Path</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Paint</span>)) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::PathAndPaint</span>(<span class="ident">path</span>, <span class="ident">paint</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">Image</span>, <span class="ident">f32</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TypefaceGlyph</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">image</span>, <span class="ident">scale</span>): (<span class="ident">Image</span>, <span class="ident">f32</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">image</span>, <span class="ident">scale</span>): (<span class="ident">Image</span>, <span class="ident">f32</span>)) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Image</span> { <span class="ident">image</span>, <span class="ident">scale</span> }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="ident">Image</span>, <span class="ident">f32</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TypefaceGlyph</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">image</span>, <span class="ident">scale</span>): (<span class="kw-2">&amp;</span><span class="ident">Image</span>, <span class="ident">f32</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">image</span>, <span class="ident">scale</span>): (<span class="kw-2">&amp;</span><span class="ident">Image</span>, <span class="ident">f32</span>)) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Image</span> {
             <span class="ident">image</span>: <span class="ident">image</span>.<span class="ident">clone</span>(),
             <span class="ident">scale</span>,

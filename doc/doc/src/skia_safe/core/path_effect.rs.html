@@ -147,17 +147,17 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeFlattenable</span> <span class="kw">for</span> <span class="ident">SkPathEffect</span> {
-    <span class="kw">fn</span> <span class="ident">native_flattenable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">SkFlattenable</span> {
+    <span class="kw">fn</span> <span class="ident">native_flattenable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkFlattenable</span> {
         <span class="self">self</span>.<span class="ident">base</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">native_deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">native_deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathEffect_Deserialize</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">PathEffect</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PathEffect&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;as_a_dash&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_a_dash</span>())
             .<span class="ident">field</span>(<span class="string">&quot;needs_ctm&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">needs_ctm</span>())
@@ -166,14 +166,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PathEffect</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sum</span>(<span class="ident">first</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>, <span class="ident">second</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathEffect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sum</span>(<span class="ident">first</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>, <span class="ident">second</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>) -&gt; <span class="ident">PathEffect</span> {
         <span class="ident">PathEffect::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkPathEffect_MakeSum</span>(<span class="ident">first</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">second</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
         })
         .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compose</span>(<span class="ident">first</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>, <span class="ident">second</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathEffect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compose</span>(<span class="ident">first</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>, <span class="ident">second</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>) -&gt; <span class="ident">PathEffect</span> {
         <span class="ident">PathEffect::from_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkPathEffect_MakeCompose</span>(<span class="ident">first</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">second</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
         })
@@ -181,13 +181,13 @@
     }
 
     <span class="comment">// TODO: rename to to_a_dash()?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_a_dash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DashInfo</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_a_dash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DashInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dash_info</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">di</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathEffect_DashInfo_Construct</span>(<span class="ident">di</span>) });
 
         <span class="kw">let</span> <span class="ident">dash_type</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asADash</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dash_info</span>) };
 
         <span class="kw">match</span> <span class="ident">dash_type</span> {
-            <span class="ident">SkPathEffect_DashType::kDash_DashType</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SkPathEffect_DashType::kDash_DashType</span> =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0.0</span>; <span class="ident">dash_info</span>.<span class="ident">fCount</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()];
                 <span class="ident">dash_info</span>.<span class="ident">fIntervals</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>();
                 <span class="kw">unsafe</span> {
@@ -198,7 +198,7 @@
                     <span class="ident">phase</span>: <span class="ident">dash_info</span>.<span class="ident">fPhase</span>,
                 })
             }
-            <span class="ident">SkPathEffect_DashType::kNone_DashType</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">SkPathEffect_DashType::kNone_DashType</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 
@@ -207,7 +207,7 @@
         <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
         <span class="ident">stroke_rec</span>: <span class="kw-2">&amp;</span><span class="ident">StrokeRec</span>,
         <span class="ident">cull_rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Path</span>, <span class="ident">StrokeRec</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Path</span>, <span class="ident">StrokeRec</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stroke_rec_r</span> <span class="op">=</span> <span class="ident">stroke_rec</span>.<span class="ident">clone</span>();
         <span class="self">self</span>.<span class="ident">filter_path_inplace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dst</span>, <span class="ident">src</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stroke_rec_r</span>, <span class="ident">cull_rect</span>)
@@ -220,7 +220,7 @@
         <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
         <span class="ident">stroke_rec</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">StrokeRec</span>,
         <span class="ident">cull_rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">filterPath</span>(
                 <span class="ident">dst</span>.<span class="ident">native_mut</span>(),
@@ -238,7 +238,7 @@
         <span class="ident">stroke_rec</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">StrokeRec</span>,
         <span class="ident">cull_rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">ctm</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">filterPath1</span>(
                 <span class="ident">dst</span>.<span class="ident">native_mut</span>(),
@@ -250,7 +250,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">needs_ctm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">needs_ctm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">needsCTM</span>() }
     }
 }

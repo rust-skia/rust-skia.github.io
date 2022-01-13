@@ -130,13 +130,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RecordingContext</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">direct_context</span>: <span class="ident">DirectContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">direct_context</span>: <span class="ident">DirectContext</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">std::mem::transmute</span>(<span class="ident">direct_context</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">RecordingContext</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RecordingContext&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;backend&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">backend</span>())
             .<span class="ident">field</span>(<span class="string">&quot;max_texture_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">max_texture_size</span>())
@@ -147,18 +147,18 @@
 
 <span class="kw">impl</span> <span class="ident">RecordingContext</span> {
     <span class="comment">// From GrContext_Base</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_direct_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_direct_context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
         <span class="ident">DirectContext::from_unshared_ptr</span>(<span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrRecordingContext_asDirectContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
         })
     }
 
     <span class="comment">// From GrContext_Base</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendAPI</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendAPI</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrRecordingContext_backend</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ct</span>: <span class="ident">ColorType</span>, <span class="ident">renderable</span>: <span class="ident">Renderable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendFormat</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ct</span>: <span class="ident">ColorType</span>, <span class="ident">renderable</span>: <span class="ident">Renderable</span>) -&gt; <span class="ident">BackendFormat</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat::new_invalid</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrRecordingContext_defaultBackendFormat</span>(
@@ -175,7 +175,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compressed_backend_format</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">compression_type</span>: <span class="ident">image::CompressionType</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BackendFormat</span> {
+    ) -&gt; <span class="ident">BackendFormat</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat::new_invalid</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrRecordingContext_compressedBackendFormat</span>(
@@ -189,11 +189,11 @@
 
     <span class="comment">// TODO: GrContext_Base::threadSafeProxy</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abandoned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abandoned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrRecordingContext_abandoned</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type_supported_as_surface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type_supported_as_surface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_GrRecordingContext_colorTypeSupportedAsSurface</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
@@ -202,22 +202,22 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_texture_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_texture_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">maxTextureSize</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_render_target_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_render_target_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">maxRenderTargetSize</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type_supported_as_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type_supported_as_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">colorTypeSupportedAsImage</span>(<span class="ident">color_type</span>.<span class="ident">into_native</span>())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_surface_sample_count_for_color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_surface_sample_count_for_color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">maxSurfaceSampleCountForColorType</span>(<span class="ident">color_type</span>.<span class="ident">into_native</span>())

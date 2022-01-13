@@ -533,19 +533,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkRegion</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">SkRegion::new1</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkRegion</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Region&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;is_empty&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_empty</span>())
             .<span class="ident">field</span>(<span class="string">&quot;is_rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_rect</span>())
@@ -559,15 +559,15 @@
 <span class="macro">variant_name!</span>(<span class="ident">RegionOp::ReverseDifference</span>, <span class="ident">region_op_naming</span>);
 
 <span class="kw">impl</span> <span class="ident">Region</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Region</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Region</span> {
         <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkRegion::new</span>() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_rect</span>(<span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Region</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_rect</span>(<span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">Region</span> {
         <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkRegion::new2</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_set</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">src</span>.<span class="ident">native</span>()) }
     }
 
@@ -578,90 +578,90 @@
     <span class="kw">const</span> <span class="ident">EMPTY_RUN_HEAD_PTR</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkRegion_RunHead</span> <span class="op">=</span> <span class="op">-</span><span class="number">1</span> <span class="kw">as</span> <span class="kw">_</span>;
     <span class="kw">const</span> <span class="ident">RECT_RUN_HEAD_PTR</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SkRegion_RunHead</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRunHead</span> <span class="op">=</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::EMPTY_RUN_HEAD_PTR</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRunHead</span> <span class="op">==</span> <span class="ident"><span class="self">Self</span>::EMPTY_RUN_HEAD_PTR</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRunHead</span> <span class="op">=</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::RECT_RUN_HEAD_PTR</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRunHead</span> <span class="op">==</span> <span class="ident"><span class="self">Self</span>::RECT_RUN_HEAD_PTR</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_complex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_complex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="op">!</span><span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_rect</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
         <span class="ident">IRect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBounds</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_region_complexity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_region_complexity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeRegionComplexity</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_boundary_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_boundary_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Path</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getBoundaryPath</span>(<span class="ident">path</span>.<span class="ident">native_mut</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_empty</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_empty</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setEmpty</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRect</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rects</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rects</span>: <span class="kw-2">&amp;</span>[<span class="ident">IRect</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rects</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rects</span>: <span class="kw-2">&amp;</span>[<span class="ident">IRect</span>]) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">setRects</span>(<span class="ident">rects</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">rects</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_region</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_region</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRegion</span>(<span class="ident">region</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">clip</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">clip</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setPath</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">clip</span>.<span class="ident">native</span>()) }
     }
 
     <span class="comment">// there is also a trait for intersects() below.</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">intersects</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">intersects1</span>(<span class="ident">other</span>.<span class="ident">native</span>()) }
     }
 
     <span class="comment">// contains() trait below.</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains</span>(<span class="ident">point</span>.<span class="ident">x</span>, <span class="ident">point</span>.<span class="ident">y</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains1</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains2</span>(<span class="ident">other</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">as_ref</span>();
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_quickContains</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">r</span>.<span class="ident">native</span>()) }
     }
 
     <span class="comment">// see also the quick_reject() trait below.</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">rect</span>.<span class="ident">as_ref</span>();
         <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">rect</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">IRect::intersects</span>(<span class="self">self</span>.<span class="ident">bounds</span>(), <span class="ident">rect</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rgn</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rgn</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">rgn</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">IRect::intersects</span>(<span class="self">self</span>.<span class="ident">bounds</span>(), <span class="ident">rgn</span>.<span class="ident">bounds</span>())
     }
 
@@ -671,18 +671,18 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">translate</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">self_ptr</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translated</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Region</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translated</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) -&gt; <span class="ident">Region</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
         <span class="ident">r</span>.<span class="ident">translate</span>(<span class="ident">d</span>);
         <span class="ident">r</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_rect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_rect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>;
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">op1</span>(<span class="ident">self_ptr</span>, <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">op</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_region</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_region</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>;
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">op2</span>(<span class="ident">self_ptr</span>, <span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">op</span>) }
     }
@@ -692,7 +692,7 @@
         <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
         <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>,
         <span class="ident">op</span>: <span class="ident">RegionOp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">op</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">op</span>)
@@ -704,7 +704,7 @@
         <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>,
         <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
         <span class="ident">op</span>: <span class="ident">RegionOp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">op1</span>(<span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">op</span>)
@@ -716,11 +716,11 @@
             <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">writeToMemory</span>(<span class="ident">ptr::null_mut</span>());
             <span class="ident">buf</span>.<span class="ident">resize</span>(<span class="ident">size</span>, <span class="number">0</span>);
             <span class="kw">let</span> <span class="ident">written</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">writeToMemory</span>(<span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>);
-            <span class="macro">debug_assert!</span>(<span class="ident">written</span> <span class="op">=</span><span class="op">=</span> <span class="ident">size</span>);
+            <span class="macro">debug_assert!</span>(<span class="ident">written</span> <span class="op">==</span> <span class="ident">size</span>);
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_from_memory</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_from_memory</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">readFromMemory</span>(<span class="ident">buf</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">buf</span>.<span class="ident">len</span>())
@@ -733,35 +733,35 @@
 <span class="comment">//</span>
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">difference</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">difference</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Difference</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Intersect</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">xor</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">xor</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::XOR</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">union</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">union</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Union</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">reverse_difference</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">reverse_difference</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::ReverseDifference</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">replace</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">replace</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Replace</span>, <span class="ident">b</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">IRect</span>, <span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Region::new</span>();
         <span class="ident">r</span>.<span class="ident">op_rect_region</span>(<span class="ident">rect</span>, <span class="ident">region</span>, <span class="ident">op</span>);
         <span class="ident">r</span>
@@ -769,7 +769,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">Region</span>, <span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Region::new</span>();
         <span class="ident">r</span>.<span class="ident">op_region_rect</span>(<span class="ident">region</span>, <span class="ident">rect</span>, <span class="ident">op</span>);
         <span class="ident">r</span>
@@ -777,7 +777,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">Region</span>, <span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">clone</span>();
         <span class="ident">a</span>.<span class="ident">op_region</span>(<span class="ident">b</span>, <span class="ident">op</span>);
         <span class="ident">a</span>
@@ -789,17 +789,17 @@
 <span class="comment">//</span>
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">intersects_rect</span>(<span class="ident">rect</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">intersects_region</span>(<span class="ident">other</span>)
     }
 }
@@ -809,19 +809,19 @@
 <span class="comment">//</span>
 
 <span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains_point</span>(<span class="ident">point</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains_rect</span>(<span class="ident">rect</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains_region</span>(<span class="ident">other</span>)
     }
 }
@@ -831,13 +831,13 @@
 <span class="comment">//</span>
 
 <span class="kw">impl</span> <span class="ident">QuickReject</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">quick_reject_rect</span>(<span class="ident">rect</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">QuickReject</span><span class="op">&lt;</span><span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">quick_reject_region</span>(<span class="ident">other</span>)
     }
 }
@@ -849,7 +849,7 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">SkRegion_Iterator</span>, <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">iterator_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Iterator&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;is_done&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_done</span>())
             .<span class="ident">field</span>(<span class="string">&quot;rect&quot;</span>, <span class="self">self</span>.<span class="ident">rect</span>())
@@ -858,21 +858,21 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_empty</span>() -&gt; <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Iterator::construct</span>(<span class="op">|</span><span class="ident">iterator</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkRegion_Iterator_Construct</span>(<span class="ident">iterator</span>);
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>) -&gt; <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Iterator::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkRegion_Iterator::new</span>(<span class="ident">region</span>.<span class="ident">native</span>()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rewind</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rewind</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rewind</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iterator</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">Iterator</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>(<span class="ident">region</span>.<span class="ident">native</span>());
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">mem::transmute_copy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
@@ -881,7 +881,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDone</span>
     }
 
@@ -891,11 +891,11 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
         <span class="ident">IRect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRect</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rgn</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Region</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rgn</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Region</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">sb::C_SkRegion_Iterator_rgn</span>(<span class="self">self</span>.<span class="ident">native</span>()).<span class="ident">into_option</span>()<span class="question-mark">?</span>;
             <span class="prelude-val">Some</span>(<span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">r</span>))
@@ -906,7 +906,7 @@
 <span class="kw">impl</span> <span class="ident">iter::Iterator</span> <span class="kw">for</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">IRect</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_done</span>() {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -941,7 +941,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Cliperator&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;is_done&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_done</span>())
             .<span class="ident">field</span>(<span class="string">&quot;rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rect</span>())
@@ -950,13 +950,13 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>, <span class="ident">clip</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>, <span class="ident">clip</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Cliperator::from_native_c</span>(<span class="kw">unsafe</span> {
             <span class="ident">SkRegion_Cliperator::new</span>(<span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">clip</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDone</span>
     }
 
@@ -964,14 +964,14 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">next</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
         <span class="ident">IRect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRect</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">iter::Iterator</span> <span class="kw">for</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">IRect</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_done</span>() {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -994,13 +994,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Spanerator&quot;</span>).<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>, <span class="ident">y</span>: <span class="ident">i32</span>, <span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>, <span class="ident">y</span>: <span class="ident">i32</span>, <span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>) -&gt; <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Spanerator::from_native_c</span>(<span class="kw">unsafe</span> {
             <span class="ident">SkRegion_Spanerator::new</span>(<span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">y</span>, <span class="ident">left</span>, <span class="ident">right</span>)
         })
@@ -1010,7 +1010,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">iter::Iterator</span> <span class="kw">for</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">i32</span>, <span class="ident">i32</span>);
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">left</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">right</span> <span class="op">=</span> <span class="number">0</span>;
@@ -1032,7 +1032,7 @@
 <span class="kw">fn</span> <span class="ident">can_compare</span>() {
     <span class="kw">let</span> <span class="ident">r1</span> <span class="op">=</span> <span class="ident">Region::new</span>();
     <span class="kw">let</span> <span class="ident">r2</span> <span class="op">=</span> <span class="ident">r1</span>.<span class="ident">clone</span>();
-    <span class="macro">assert!</span>(<span class="ident">r1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">r2</span>);
+    <span class="macro">assert!</span>(<span class="ident">r1</span> <span class="op">==</span> <span class="ident">r2</span>);
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>

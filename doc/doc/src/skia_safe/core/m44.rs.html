@@ -846,39 +846,39 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">SkV2</span>, <span class="ident">V2</span>, <span class="ident">v2_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">V2</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">x</span>, <span class="ident">y</span> }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dot</span>(<span class="self">self</span>, <span class="ident">b</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dot</span>(<span class="self">self</span>, <span class="ident">b</span>: <span class="self">Self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">y</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cross</span>(<span class="self">self</span>, <span class="ident">b</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cross</span>(<span class="self">self</span>, <span class="ident">b</span>: <span class="self">Self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">y</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">x</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">normalize</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">normalize</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span> <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">length</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length_squared</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length_squared</span>(<span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="ident"><span class="self">Self</span>::dot</span>(<span class="self">self</span>, <span class="self">self</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length</span>(<span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">length_squared</span>().<span class="ident">sqrt</span>()
     }
 
     <span class="kw">const</span> <span class="ident">COMPONENTS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">2</span>;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">x</span>, <span class="ident"><span class="self">Self</span>::COMPONENTS</span>) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_array</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_array</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">x</span>, <span class="ident"><span class="self">Self</span>::COMPONENTS</span>) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
@@ -888,7 +888,7 @@
 <span class="kw">impl</span> <span class="ident">Neg</span> <span class="kw">for</span> <span class="ident">V2</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="op">-</span><span class="self">self</span>.<span class="ident">x</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">y</span>)
     }
 }
@@ -896,7 +896,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span> <span class="kw">for</span> <span class="ident">V2</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">y</span>)
     }
 }
@@ -904,7 +904,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span> <span class="kw">for</span> <span class="ident">V2</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">y</span>)
     }
 }
@@ -912,7 +912,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="ident">V2</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">y</span>)
     }
 }
@@ -920,7 +920,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">V2</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">s</span>)
     }
 }
@@ -928,14 +928,14 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">V2</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">scalar</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">V2</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V2</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">V2::new</span>(<span class="ident">v</span>.<span class="ident">x</span> <span class="op">*</span> <span class="self">self</span>, <span class="ident">v</span>.<span class="ident">y</span> <span class="op">*</span> <span class="self">self</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Div</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">V2</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">V2</span>;
-    <span class="kw">fn</span> <span class="ident">div</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">div</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">V2::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">/</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">/</span> <span class="ident">s</span>)
     }
 }
@@ -981,15 +981,15 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">SkV3</span>, <span class="ident">V3</span>, <span class="ident">v3_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">V3</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span> }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dot</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dot</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">z</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cross</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cross</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(
             <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">z</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">y</span>,
             <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">x</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">b</span>.<span class="ident">z</span>,
@@ -997,27 +997,27 @@
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">normalize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">normalize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">length</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length_squared</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length_squared</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="ident"><span class="self">Self</span>::dot</span>(<span class="self">self</span>, <span class="self">self</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="ident"><span class="self">Self</span>::dot</span>(<span class="self">self</span>, <span class="self">self</span>).<span class="ident">sqrt</span>()
     }
 
     <span class="kw">const</span> <span class="ident">COMPONENTS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">x</span>, <span class="ident"><span class="self">Self</span>::COMPONENTS</span>) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_array</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_array</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">x</span>, <span class="ident"><span class="self">Self</span>::COMPONENTS</span>) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
@@ -1027,7 +1027,7 @@
 <span class="kw">impl</span> <span class="ident">Neg</span> <span class="kw">for</span> <span class="ident">V3</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="op">-</span><span class="self">self</span>.<span class="ident">x</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">y</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">z</span>)
     }
 }
@@ -1035,7 +1035,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span> <span class="kw">for</span> <span class="ident">V3</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">z</span>)
     }
 }
@@ -1043,7 +1043,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span> <span class="kw">for</span> <span class="ident">V3</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">z</span>)
     }
 }
@@ -1051,7 +1051,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="ident">V3</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">z</span>)
     }
 }
@@ -1059,7 +1059,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">V3</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">s</span>)
     }
 }
@@ -1067,7 +1067,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">V3</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">scalar</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">V3</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V3</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V3</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">V3::new</span>(<span class="ident">v</span>.<span class="ident">x</span> <span class="op">*</span> <span class="self">self</span>, <span class="ident">v</span>.<span class="ident">y</span> <span class="op">*</span> <span class="self">self</span>, <span class="ident">v</span>.<span class="ident">z</span> <span class="op">*</span> <span class="self">self</span>)
     }
 }
@@ -1108,19 +1108,19 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">SkV4</span>, <span class="ident">V4</span>, <span class="ident">v4_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">V4</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>, <span class="ident">w</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>, <span class="ident">w</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>, <span class="ident">w</span> }
     }
 
     <span class="kw">const</span> <span class="ident">COMPONENTS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">x</span>, <span class="ident"><span class="self">Self</span>::COMPONENTS</span>) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_array</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_array</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">x</span>, <span class="ident"><span class="self">Self</span>::COMPONENTS</span>) }
             .<span class="ident">try_into</span>()
             .<span class="ident">unwrap</span>()
@@ -1130,7 +1130,7 @@
 <span class="kw">impl</span> <span class="ident">Neg</span> <span class="kw">for</span> <span class="ident">V4</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="op">-</span><span class="self">self</span>.<span class="ident">x</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">y</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">z</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">w</span>)
     }
 }
@@ -1138,7 +1138,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span> <span class="kw">for</span> <span class="ident">V4</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">z</span>, <span class="self">self</span>.<span class="ident">w</span> <span class="op">+</span> <span class="ident">v</span>.<span class="ident">w</span>)
     }
 }
@@ -1146,7 +1146,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span> <span class="kw">for</span> <span class="ident">V4</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">z</span>, <span class="self">self</span>.<span class="ident">w</span> <span class="op">-</span> <span class="ident">v</span>.<span class="ident">w</span>)
     }
 }
@@ -1154,7 +1154,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="ident">V4</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">z</span>, <span class="self">self</span>.<span class="ident">w</span> <span class="op">*</span> <span class="ident">v</span>.<span class="ident">w</span>)
     }
 }
@@ -1162,7 +1162,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">V4</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="ident">scalar</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">s</span>, <span class="self">self</span>.<span class="ident">w</span> <span class="op">*</span> <span class="ident">s</span>)
     }
 }
@@ -1170,7 +1170,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">V4</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">scalar</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">V4</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V4</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">V4::new</span>(<span class="ident">v</span>.<span class="ident">x</span> <span class="op">*</span> <span class="self">self</span>, <span class="ident">v</span>.<span class="ident">y</span> <span class="op">*</span> <span class="self">self</span>, <span class="ident">v</span>.<span class="ident">z</span> <span class="op">*</span> <span class="self">self</span>, <span class="ident">v</span>.<span class="ident">w</span> <span class="op">*</span> <span class="self">self</span>)
     }
 }
@@ -1202,7 +1202,7 @@
 <span class="kw">impl</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">V4</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">f32</span>;
 
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_array</span>()[<span class="ident">index</span>]
     }
 }
@@ -1216,13 +1216,13 @@
 <span class="macro">native_transmutable!</span>(<span class="ident">SkM44</span>, <span class="ident">M44</span>, <span class="ident">m44_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">M44</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new_identity</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">M44</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkM44_equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">other</span>.<span class="ident">native</span>()) }
     }
 }
@@ -1230,7 +1230,7 @@
 <span class="kw">impl</span> <span class="ident">M44</span> {
     <span class="kw">const</span> <span class="ident">COMPONENTS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_identity</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">mat</span>: [
                 <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,
@@ -1238,13 +1238,13 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">concat</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">concat</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
         <span class="ident">m</span>.<span class="ident">set_concat</span>(<span class="ident">a</span>, <span class="ident">b</span>);
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">nan</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">nan</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">mat</span>: [<span class="ident">f32::NAN</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>],
         }
@@ -1268,7 +1268,7 @@
         <span class="ident">m7</span>: <span class="ident">scalar</span>,
         <span class="ident">m11</span>: <span class="ident">scalar</span>,
         <span class="ident">m15</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">mat</span>: [
                 <span class="ident">m0</span>, <span class="ident">m1</span>, <span class="ident">m2</span>, <span class="ident">m3</span>, <span class="ident">m4</span>, <span class="ident">m5</span>, <span class="ident">m6</span>, <span class="ident">m7</span>, <span class="ident">m8</span>, <span class="ident">m9</span>, <span class="ident">m10</span>, <span class="ident">m11</span>, <span class="ident">m12</span>, <span class="ident">m13</span>, <span class="ident">m14</span>, <span class="ident">m15</span>,
@@ -1276,7 +1276,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rows</span>(<span class="ident">r0</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">r1</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">r2</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">r3</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rows</span>(<span class="ident">r0</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">r1</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">r2</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">r3</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
         <span class="ident">m</span>.<span class="ident">set_row</span>(<span class="number">0</span>, <span class="ident">r0</span>);
         <span class="ident">m</span>.<span class="ident">set_row</span>(<span class="number">1</span>, <span class="ident">r1</span>);
@@ -1285,7 +1285,7 @@
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cols</span>(<span class="ident">c0</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">c1</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">c2</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">c3</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cols</span>(<span class="ident">c0</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">c1</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">c2</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>, <span class="ident">c3</span>: <span class="kw-2">&amp;</span><span class="ident">V4</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
         <span class="ident">m</span>.<span class="ident">set_col</span>(<span class="number">0</span>, <span class="ident">c0</span>);
         <span class="ident">m</span>.<span class="ident">set_col</span>(<span class="number">1</span>, <span class="ident">c1</span>);
@@ -1294,50 +1294,50 @@
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_major</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_major</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(
             <span class="ident">r</span>[<span class="number">0</span>], <span class="ident">r</span>[<span class="number">1</span>], <span class="ident">r</span>[<span class="number">2</span>], <span class="ident">r</span>[<span class="number">3</span>], <span class="ident">r</span>[<span class="number">4</span>], <span class="ident">r</span>[<span class="number">5</span>], <span class="ident">r</span>[<span class="number">6</span>], <span class="ident">r</span>[<span class="number">7</span>], <span class="ident">r</span>[<span class="number">8</span>], <span class="ident">r</span>[<span class="number">9</span>], <span class="ident">r</span>[<span class="number">10</span>], <span class="ident">r</span>[<span class="number">11</span>], <span class="ident">r</span>[<span class="number">12</span>], <span class="ident">r</span>[<span class="number">13</span>],
             <span class="ident">r</span>[<span class="number">14</span>], <span class="ident">r</span>[<span class="number">15</span>],
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">col_major</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">col_major</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(
             <span class="ident">c</span>[<span class="number">0</span>], <span class="ident">c</span>[<span class="number">4</span>], <span class="ident">c</span>[<span class="number">8</span>], <span class="ident">c</span>[<span class="number">12</span>], <span class="ident">c</span>[<span class="number">1</span>], <span class="ident">c</span>[<span class="number">5</span>], <span class="ident">c</span>[<span class="number">9</span>], <span class="ident">c</span>[<span class="number">13</span>], <span class="ident">c</span>[<span class="number">2</span>], <span class="ident">c</span>[<span class="number">6</span>], <span class="ident">c</span>[<span class="number">10</span>], <span class="ident">c</span>[<span class="number">14</span>], <span class="ident">c</span>[<span class="number">3</span>], <span class="ident">c</span>[<span class="number">7</span>],
             <span class="ident">c</span>[<span class="number">11</span>], <span class="ident">c</span>[<span class="number">15</span>],
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(
             <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">x</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="ident">y</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="ident">z</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale</span>(<span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale</span>(<span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>(
             <span class="ident">x</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">y</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">z</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate</span>(<span class="ident">axis</span>: <span class="ident">V3</span>, <span class="ident">radians</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate</span>(<span class="ident">axis</span>: <span class="ident">V3</span>, <span class="ident">radians</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
         <span class="ident">m</span>.<span class="ident">set_rotate</span>(<span class="ident">axis</span>, <span class="ident">radians</span>);
         <span class="ident">m</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_to_rect</span>(<span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_to_rect</span>(<span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">src</span>, <span class="ident">dst</span>) <span class="op">=</span> (<span class="ident">src</span>.<span class="ident">as_ref</span>(), <span class="ident">dst</span>.<span class="ident">as_ref</span>());
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkM44_RectToRect</span>(<span class="ident">src</span>.<span class="ident">native</span>(), <span class="ident">dst</span>.<span class="ident">native</span>(), <span class="ident">m</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">look_at</span>(<span class="ident">eye</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>, <span class="ident">center</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>, <span class="ident">up</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">look_at</span>(<span class="ident">eye</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>, <span class="ident">center</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>, <span class="ident">up</span>: <span class="kw-2">&amp;</span><span class="ident">V3</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkM44_LookAt</span>(<span class="ident">eye</span>.<span class="ident">native</span>(), <span class="ident">center</span>.<span class="ident">native</span>(), <span class="ident">up</span>.<span class="ident">native</span>(), <span class="ident">m</span>)
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perspective</span>(<span class="ident">near</span>: <span class="ident">f32</span>, <span class="ident">far</span>: <span class="ident">f32</span>, <span class="ident">angle</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perspective</span>(<span class="ident">near</span>: <span class="ident">f32</span>, <span class="ident">far</span>: <span class="ident">f32</span>, <span class="ident">angle</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkM44_Perspective</span>(<span class="ident">near</span>, <span class="ident">far</span>, <span class="ident">angle</span>, <span class="ident">m</span>) })
     }
 
@@ -1350,13 +1350,13 @@
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use M44::col_major() instead&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_col_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_col_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::col_major</span>(<span class="ident">v</span>);
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use M44::row_major() instead&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_row_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_row_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::row_major</span>(<span class="ident">v</span>);
         <span class="self">self</span>
     }
@@ -1381,14 +1381,14 @@
         <span class="ident">m13</span>: <span class="ident">scalar</span>,
         <span class="ident">m14</span>: <span class="ident">scalar</span>,
         <span class="ident">m15</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(
             <span class="ident">m0</span>, <span class="ident">m1</span>, <span class="ident">m2</span>, <span class="ident">m3</span>, <span class="ident">m4</span>, <span class="ident">m5</span>, <span class="ident">m6</span>, <span class="ident">m7</span>, <span class="ident">m8</span>, <span class="ident">m9</span>, <span class="ident">m10</span>, <span class="ident">m11</span>, <span class="ident">m12</span>, <span class="ident">m13</span>, <span class="ident">m14</span>, <span class="ident">m15</span>,
         );
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">c</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">c</span>: <span class="ident">usize</span>) -&gt; <span class="ident">scalar</span> {
         <span class="macro">assert!</span>(<span class="ident">r</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">3</span>);
         <span class="macro">assert!</span>(<span class="ident">c</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">3</span>);
         <span class="self">self</span>.<span class="ident">mat</span>[<span class="ident">c</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="ident">r</span>]
@@ -1400,7 +1400,7 @@
         <span class="self">self</span>.<span class="ident">mat</span>[<span class="ident">c</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="ident">r</span>] <span class="op">=</span> <span class="ident">value</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">V4</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="ident">V4</span> {
         <span class="macro">assert!</span>(<span class="ident">i</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">3</span>);
         <span class="ident">V4::new</span>(
             <span class="self">self</span>.<span class="ident">mat</span>[<span class="ident">i</span>],
@@ -1410,7 +1410,7 @@
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">col</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">V4</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">col</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="ident">V4</span> {
         <span class="macro">assert!</span>(<span class="ident">i</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">3</span>);
         <span class="ident">V4::new</span>(
             <span class="self">self</span>.<span class="ident">mat</span>[<span class="ident">i</span> <span class="op">*</span> <span class="number">4</span>],
@@ -1433,7 +1433,7 @@
         <span class="self">self</span>.<span class="ident">mat</span>[(<span class="ident">i</span> <span class="op">*</span> <span class="number">4</span>)..(<span class="ident">i</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="ident">V4::COMPONENTS</span>)].<span class="ident">copy_from_slice</span>(<span class="ident">v</span>.<span class="ident">as_array</span>());
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_identity</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_identity</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">mat</span>: [
                 <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,
@@ -1442,7 +1442,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_translate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_translate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">mat</span>: [
                 <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">x</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="ident">y</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="ident">z</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,
@@ -1451,7 +1451,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">mat</span>: [
                 <span class="ident">x</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">y</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">z</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,
@@ -1465,7 +1465,7 @@
         <span class="ident">axis</span>: <span class="ident">V3</span>,
         <span class="ident">sin_angle</span>: <span class="ident">scalar</span>,
         <span class="ident">cos_angle</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">setRotateUnitSinCos</span>(<span class="ident">axis</span>.<span class="ident">into_native</span>(), <span class="ident">sin_angle</span>, <span class="ident">cos_angle</span>)
@@ -1473,21 +1473,21 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rotate_unit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">axis</span>: <span class="ident">V3</span>, <span class="ident">radians</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rotate_unit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">axis</span>: <span class="ident">V3</span>, <span class="ident">radians</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">set_rotate_unit_sin_cos</span>(<span class="ident">axis</span>, <span class="ident">radians</span>.<span class="ident">sin</span>(), <span class="ident">radians</span>.<span class="ident">cos</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rotate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">axis</span>: <span class="ident">V3</span>, <span class="ident">radians</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rotate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">axis</span>: <span class="ident">V3</span>, <span class="ident">radians</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRotate</span>(<span class="ident">axis</span>.<span class="ident">into_native</span>(), <span class="ident">radians</span>) };
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use M44::col_major() and M44::set_concat()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat_16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>, <span class="ident">col_major</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat_16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>, <span class="ident">col_major</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">set_concat</span>(<span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::col_major</span>(<span class="ident">col_major</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setConcat</span>(<span class="ident">a</span>.<span class="ident">native</span>(), <span class="ident">b</span>.<span class="ident">native</span>());
         }
@@ -1496,11 +1496,11 @@
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use M44::col_major() and M44::pre_concat()&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat_16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">col_major</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat_16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">col_major</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="ident"><span class="self">Self</span>::COMPONENTS</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">set_concat_16</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">clone</span>(), <span class="ident">col_major</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>;
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setConcat</span>(<span class="ident">self_ptr</span>, <span class="ident">m</span>.<span class="ident">native</span>());
@@ -1508,7 +1508,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_concat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>;
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setConcat</span>(<span class="ident">m</span>.<span class="ident">native</span>(), <span class="ident">self_ptr</span>);
@@ -1520,17 +1520,17 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">normalizePerspective</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_finite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_finite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">mat</span>.<span class="ident">are_finite</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">M44</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">M44</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">invert</span>(<span class="ident">m</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">m</span>)
     }
 
     <span class="attribute">#[<span class="ident">warn</span>(<span class="ident">unused</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transpose</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">M44</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transpose</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">M44</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkM44_transpose</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">m</span>) })
     }
 
@@ -1538,11 +1538,11 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dump</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>, <span class="ident">w</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">V4</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>, <span class="ident">y</span>: <span class="ident">f32</span>, <span class="ident">z</span>: <span class="ident">f32</span>, <span class="ident">w</span>: <span class="ident">f32</span>) -&gt; <span class="ident">V4</span> {
         <span class="ident">V4::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkM44_map</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>, <span class="ident">w</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_m33</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matrix</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_m33</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Matrix</span> {
         <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mat</span>;
         <span class="ident">Matrix::new_all</span>(<span class="ident">m</span>[<span class="number">0</span>], <span class="ident">m</span>[<span class="number">4</span>], <span class="ident">m</span>[<span class="number">12</span>], <span class="ident">m</span>[<span class="number">1</span>], <span class="ident">m</span>[<span class="number">5</span>], <span class="ident">m</span>[<span class="number">13</span>], <span class="ident">m</span>[<span class="number">3</span>], <span class="ident">m</span>[<span class="number">7</span>], <span class="ident">m</span>[<span class="number">15</span>])
     }
@@ -1552,7 +1552,7 @@
         <span class="ident">x</span>: <span class="ident">scalar</span>,
         <span class="ident">y</span>: <span class="ident">scalar</span>,
         <span class="ident">z</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">preTranslate</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0.0</span>))
@@ -1565,7 +1565,7 @@
         <span class="ident">x</span>: <span class="ident">scalar</span>,
         <span class="ident">y</span>: <span class="ident">scalar</span>,
         <span class="ident">z</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">postTranslate</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0.0</span>))
@@ -1573,12 +1573,12 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_scale</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_scale</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preScale</span>(<span class="ident">x</span>, <span class="ident">y</span>) };
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_scale_xyz</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_scale_xyz</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">z</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preScale1</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>) };
         <span class="self">self</span>
     }
@@ -1587,7 +1587,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">M44</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">M44</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">m</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">m</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">M44::concat</span>(<span class="self">self</span>, <span class="ident">m</span>)
     }
 }
@@ -1595,7 +1595,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">V4</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">M44</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">V4</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V4</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span>.<span class="ident">map</span>(<span class="ident">v</span>.<span class="ident">x</span>, <span class="ident">v</span>.<span class="ident">y</span>, <span class="ident">v</span>.<span class="ident">z</span>, <span class="ident">v</span>.<span class="ident">w</span>)
     }
 }
@@ -1603,14 +1603,14 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">V3</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">M44</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">V3</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V3</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">v</span>: <span class="ident">V3</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="kw">let</span> <span class="ident">v4</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">map</span>(<span class="ident">v</span>.<span class="ident">x</span>, <span class="ident">v</span>.<span class="ident">y</span>, <span class="ident">v</span>.<span class="ident">z</span>, <span class="number">0.0</span>);
         <span class="ident">V3::new</span>(<span class="ident">v4</span>.<span class="ident">x</span>, <span class="ident">v4</span>.<span class="ident">y</span>, <span class="ident">v4</span>.<span class="ident">z</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Matrix</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">M44</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::matrix::Member</span>::<span class="kw-2">*</span>;
 
         <span class="ident"><span class="self">Self</span>::new</span>(
@@ -1635,7 +1635,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Matrix</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">M44</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">m</span>: <span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">m</span>: <span class="ident">Matrix</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">M44::from</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>)
     }
 }

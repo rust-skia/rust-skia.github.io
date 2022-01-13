@@ -46,7 +46,7 @@
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
 <span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_svg</span>(<span class="ident">svg</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_svg</span>(<span class="ident">svg</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">svg</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
     <span class="kw">unsafe</span> { <span class="ident">sb::SkParsePath_FromSVGString</span>(<span class="ident">str</span>.<span class="ident">as_ptr</span>(), <span class="ident">path</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">path</span>)
@@ -56,24 +56,24 @@
 <span class="macro">variant_name!</span>(<span class="ident">PathEncoding::Absolute</span>, <span class="ident">path_encoding_naming</span>);
 
 <span class="kw">impl</span> <span class="ident">Path</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_svg</span>(<span class="ident">svg</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_svg</span>(<span class="ident">svg</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
         <span class="ident">from_svg</span>(<span class="ident">svg</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">to_svg</span>(<span class="self">self</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg_with_encoding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">encoding</span>: <span class="ident">PathEncoding</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg_with_encoding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">encoding</span>: <span class="ident">PathEncoding</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">to_svg_with_encoding</span>(<span class="self">self</span>, <span class="ident">encoding</span>)
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">String</span> {
     <span class="ident">to_svg_with_encoding</span>(<span class="ident">path</span>, <span class="ident">PathEncoding::Absolute</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg_with_encoding</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">encoding</span>: <span class="ident">PathEncoding</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg_with_encoding</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">encoding</span>: <span class="ident">PathEncoding</span>) -&gt; <span class="ident">String</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">svg</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
     <span class="kw">unsafe</span> { <span class="ident">sb::SkParsePath_ToSVGString</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">svg</span>.<span class="ident">native_mut</span>(), <span class="ident">encoding</span>) };
     <span class="ident">svg</span>.<span class="ident">as_str</span>().<span class="ident">into</span>()

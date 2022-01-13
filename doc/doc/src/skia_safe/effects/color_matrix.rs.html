@@ -116,7 +116,15 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">YUVColorSpace</span>};
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkColorMatrix</span>};
 <span class="kw">use</span> <span class="ident">std::fmt</span>;
 
@@ -128,7 +136,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">ColorMatrix</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array_self</span> <span class="op">=</span> [<span class="number">0.0f32</span>; <span class="number">20</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array_other</span> <span class="op">=</span> [<span class="number">0.0f32</span>; <span class="number">20</span>];
         <span class="self">self</span>.<span class="ident">get_row_major</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">array_self</span>);
@@ -138,13 +146,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ColorMatrix</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">ColorMatrix::construct</span>(<span class="op">|</span><span class="ident">cm</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorMatrix_Construct</span>(<span class="ident">cm</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ColorMatrix</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ColorMatrix&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;mat&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMat</span>)
             .<span class="ident">finish</span>()
@@ -174,13 +182,21 @@
         <span class="ident">m32</span>: <span class="ident">f32</span>,
         <span class="ident">m33</span>: <span class="ident">f32</span>,
         <span class="ident">m34</span>: <span class="ident">f32</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="ident">ColorMatrix::construct</span>(<span class="op">|</span><span class="ident">cm</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkColorMatrix_Construct2</span>(
                 <span class="ident">cm</span>, <span class="ident">m00</span>, <span class="ident">m01</span>, <span class="ident">m02</span>, <span class="ident">m03</span>, <span class="ident">m04</span>, <span class="ident">m10</span>, <span class="ident">m11</span>, <span class="ident">m12</span>, <span class="ident">m13</span>, <span class="ident">m14</span>, <span class="ident">m20</span>, <span class="ident">m21</span>, <span class="ident">m22</span>, <span class="ident">m23</span>, <span class="ident">m24</span>, <span class="ident">m30</span>,
                 <span class="ident">m31</span>, <span class="ident">m32</span>, <span class="ident">m33</span>, <span class="ident">m34</span>,
             )
         })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rgb_to_yuv</span>(<span class="ident">rgb</span>: <span class="ident">YUVColorSpace</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::SkColorMatrix_RGBtoYUV</span>(<span class="ident">rgb</span>) })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_to_rgb</span>(<span class="ident">yuv</span>: <span class="ident">YUVColorSpace</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::SkColorMatrix_YUVtoRGB</span>(<span class="ident">yuv</span>) })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_identity</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {

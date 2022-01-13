@@ -806,20 +806,20 @@
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkBitmap</span> {
     <span class="doccomment">/// Copies settings from `self` to returned [Bitmap]. Shares pixels if `self` has pixels</span>
     <span class="doccomment">/// allocated, so both bitmaps reference the same pixels.</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">SkBitmap::new1</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Bitmap</span> {
     <span class="doccomment">/// See [RCHandle&lt;SkBitmap&gt;::new()].</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Bitmap</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Bitmap&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;pixmap&quot;</span>, <span class="self">self</span>.<span class="ident">pixmap</span>())
             .<span class="ident">finish</span>()
@@ -832,7 +832,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Use [Bitmap::set_info(&amp;self, ImageInfo&amp;, usize)] to associate [ColorType], [AlphaType],</span>
     <span class="doccomment">/// width, and height after [Bitmap] has been created.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bitmap</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_Construct</span>(<span class="ident">bitmap</span>) })
     }
 
@@ -843,12 +843,12 @@
 
     <span class="doccomment">/// Returns a constant reference to the [Pixmap] holding the [Bitmap] pixel address, row bytes,</span>
     <span class="doccomment">/// and [ImageInfo].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Pixmap</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Pixmap</span> {
         <span class="ident">Pixmap::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixmap</span>)
     }
 
     <span class="doccomment">/// Returns width, height, [AlphaType], [ColorType], and [ColorSpace].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">info</span>()
     }
 
@@ -857,7 +857,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// May be less than `pixel_ref().width()`. Will not exceed `pixel_ref().width()` less</span>
     <span class="doccomment">/// `pixel_ref_origin().x`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">width</span>()
     }
 
@@ -865,40 +865,40 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Maybe be less than `pixel_ref().height()`. Will not exceed `pixel_ref().height()` less</span>
     <span class="doccomment">/// `pixel_ref_origin().y`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">height</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ColorType</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">color_type</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alpha_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AlphaType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alpha_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">AlphaType</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">alpha_type</span>()
     }
 
     <span class="doccomment">/// Returns [ColorSpace], the range of colors, associated with [ImageInfo]. The returned</span>
     <span class="doccomment">/// [ColorSpace] is immutable.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">color_space</span>()
     }
 
     <span class="doccomment">/// Returns number of bytes per pixel required by [ColorType].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns zero if `color_type()` is [ColorType::Unknown].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">bytes_per_pixel</span>()
     }
 
     <span class="doccomment">/// Returns number of pixels that fit on row. Should be greater than or equal to `width()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes_as_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes_as_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">row_bytes_as_pixels</span>()
     }
 
     <span class="doccomment">/// Returns bit shift converting row bytes to row pixels.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns zero for [ColorType::Unknown].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shift_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shift_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">shift_per_pixel</span>()
     }
 
@@ -906,7 +906,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Does not check if [PixelRef] is None; call `draws_nothing()` to check `width()`,</span>
     <span class="doccomment">/// `height()`, and [PixelRef].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">is_empty</span>()
     }
 
@@ -914,14 +914,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Does not check if `width()` or `height()` are zero; call `draws_nothing()` to check</span>
     <span class="doccomment">/// `width()`, `height()`, and [PixelRef].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixelRef</span>.<span class="ident">fPtr</span>.<span class="ident">is_null</span>()
     }
 
     <span class="doccomment">/// Returns `true` if `width()` or `height()` are zero, or if [PixelRef] is `None`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If `true`, [Bitmap] has no effect when drawn or drawn into.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draws_nothing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draws_nothing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">is_null</span>()
     }
 
@@ -930,7 +930,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns zero if `color_type()` is [ColorType::Unknown], or if row bytes supplied to</span>
     <span class="doccomment">/// `set_info()` is not large enough to hold a row of pixels.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">row_bytes</span>()
     }
 
@@ -954,13 +954,13 @@
     <span class="doccomment">/// is treated as [AlphaType::Premul].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This changes [AlphaType] in [PixelRef]; all bitmaps sharing [PixelRef] are affected.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">alpha_type</span>: <span class="ident">AlphaType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">alpha_type</span>: <span class="ident">AlphaType</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setAlphaType</span>(<span class="ident">alpha_type</span>) }
     }
 
     <span class="doccomment">/// Returns pixel address, the base address corresponding to the pixel origin.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">writable_addr</span>()
     }
 
@@ -973,14 +973,14 @@
     <span class="doccomment">/// Returns zero if `height()` or `width()` is 0.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `height()` times `row_bytes()` if `color_type()` is [ColorType::Unknown].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_byte_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_byte_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">compute_byte_size</span>()
     }
 
     <span class="doccomment">/// Returns `true` if pixels can not change.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Most immutable [Bitmap] checks trigger an assert only on debug builds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_immutable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_immutable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isImmutable</span>() }
     }
 
@@ -999,7 +999,7 @@
     <span class="doccomment">/// incorrectly.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Does not check if [ColorType] allows alpha, or if any pixel value has transparency.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">is_opaque</span>()
     }
 
@@ -1021,22 +1021,22 @@
     <span class="doccomment">/// greater.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `false` for [ColorType::Unknown].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_is_opaque</span>(<span class="ident">bm</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_is_opaque</span>(<span class="ident">bm</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_ComputeIsOpaque</span>(<span class="ident">bm</span>.<span class="ident">native</span>()) }
     }
 
     <span class="doccomment">/// Returns `IRect { 0, 0, width(), height() }`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IRect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">bounds</span>()
     }
 
     <span class="doccomment">/// Returns `ISize { width(), height() }`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ISize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">dimensions</span>()
     }
 
     <span class="doccomment">/// Returns the bounds of this bitmap, offset by its [PixelRef] origin.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IRect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pixel_ref_origin</span>();
         <span class="ident">IRect::from_xywh</span>(<span class="ident">origin</span>.<span class="ident">x</span>, <span class="ident">origin</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
     }
@@ -1059,7 +1059,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">setInfo</span>(<span class="ident">image_info</span>.<span class="ident">native</span>(), <span class="ident">row_bytes</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>))
@@ -1076,7 +1076,7 @@
     <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
     <span class="doccomment">/// actual behavior depends on the platform implementation of `calloc()`.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">tryAllocPixelsFlags</span>(
                 <span class="ident">image_info</span>.<span class="ident">native</span>(),
@@ -1115,7 +1115,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">row_bytes</span>
             .<span class="ident">into</span>()
             .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">image_info</span>.<span class="ident">min_row_bytes</span>());
@@ -1161,7 +1161,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">is_opaque</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkBitmap_tryAllocN32Pixels</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
@@ -1207,7 +1207,7 @@
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">pixels</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span>,
         <span class="ident">row_bytes</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>()
             .<span class="ident">installPixels</span>(<span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">pixels</span>, <span class="ident">row_bytes</span>, <span class="prelude-val">None</span>, <span class="ident">ptr::null_mut</span>())
     }
@@ -1221,7 +1221,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `false` if `info().color_type()` is [ColorType::Unknown], or allocation fails.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_tryAllocPixels</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 
@@ -1244,7 +1244,7 @@
     <span class="doccomment">/// [PixelRef] may be shared by multiple bitmaps.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If [PixelRef] has not been set, returns `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span> {
         <span class="ident">PixelRef::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixelRef</span>.<span class="ident">fPtr</span>)
     }
 
@@ -1256,7 +1256,7 @@
     <span class="doccomment">/// [PixelRef] dimensions.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `(0, 0)` if [PixelRef] is `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IPoint</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IPoint</span> {
         <span class="ident">IPoint::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_pixelRefOrigin</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
@@ -1285,7 +1285,7 @@
     }
 
     <span class="doccomment">/// Returns `true` if [Bitmap] can be drawn.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_ready_to_draw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_ready_to_draw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_readyToDraw</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
@@ -1296,7 +1296,7 @@
     <span class="doccomment">/// Returns zero if [PixelRef] is `None`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Determines if pixels have changed since last examined.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getGenerationID</span>() }
     }
 
@@ -1345,14 +1345,14 @@
     <span class="doccomment">/// [ColorSpace] in [ImageInfo] is ignored. Some color precision may be lost in the</span>
     <span class="doccomment">/// conversion to unpremultiplied color; original pixel data may have additional</span>
     <span class="doccomment">/// precision.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_color</span>(<span class="ident">p</span>)
     }
 
     <span class="doccomment">/// Look up the pixel at (x,y) and return its alpha component, normalized to [0..1]. This is</span>
     <span class="doccomment">/// roughly equivalent to [getColor().a()], but can be more efficient (and more precise if the</span>
     <span class="doccomment">/// pixels store more than 8 bits per component).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpha_f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpha_f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">f32</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_alpha_f</span>(<span class="ident">p</span>)
     }
 
@@ -1365,7 +1365,7 @@
     <span class="doccomment">/// Performs a lookup of pixel size; for better performance, call one of: `get_addr8()`,</span>
     <span class="doccomment">/// `get_addr16()`, or `get_addr32()`.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">ffi::c_void</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">ffi::c_void</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getAddr</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>)
     }
@@ -1386,7 +1386,7 @@
     <span class="doccomment">/// - subset does not intersect [Self::bounds()]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_extractSubset&gt;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">extractSubset</span>(<span class="ident">dst</span>.<span class="ident">native_mut</span>(), <span class="ident">subset</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
@@ -1422,7 +1422,7 @@
         <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
         <span class="ident">src_x</span>: <span class="ident">i32</span>,
         <span class="ident">src_y</span>: <span class="ident">i32</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>()
             .<span class="ident">readPixels</span>(<span class="ident">dst_info</span>.<span class="ident">native</span>(), <span class="ident">dst_pixels</span>, <span class="ident">dst_row_bytes</span>, <span class="ident">src_x</span>, <span class="ident">src_y</span>)
     }
@@ -1437,7 +1437,7 @@
     <span class="doccomment">/// mask alpha from [Bitmap]. Uses HeapAllocator to reserve memory for `dst` [PixelRef]. Returns</span>
     <span class="doccomment">/// offset to top-left position for `dst` for alignment with [Bitmap]; (0, 0) unless</span>
     <span class="doccomment">/// [crate::MaskFilter] generates mask.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">IPoint::default</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkBitmap_extractAlpha</span>(
@@ -1457,7 +1457,7 @@
     <span class="doccomment">/// pixmap contents become invalid on any future change to [Bitmap].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_peekPixels&gt;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap</span> <span class="op">=</span> <span class="ident">Pixmap::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">peekPixels</span>(<span class="ident">pixmap</span>.<span class="ident">native_mut</span>()) }
             .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">pixmap</span>.<span class="ident">borrows</span>(<span class="self">self</span>))
@@ -1468,7 +1468,7 @@
         <span class="ident">tile_modes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">TileMode</span>, <span class="ident">TileMode</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">sampling</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span>,
         <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">tile_modes</span> <span class="op">=</span> <span class="ident">tile_modes</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">sampling</span> <span class="op">=</span> <span class="ident">sampling</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">local_matrix</span> <span class="op">=</span> <span class="ident">local_matrix</span>.<span class="ident">into</span>();
@@ -1487,7 +1487,7 @@
 
     <span class="doccomment">/// Returns a new image from the bitmap. If the bitmap is marked immutable, this will</span>
     <span class="doccomment">/// share the pixel buffer. If not, it will make a copy of the pixels for the image.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Image</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Image</span> {
         <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_asImage</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
     }
 }

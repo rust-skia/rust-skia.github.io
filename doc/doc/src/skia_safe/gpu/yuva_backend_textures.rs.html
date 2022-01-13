@@ -195,19 +195,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">GrYUVABackendTextureInfo</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">construct</span>(<span class="op">|</span><span class="ident">cloned</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_GrYUVABackendTextureInfo_CopyConstruct</span>(<span class="ident">cloned</span>, <span class="self">self</span>) })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">GrYUVABackendTextureInfo</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_GrYUVABackendTextureInfo_equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">YUVABackendTextureInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;YUVABackendTextureInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;yuva_info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">yuva_info</span>())
             .<span class="ident">field</span>(<span class="string">&quot;yuv_color_space&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">yuv_color_space</span>())
@@ -231,7 +231,7 @@
         <span class="ident">formats</span>: <span class="kw-2">&amp;</span>[<span class="ident">BackendFormat</span>],
         <span class="ident">mip_mapped</span>: <span class="ident">Mipmapped</span>,
         <span class="ident">origin</span>: <span class="ident">SurfaceOrigin</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">formats</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">info</span>.<span class="ident">num_planes</span>() {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -248,36 +248,36 @@
         <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="ident">n</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
         <span class="ident">YUVAInfo::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fYUVAInfo</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">YUVColorSpace</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuv_color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">YUVColorSpace</span> {
         <span class="self">self</span>.<span class="ident">yuva_info</span>().<span class="ident">yuv_color_space</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mipmapped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mipmapped</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mipmapped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Mipmapped</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMipmapped</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">texture_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SurfaceOrigin</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">texture_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SurfaceOrigin</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextureOrigin</span>
     }
 
     <span class="doccomment">/// The number of [crate::Pixmap] planes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">yuva_info</span>().<span class="ident">num_planes</span>()
     }
 
     <span class="doccomment">/// Format of the ith plane, or `None` if `i &gt;= Self::num_planes()`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">BackendFormat</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">BackendFormat</span><span class="op">&gt;</span> {
         (<span class="ident">i</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">num_planes</span>()).<span class="ident">if_true_some</span>(<span class="ident">BackendFormat::from_native_ref</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPlaneFormats</span>[<span class="ident">i</span>],
         ))
     }
 
     <span class="doccomment">/// All plane formats.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_formats</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">BackendFormat</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plane_formats</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">BackendFormat</span>] {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">formats</span> <span class="op">=</span> <span class="ident">BackendFormat::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPlaneFormats</span>[<span class="number">0</span>]);
             <span class="ident">safer::from_raw_parts</span>(<span class="ident">formats</span>, <span class="self">self</span>.<span class="ident">num_planes</span>())
@@ -285,7 +285,7 @@
     }
 
     <span class="doccomment">/// Returns `true` if this has been configured with a valid [YUVAInfo] with compatible texture.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">GrYUVABackendTextureInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">GrYUVABackendTextureInfo</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">YUVAInfo::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">fYUVAInfo</span>)
     }
 }
@@ -301,7 +301,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">YUVABackendTextures</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;YUVABackendTextures&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;yuva_info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">yuva_info</span>())
             .<span class="ident">field</span>(<span class="string">&quot;texture_origin&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">texture_origin</span>())
@@ -315,7 +315,7 @@
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span>,
         <span class="ident">textures</span>: <span class="kw-2">&amp;</span>[<span class="ident">BackendTexture</span>],
         <span class="ident">texture_origin</span>: <span class="ident">SurfaceOrigin</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">textures</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">info</span>.<span class="ident">num_planes</span>() {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -331,7 +331,7 @@
         <span class="ident"><span class="self">Self</span>::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>).<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="ident">n</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">textures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">BackendTexture</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">textures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">BackendTexture</span>] {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">textures</span> <span class="op">=</span> <span class="ident">BackendTexture::from_native_ptr</span>(<span class="ident">sb::C_GrYUVABackendTextures_textures</span>(
                 <span class="self">self</span>.<span class="ident">native</span>(),
@@ -340,23 +340,23 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">texture</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">BackendTexture</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">texture</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">BackendTexture</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">textures</span>().<span class="ident">get</span>(<span class="ident">i</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">yuva_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">YUVAInfo</span> {
         <span class="ident">YUVAInfo::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fYUVAInfo</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_planes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">yuva_info</span>().<span class="ident">num_planes</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">texture_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SurfaceOrigin</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">texture_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SurfaceOrigin</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextureOrigin</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">n</span>: <span class="kw-2">&amp;</span><span class="ident">GrYUVABackendTextures</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_is_valid</span>(<span class="ident">n</span>: <span class="kw-2">&amp;</span><span class="ident">GrYUVABackendTextures</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">YUVAInfo::native_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>.<span class="ident">fYUVAInfo</span>)
     }
 }
