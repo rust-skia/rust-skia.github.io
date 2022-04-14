@@ -1,4 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\bitmap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>bitmap.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\bitmap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>bitmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -798,7 +803,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bitmap</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkBitmap</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkBitmap</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_destruct</span>(<span class="self">self</span>) }
     }
 }
@@ -819,7 +824,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Bitmap</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Bitmap&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;pixmap&quot;</span>, <span class="self">self</span>.<span class="ident">pixmap</span>())
             .<span class="ident">finish</span>()
@@ -837,7 +842,7 @@
     }
 
     <span class="doccomment">/// Swaps the fields of the two bitmaps.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">swap</span>(<span class="ident">other</span>.<span class="ident">native_mut</span>()) }
     }
 
@@ -954,13 +959,13 @@
     <span class="doccomment">/// is treated as [AlphaType::Premul].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This changes [AlphaType] in [PixelRef]; all bitmaps sharing [PixelRef] are affected.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">alpha_type</span>: <span class="ident">AlphaType</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">alpha_type</span>: <span class="ident">AlphaType</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setAlphaType</span>(<span class="ident">alpha_type</span>) }
     }
 
     <span class="doccomment">/// Returns pixel address, the base address corresponding to the pixel origin.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">writable_addr</span>()
     }
 
@@ -990,7 +995,7 @@
     <span class="doccomment">/// Once [PixelRef] is marked immutable, the setting cannot be cleared.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Writing to immutable SkBitmap pixels triggers an assert on debug builds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_immutable</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_immutable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setImmutable</span>() }
     }
 
@@ -1011,7 +1016,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If [PixelRef] is allocated, its reference count is decreased by one, releasing</span>
     <span class="doccomment">/// its memory if [Bitmap] is the sole owner.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() }
     }
 
@@ -1056,7 +1061,7 @@
     <span class="doccomment">///   `image_info.bytes_per_pixel()`</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_info</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) -&gt; <span class="ident">bool</span> {
@@ -1076,7 +1081,7 @@
     <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
     <span class="doccomment">/// actual behavior depends on the platform implementation of `calloc()`.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_flags</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">tryAllocPixelsFlags</span>(
                 <span class="ident">image_info</span>.<span class="ident">native</span>(),
@@ -1094,7 +1099,7 @@
     <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
     <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
     <span class="doccomment">/// actual behavior depends on the platform implementation of `calloc()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels_flags</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) {
         <span class="self">self</span>.<span class="ident">try_alloc_pixels_flags</span>(<span class="ident">image_info</span>)
             .<span class="ident">into_option</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels_flags failed&quot;</span>);
@@ -1112,7 +1117,7 @@
     <span class="doccomment">/// actual behavior depends on the platform implementation of `malloc()`.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_info</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) -&gt; <span class="ident">bool</span> {
@@ -1136,7 +1141,7 @@
     <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
     <span class="doccomment">/// actual behavior depends on the platform implementation of `malloc()`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels_info</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) {
@@ -1158,7 +1163,7 @@
     <span class="doccomment">/// [Bitmap] drawn to output device skips converting its pixel format.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_n32_pixels</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">is_opaque</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) -&gt; <span class="ident">bool</span> {
@@ -1181,7 +1186,7 @@
     <span class="doccomment">/// Use to create [Bitmap] that matches [crate::PMColor], the native pixel arrangement on the platform.</span>
     <span class="doccomment">/// [Bitmap] drawn to output device skips converting its pixel format.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_n32_pixels</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
         <span class="ident">is_opaque</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) {
@@ -1203,9 +1208,9 @@
     <span class="doccomment">/// Caller must ensure that pixels are valid for the lifetime of [Bitmap] and [PixelRef].</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_pixels</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">pixels</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span>,
+        <span class="ident">pixels</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
         <span class="ident">row_bytes</span>: <span class="ident">usize</span>,
     ) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>()
@@ -1221,7 +1226,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `false` if `info().color_type()` is [ColorType::Unknown], or allocation fails.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_tryAllocPixels</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 
@@ -1229,7 +1234,7 @@
     <span class="doccomment">/// size is determined by [ImageInfo] width, height, and [ColorType].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Aborts if `info().color_type()` is [ColorType::Unknown], or allocation fails.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">try_alloc_pixels</span>()
             .<span class="ident">into_option</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels failed&quot;</span>)
@@ -1269,7 +1274,7 @@
     <span class="doccomment">/// The caller is responsible for ensuring that the pixels match the [ColorType] and [AlphaType]</span>
     <span class="doccomment">/// in [ImageInfo].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pixel_ref</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">pixel_ref</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
     ) {
@@ -1365,7 +1370,7 @@
     <span class="doccomment">/// Performs a lookup of pixel size; for better performance, call one of: `get_addr8()`,</span>
     <span class="doccomment">/// `get_addr16()`, or `get_addr32()`.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">ffi::c_void</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">ffi::c_void</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getAddr</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>)
     }
@@ -1386,7 +1391,7 @@
     <span class="doccomment">/// - subset does not intersect [Self::bounds()]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_extractSubset&gt;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">extractSubset</span>(<span class="ident">dst</span>.<span class="ident">native_mut</span>(), <span class="ident">subset</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
@@ -1418,7 +1423,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_pixels</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">dst_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">dst_pixels</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::c_void</span>,
+        <span class="ident">dst_pixels</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
         <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
         <span class="ident">src_x</span>: <span class="ident">i32</span>,
         <span class="ident">src_y</span>: <span class="ident">i32</span>,
@@ -1437,7 +1442,7 @@
     <span class="doccomment">/// mask alpha from [Bitmap]. Uses HeapAllocator to reserve memory for `dst` [PixelRef]. Returns</span>
     <span class="doccomment">/// offset to top-left position for `dst` for alignment with [Bitmap]; (0, 0) unless</span>
     <span class="doccomment">/// [crate::MaskFilter] generates mask.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">IPoint::default</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">sb::C_SkBitmap_extractAlpha</span>(
@@ -1539,6 +1544,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>
