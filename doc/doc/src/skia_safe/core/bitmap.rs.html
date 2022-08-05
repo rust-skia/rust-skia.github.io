@@ -773,9 +773,46 @@
 <span id="768">768</span>
 <span id="769">769</span>
 <span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">AlphaType</span>, <span class="ident">Color</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">Image</span>, <span class="ident">ImageInfo</span>,
-    <span class="ident">Matrix</span>, <span class="ident">Paint</span>, <span class="ident">PixelRef</span>, <span class="ident">Pixmap</span>, <span class="ident">SamplingOptions</span>, <span class="ident">Shader</span>, <span class="ident">TileMode</span>,
+    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">AlphaType</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">Image</span>,
+    <span class="ident">ImageInfo</span>, <span class="ident">Matrix</span>, <span class="ident">Paint</span>, <span class="ident">PixelRef</span>, <span class="ident">Pixmap</span>, <span class="ident">SamplingOptions</span>, <span class="ident">Shader</span>, <span class="ident">TileMode</span>,
 };
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkBitmap</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>};
@@ -1315,8 +1352,22 @@
     <span class="doccomment">/// contained by [bounds(&amp;self)] are affected. If the [color_type(&amp;self)] is [ColorType::Gray8]</span>
     <span class="doccomment">/// or [ColorType::RGB565], then alpha is ignored; RGB is treated as opaque. If</span>
     <span class="doccomment">/// [color_type(&amp;self)] is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_color_4f`] will have</span>
+    <span class="doccomment">/// higher color resolution.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">eraseColor</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) }
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">eraseColor1</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) }
+    }
+
+    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [ColorSpace]. All pixels</span>
+    <span class="doccomment">/// contained by [bounds(&amp;self)] are affected. If the [color_type(&amp;self)] is [ColorType::Gray8]</span>
+    <span class="doccomment">/// or [ColorType::RGB565], then alpha is ignored; RGB is treated as opaque. If</span>
+    <span class="doccomment">/// [color_type(&amp;self)] is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_color_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>, <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span>) {
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native</span>()
+                .<span class="ident">eraseColor</span>(<span class="ident">c</span>.<span class="ident">as_ref</span>().<span class="ident">into_native</span>(), <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+        }
     }
 
     <span class="doccomment">/// Replaces pixel values with unpremultiplied color built from `a`, `r`, `g`, and `b`,</span>
@@ -1333,10 +1384,33 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the `color_type()` is [ColorType::Gray8] [ColorType::RGB565], then alpha is ignored; RGB</span>
     <span class="doccomment">/// is treated as opaque. If `color_type()` is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Input color is ultimately converted to an SkColor4f, so [`Self::erase_4f`] will have higher</span>
+    <span class="doccomment">/// color resolution.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>, <span class="ident">area</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">erase</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+                .<span class="ident">erase1</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+        }
+    }
+
+    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [ColorSpace]. If</span>
+    <span class="doccomment">/// area does not intersect `bounds()`, call has no effect.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the `color_type()` is [ColorType::Gray8] [ColorType::RGB565], then alpha is ignored; RGB</span>
+    <span class="doccomment">/// is treated as opaque. If `color_type()` is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_4f</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>,
+        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">area</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
+    ) {
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">erase</span>(
+                <span class="ident">c</span>.<span class="ident">as_ref</span>().<span class="ident">into_native</span>(),
+                <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+                <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+            )
         }
     }
 
@@ -1544,5 +1618,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.1 (e092d0b6b 2022-07-16)" ></div>
 </body></html>
