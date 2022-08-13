@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":[["PathEncoding",""]],"fn":[["from_svg",""],["to_svg",""],["to_svg_with_encoding",""]]};

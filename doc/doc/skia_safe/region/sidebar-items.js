@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":[["RegionOp",""]],"struct":[["Cliperator",""],["Iterator",""],["Spanerator",""]],"trait":[["Combine",""],["Intersects",""]],"type":[["Region",""]]};

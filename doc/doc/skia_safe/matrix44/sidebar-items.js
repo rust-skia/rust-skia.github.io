@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Matrix44",""],["TypeMask",""],["Vector4",""]],"trait":[["Map2",""],["MapScalars",""],["SetPrePostScale",""]]});

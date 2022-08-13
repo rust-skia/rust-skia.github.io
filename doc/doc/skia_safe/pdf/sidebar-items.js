@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":[["new_document",""]],"struct":[["Metadata",""],["StructureElementNode",""]],"type":[["AttributeList",""]]};

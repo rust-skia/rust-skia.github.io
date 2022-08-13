@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":[["Align",""]],"fn":[["draw_str",""],["get_path",""]]};

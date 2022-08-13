@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":[["Slant",""]],"struct":[["FontStyle",""],["Weight","Wrapper type of a font weight."],["Width","Wrapper type for the width of a font."]]};

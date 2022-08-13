@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["skia_safe"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.63.0/alloc/string/trait.ToString.html\" title=\"trait alloc::string::ToString\">ToString</a> for <a class=\"struct\" href=\"skia_safe/struct.Handle.html\" title=\"struct skia_safe::Handle\">Handle</a>&lt;SkString&gt;","synthetic":false,"types":["skia_safe::prelude::Handle"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

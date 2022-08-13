@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":[["compute_tonal_colors",""],["draw_shadow",""],["local_bounds",""]],"struct":[["ShadowFlags",""]]};

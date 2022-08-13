@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["new",""],["new_clip",""],["new_clip_table",""],["new_gamma",""],["new_gamma_table",""]]});

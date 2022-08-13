@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Qualifier",""],["Type",""]],"struct":[["Flags",""]]});
