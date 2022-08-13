@@ -1,103 +1,108 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\modules\paragraph\text_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_style.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\paragraph\text_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -500,56 +505,132 @@
 <span id="499">499</span>
 <span id="500">500</span>
 <span id="501">501</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FontFamilies</span>, <span class="ident">TextBaseline</span>, <span class="ident">TextShadow</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interop</span>::{<span class="ident">AsStr</span>, <span class="ident">FromStrs</span>, <span class="ident">SetStr</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">textlayout</span>::{<span class="ident">RangeExtensions</span>, <span class="ident">EMPTY_INDEX</span>, <span class="ident">EMPTY_RANGE</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">interop</span>, <span class="ident">scalar</span>, <span class="ident">Color</span>, <span class="ident">FontMetrics</span>, <span class="ident">FontStyle</span>, <span class="ident">Paint</span>, <span class="ident">Typeface</span>};
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FontArguments</span>, <span class="ident">FontFamilies</span>, <span class="ident">TextBaseline</span>, <span class="ident">TextShadow</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">AsStr</span>, <span class="ident">FromStrs</span>, <span class="ident">SetStr</span>},
+    <span class="ident">prelude</span>::<span class="kw-2">*</span>,
+    <span class="ident">scalar</span>,
+    <span class="ident">textlayout</span>::{<span class="ident">RangeExtensions</span>, <span class="ident">EMPTY_INDEX</span>, <span class="ident">EMPTY_RANGE</span>},
+    <span class="ident">Color</span>, <span class="ident">FontMetrics</span>, <span class="ident">FontStyle</span>, <span class="ident">Paint</span>, <span class="ident">Typeface</span>,
+};
 <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Range</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ops::Range</span>};
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextDecoration</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">NO_DECORATION</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextDecoration</span>::<span class="ident">kNoDecoration</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">UNDERLINE</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextDecoration</span>::<span class="ident">kUnderline</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">OVERLINE</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextDecoration</span>::<span class="ident">kOverline</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">LINE_THROUGH</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextDecoration</span>::<span class="ident">kOverline</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">NO_DECORATION</span> <span class="op">=</span> <span class="ident">sb::skia_textlayout_TextDecoration::kNoDecoration</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">UNDERLINE</span> <span class="op">=</span> <span class="ident">sb::skia_textlayout_TextDecoration::kUnderline</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">OVERLINE</span> <span class="op">=</span> <span class="ident">sb::skia_textlayout_TextDecoration::kOverline</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">LINE_THROUGH</span> <span class="op">=</span> <span class="ident">sb::skia_textlayout_TextDecoration::kLineThrough</span> <span class="kw">as</span> <span class="kw">_</span>;
     }
 }
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALL_TEXT_DECORATIONS</span>: <span class="ident">TextDecoration</span> <span class="op">=</span> <span class="ident">TextDecoration</span>::<span class="ident">ALL</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALL_TEXT_DECORATIONS</span>: <span class="ident">TextDecoration</span> <span class="op">=</span> <span class="ident">TextDecoration::ALL</span>;
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TextDecoration</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">TextDecoration</span>::<span class="ident">NO_DECORATION</span>
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident">TextDecoration::NO_DECORATION</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">TextDecoration</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALL</span>: <span class="ident">TextDecoration</span> <span class="op">=</span> <span class="ident">TextDecoration</span>::<span class="ident">all</span>();
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALL</span>: <span class="ident">TextDecoration</span> <span class="op">=</span> <span class="ident">TextDecoration::all</span>();
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextDecorationStyle</span> <span class="kw">as</span> <span class="ident">TextDecorationStyle</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::skia_textlayout_TextDecorationStyle</span> <span class="kw">as</span> <span class="ident">TextDecorationStyle</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">text_decoration_style_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">TextDecorationStyle</span>::<span class="ident">Solid</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">TextDecorationStyle::Solid</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextDecorationMode</span> <span class="kw">as</span> <span class="ident">TextDecorationMode</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::skia_textlayout_TextDecorationMode</span> <span class="kw">as</span> <span class="ident">TextDecorationMode</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">text_decoration_mode_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">TextDecorationMode</span>::<span class="ident">Gaps</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">TextDecorationMode::Gaps</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_StyleType</span> <span class="kw">as</span> <span class="ident">StyleType</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::skia_textlayout_StyleType</span> <span class="kw">as</span> <span class="ident">StyleType</span>;
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">style_type_member_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">StyleType</span>::<span class="ident">Foreground</span>;
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">StyleType</span>::<span class="ident">LetterSpacing</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">StyleType::Foreground</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">StyleType::LetterSpacing</span>;
 }
 
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Decoration</span> {
     <span class="kw">pub</span> <span class="ident">ty</span>: <span class="ident">TextDecoration</span>,
@@ -559,54 +640,57 @@
     <span class="kw">pub</span> <span class="ident">thickness_multiplier</span>: <span class="ident">scalar</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_Decoration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Decoration</span> {}
+<span class="macro">native_transmutable!</span>(
+    <span class="ident">sb::skia_textlayout_Decoration</span>,
+    <span class="ident">Decoration</span>,
+    <span class="ident">decoration_layout</span>
+);
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">decoration_layout</span>() {
-    <span class="ident">Decoration</span>::<span class="ident">test_layout</span>();
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::skia_textlayout_PlaceholderAlignment</span> <span class="kw">as</span> <span class="ident">PlaceholderAlignment</span>;
+<span class="macro">variant_name!</span>(<span class="ident">PlaceholderAlignment::Baseline</span>, <span class="ident">placeholder_alignment_naming</span>);
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_PlaceholderAlignment</span> <span class="kw">as</span> <span class="ident">PlaceholderAlignment</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontFeature</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_FontFeature</span><span class="op">&gt;</span>;
+<span class="macro">unsafe_send_sync!</span>(<span class="ident">FontFeature</span>);
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">placeholder_alignment_member_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PlaceholderAlignment</span>::<span class="ident">Baseline</span>;
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PlaceholderAlignment</span>::<span class="ident">AboveBaseline</span>;
-}
-
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontFeature</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {}
-
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_FontFeature_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_FontFeature</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_FontFeature_destruct</span>(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_FontFeature_CopyConstruct</span>(<span class="ident">ts</span>, <span class="self">self</span>) })
+<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_FontFeature</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_FontFeature_CopyConstruct</span>(<span class="ident">ts</span>, <span class="self">self</span>) })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">name</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">name</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">value</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">value</span>()
+<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">name</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">name</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">value</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">value</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_FontFeature</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FontFeature</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;FontFeature&quot;</span>)
+            .<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>())
+            .<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value</span>())
+            .<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">FontFeature</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fName</span>.<span class="ident">as_str</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fValue</span>
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PlaceholderStyle</span> {
     <span class="kw">pub</span> <span class="ident">width</span>: <span class="ident">scalar</span>,
     <span class="kw">pub</span> <span class="ident">height</span>: <span class="ident">scalar</span>,
@@ -615,27 +699,15 @@
     <span class="kw">pub</span> <span class="ident">baseline_offset</span>: <span class="ident">scalar</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_PlaceholderStyle</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PlaceholderStyle</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">placeholder_style_layout</span>() {
-    <span class="ident">PlaceholderStyle</span>::<span class="ident">test_layout</span>()
-}
+<span class="macro">native_transmutable!</span>(
+    <span class="ident">sb::skia_textlayout_PlaceholderStyle</span>,
+    <span class="ident">PlaceholderStyle</span>,
+    <span class="ident">placeholder_style_layout</span>
+);
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">PlaceholderStyle</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">equals</span>(<span class="ident">other</span>.<span class="ident">native</span>()) }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">PlaceholderStyle</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>(
-            <span class="number">0.0</span>,
-            <span class="number">0.0</span>,
-            <span class="ident">PlaceholderAlignment</span>::<span class="ident">Baseline</span>,
-            <span class="ident">TextBaseline</span>::<span class="ident">Alphabetic</span>,
-            <span class="number">0.0</span>,
-        )
     }
 }
 
@@ -646,7 +718,7 @@
         <span class="ident">alignment</span>: <span class="ident">PlaceholderAlignment</span>,
         <span class="ident">baseline</span>: <span class="ident">TextBaseline</span>,
         <span class="ident">offset</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">width</span>,
             <span class="ident">height</span>,
@@ -657,71 +729,103 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextStyle</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {}
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextStyle</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::skia_textlayout_TextStyle</span><span class="op">&gt;</span>;
+<span class="macro">unsafe_send_sync!</span>(<span class="ident">TextStyle</span>);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_TextStyle_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_TextStyle</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_destruct</span>(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_TextStyle_CopyConstruct</span>(<span class="ident">ts</span>, <span class="self">self</span>) })
+<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_TextStyle</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_CopyConstruct</span>(<span class="ident">ts</span>, <span class="self">self</span>) })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">sb::skia_textlayout_TextStyle</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">equals</span>(<span class="ident">rhs</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>()
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">TextStyle</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span>::<span class="ident">new</span>() })
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextStyle</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextStyle&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;color&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">color</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;foreground&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">foreground</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;background&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">background</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;decoration&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">decoration</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_style</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;shadows&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">shadows</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_features&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_features</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_size</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;font_families&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_families</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;baseline_shift&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">baseline_shift</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;height&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">height</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;height_override&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">height_override</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;half_leading&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">half_leading</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;letter_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">letter_spacing</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;word_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">word_spacing</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;typeface&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">typeface</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;locale&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">locale</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;text_baseline&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">text_baseline</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_placeholder&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_placeholder</span>())
+            .<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">TextStyle</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident">TextStyle::construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_Construct</span>(<span class="ident">ts</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_placeholder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">TextStyle</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">skia_textlayout_TextStyle</span>::<span class="ident">new1</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="bool-val">true</span>) })
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.51.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use clone_for_placeholder&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_placeholder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">clone_for_placeholder</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equals</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">TextStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">other</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_for_placeholder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_cloneForPlaceholder</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">ts</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equals_by_fonts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">that</span>: <span class="kw-2">&amp;</span><span class="ident">TextStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equals</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">TextStyle</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">other</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equals_by_fonts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">that</span>: <span class="kw-2">&amp;</span><span class="ident">TextStyle</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">equalsByFonts</span>(<span class="ident">that</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">match_one_attribute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">style_type</span>: <span class="ident">StyleType</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">TextStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">match_one_attribute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">style_type</span>: <span class="ident">StyleType</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">TextStyle</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">matchOneAttribute</span>(<span class="ident">style_type</span>, <span class="ident">other</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
-        <span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fColor</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Color</span> {
+        <span class="ident">Color::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fColor</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fColor</span> <span class="op">=</span> <span class="ident">color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>();
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">foreground</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">foreground</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">native</span>()
             .<span class="ident">fHasForeground</span>
-            .<span class="ident">if_true_some</span>(<span class="ident">Paint</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fForeground</span>))
+            .<span class="ident">if_true_some</span>(<span class="ident">Paint::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fForeground</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_foreground_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">paint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Paint</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_foreground_color</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">paint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Paint</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>();
         <span class="ident">n</span>.<span class="ident">fHasForeground</span> <span class="op">=</span> <span class="ident">paint</span>
             .<span class="ident">into</span>()
@@ -730,13 +834,13 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">background</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">background</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">native</span>()
             .<span class="ident">fHasBackground</span>
-            .<span class="ident">if_true_some</span>(<span class="ident">Paint</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackground</span>))
+            .<span class="ident">if_true_some</span>(<span class="ident">Paint::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBackground</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_background_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">paint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Paint</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_background_color</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">paint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Paint</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>();
         <span class="ident">n</span>.<span class="ident">fHasBackground</span> <span class="op">=</span> <span class="ident">paint</span>
             .<span class="ident">into</span>()
@@ -745,92 +849,117 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decoration</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Decoration</span> {
-        <span class="ident">Decoration</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDecoration</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decoration</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Decoration</span> {
+        <span class="ident">Decoration::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDecoration</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decoration_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Decoration</span> {
-        <span class="ident">Decoration</span>::<span class="ident">from_native_ref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fDecoration</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decoration_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">Decoration</span> {
+        <span class="ident">Decoration::from_native_ref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fDecoration</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FontStyle</span> {
-        <span class="ident">FontStyle</span>::<span class="ident">from_native</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontStyle</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FontStyle</span> {
+        <span class="ident">FontStyle::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontStyle</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_style</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_style</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fFontStyle</span> <span class="op">=</span> <span class="ident">font_style</span>.<span class="ident">into_native</span>();
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shadows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">TextShadow</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shadows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">TextShadow</span>] {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ts</span>: <span class="kw-2">&amp;</span><span class="ident">sb</span>::<span class="ident">TextShadows</span> <span class="op">=</span> <span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextShadows</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cnt</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">TextShadow</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb</span>::<span class="ident">C_TextShadows_ptr_count</span>(<span class="ident">ts</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cnt</span>));
-            <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">cnt</span>)
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb::C_TextStyle_getShadows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextShadows</span>, <span class="kw-2">&amp;mut</span> <span class="ident">count</span>);
+            <span class="ident">safer::from_raw_parts</span>(<span class="ident">TextShadow::from_native_ptr</span>(<span class="ident">ptr</span>), <span class="ident">count</span>)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_shadow</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">shadow</span>: <span class="ident">TextShadow</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_TextStyle_addShadow</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">shadow</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_shadow</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">shadow</span>: <span class="ident">TextShadow</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_addShadow</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">shadow</span>.<span class="ident">native</span>()) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_shadows</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_TextStyle_resetShadows</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_shadows</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_resetShadows</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_features</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">FontFeature</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_features</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">FontFeature</span>] {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ff</span>: <span class="kw-2">&amp;</span><span class="ident">sb</span>::<span class="ident">FontFeatures</span> <span class="op">=</span> <span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontFeatures</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cnt</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">FontFeature</span>::<span class="ident">from_native_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb</span>::<span class="ident">C_FontFeatures_ptr_count</span>(<span class="ident">ff</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cnt</span>));
-            <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">cnt</span>)
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb::C_TextStyle_getFontFeatures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontFeatures</span>, <span class="kw-2">&amp;mut</span> <span class="ident">count</span>);
+            <span class="ident">safer::from_raw_parts</span>(<span class="ident">FontFeature::from_native_ptr</span>(<span class="ident">ptr</span>), <span class="ident">count</span>)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_font_feature</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">font_feature</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">value</span>: <span class="ident">i32</span>) {
-        <span class="kw">let</span> <span class="ident">font_feature</span> <span class="op">=</span> <span class="ident">interop</span>::<span class="ident">String</span>::<span class="ident">from_str</span>(<span class="ident">font_feature</span>);
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_TextStyle_addFontFeature</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">font_feature</span>.<span class="ident">native</span>(), <span class="ident">value</span>) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_font_feature</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">font_feature</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">value</span>: <span class="ident">i32</span>) {
+        <span class="kw">let</span> <span class="ident">font_feature</span> <span class="op">=</span> <span class="ident">interop::String::from_str</span>(<span class="ident">font_feature</span>);
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_addFontFeature</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">font_feature</span>.<span class="ident">native</span>(), <span class="ident">value</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_font_features</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_TextStyle_resetFontFeatures</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_font_features</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_resetFontFeatures</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">FontArguments</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_TextStyle_getFontArguments</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+            .<span class="ident">into_option</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">FontArguments::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span> }))
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;fa</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">arguments</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;fa</span> <span class="ident"><span class="kw">crate</span>::FontArguments</span><span class="op">&lt;</span><span class="lifetime">&#39;fa</span>, <span class="lifetime">&#39;fa</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) {
+        <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_TextStyle_setFontArguments</span>(
+                <span class="self">self</span>.<span class="ident">native_mut</span>(),
+                <span class="ident">arguments</span>.<span class="ident">into</span>().<span class="ident">native_ptr_or_null</span>(),
+            )
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFontSize</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_size</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_size</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fFontSize</span> <span class="op">=</span> <span class="ident">size</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_families</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FontFamilies</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_families</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FontFamilies</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">C_TextStyle_getFontFamilies</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">count</span>);
-            <span class="ident">FontFamilies</span>(<span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">count</span>))
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sb::C_TextStyle_getFontFamilies</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">count</span>);
+            <span class="ident">FontFamilies</span>(<span class="ident">safer::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">count</span>))
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_families</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">families</span>: <span class="kw-2">&amp;</span>[<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">families</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">interop</span>::<span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">FromStrs</span>::<span class="ident">from_strs</span>(<span class="ident">families</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_font_families</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">families</span>: <span class="kw-2">&amp;</span>[<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>]) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">families</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">interop::String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">FromStrs::from_strs</span>(<span class="ident">families</span>);
         <span class="kw">let</span> <span class="ident">families</span> <span class="op">=</span> <span class="ident">families</span>.<span class="ident">native</span>();
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_TextStyle_setFontFamilies</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">families</span>.<span class="ident">as_ptr</span>(), <span class="ident">families</span>.<span class="ident">len</span>())
+            <span class="ident">sb::C_TextStyle_setFontFamilies</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">families</span>.<span class="ident">as_ptr</span>(), <span class="ident">families</span>.<span class="ident">len</span>())
         }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_height</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">height</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">baseline_shift</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBaselineShift</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_baseline_shift</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">baseline_shift</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fBaselineShift</span> <span class="op">=</span> <span class="ident">baseline_shift</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_height</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">height</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fHeight</span> <span class="op">=</span> <span class="ident">height</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>();
         <span class="kw">if</span> <span class="ident">n</span>.<span class="ident">fHeightOverride</span> {
             <span class="ident">n</span>.<span class="ident">fHeight</span>
@@ -839,71 +968,80 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_height_override</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">height_override</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_height_override</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">height_override</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fHeightOverride</span> <span class="op">=</span> <span class="ident">height_override</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height_override</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height_override</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fHeightOverride</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_letter_spacing</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">letter_spacing</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_half_leading</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">half_leading</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fHalfLeading</span> <span class="op">=</span> <span class="ident">half_leading</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">half_leading</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fHalfLeading</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_letter_spacing</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">letter_spacing</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fLetterSpacing</span> <span class="op">=</span> <span class="ident">letter_spacing</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">letter_spacing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">letter_spacing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fLetterSpacing</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_word_spacing</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">word_spacing</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_word_spacing</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">word_spacing</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fWordSpacing</span> <span class="op">=</span> <span class="ident">word_spacing</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">word_spacing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">word_spacing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fWordSpacing</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface</span>::<span class="ident">from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTypeface</span>.<span class="ident">fPtr</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
+        <span class="ident">Typeface::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTypeface</span>.<span class="ident">fPtr</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_typeface</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">typeface</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_typeface</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">typeface</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_TextStyle_setTypeface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+            <span class="ident">sb::C_TextStyle_setTypeface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">typeface</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
         }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">locale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">locale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fLocale</span>.<span class="ident">as_str</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_locale</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">locale</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_locale</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">locale</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fLocale</span>.<span class="ident">set_str</span>(<span class="ident">locale</span>);
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text_baseline</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TextBaseline</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text_baseline</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">TextBaseline</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTextBaseline</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_text_baseline</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">baseline</span>: <span class="ident">TextBaseline</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_text_baseline</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">baseline</span>: <span class="ident">TextBaseline</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fTextBaseline</span> <span class="op">=</span> <span class="ident">baseline</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_metrics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FontMetrics</span> {
-        <span class="ident">FontMetrics</span>::<span class="ident">construct</span>(<span class="op">|</span><span class="ident">fm</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getFontMetrics</span>(<span class="ident">fm</span>) })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_metrics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FontMetrics</span> {
+        <span class="ident">FontMetrics::construct</span>(<span class="op">|</span><span class="ident">fm</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getFontMetrics</span>(<span class="ident">fm</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_placeholder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_placeholder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsPlaceholder</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_placeholder</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_placeholder</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fIsPlaceholder</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>
     }
@@ -913,37 +1051,34 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextRange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_TEXT</span>: <span class="ident">TextRange</span> <span class="op">=</span> <span class="ident">EMPTY_RANGE</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Block</span> {
     <span class="kw">pub</span> <span class="ident">range</span>: <span class="ident">TextRange</span>,
     <span class="kw">pub</span> <span class="ident">style</span>: <span class="ident">TextStyle</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Block</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">block_layout</span>() {
-    <span class="ident">Block</span>::<span class="ident">test_layout</span>()
-}
+<span class="macro">native_transmutable!</span>(<span class="ident">sb::skia_textlayout_Block</span>, <span class="ident">Block</span>, <span class="ident">block_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Block</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">range</span>: <span class="ident">EMPTY_RANGE</span>,
-            <span class="ident">style</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">style</span>: <span class="ident">Default::default</span>(),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Block</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">text_range</span>: <span class="ident">TextRange</span>, <span class="ident">style</span>: <span class="ident">TextStyle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">text_range</span>: <span class="ident">TextRange</span>, <span class="ident">style</span>: <span class="ident">TextStyle</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">range</span>: <span class="ident">text_range</span>,
             <span class="ident">style</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tail</span>: <span class="ident">TextRange</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">range</span>.<span class="ident">end</span> <span class="op">=</span><span class="op">=</span> <span class="ident">tail</span>.<span class="ident">start</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">tail</span>: <span class="ident">TextRange</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">range</span>.<span class="ident">end</span> <span class="op">==</span> <span class="ident">tail</span>.<span class="ident">start</span>);
         <span class="self">self</span>.<span class="ident">range</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">range</span>.<span class="ident">start</span>..<span class="self">self</span>.<span class="ident">range</span>.<span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">range</span>.<span class="ident">width</span>() <span class="op">+</span> <span class="ident">tail</span>.<span class="ident">width</span>();
         <span class="self">self</span>
     }
@@ -955,7 +1090,8 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_BLOCK</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">EMPTY_INDEX</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_BLOCKS</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">EMPTY_RANGE</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Placeholder</span> {
     <span class="kw">pub</span> <span class="ident">range</span>: <span class="ident">TextRange</span>,
     <span class="kw">pub</span> <span class="ident">style</span>: <span class="ident">PlaceholderStyle</span>,
@@ -964,21 +1100,19 @@
     <span class="kw">pub</span> <span class="ident">text_before</span>: <span class="ident">TextRange</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">sb</span>::<span class="ident">skia_textlayout_Placeholder</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Placeholder</span> {}
-
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">placeholder_layout</span>() {
-    <span class="ident">Placeholder</span>::<span class="ident">test_layout</span>()
-}
+<span class="macro">native_transmutable!</span>(
+    <span class="ident">sb::skia_textlayout_Placeholder</span>,
+    <span class="ident">Placeholder</span>,
+    <span class="ident">placeholder_layout</span>
+);
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Placeholder</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">unknown_clippy_lints</span>)]</span>
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">reversed_empty_ranges</span>)]</span> <span class="comment">// 1.45 lint</span>
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::reversed_empty_ranges</span>)]</span>
         <span class="self">Self</span> {
             <span class="ident">range</span>: <span class="ident">EMPTY_RANGE</span>,
-            <span class="ident">style</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
-            <span class="ident">text_style</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">style</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">text_style</span>: <span class="ident">Default::default</span>(),
             <span class="ident">blocks_before</span>: <span class="number">0</span>..<span class="number">0</span>,
             <span class="ident">text_before</span>: <span class="number">0</span>..<span class="number">0</span>,
         }
@@ -992,7 +1126,7 @@
         <span class="ident">text_style</span>: <span class="ident">TextStyle</span>,
         <span class="ident">blocks_before</span>: <span class="ident">BlockRange</span>,
         <span class="ident">text_before</span>: <span class="ident">TextRange</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">range</span>,
             <span class="ident">style</span>,
@@ -1002,5 +1136,24 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "skia_safe";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">getting_setting_comparing_font_arguments</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ts</span> <span class="op">=</span> <span class="ident">TextStyle::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fa</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::FontArguments::default</span>();
+        <span class="ident">fa</span>.<span class="ident">set_collection_index</span>(<span class="number">100</span>);
+        <span class="ident">ts</span>.<span class="ident">set_font_arguments</span>(<span class="kw-2">&amp;</span><span class="ident">fa</span>);
+        <span class="kw">let</span> <span class="ident">tl_fa</span>: <span class="ident">FontArguments</span> <span class="op">=</span> <span class="ident">fa</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">fa</span> <span class="op">=</span> <span class="ident">ts</span>.<span class="ident">font_arguments</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">tl_fa</span>, <span class="kw-2">*</span><span class="ident">fa</span>);
+        <span class="kw">let</span> <span class="ident">default_fa</span>: <span class="ident">FontArguments</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::FontArguments::default</span>().<span class="ident">into</span>();
+        <span class="macro">assert_ne!</span>(<span class="ident">default_fa</span>, <span class="kw-2">*</span><span class="ident">fa</span>);
+    }
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

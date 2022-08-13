@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Edging",""]],"type":[["Font",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Edging",""]],"type":[["Font",""]]};

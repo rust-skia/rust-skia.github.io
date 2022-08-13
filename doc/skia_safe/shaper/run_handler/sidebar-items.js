@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Buffer",""],["RunInfo",""]],"trait":[["RunHandler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Buffer",""],["RunInfo",""]],"trait":[["RunHandler",""]]};

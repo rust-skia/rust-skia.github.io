@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["PathConvexityType",""],["PathDirection",""],["PathFillType",""],["PathVerb",""]],"struct":[["PathSegmentMask",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["PathDirection",""],["PathFillType",""],["PathVerb",""]],"struct":[["PathSegmentMask",""]]};

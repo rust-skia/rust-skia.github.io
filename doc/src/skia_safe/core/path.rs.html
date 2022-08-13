@@ -1,103 +1,108 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\core\path.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>path.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\path.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -927,81 +932,224 @@
 <span id="926">926</span>
 <span id="927">927</span>
 <span id="928">928</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interop</span>::<span class="ident">DynamicMemoryWStream</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">matrix</span>::<span class="ident">ApplyPerspectiveClip</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">path_types</span>, <span class="ident">scalar</span>, <span class="ident">Data</span>, <span class="ident">Matrix</span>, <span class="ident">PathConvexityType</span>, <span class="ident">PathDirection</span>, <span class="ident">PathFillType</span>, <span class="ident">Point</span>, <span class="ident">RRect</span>,
-    <span class="ident">Rect</span>, <span class="ident">Vector</span>,
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
+<span id="997">997</span>
+<span id="998">998</span>
+<span id="999">999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
+<span id="1009">1009</span>
+<span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
+<span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+<span id="1077">1077</span>
+<span id="1078">1078</span>
+<span id="1079">1079</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">interop::DynamicMemoryWStream</span>, <span class="ident">matrix::ApplyPerspectiveClip</span>, <span class="ident">path_types</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>,
+    <span class="ident">Data</span>, <span class="ident">Matrix</span>, <span class="ident">PathDirection</span>, <span class="ident">PathFillType</span>, <span class="ident">Point</span>, <span class="ident">RRect</span>, <span class="ident">Rect</span>, <span class="ident">Vector</span>,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkPath</span>, <span class="ident">SkPath_Iter</span>, <span class="ident">SkPath_RawIter</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">forget</span>;
+<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkPath</span>, <span class="ident">SkPath_Iter</span>, <span class="ident">SkPath_RawIter</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">mem::forget</span>, <span class="ident">ptr</span>};
 
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use path_types::PathDirection&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types</span>::<span class="ident">PathDirection</span> <span class="kw">as</span> <span class="ident">Direction</span>;
+<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use PathDirection&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types::PathDirection</span> <span class="kw">as</span> <span class="ident">Direction</span>;
 
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use path_types::PathFillType&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types</span>::<span class="ident">PathFillType</span> <span class="kw">as</span> <span class="ident">FillType</span>;
+<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use PathFillType&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types::PathFillType</span> <span class="kw">as</span> <span class="ident">FillType</span>;
 
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use path_types::PathConvexityType&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types</span>::<span class="ident">PathConvexityType</span> <span class="kw">as</span> <span class="ident">Convexity</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPath_ArcSize</span> <span class="kw">as</span> <span class="ident">ArcSize</span>;
+<span class="macro">variant_name!</span>(<span class="ident">ArcSize::Small</span>, <span class="ident">arc_size_naming</span>);
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkPath_ArcSize</span> <span class="kw">as</span> <span class="ident">ArcSize</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_arc_size_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArcSize</span>::<span class="ident">Small</span>;
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPath_AddPathMode</span> <span class="kw">as</span> <span class="ident">AddPathMode</span>;
+<span class="macro">variant_name!</span>(<span class="ident">AddPathMode::Append</span>, <span class="ident">append_naming</span>);
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkPath_AddPathMode</span> <span class="kw">as</span> <span class="ident">AddPathMode</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_add_path_mode_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">AddPathMode</span>::<span class="ident">Append</span>;
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types::PathSegmentMask</span> <span class="kw">as</span> <span class="ident">SegmentMask</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">path_types</span>::<span class="ident">PathSegmentMask</span> <span class="kw">as</span> <span class="ident">SegmentMask</span>;
-
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkPath_Verb</span> <span class="kw">as</span> <span class="ident">Verb</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_verb_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Verb</span>::<span class="ident">Line</span>;
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPath_Verb</span> <span class="kw">as</span> <span class="ident">Verb</span>;
+<span class="macro">variant_name!</span>(<span class="ident">Verb::Line</span>, <span class="ident">verb_naming</span>);
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">SkPath_Iter</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPath</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">NativeAccess</span><span class="op">&lt;</span><span class="ident">SkPath_Iter</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">SkPath_Iter</span> {
+    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkPath_Iter</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
-    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SkPath_Iter</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>
+    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkPath_Iter</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_Iter_destruct</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>) }
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_Iter_destruct</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="number">0</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Iter</span>(<span class="kw">unsafe</span> { <span class="ident">SkPath_Iter</span>::<span class="ident">new</span>() }, <span class="ident">PhantomData</span>)
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident">Iter</span>(<span class="kw">unsafe</span> { <span class="ident">SkPath_Iter::new</span>() }, <span class="ident">PhantomData</span>)
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Iter&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;conic_weight&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">conic_weight</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_close_line&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_close_line</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_closed_contour&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_closed_contour</span>())
+            .<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">force_close</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">force_close</span>: <span class="ident">bool</span>) -&gt; <span class="ident">Iter</span> {
         <span class="ident">Iter</span>(
-            <span class="kw">unsafe</span> { <span class="ident">SkPath_Iter</span>::<span class="ident">new1</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">force_close</span>) },
+            <span class="kw">unsafe</span> { <span class="ident">SkPath_Iter::new1</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">force_close</span>) },
             <span class="ident">PhantomData</span>,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">force_close</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">force_close</span>: <span class="ident">bool</span>) -&gt; <span class="ident">Iter</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">setPath</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">force_close</span>);
         }
@@ -1010,19 +1158,19 @@
         <span class="ident">r</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_weight</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">map_clone</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_weight</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> {
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::map_clone</span>)]</span>
         <span class="self">self</span>.<span class="ident">native</span>()
             .<span class="ident">fConicWeights</span>
             .<span class="ident">into_option</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">p</span> })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_close_line</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_Iter_isCloseLine</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_close_line</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_Iter_isCloseLine</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_closed_contour</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_closed_contour</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isClosedContour</span>() }
     }
 }
@@ -1030,10 +1178,10 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">Verb</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>);
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">points</span> <span class="op">=</span> [<span class="ident">Point</span>::<span class="ident">default</span>(); <span class="ident">Verb</span>::<span class="ident">MAX_POINTS</span>];
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">points</span> <span class="op">=</span> [<span class="ident">Point::default</span>(); <span class="ident">Verb::MAX_POINTS</span>];
         <span class="kw">let</span> <span class="ident">verb</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">next</span>(<span class="ident">points</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">verb</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Verb</span>::<span class="ident">Done</span> {
+        <span class="kw">if</span> <span class="ident">verb</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Verb::Done</span> {
             <span class="prelude-val">Some</span>((<span class="ident">verb</span>, <span class="ident">points</span>[<span class="number">0</span>..<span class="ident">verb</span>.<span class="ident">points</span>()].<span class="ident">into</span>()))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -1050,26 +1198,26 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">NativeAccess</span><span class="op">&lt;</span><span class="ident">SkPath_RawIter</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RawIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">SkPath_RawIter</span> {
+    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkPath_RawIter</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
-    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SkPath_RawIter</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>
+    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkPath_RawIter</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">RawIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_RawIter_destruct</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>) }
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_RawIter_destruct</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="number">0</span>) }
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">RawIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">RawIter</span>(
-            <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ri</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_RawIter_Construct</span>(<span class="ident">ri</span>) }),
+            <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ri</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_RawIter_Construct</span>(<span class="ident">ri</span>) }),
             <span class="ident">PhantomData</span>,
         )
     }
@@ -1077,22 +1225,22 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">RawIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawIter</span> {
-        <span class="ident">RawIter</span>::<span class="ident">default</span>().<span class="ident">set_path</span>(<span class="ident">path</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">RawIter</span> {
+        <span class="ident">RawIter::default</span>().<span class="ident">set_path</span>(<span class="ident">path</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawIter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">RawIter</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setPath</span>(<span class="ident">path</span>.<span class="ident">native</span>()) }
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">RawIter</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">PhantomData</span>);
         <span class="ident">forget</span>(<span class="self">self</span>);
         <span class="ident">r</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Verb</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_RawIter_peek</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Verb</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_RawIter_peek</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_weight</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">scalar</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_weight</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fConicWeight</span>
     }
 }
@@ -1101,53 +1249,197 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">RawIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">Verb</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>);
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">points</span> <span class="op">=</span> [<span class="ident">Point</span>::<span class="ident">default</span>(); <span class="ident">Verb</span>::<span class="ident">MAX_POINTS</span>];
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">points</span> <span class="op">=</span> [<span class="ident">Point::default</span>(); <span class="ident">Verb::MAX_POINTS</span>];
 
         <span class="kw">let</span> <span class="ident">verb</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">next</span>(<span class="ident">points</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>()) };
-        (<span class="ident">verb</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Verb</span>::<span class="ident">Done</span>).<span class="ident">if_true_some</span>((<span class="ident">verb</span>, <span class="ident">points</span>[<span class="number">0</span>..<span class="ident">verb</span>.<span class="ident">points</span>()].<span class="ident">into</span>()))
+        (<span class="ident">verb</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Verb::Done</span>).<span class="ident">if_true_some</span>((<span class="ident">verb</span>, <span class="ident">points</span>[<span class="number">0</span>..<span class="ident">verb</span>.<span class="ident">points</span>()].<span class="ident">into</span>()))
     }
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Path</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPath</span><span class="op">&gt;</span>;
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Path</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Path</span> {}
+<span class="macro">unsafe_send_sync!</span>(<span class="ident">Path</span>);
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPath</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_destruct</span>(<span class="self">self</span>) }
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_destruct</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkPath</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkPath</span>::<span class="ident">new1</span>(<span class="self">self</span>) }
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">unsafe</span> { <span class="ident">SkPath::new1</span>(<span class="self">self</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkPath</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPath</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>()
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPath</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">SkPath</span>::<span class="ident">new</span>() })
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Path</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Path&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;fill_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fill_type</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_convex&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_convex</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_oval&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_oval</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_rrect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_rrect</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_empty&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_empty</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_last_contour_closed&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_last_contour_closed</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_finite&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_finite</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_volatile&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_volatile</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_line&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_line</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;count_points&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">count_points</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;count_verbs&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">count_verbs</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;approximate_bytes_used&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">approximate_bytes_used</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_rect</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;segment_masks&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">segment_masks</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;generation_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">generation_id</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;is_valid&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_valid</span>())
+            .<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Path</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_from</span>(
+        <span class="ident">points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>],
+        <span class="ident">verbs</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+        <span class="ident">conic_weights</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>],
+        <span class="ident">fill_type</span>: <span class="ident">FillType</span>,
+        <span class="ident">is_volatile</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_Make</span>(
+                <span class="ident">path</span>,
+                <span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
+                <span class="ident">points</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+                <span class="ident">verbs</span>.<span class="ident">as_ptr</span>(),
+                <span class="ident">verbs</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+                <span class="ident">conic_weights</span>.<span class="ident">as_ptr</span>(),
+                <span class="ident">conic_weights</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+                <span class="ident">fill_type</span>,
+                <span class="ident">is_volatile</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>),
+            )
+        })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_interpolatable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">compare</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_Rect</span>(
+                <span class="ident">path</span>,
+                <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+                <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">oval</span>(<span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_Oval</span>(
+                <span class="ident">path</span>,
+                <span class="ident">oval</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+                <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">oval_with_start_index</span>(
+        <span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
+        <span class="ident">dir</span>: <span class="ident">PathDirection</span>,
+        <span class="ident">start_index</span>: <span class="ident">usize</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_OvalWithStartIndex</span>(
+                <span class="ident">path</span>,
+                <span class="ident">oval</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+                <span class="ident">dir</span>,
+                <span class="ident">start_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">circle</span>(
+        <span class="ident">center</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
+        <span class="ident">radius</span>: <span class="ident">scalar</span>,
+        <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">center</span> <span class="op">=</span> <span class="ident">center</span>.<span class="ident">into</span>();
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_Circle</span>(
+                <span class="ident">path</span>,
+                <span class="ident">center</span>.<span class="ident">x</span>,
+                <span class="ident">center</span>.<span class="ident">y</span>,
+                <span class="ident">radius</span>,
+                <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rrect</span>(<span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">RRect</span><span class="op">&gt;</span>, <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_RRect</span>(
+                <span class="ident">path</span>,
+                <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+                <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rrect_with_start_index</span>(
+        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">RRect</span><span class="op">&gt;</span>,
+        <span class="ident">dir</span>: <span class="ident">PathDirection</span>,
+        <span class="ident">start_index</span>: <span class="ident">usize</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_RRectWithStartIndex</span>(
+                <span class="ident">path</span>,
+                <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+                <span class="ident">dir</span>,
+                <span class="ident">start_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polygon</span>(
+        <span class="ident">pts</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>],
+        <span class="ident">is_closed</span>: <span class="ident">bool</span>,
+        <span class="ident">fill_type</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FillType</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">is_volatile</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_Polygon</span>(
+                <span class="ident">path</span>,
+                <span class="ident">pts</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
+                <span class="ident">pts</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+                <span class="ident">is_closed</span>,
+                <span class="ident">fill_type</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">FillType::Winding</span>),
+                <span class="ident">is_volatile</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>),
+            )
+        })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">line</span>(<span class="ident">a</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">b</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::polygon</span>(<span class="kw-2">&amp;</span>[<span class="ident">a</span>.<span class="ident">into</span>(), <span class="ident">b</span>.<span class="ident">into</span>()], <span class="bool-val">false</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_Construct</span>(<span class="ident">path</span>) })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_interpolatable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">compare</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isInterpolatable</span>(<span class="ident">compare</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">interpolate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ending</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">weight</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">interpolate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ending</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">weight</span>: <span class="ident">scalar</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">interpolate</span>(<span class="ident">ending</span>.<span class="ident">native</span>(), <span class="ident">weight</span>, <span class="ident">out</span>.<span class="ident">native_mut</span>())
@@ -1155,100 +1447,82 @@
         .<span class="ident">if_true_some</span>(<span class="ident">out</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathFillType</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_getFillType</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PathFillType</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_getFillType</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_fill_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ft</span>: <span class="ident">PathFillType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_fill_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ft</span>: <span class="ident">PathFillType</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">set_fFillType</span>(<span class="ident">ft</span> <span class="kw">as</span> <span class="kw">_</span>);
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_inverse_fill_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_inverse_fill_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">fill_type</span>().<span class="ident">is_inverse</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">toggle_inverse_fill_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">toggle_inverse_fill_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">inverse</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFillType</span>() <span class="op">^</span> <span class="number">2</span>;
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">set_fFillType</span>(<span class="ident">inverse</span>);
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convexity_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathConvexityType</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_getConvexityType</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.36.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Removed, use is_convex()&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convexity_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="op">!</span> {
+        <span class="macro">panic!</span>(<span class="string">&quot;Removed&quot;</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convexity_type_or_unknown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathConvexityType</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_getConvexityTypeOrUnknown</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.36.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Removed, use is_convex()&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convexity_type_or_unknown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="op">!</span> {
+        <span class="macro">panic!</span>(<span class="string">&quot;Removed&quot;</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_convexity_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">convexity</span>: <span class="ident">PathConvexityType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setConvexityType</span>(<span class="ident">convexity</span>) }
-        <span class="self">self</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_convex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isConvex</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_convex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">convexity_type</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">PathConvexityType</span>::<span class="ident">Convex</span>
-    }
-
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use convexity_type()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convexity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathConvexityType</span> {
-        <span class="self">self</span>.<span class="ident">convexity_type</span>()
-    }
-
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use convexity_type_or_unknown()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convexity_or_unknown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathConvexityType</span> {
-        <span class="self">self</span>.<span class="ident">convexity_type_or_unknown</span>()
-    }
-
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.25.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use set_convexity_type()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_convexity</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">convexity</span>: <span class="ident">PathConvexityType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set_convexity_type</span>(<span class="ident">convexity</span>)
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_oval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_oval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">Rect::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isOval</span>(<span class="ident">bounds</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">bounds</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rrect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RRect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rrect</span> <span class="op">=</span> <span class="ident">RRect</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rrect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RRect</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rrect</span> <span class="op">=</span> <span class="ident">RRect::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isRRect</span>(<span class="ident">rrect</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">rrect</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() };
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rewind</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rewind</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rewind</span>() };
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_isEmpty</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isEmpty</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_last_contour_closed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_last_contour_closed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isLastContourClosed</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_finite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_isFinite</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_finite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isFinite</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_volatile</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_volatile</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsVolatile</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_is_volatile</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">is_volatile</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_is_volatile</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">is_volatile</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">set_fIsVolatile</span>(<span class="ident">is_volatile</span> <span class="kw">as</span> <span class="kw">_</span>);
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_line_degenerate</span>(<span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">exact</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkPath</span>::<span class="ident">IsLineDegenerate</span>(<span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">exact</span>) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_line_degenerate</span>(<span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">exact</span>: <span class="ident">bool</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">SkPath::IsLineDegenerate</span>(<span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">native</span>(), <span class="ident">exact</span>) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_quad_degenerate</span>(
@@ -1256,9 +1530,9 @@
         <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">p3</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">exact</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">SkPath</span>::<span class="ident">IsQuadDegenerate</span>(
+            <span class="ident">SkPath::IsQuadDegenerate</span>(
                 <span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
                 <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
                 <span class="ident">p3</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
@@ -1273,9 +1547,9 @@
         <span class="ident">p3</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">p4</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">exact</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
-            <span class="ident">SkPath</span>::<span class="ident">IsCubicDegenerate</span>(
+            <span class="ident">SkPath::IsCubicDegenerate</span>(
                 <span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
                 <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
                 <span class="ident">p3</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
@@ -1285,28 +1559,30 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_line</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Point</span>, <span class="ident">Point</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">line</span> <span class="op">=</span> [<span class="ident">Point</span>::<span class="ident">default</span>(); <span class="number">2</span>];
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_line</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Point</span>, <span class="ident">Point</span>)<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">line</span> <span class="op">=</span> [<span class="ident">Point::default</span>(); <span class="number">2</span>];
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isLine</span>(<span class="ident">line</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>()) }
             .<span class="ident">if_true_some</span>((<span class="ident">line</span>[<span class="number">0</span>], <span class="ident">line</span>[<span class="number">1</span>]))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_points</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_points</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">countPoints</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Point</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getPoint</span>(<span class="ident">index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()) });
-        <span class="comment">// assuming that count_points() is somewhat slow, we</span>
-        <span class="comment">// check the index when a Point(0,0) is returned.</span>
-        <span class="kw">if</span> <span class="ident">p</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Point</span>::<span class="ident">default</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">count_points</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Point::from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkPath_getPoint</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+        });
+        <span class="comment">// assuming that count_points() is somewhat slow, we</span>
+        <span class="comment">// check the index when a Point(0,0) is returned.</span>
+        <span class="kw">if</span> <span class="ident">p</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Point::default</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">count_points</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">p</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_points</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">points</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_points</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">points</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Point</span>]) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getPoints</span>(
                 <span class="ident">points</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(),
@@ -1317,11 +1593,11 @@
         .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_verbs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_verbs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">countVerbs</span>() }.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_verbs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">verbs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_verbs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">verbs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">getVerbs</span>(<span class="ident">verbs</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">verbs</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
@@ -1330,36 +1606,36 @@
         .<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">approximate_bytes_used</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">approximate_bytes_used</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">approximateBytesUsed</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Path</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">swap</span>(<span class="ident">other</span>.<span class="ident">native_mut</span>()) }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Rect</span> {
-        <span class="ident">Rect</span>::<span class="ident">from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb</span>::<span class="ident">C_SkPath_getBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Rect</span> {
+        <span class="ident">Rect::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkPath_getBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_bounds_cache</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_bounds_cache</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">bounds</span>();
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_tight_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
-        <span class="ident">Rect</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeTightBounds</span>() })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_tight_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
+        <span class="ident">Rect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_computeTightBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conservatively_contains_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conservatively_contains_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">conservativelyContainsRect</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">extra_pt_count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_reserve</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">extra_pt_count</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">incReserve</span>(<span class="ident">extra_pt_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
@@ -1367,12 +1643,12 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">shrinkToFit</span>() }
-        <span class="self">self</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.37.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Removed without replacement&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to_fit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="op">!</span> {
+        <span class="macro">panic!</span>(<span class="string">&quot;Removed without replacement&quot;</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">moveTo</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>);
@@ -1380,7 +1656,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_move_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_move_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rMoveTo</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>);
@@ -1388,7 +1664,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">line_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">line_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">lineTo</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>);
@@ -1396,7 +1672,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_line_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_line_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rLineTo</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>);
@@ -1404,127 +1680,137 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quad_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quad_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">p1</span> <span class="op">=</span> <span class="ident">p1</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">p2</span> <span class="op">=</span> <span class="ident">p2</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">quadTo</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>) };
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">quadTo</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>);
+        }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_quad_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dx1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>, <span class="ident">dx2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_quad_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dx1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>, <span class="ident">dx2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">dx1</span>, <span class="ident">dx2</span>) <span class="op">=</span> (<span class="ident">dx1</span>.<span class="ident">into</span>(), <span class="ident">dx2</span>.<span class="ident">into</span>());
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rQuadTo</span>(<span class="ident">dx1</span>.<span class="ident">x</span>, <span class="ident">dx1</span>.<span class="ident">y</span>, <span class="ident">dx2</span>.<span class="ident">x</span>, <span class="ident">dx2</span>.<span class="ident">y</span>) };
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rQuadTo</span>(<span class="ident">dx1</span>.<span class="ident">x</span>, <span class="ident">dx1</span>.<span class="ident">y</span>, <span class="ident">dx2</span>.<span class="ident">x</span>, <span class="ident">dx2</span>.<span class="ident">y</span>);
+        }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">w</span>: <span class="ident">scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">w</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">p1</span> <span class="op">=</span> <span class="ident">p1</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">p2</span> <span class="op">=</span> <span class="ident">p2</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">conicTo</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>, <span class="ident">w</span>) };
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">conicTo</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>, <span class="ident">w</span>);
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_conic_to</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">d1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
         <span class="ident">d2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
         <span class="ident">w</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">d1</span>, <span class="ident">d2</span>) <span class="op">=</span> (<span class="ident">d1</span>.<span class="ident">into</span>(), <span class="ident">d2</span>.<span class="ident">into</span>());
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rConicTo</span>(<span class="ident">d1</span>.<span class="ident">x</span>, <span class="ident">d1</span>.<span class="ident">y</span>, <span class="ident">d2</span>.<span class="ident">x</span>, <span class="ident">d2</span>.<span class="ident">y</span>, <span class="ident">w</span>) };
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rConicTo</span>(<span class="ident">d1</span>.<span class="ident">x</span>, <span class="ident">d1</span>.<span class="ident">y</span>, <span class="ident">d2</span>.<span class="ident">x</span>, <span class="ident">d2</span>.<span class="ident">y</span>, <span class="ident">w</span>);
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cubic_to</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">p3</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">p1</span>, <span class="ident">p2</span>, <span class="ident">p3</span>) <span class="op">=</span> (<span class="ident">p1</span>.<span class="ident">into</span>(), <span class="ident">p2</span>.<span class="ident">into</span>(), <span class="ident">p3</span>.<span class="ident">into</span>());
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">cubicTo</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>, <span class="ident">p3</span>.<span class="ident">x</span>, <span class="ident">p3</span>.<span class="ident">y</span>)
-        };
+                .<span class="ident">cubicTo</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>, <span class="ident">p3</span>.<span class="ident">x</span>, <span class="ident">p3</span>.<span class="ident">y</span>);
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_cubic_to</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">d1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
         <span class="ident">d2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
         <span class="ident">d3</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">d1</span>, <span class="ident">d2</span>, <span class="ident">d3</span>) <span class="op">=</span> (<span class="ident">d1</span>.<span class="ident">into</span>(), <span class="ident">d2</span>.<span class="ident">into</span>(), <span class="ident">d3</span>.<span class="ident">into</span>());
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">rCubicTo</span>(<span class="ident">d1</span>.<span class="ident">x</span>, <span class="ident">d1</span>.<span class="ident">y</span>, <span class="ident">d2</span>.<span class="ident">x</span>, <span class="ident">d2</span>.<span class="ident">y</span>, <span class="ident">d3</span>.<span class="ident">x</span>, <span class="ident">d3</span>.<span class="ident">y</span>)
-        };
+                .<span class="ident">rCubicTo</span>(<span class="ident">d1</span>.<span class="ident">x</span>, <span class="ident">d1</span>.<span class="ident">y</span>, <span class="ident">d2</span>.<span class="ident">x</span>, <span class="ident">d2</span>.<span class="ident">y</span>, <span class="ident">d3</span>.<span class="ident">x</span>, <span class="ident">d3</span>.<span class="ident">y</span>);
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arc_to</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">start_angle</span>: <span class="ident">scalar</span>,
         <span class="ident">sweep_angle</span>: <span class="ident">scalar</span>,
         <span class="ident">force_move_to</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">arcTo</span>(
                 <span class="ident">oval</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
                 <span class="ident">start_angle</span>,
                 <span class="ident">sweep_angle</span>,
                 <span class="ident">force_move_to</span>,
-            )
-        };
+            );
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arc_to_tangent</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">radius</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">p1</span>, <span class="ident">p2</span>) <span class="op">=</span> (<span class="ident">p1</span>.<span class="ident">into</span>(), <span class="ident">p2</span>.<span class="ident">into</span>());
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">arcTo1</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>, <span class="ident">radius</span>) };
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">arcTo1</span>(<span class="ident">p1</span>.<span class="ident">x</span>, <span class="ident">p1</span>.<span class="ident">y</span>, <span class="ident">p2</span>.<span class="ident">x</span>, <span class="ident">p2</span>.<span class="ident">y</span>, <span class="ident">radius</span>);
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arc_to_rotated</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">x_axis_rotate</span>: <span class="ident">scalar</span>,
         <span class="ident">large_arc</span>: <span class="ident">ArcSize</span>,
         <span class="ident">sweep</span>: <span class="ident">PathDirection</span>,
         <span class="ident">xy</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">r</span>, <span class="ident">xy</span>) <span class="op">=</span> (<span class="ident">r</span>.<span class="ident">into</span>(), <span class="ident">xy</span>.<span class="ident">into</span>());
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">arcTo2</span>(<span class="ident">r</span>.<span class="ident">x</span>, <span class="ident">r</span>.<span class="ident">y</span>, <span class="ident">x_axis_rotate</span>, <span class="ident">large_arc</span>, <span class="ident">sweep</span>, <span class="ident">xy</span>.<span class="ident">x</span>, <span class="ident">xy</span>.<span class="ident">y</span>)
-        };
+                .<span class="ident">arcTo2</span>(<span class="ident">r</span>.<span class="ident">x</span>, <span class="ident">r</span>.<span class="ident">y</span>, <span class="ident">x_axis_rotate</span>, <span class="ident">large_arc</span>, <span class="ident">sweep</span>, <span class="ident">xy</span>.<span class="ident">x</span>, <span class="ident">xy</span>.<span class="ident">y</span>);
+        }
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_arc_to_rotated</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">x_axis_rotate</span>: <span class="ident">scalar</span>,
         <span class="ident">large_arc</span>: <span class="ident">ArcSize</span>,
         <span class="ident">sweep</span>: <span class="ident">PathDirection</span>,
         <span class="ident">xy</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">r</span>, <span class="ident">xy</span>) <span class="op">=</span> (<span class="ident">r</span>.<span class="ident">into</span>(), <span class="ident">xy</span>.<span class="ident">into</span>());
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">rArcTo</span>(<span class="ident">r</span>.<span class="ident">x</span>, <span class="ident">r</span>.<span class="ident">y</span>, <span class="ident">x_axis_rotate</span>, <span class="ident">large_arc</span>, <span class="ident">sweep</span>, <span class="ident">xy</span>.<span class="ident">x</span>, <span class="ident">xy</span>.<span class="ident">y</span>)
-        };
+                .<span class="ident">rArcTo</span>(<span class="ident">r</span>.<span class="ident">x</span>, <span class="ident">r</span>.<span class="ident">y</span>, <span class="ident">x_axis_rotate</span>, <span class="ident">large_arc</span>, <span class="ident">sweep</span>, <span class="ident">xy</span>.<span class="ident">x</span>, <span class="ident">xy</span>.<span class="ident">y</span>);
+        }
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">close</span>();
         }
@@ -1536,14 +1822,14 @@
         <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">w</span>: <span class="ident">scalar</span>,
-        <span class="ident">pts</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">Point</span>],
+        <span class="ident">pts</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Point</span>],
         <span class="ident">pow2</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">p0</span>, <span class="ident">p1</span>, <span class="ident">p2</span>) <span class="op">=</span> (<span class="ident">p0</span>.<span class="ident">into</span>(), <span class="ident">p1</span>.<span class="ident">into</span>(), <span class="ident">p2</span>.<span class="ident">into</span>());
         <span class="kw">let</span> <span class="ident">max_pts_count</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="number">2</span> <span class="op">*</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">pow2</span>);
         <span class="kw">if</span> <span class="ident">pts</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">max_pts_count</span> {
             <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> {
-                <span class="ident">SkPath</span>::<span class="ident">ConvertConicToQuads</span>(
+                <span class="ident">SkPath::ConvertConicToQuads</span>(
                     <span class="ident">p0</span>.<span class="ident">native</span>(),
                     <span class="ident">p1</span>.<span class="ident">native</span>(),
                     <span class="ident">p2</span>.<span class="ident">native</span>(),
@@ -1559,37 +1845,37 @@
         }
     }
 
-    <span class="comment">// TODO: return type is probably worth a struct.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Rect</span>, <span class="ident">bool</span>, <span class="ident">PathDirection</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">is_closed</span> <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">direction</span> <span class="op">=</span> <span class="ident">PathDirection</span>::<span class="ident">default</span>();
+    <span class="comment">// TODO: return type is probably worth a struct.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Rect</span>, <span class="ident">bool</span>, <span class="ident">PathDirection</span>)<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect::default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">is_closed</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">direction</span> <span class="op">=</span> <span class="ident">PathDirection::default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">isRect</span>(<span class="ident">rect</span>.<span class="ident">native_mut</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">is_closed</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">direction</span>)
+                .<span class="ident">isRect</span>(<span class="ident">rect</span>.<span class="ident">native_mut</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">is_closed</span>, <span class="kw-2">&amp;mut</span> <span class="ident">direction</span>)
         }
         .<span class="ident">if_true_some</span>((<span class="ident">rect</span>, <span class="ident">is_closed</span>, <span class="ident">direction</span>))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_rect</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">dir_start</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">PathDirection</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir_start</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ds</span><span class="op">|</span> <span class="ident">ds</span>.<span class="number">0</span>).<span class="ident">unwrap_or_default</span>();
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">dir_start</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ds</span><span class="op">|</span> <span class="ident">ds</span>.<span class="number">1</span>).<span class="ident">unwrap_or_default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">addRect1</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">dir</span>, <span class="ident">start</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+                .<span class="ident">addRect</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">dir</span>, <span class="ident">start</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
         };
         <span class="self">self</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_oval</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">dir_start</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">PathDirection</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir_start</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ds</span><span class="op">|</span> <span class="ident">ds</span>.<span class="number">0</span>).<span class="ident">unwrap_or_default</span>();
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">dir_start</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ds</span><span class="op">|</span> <span class="ident">ds</span>.<span class="number">1</span>).<span class="ident">unwrap_or_default</span>();
         <span class="kw">unsafe</span> {
@@ -1600,11 +1886,11 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_circle</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         <span class="ident">radius</span>: <span class="ident">scalar</span>,
         <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">addCircle</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>, <span class="ident">radius</span>, <span class="ident">dir</span>) };
@@ -1612,11 +1898,11 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_arc</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         <span class="ident">start_angle</span>: <span class="ident">scalar</span>,
         <span class="ident">sweep_angle</span>: <span class="ident">scalar</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">addArc</span>(<span class="ident">oval</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">start_angle</span>, <span class="ident">sweep_angle</span>)
@@ -1624,14 +1910,14 @@
         <span class="self">self</span>
     }
 
-    <span class="comment">// decided to only provide the simpler variant of the two, if radii needs to be specified,</span>
-    <span class="comment">// add_rrect can be used.</span>
+    <span class="comment">// decided to only provide the simpler variant of the two, if radii needs to be specified,</span>
+    <span class="comment">// add_rrect can be used.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_round_rect</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
         (<span class="ident">rx</span>, <span class="ident">ry</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
         <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
@@ -1641,10 +1927,10 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_rrect</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">rrect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">RRect</span><span class="op">&gt;</span>,
         <span class="ident">dir_start</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">PathDirection</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir_start</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ds</span><span class="op">|</span> <span class="ident">ds</span>.<span class="number">0</span>).<span class="ident">unwrap_or_default</span>();
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">dir_start</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ds</span><span class="op">|</span> <span class="ident">ds</span>.<span class="number">1</span>).<span class="ident">unwrap_or_default</span>();
         <span class="kw">unsafe</span> {
@@ -1654,7 +1940,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_poly</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pts</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>], <span class="ident">close</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_poly</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pts</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>], <span class="ident">close</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">addPoly</span>(<span class="ident">pts</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">pts</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">close</span>)
@@ -1662,28 +1948,28 @@
         <span class="self">self</span>
     }
 
-    <span class="comment">// TODO: addPoly(initializer_list)</span>
+    <span class="comment">// TODO: addPoly(initializer_list)</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_path</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
         <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
         <span class="ident">mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AddPathMode</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">AddPathMode</span>::<span class="ident">Append</span>);
+        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">AddPathMode::Append</span>);
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">addPath</span>(<span class="ident">src</span>.<span class="ident">native</span>(), <span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">mode</span>) };
         <span class="self">self</span>
     }
 
-    <span class="comment">// TODO: rename to add_path_with_matrix() ?</span>
+    <span class="comment">// TODO: rename to add_path_with_matrix() ?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_path_matrix</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
         <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>,
         <span class="ident">mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AddPathMode</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">AddPathMode</span>::<span class="ident">Append</span>);
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">AddPathMode::Append</span>);
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
                 .<span class="ident">addPath1</span>(<span class="ident">src</span>.<span class="ident">native</span>(), <span class="ident">matrix</span>.<span class="ident">native</span>(), <span class="ident">mode</span>)
@@ -1691,37 +1977,38 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reverse_add_path</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reverse_add_path</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reverseAddPath</span>(<span class="ident">src</span>.<span class="ident">native</span>()) };
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Path</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="ident">Path</span> {
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">offset</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">path</span>.<span class="ident">native_mut</span>()) };
         <span class="ident">path</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>;
+        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">offset</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">self_ptr</span>) };
         <span class="self">self</span>
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_transform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Path</span> {
-        <span class="self">self</span>.<span class="ident">with_transform_with_perspective_clip</span>(<span class="ident">matrix</span>, <span class="ident">ApplyPerspectiveClip</span>::<span class="ident">Yes</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_transform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="ident">Path</span> {
+        <span class="self">self</span>.<span class="ident">with_transform_with_perspective_clip</span>(<span class="ident">matrix</span>, <span class="ident">ApplyPerspectiveClip::Yes</span>)
     }
 
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_transform_with_perspective_clip</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>,
         <span class="ident">perspective_clip</span>: <span class="ident">ApplyPerspectiveClip</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Path</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+    ) -&gt; <span class="ident">Path</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">transform</span>(<span class="ident">matrix</span>.<span class="ident">native</span>(), <span class="ident">path</span>.<span class="ident">native_mut</span>(), <span class="ident">perspective_clip</span>)
@@ -1729,16 +2016,16 @@
         <span class="ident">path</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">transform_with_perspective_clip</span>(<span class="ident">matrix</span>, <span class="ident">ApplyPerspectiveClip</span>::<span class="ident">Yes</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">transform_with_perspective_clip</span>(<span class="ident">matrix</span>, <span class="ident">ApplyPerspectiveClip::Yes</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transform_with_perspective_clip</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>,
         <span class="ident">perspective_clip</span>: <span class="ident">ApplyPerspectiveClip</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>;
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
                 .<span class="ident">transform</span>(<span class="ident">matrix</span>.<span class="ident">native</span>(), <span class="ident">self_ptr</span>, <span class="ident">perspective_clip</span>)
@@ -1746,68 +2033,80 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">last_pt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last_pt</span> <span class="op">=</span> <span class="ident">Point</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">last_pt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last_pt</span> <span class="op">=</span> <span class="ident">Point::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getLastPt</span>(<span class="ident">last_pt</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">last_pt</span>)
     }
 
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_transform</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>,
         <span class="ident">pc</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ApplyPerspectiveClip</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Path</span> {
-        <span class="self">self</span>.<span class="ident">with_transform_with_perspective_clip</span>(
-            <span class="kw-2">&amp;</span><span class="ident">m</span>,
-            <span class="ident">pc</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ApplyPerspectiveClip</span>::<span class="ident">Yes</span>),
-        )
+    ) -&gt; <span class="ident">Path</span> {
+        <span class="self">self</span>.<span class="ident">with_transform_with_perspective_clip</span>(<span class="ident">m</span>, <span class="ident">pc</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ApplyPerspectiveClip::Yes</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_scale</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, (<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Path</span> {
-        <span class="self">self</span>.<span class="ident">make_transform</span>(<span class="kw-2">&amp;</span><span class="ident">Matrix</span>::<span class="ident">scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>)), <span class="ident">ApplyPerspectiveClip</span>::<span class="ident">No</span>)
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_scale</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, (<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) -&gt; <span class="ident">Path</span> {
+        <span class="self">self</span>.<span class="ident">make_transform</span>(<span class="kw-2">&amp;</span><span class="ident">Matrix::scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>)), <span class="ident">ApplyPerspectiveClip::No</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_last_pt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_last_pt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setLastPt</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) };
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">segment_masks</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SegmentMask</span> {
-        <span class="ident">SegmentMask</span>::<span class="ident">from_bits_truncate</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_getSegmentMasks</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">segment_masks</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SegmentMask</span> {
+        <span class="ident">SegmentMask::from_bits_truncate</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getSegmentMasks</span>() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump_as_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">force_close</span>: <span class="ident">bool</span>, <span class="ident">dump_as_hex</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Data</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">DynamicMemoryWStream</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump_as_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dump_as_hex</span>: <span class="ident">bool</span>) -&gt; <span class="ident">Data</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">DynamicMemoryWStream::new</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">dump</span>(<span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>(), <span class="ident">force_close</span>, <span class="ident">dump_as_hex</span>);
+                .<span class="ident">dump</span>(<span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>(), <span class="ident">dump_as_hex</span>);
         }
         <span class="ident">stream</span>.<span class="ident">detach_as_data</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dump1</span>() }
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dump</span>(<span class="ident">ptr::null_mut</span>(), <span class="bool-val">false</span>) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump_hex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dumpHex</span>() }
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dump</span>(<span class="ident">ptr::null_mut</span>(), <span class="bool-val">true</span>) }
     }
 
-    <span class="comment">// TODO: writeToMemory()?</span>
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Data</span> {
-        <span class="ident">Data</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump_arrays_as_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dump_as_hex</span>: <span class="ident">bool</span>) -&gt; <span class="ident">Data</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">DynamicMemoryWStream::new</span>();
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native</span>()
+                .<span class="ident">dumpArrays</span>(<span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>(), <span class="ident">dump_as_hex</span>);
+        }
+        <span class="ident">stream</span>.<span class="ident">detach_as_data</span>()
     }
 
-    <span class="comment">// TODO: readFromMemory()?</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump_arrays</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dumpArrays</span>(<span class="ident">ptr::null_mut</span>(), <span class="bool-val">false</span>) }
+    }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+    <span class="comment">// TODO: writeToMemory()?</span>
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Data</span> {
+        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkPath_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
+    }
+
+    <span class="comment">// TODO: readFromMemory()?</span>
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">as_bytes</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">path</span>.<span class="ident">native_mut</span>()
@@ -1817,44 +2116,52 @@
         .<span class="ident">if_true_some</span>(<span class="ident">path</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getGenerationID</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkPath_isValid</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isValid</span>() }
     }
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_get_points</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>();
-    <span class="ident">p</span>.<span class="ident">add_rect</span>(<span class="ident">Rect</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">10.0</span>, <span class="number">10.0</span>), <span class="prelude-val">None</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Path::new</span>();
+    <span class="ident">p</span>.<span class="ident">add_rect</span>(<span class="ident">Rect::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">10.0</span>, <span class="number">10.0</span>), <span class="prelude-val">None</span>);
     <span class="kw">let</span> <span class="ident">points_count</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">count_points</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">points</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Point</span>::<span class="ident">default</span>(); <span class="ident">points_count</span>];
-    <span class="kw">let</span> <span class="ident">count_returned</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">get_points</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">points</span>);
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count_returned</span>, <span class="ident">points</span>.<span class="ident">len</span>());
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count_returned</span>, <span class="number">4</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">points</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Point::default</span>(); <span class="ident">points_count</span>];
+    <span class="kw">let</span> <span class="ident">count_returned</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">get_points</span>(<span class="kw-2">&amp;mut</span> <span class="ident">points</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">count_returned</span>, <span class="ident">points</span>.<span class="ident">len</span>());
+    <span class="macro">assert_eq!</span>(<span class="ident">count_returned</span>, <span class="number">4</span>);
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">fill_type</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">fill_type</span>(), <span class="ident">PathFillType</span>::<span class="ident">Winding</span>);
-    <span class="ident">p</span>.<span class="ident">set_fill_type</span>(<span class="ident">PathFillType</span>::<span class="ident">EvenOdd</span>);
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">fill_type</span>(), <span class="ident">PathFillType</span>::<span class="ident">EvenOdd</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">p</span>.<span class="ident">is_inverse_fill_type</span>());
+<span class="kw">fn</span> <span class="ident">test_fill_type</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Path::default</span>();
+    <span class="macro">assert_eq!</span>(<span class="ident">p</span>.<span class="ident">fill_type</span>(), <span class="ident">PathFillType::Winding</span>);
+    <span class="ident">p</span>.<span class="ident">set_fill_type</span>(<span class="ident">PathFillType::EvenOdd</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">p</span>.<span class="ident">fill_type</span>(), <span class="ident">PathFillType::EvenOdd</span>);
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">p</span>.<span class="ident">is_inverse_fill_type</span>());
     <span class="ident">p</span>.<span class="ident">toggle_inverse_fill_type</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">fill_type</span>(), <span class="ident">PathFillType</span>::<span class="ident">InverseEvenOdd</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">is_inverse_fill_type</span>());
+    <span class="macro">assert_eq!</span>(<span class="ident">p</span>.<span class="ident">fill_type</span>(), <span class="ident">PathFillType::InverseEvenOdd</span>);
+    <span class="macro">assert!</span>(<span class="ident">p</span>.<span class="ident">is_inverse_fill_type</span>());
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">is_volatile</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">p</span>.<span class="ident">is_volatile</span>());
+<span class="kw">fn</span> <span class="ident">test_is_volatile</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Path::default</span>();
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">p</span>.<span class="ident">is_volatile</span>());
     <span class="ident">p</span>.<span class="ident">set_is_volatile</span>(<span class="bool-val">true</span>);
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">is_volatile</span>());
+    <span class="macro">assert!</span>(<span class="ident">p</span>.<span class="ident">is_volatile</span>());
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+
+<span class="attribute">#[<span class="ident">test</span>]</span>
+<span class="kw">fn</span> <span class="ident">test_path_rect</span>() {
+    <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">100.0</span>, <span class="number">100.0</span>);
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::rect</span>(<span class="ident">r</span>, <span class="prelude-val">None</span>);
+    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">path</span>.<span class="ident">bounds</span>(), <span class="ident">r</span>);
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

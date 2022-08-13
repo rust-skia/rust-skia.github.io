@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["variation_position",""]],"struct":[["FontArguments",""],["VariationPosition",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["palette",""],["variation_position",""]],"struct":[["FontArguments",""],["Palette",""],["VariationPosition",""]]};

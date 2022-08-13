@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["color_filters",""]],"struct":[["Flags",""]],"type":[["ColorFilter",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["color_filters",""]],"type":[["ColorFilter",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Axis",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Axis",""]]};

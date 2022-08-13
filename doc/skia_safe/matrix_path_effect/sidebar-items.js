@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["new",""],["new_translate",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["new",""],["new_translate",""]]};

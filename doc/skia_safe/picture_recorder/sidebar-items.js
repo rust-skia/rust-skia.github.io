@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["RecordFlags",""]],"type":[["PictureRecorder",""]]});
+window.SIDEBAR_ITEMS = {"type":[["PictureRecorder",""]]};

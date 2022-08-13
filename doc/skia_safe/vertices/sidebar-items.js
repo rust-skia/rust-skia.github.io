@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["AttributeType",""],["AttributeUsage",""],["VertexMode",""]],"struct":[["Attribute",""],["Bone",""],["BuilderFlags",""]],"type":[["BoneIndices",""],["BoneWeights",""],["Builder",""],["Vertices",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["VertexMode",""]],"struct":[["Bone",""],["BuilderFlags",""]],"type":[["BoneIndices",""],["BoneWeights",""],["Builder",""],["Vertices",""]]};

@@ -1,103 +1,108 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\core\color.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>color.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\color.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>color.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -398,133 +403,128 @@
 <span id="397">397</span>
 <span id="398">398</span>
 <span id="399">399</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">u8cpu</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkColor</span>, <span class="ident">SkColor4f</span>, <span class="ident">SkHSVToColor</span>, <span class="ident">SkPMColor</span>, <span class="ident">SkRGBToHSV</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">BitAnd</span>, <span class="ident">BitOr</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">Mul</span>};
+<span id="400">400</span>
+<span id="401">401</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">u8cpu</span>};
+<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkColor</span>, <span class="ident">SkColor4f</span>, <span class="ident">SkHSVToColor</span>, <span class="ident">SkPMColor</span>, <span class="ident">SkRGBToHSV</span>};
+<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">BitAnd</span>, <span class="ident">BitOr</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">Mul</span>};
 
-<span class="comment">// TODO: What should we do with SkAlpha?</span>
-<span class="comment">// It does not seem to be used, but if we want to export it, we&#39;d</span>
-<span class="comment">// like to define Alpha::TRANSPARENT and Alpha::OPAQUE.</span>
-<span class="comment">// pub type Alpha = u8;</span>
+<span class="comment">// TODO: What should we do with SkAlpha?</span>
+<span class="comment">// It does not seem to be used, but if we want to export it, we&#39;d</span>
+<span class="comment">// like to define Alpha::TRANSPARENT and Alpha::OPAQUE.</span>
+<span class="comment">// pub type Alpha = u8;</span>
 
-<span class="comment">// Note: SkColor _is_ a u32, and therefore its components are</span>
-<span class="comment">// endian dependent, so we can&#39;t expose it as (transmuted) individual</span>
-<span class="comment">// argb fields.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
+<span class="comment">// Note: SkColor _is_ a u32, and therefore its components are</span>
+<span class="comment">// endian dependent, so we can&#39;t expose it as (transmuted) individual</span>
+<span class="comment">// argb fields.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Color</span>(<span class="ident">SkColor</span>);
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">SkColor</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_color_layout</span>() {
-    <span class="ident">Color</span>::<span class="ident">test_layout</span>();
-}
+<span class="macro">native_transmutable!</span>(<span class="ident">SkColor</span>, <span class="ident">Color</span>, <span class="ident">color_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">argb</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Color</span>::<span class="ident">new</span>(<span class="ident">argb</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">argb</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">Color::new</span>(<span class="ident">argb</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RGB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">rgb</span>: <span class="ident">RGB</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Color</span>::<span class="ident">from_rgb</span>(<span class="ident">rgb</span>.<span class="ident">r</span>, <span class="ident">rgb</span>.<span class="ident">g</span>, <span class="ident">rgb</span>.<span class="ident">b</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">rgb</span>: <span class="ident">RGB</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">Color::from_rgb</span>(<span class="ident">rgb</span>.<span class="ident">r</span>, <span class="ident">rgb</span>.<span class="ident">g</span>, <span class="ident">rgb</span>.<span class="ident">b</span>)
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// Bitwise operators.</span>
-<span class="comment">//</span>
+<span class="comment">//</span>
+<span class="comment">// Bitwise operators.</span>
+<span class="comment">//</span>
 
 <span class="kw">impl</span> <span class="ident">BitOr</span> <span class="kw">for</span> <span class="ident">Color</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="self">self</span>.<span class="ident">native</span>() <span class="op">|</span> <span class="ident">rhs</span>.<span class="ident">native</span>())
+    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="ident">Color::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>() <span class="op">|</span> <span class="ident">rhs</span>.<span class="ident">native</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">BitAnd</span> <span class="kw">for</span> <span class="ident">Color</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">bitand</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="self">self</span>.<span class="ident">native</span>() <span class="op">&amp;</span> <span class="ident">rhs</span>.<span class="ident">native</span>())
+    <span class="kw">fn</span> <span class="ident">bitand</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="ident">Color::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>() <span class="op">&amp;</span> <span class="ident">rhs</span>.<span class="ident">native</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">BitOr</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="self">self</span> <span class="op">|</span> <span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="ident">rhs</span>)
+    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u32</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="self">self</span> <span class="op">|</span> <span class="ident">Color::from_native_c</span>(<span class="ident">rhs</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">BitAnd</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">bitand</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="self">self</span> <span class="op">&amp;</span> (<span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="ident">rhs</span>))
+    <span class="kw">fn</span> <span class="ident">bitand</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u32</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="self">self</span> <span class="op">&amp;</span> (<span class="ident">Color::from_native_c</span>(<span class="ident">rhs</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Color</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">argb</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">argb</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">argb</span>)
     }
 
-    <span class="comment">// note: we don&#39;t use the u8cpu type in the arguments here, because we trust the Rust</span>
-    <span class="comment">// compiler to optimize the storage type.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_argb</span>(<span class="ident">a</span>: <span class="ident">u8</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="comment">// note: we don&#39;t use the u8cpu type in the arguments here, because we trust the Rust</span>
+    <span class="comment">// compiler to optimize the storage type.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_argb</span>(<span class="ident">a</span>: <span class="ident">u8</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Color</span> {
         <span class="self">Self</span>(((<span class="ident">a</span> <span class="kw">as</span> <span class="ident">u8cpu</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>) <span class="op">|</span> ((<span class="ident">r</span> <span class="kw">as</span> <span class="ident">u8cpu</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="op">|</span> ((<span class="ident">g</span> <span class="kw">as</span> <span class="ident">u8cpu</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> (<span class="ident">b</span> <span class="kw">as</span> <span class="ident">u8cpu</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_rgb</span>(<span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
-        <span class="self">Self</span>::<span class="ident">from_argb</span>(<span class="number">0xff</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_rgb</span>(<span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Color</span> {
+        <span class="ident"><span class="self">Self</span>::from_argb</span>(<span class="number">0xff</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">a</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">a</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         (<span class="self">self</span>.<span class="ident">into_native</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="kw">as</span> <span class="kw">_</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         (<span class="self">self</span>.<span class="ident">into_native</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="kw">_</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         (<span class="self">self</span>.<span class="ident">into_native</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="kw">_</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">b</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">b</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">into_native</span>() <span class="kw">as</span> <span class="kw">_</span>
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_a</span>(<span class="self">self</span>, <span class="ident">a</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_argb</span>(<span class="ident">a</span>, <span class="self">self</span>.<span class="ident">r</span>(), <span class="self">self</span>.<span class="ident">g</span>(), <span class="self">self</span>.<span class="ident">b</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_a</span>(<span class="self">self</span>, <span class="ident">a</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::from_argb</span>(<span class="ident">a</span>, <span class="self">self</span>.<span class="ident">r</span>(), <span class="self">self</span>.<span class="ident">g</span>(), <span class="self">self</span>.<span class="ident">b</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRANSPARENT</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorTRANSPARENT</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLACK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorBLACK</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DARK_GRAY</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorDKGRAY</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GRAY</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorLTGRAY</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIGHT_GRAY</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorLTGRAY</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WHITE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorWHITE</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorRED</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GREEN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorGREEN</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLUE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorBLUE</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">YELLOW</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorYELLOW</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CYAN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorCYAN</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAGENTA</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb</span>::<span class="ident">SK_ColorMAGENTA</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRANSPARENT</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorTRANSPARENT</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLACK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorBLACK</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DARK_GRAY</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorDKGRAY</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GRAY</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorGRAY</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIGHT_GRAY</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorLTGRAY</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WHITE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorWHITE</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorRED</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GREEN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorGREEN</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLUE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorBLUE</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">YELLOW</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorYELLOW</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CYAN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorCYAN</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAGENTA</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">sb::SK_ColorMAGENTA</span>);
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_rgb</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RGB</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_rgb</span>(<span class="self">self</span>) -&gt; <span class="ident">RGB</span> {
         (<span class="self">self</span>.<span class="ident">r</span>(), <span class="self">self</span>.<span class="ident">g</span>(), <span class="self">self</span>.<span class="ident">b</span>()).<span class="ident">into</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_hsv</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HSV</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_hsv</span>(<span class="self">self</span>) -&gt; <span class="ident">HSV</span> {
         <span class="self">self</span>.<span class="ident">to_rgb</span>().<span class="ident">to_hsv</span>()
     }
 }
@@ -537,14 +537,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RGB</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>): (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>): (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>)) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span> }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">RGB</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_hsv</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HSV</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hsv</span>: [<span class="ident">f32</span>; <span class="number">3</span>] <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_hsv</span>(<span class="self">self</span>) -&gt; <span class="ident">HSV</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hsv</span>: [<span class="ident">f32</span>; <span class="number">3</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">SkRGBToHSV</span>(
                 <span class="self">self</span>.<span class="ident">r</span>.<span class="ident">into</span>(),
@@ -569,50 +569,53 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HSV</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">h</span>, <span class="ident">s</span>, <span class="ident">v</span>): (<span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">h</span>, <span class="ident">s</span>, <span class="ident">v</span>): (<span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>)) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">h</span>, <span class="ident">s</span>, <span class="ident">v</span> }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">HSV</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
-        <span class="ident">Color</span>::<span class="ident">from_native</span>(<span class="kw">unsafe</span> { <span class="ident">SkHSVToColor</span>(<span class="ident">alpha</span>.<span class="ident">into</span>(), [<span class="self">self</span>.<span class="ident">h</span>, <span class="self">self</span>.<span class="ident">s</span>, <span class="self">self</span>.<span class="ident">v</span>].<span class="ident">as_ptr</span>()) })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_color</span>(<span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Color</span> {
+        <span class="ident">Color::from_native_c</span>(<span class="kw">unsafe</span> {
+            <span class="ident">SkHSVToColor</span>(<span class="ident">alpha</span>.<span class="ident">into</span>(), [<span class="self">self</span>.<span class="ident">h</span>, <span class="self">self</span>.<span class="ident">s</span>, <span class="self">self</span>.<span class="ident">v</span>].<span class="ident">as_ptr</span>())
+        })
     }
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PMColor</span> <span class="op">=</span> <span class="ident">SkPMColor</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_multiply_argb</span>(<span class="ident">a</span>: <span class="ident">u8cpu</span>, <span class="ident">r</span>: <span class="ident">u8cpu</span>, <span class="ident">g</span>: <span class="ident">u8cpu</span>, <span class="ident">b</span>: <span class="ident">u8cpu</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PMColor</span> {
-    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">SkPreMultiplyARGB</span>(<span class="ident">a</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>) }
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_multiply_argb</span>(<span class="ident">a</span>: <span class="ident">u8cpu</span>, <span class="ident">r</span>: <span class="ident">u8cpu</span>, <span class="ident">g</span>: <span class="ident">u8cpu</span>, <span class="ident">b</span>: <span class="ident">u8cpu</span>) -&gt; <span class="ident">PMColor</span> {
+    <span class="kw">unsafe</span> { <span class="ident">sb::SkPreMultiplyARGB</span>(<span class="ident">a</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>) }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_multiply_color</span>(<span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PMColor</span> {
-    <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">SkPreMultiplyColor</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) }
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_multiply_color</span>(<span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) -&gt; <span class="ident">PMColor</span> {
+    <span class="kw">unsafe</span> { <span class="ident">sb::SkPreMultiplyColor</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) }
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb</span>::<span class="ident">SkColorChannel</span> <span class="kw">as</span> <span class="ident">ColorChannel</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkColorChannel</span> <span class="kw">as</span> <span class="ident">ColorChannel</span>;
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">color_channel_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ColorChannel</span>::<span class="ident">R</span>;
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ColorChannel::R</span>;
 }
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ColorChannelFlag</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">RED</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkColorChannelFlag</span>::<span class="ident">kRed_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">GREEN</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkColorChannelFlag</span>::<span class="ident">kGreen_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">BLUE</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkColorChannelFlag</span>::<span class="ident">kBlue_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">ALPHA</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkColorChannelFlag</span>::<span class="ident">kAlpha_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">GRAY</span> <span class="op">=</span> <span class="ident">sb</span>::<span class="ident">SkColorChannelFlag</span>::<span class="ident">kGray_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">RG</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">RED</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="self">Self</span>::<span class="ident">GREEN</span>.<span class="ident">bits</span>;
-        <span class="kw">const</span> <span class="ident">RGB</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">RG</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="self">Self</span>::<span class="ident">BLUE</span>.<span class="ident">bits</span>;
-        <span class="kw">const</span> <span class="ident">RGBA</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">RGB</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="self">Self</span>::<span class="ident">ALPHA</span>.<span class="ident">bits</span>;
+        <span class="kw">const</span> <span class="ident">RED</span> <span class="op">=</span> <span class="ident">sb::SkColorChannelFlag::kRed_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">GREEN</span> <span class="op">=</span> <span class="ident">sb::SkColorChannelFlag::kGreen_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">BLUE</span> <span class="op">=</span> <span class="ident">sb::SkColorChannelFlag::kBlue_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">ALPHA</span> <span class="op">=</span> <span class="ident">sb::SkColorChannelFlag::kAlpha_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">GRAY</span> <span class="op">=</span> <span class="ident">sb::SkColorChannelFlag::kGray_SkColorChannelFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+        <span class="kw">const</span> <span class="ident">GRAY_ALPHA</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::GRAY</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::ALPHA</span>.<span class="ident">bits</span>;
+        <span class="kw">const</span> <span class="ident">RG</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::RED</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::GREEN</span>.<span class="ident">bits</span>;
+        <span class="kw">const</span> <span class="ident">RGB</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::RG</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::BLUE</span>.<span class="ident">bits</span>;
+        <span class="kw">const</span> <span class="ident">RGBA</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::RGB</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::ALPHA</span>.<span class="ident">bits</span>;
     }
 }
 
-<span class="comment">// TODO: SkRGBA4f</span>
+<span class="comment">// TODO: SkRGBA4f</span>
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Color4f</span> {
     <span class="kw">pub</span> <span class="ident">r</span>: <span class="ident">f32</span>,
@@ -621,21 +624,17 @@
     <span class="kw">pub</span> <span class="ident">a</span>: <span class="ident">f32</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">NativeTransmutable</span><span class="op">&lt;</span><span class="ident">SkColor4f</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {}
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_color4f_layout</span>() {
-    <span class="ident">Color4f</span>::<span class="ident">test_layout</span>();
-}
+<span class="macro">native_transmutable!</span>(<span class="ident">SkColor4f</span>, <span class="ident">Color4f</span>, <span class="ident">color4f_layout</span>);
 
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">scale</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">scale</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">r</span> <span class="op">*</span> <span class="ident">scale</span>;
         <span class="kw">let</span> <span class="ident">g</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">g</span> <span class="op">*</span> <span class="ident">scale</span>;
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span> <span class="op">*</span> <span class="ident">scale</span>;
@@ -646,14 +645,14 @@
 
 <span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">scale</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">scale</span>: <span class="self">Self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">mul</span>(<span class="kw-2">&amp;</span><span class="ident">scale</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">scale</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">scale</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">r</span>: <span class="self">self</span>.<span class="ident">r</span> <span class="op">*</span> <span class="ident">scale</span>.<span class="ident">r</span>,
             <span class="ident">g</span>: <span class="self">self</span>.<span class="ident">g</span> <span class="op">*</span> <span class="ident">scale</span>.<span class="ident">g</span>,
@@ -665,21 +664,21 @@
 
 <span class="kw">impl</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">f32</span>;
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">f32</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">f32</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_array</span>()[<span class="ident">index</span>]
     }
 }
 
 <span class="kw">impl</span> <span class="ident">IndexMut</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f32</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">as_array_mut</span>()[<span class="ident">index</span>]
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">f32</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">as_array_mut</span>()[<span class="ident">index</span>]
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">fn</span> <span class="ident">c</span>(<span class="ident">c</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
-            (<span class="ident">f32</span>::<span class="ident">from</span>(<span class="ident">c</span>)) <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="number">255.0</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="ident">Color</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">fn</span> <span class="ident">c</span>(<span class="ident">c</span>: <span class="ident">u8</span>) -&gt; <span class="ident">f32</span> {
+            (<span class="ident">f32::from</span>(<span class="ident">c</span>)) <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="number">255.0</span>)
         }
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">c</span>(<span class="ident">color</span>.<span class="ident">r</span>());
         <span class="kw">let</span> <span class="ident">g</span> <span class="op">=</span> <span class="ident">c</span>(<span class="ident">color</span>.<span class="ident">g</span>());
@@ -689,45 +688,45 @@
     }
 }
 
-<span class="comment">// Add all Color::From implementations to Color4f, so that</span>
-<span class="comment">// function signatures can promote Into&lt;Color&gt; to Into&lt;Color4f&gt;.</span>
+<span class="comment">// Add all Color::From implementations to Color4f, so that</span>
+<span class="comment">// function signatures can promote Into&lt;Color&gt; to Into&lt;Color4f&gt;.</span>
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Color</span>::<span class="ident">from</span>(<span class="ident">color</span>).<span class="ident">into</span>()
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">Color::from</span>(<span class="ident">color</span>).<span class="ident">into</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RGB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">rgb</span>: <span class="ident">RGB</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Color</span>::<span class="ident">from</span>(<span class="ident">rgb</span>).<span class="ident">into</span>()
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">rgb</span>: <span class="ident">RGB</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">Color::from</span>(<span class="ident">rgb</span>).<span class="ident">into</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Color4f</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">r</span>: <span class="ident">f32</span>, <span class="ident">g</span>: <span class="ident">f32</span>, <span class="ident">b</span>: <span class="ident">f32</span>, <span class="ident">a</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color4f</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">r</span>: <span class="ident">f32</span>, <span class="ident">g</span>: <span class="ident">f32</span>, <span class="ident">b</span>: <span class="ident">f32</span>, <span class="ident">a</span>: <span class="ident">f32</span>) -&gt; <span class="ident">Color4f</span> {
         <span class="self">Self</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>, <span class="ident">a</span> }
     }
 
-    <span class="comment">// corresponding Skia function: vec()</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="number">4</span>] {
+    <span class="comment">// corresponding Skia function: vec()</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">f32</span>; <span class="number">4</span>] {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref</span>(<span class="self">self</span>) }
     }
 
-    <span class="comment">// corresponding Skia function: vec()</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">f32</span>; <span class="number">4</span>] {
+    <span class="comment">// corresponding Skia function: vec()</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_array_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">f32</span>; <span class="number">4</span>] {
         <span class="kw">unsafe</span> { <span class="ident">transmute_ref_mut</span>(<span class="self">self</span>) }
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">float_cmp</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="number">1.0</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::float_cmp</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">a</span> <span class="op">==</span> <span class="number">1.0</span>
     }
 
-    <span class="comment">// TODO: This is the copied implementation, it would probably be better</span>
-    <span class="comment">//       to call the Skia function.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fits_in_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">a</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1.0</span>);
+    <span class="comment">// TODO: This is the copied implementation, it would probably be better</span>
+    <span class="comment">//       to call the Skia function.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fits_in_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">a</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1.0</span>);
         <span class="self">self</span>.<span class="ident">r</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span>
             <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">r</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1.0</span>
             <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">g</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0</span>
@@ -736,67 +735,77 @@
             <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1.0</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
-        <span class="kw">fn</span> <span class="ident">c</span>(<span class="ident">f</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_color</span>(<span class="self">self</span>) -&gt; <span class="ident">Color</span> {
+        <span class="kw">fn</span> <span class="ident">c</span>(<span class="ident">f</span>: <span class="ident">f32</span>) -&gt; <span class="ident">u8</span> {
             (<span class="ident">f</span>.<span class="ident">max</span>(<span class="number">0.0</span>).<span class="ident">min</span>(<span class="number">1.0</span>) <span class="op">*</span> <span class="number">255.0</span>) <span class="kw">as</span> <span class="ident">u8</span>
         }
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">c</span>(<span class="self">self</span>.<span class="ident">a</span>);
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">c</span>(<span class="self">self</span>.<span class="ident">r</span>);
         <span class="kw">let</span> <span class="ident">g</span> <span class="op">=</span> <span class="ident">c</span>(<span class="self">self</span>.<span class="ident">g</span>);
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">c</span>(<span class="self">self</span>.<span class="ident">b</span>);
-        <span class="ident">Color</span>::<span class="ident">from_argb</span>(<span class="ident">a</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
+        <span class="ident">Color::from_argb</span>(<span class="ident">a</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
     }
 
-    <span class="comment">// TODO: FromPMColor</span>
-    <span class="comment">// TODO: premul()</span>
-    <span class="comment">// TODO: unpremul()</span>
-    <span class="comment">// TODO: toBytes_RGBA()</span>
-    <span class="comment">// TODO: FromBytes_RGBA</span>
+    <span class="comment">// TODO: FromPMColor</span>
+    <span class="comment">// TODO: premul()</span>
+    <span class="comment">// TODO: unpremul()</span>
+    <span class="comment">// TODO: toBytes_RGBA()</span>
+    <span class="comment">// TODO: FromBytes_RGBA</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">a</span>: <span class="number">1.0</span>,
-            ..<span class="self">self</span>.<span class="ident">clone</span>()
-        }
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_opaque</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">a</span>: <span class="number">1.0</span>, ..<span class="self">self</span> }
     }
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">colors</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Color4f</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Color4f</span>;
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRANSPARENT</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLACK</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DARK_GREY</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.25</span>, <span class="number">0.25</span>, <span class="number">0.25</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GREY</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIGHT_GREY</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.75</span>, <span class="number">0.75</span>, <span class="number">0.75</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WHITE</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RED</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GREEN</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLUE</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">YELLOW</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CYAN</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAGENTA</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">new</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRANSPARENT</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLACK</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DARK_GREY</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.25</span>, <span class="number">0.25</span>, <span class="number">0.25</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GREY</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIGHT_GREY</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.75</span>, <span class="number">0.75</span>, <span class="number">0.75</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WHITE</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RED</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GREEN</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLUE</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">YELLOW</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CYAN</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAGENTA</span>: <span class="ident">Color4f</span> <span class="op">=</span> <span class="ident">Color4f::new</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">float_cmp</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color4f_array_access</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color4f</span> {
-        <span class="ident">r</span>: <span class="number">0.1</span>,
-        <span class="ident">g</span>: <span class="number">0.2</span>,
-        <span class="ident">b</span>: <span class="number">0.3</span>,
-        <span class="ident">a</span>: <span class="number">0.4</span>,
-    };
-    <span class="ident">color</span>[<span class="number">1</span>] <span class="op">=</span> <span class="number">0.5</span>;
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0.5</span>, <span class="ident">color</span>.<span class="ident">g</span>);
-}
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">colors</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>};
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_color4f_conversion</span>() {
-    <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Color</span>::<span class="ident">from_argb</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
-    <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">Color4f</span>::<span class="ident">from</span>(<span class="ident">c</span>);
-    <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">to_color</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">c</span>, <span class="ident">c2</span>);
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::float_cmp</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color4f_array_access</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color4f</span> {
+            <span class="ident">r</span>: <span class="number">0.1</span>,
+            <span class="ident">g</span>: <span class="number">0.2</span>,
+            <span class="ident">b</span>: <span class="number">0.3</span>,
+            <span class="ident">a</span>: <span class="number">0.4</span>,
+        };
+        <span class="ident">color</span>[<span class="number">1</span>] <span class="op">=</span> <span class="number">0.5</span>;
+        <span class="macro">assert_eq!</span>(<span class="number">0.5</span>, <span class="ident">color</span>.<span class="ident">g</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_color4f_conversion</span>() {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Color::from_argb</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">cf</span> <span class="op">=</span> <span class="ident">Color4f::from</span>(<span class="ident">c</span>);
+        <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">cf</span>.<span class="ident">to_color</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">c</span>, <span class="ident">c2</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color4f_value_can_be_passed_as_ref</span>() {
+        <span class="kw">fn</span> <span class="ident">passed_as_ref</span>(<span class="ident">_c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>) {}
+        <span class="ident">passed_as_ref</span>(<span class="ident">colors::BLACK</span>);
+    }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["InvertStyle",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["InvertStyle",""]]};

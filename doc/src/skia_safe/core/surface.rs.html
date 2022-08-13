@@ -1,103 +1,108 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `skia-safe\src\core\surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../skia_safe/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -536,35 +541,83 @@
 <span id="535">535</span>
 <span id="536">536</span>
 <span id="537">537</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">gpu</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+</pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::gpu</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">Bitmap</span>, <span class="ident">Canvas</span>, <span class="ident">DeferredDisplayList</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">Image</span>, <span class="ident">ImageInfo</span>, <span class="ident">Paint</span>, <span class="ident">Pixmap</span>,
-    <span class="ident">Size</span>, <span class="ident">SurfaceCharacterization</span>, <span class="ident">SurfaceProps</span>,
+    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Bitmap</span>, <span class="ident">Canvas</span>, <span class="ident">DeferredDisplayList</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">IVector</span>, <span class="ident">Image</span>,
+    <span class="ident">ImageInfo</span>, <span class="ident">Paint</span>, <span class="ident">Pixmap</span>, <span class="ident">Point</span>, <span class="ident">SamplingOptions</span>, <span class="ident">SurfaceCharacterization</span>, <span class="ident">SurfaceProps</span>,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="ident">SkRefCntBase</span>, <span class="ident">SkSurface</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
+<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkRefCntBase</span>, <span class="ident">SkSurface</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ptr</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkSurface_ContentChangeMode</span> <span class="kw">as</span> <span class="ident">ContentChangeMode</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_surface_content_change_mode_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ContentChangeMode</span>::<span class="ident">Retain</span>;
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkSurface_ContentChangeMode</span> <span class="kw">as</span> <span class="ident">ContentChangeMode</span>;
+<span class="macro">variant_name!</span>(<span class="ident">ContentChangeMode::Retain</span>, <span class="ident">content_change_mode_naming</span>);
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkSurface_BackendHandleAccess</span> <span class="kw">as</span> <span class="ident">BackendHandleAccess</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_surface_backend_handle_access_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">BackendHandleAccess</span>::<span class="ident">FlushWrite</span>;
-}
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkSurface_BackendHandleAccess</span> <span class="kw">as</span> <span class="ident">BackendHandleAccess</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+<span class="macro">variant_name!</span>(
+    <span class="ident">BackendHandleAccess::FlushWrite</span>,
+    <span class="ident">backend_handle_access_naming</span>
+);
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings</span>::<span class="ident">SkSurface_BackendSurfaceAccess</span> <span class="kw">as</span> <span class="ident">BackendSurfaceAccess</span>;
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_surface_backend_surface_access_naming</span>() {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">BackendSurfaceAccess</span>::<span class="ident">Present</span>;
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkSurface_BackendSurfaceAccess</span> <span class="kw">as</span> <span class="ident">BackendSurfaceAccess</span>;
+<span class="macro">variant_name!</span>(
+    <span class="ident">BackendSurfaceAccess::Present</span>,
+    <span class="ident">surface_backend_surface_access_naming</span>
+);
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Surface</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span>;
 
@@ -572,13 +625,24 @@
     <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">SkRefCntBase</span>;
 }
 
-<span class="kw">impl</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Surface</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Surface&quot;</span>)
+            <span class="comment">// self must be mutable (this goes through Canvas).</span>
+            <span class="comment">// .field(&quot;image_info&quot;, &amp;self.image_info())</span>
+            <span class="comment">// .field(&quot;generation_id&quot;, &amp;self.generation_id())</span>
+            .<span class="ident">field</span>(<span class="string">&quot;props&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">props</span>())
+            .<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Surface</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster_direct</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span><span class="op">&gt;</span>(
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>],
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span>, <span class="ident">Surface</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span>, <span class="ident">Surface</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">row_bytes</span>
             .<span class="ident">into</span>()
             .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">image_info</span>.<span class="ident">min_row_bytes</span>());
@@ -587,8 +651,8 @@
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         };
 
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeRasterDirect</span>(
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeRasterDirect</span>(
                 <span class="ident">image_info</span>.<span class="ident">native</span>(),
                 <span class="ident">pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
                 <span class="ident">row_bytes</span>,
@@ -598,15 +662,16 @@
         .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">surface</span><span class="op">|</span> <span class="ident">surface</span>.<span class="ident">borrows</span>(<span class="ident">pixels</span>))
     }
 
-    <span class="comment">// TODO: MakeRasterDirectReleaseProc()?</span>
+    <span class="comment">// TODO: MakeRasterDirect(&amp;Pixmap)</span>
+    <span class="comment">// TODO: MakeRasterDirectReleaseProc()?</span>
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster</span>(
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeRaster</span>(
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeRaster</span>(
                 <span class="ident">image_info</span>.<span class="ident">native</span>(),
                 <span class="ident">row_bytes</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>(),
                 <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
@@ -614,27 +679,27 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster_n32_premul</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster_n32_premul</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeRasterN32Premul</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>, <span class="ident">ptr</span>::<span class="ident">null</span>())
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeRasterN32Premul</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>, <span class="ident">ptr::null</span>())
         })
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Surface</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_backend_texture</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
+        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
         <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="kw">crate</span>::<span class="ident">ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
+        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeFromBackendTexture</span>(
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeFromBackendTexture</span>(
                 <span class="ident">context</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">backend_texture</span>.<span class="ident">native</span>(),
                 <span class="ident">origin</span>,
@@ -647,15 +712,15 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_backend_render_target</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">backend_render_target</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendRenderTarget</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
-        <span class="ident">color_type</span>: <span class="kw">crate</span>::<span class="ident">ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
+        <span class="ident">backend_render_target</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendRenderTarget</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
+        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
+        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeFromBackendRenderTarget</span>(
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeFromBackendRenderTarget</span>(
                 <span class="ident">context</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">backend_render_target</span>.<span class="ident">native</span>(),
                 <span class="ident">origin</span>,
@@ -666,84 +731,24 @@
         })
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.33.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;removed without replacement&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_backend_texture_as_render_target</span>(
-        <span class="ident">_context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">_backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span>,
-        <span class="ident">_origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
-        <span class="ident">_sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">_color_type</span>: <span class="kw">crate</span>::<span class="ident">ColorType</span>,
-        <span class="ident">_color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">_surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;removed without replacement&quot;</span>)
-    }
-
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_ca_metal_layer</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">layer</span>: <span class="ident">gpu</span>::<span class="ident">mtl</span>::<span class="ident">Handle</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="kw">crate</span>::<span class="ident">ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">gpu</span>::<span class="ident">mtl</span>::<span class="ident">Handle</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">drawable</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">null</span>();
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeFromCAMetalLayer</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">layer</span>,
-                <span class="ident">origin</span>,
-                <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
-                <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">drawable</span>,
-            )
-        })
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">surface</span><span class="op">|</span> (<span class="ident">surface</span>, <span class="ident">drawable</span>))
-    }
-
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_ca_mtk_view</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">mtk_view</span>: <span class="ident">gpu</span>::<span class="ident">mtl</span>::<span class="ident">Handle</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="kw">crate</span>::<span class="ident">ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeFromMTKView</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">mtk_view</span>,
-                <span class="ident">origin</span>,
-                <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
-                <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
-            )
-        })
-    }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_render_target</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">budgeted</span>: <span class="kw">crate</span>::<span class="ident">Budgeted</span>,
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
+        <span class="ident">budgeted</span>: <span class="ident"><span class="kw">crate</span>::Budgeted</span>,
         <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
         <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="comment">// not optional, because with vulkan, there is no clear default anymore.</span>
-        <span class="ident">surface_origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
+        <span class="ident">surface_origin</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::SurfaceOrigin</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
         <span class="ident">should_create_with_mips</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeRenderTarget</span>(
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeRenderTarget</span>(
                 <span class="ident">context</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">budgeted</span>.<span class="ident">into_native</span>(),
                 <span class="ident">image_info</span>.<span class="ident">native</span>(),
                 <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">surface_origin</span>,
+                <span class="ident">surface_origin</span>
+                    .<span class="ident">into</span>()
+                    .<span class="ident">unwrap_or</span>(<span class="ident">gpu::SurfaceOrigin::BottomLeft</span>),
                 <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
                 <span class="ident">should_create_with_mips</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>(),
             )
@@ -751,12 +756,12 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_render_target_with_characterization</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
         <span class="ident">characterization</span>: <span class="kw-2">&amp;</span><span class="ident">SurfaceCharacterization</span>,
-        <span class="ident">budgeted</span>: <span class="kw">crate</span>::<span class="ident">Budgeted</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeRenderTarget2</span>(
+        <span class="ident">budgeted</span>: <span class="ident"><span class="kw">crate</span>::Budgeted</span>,
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_MakeRenderTarget2</span>(
                 <span class="ident">context</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">characterization</span>.<span class="ident">native</span>(),
                 <span class="ident">budgeted</span>.<span class="ident">into_native</span>(),
@@ -764,193 +769,253 @@
         })
     }
 
-    <span class="comment">// TODO: support TextureReleaseProc / ReleaseContext</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ca_metal_layer</span>(
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
+        <span class="ident">layer</span>: <span class="ident">gpu::mtl::Handle</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
+        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
+        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
+        <span class="ident">drawable</span>: <span class="kw-2">*mut</span> <span class="ident">gpu::mtl::Handle</span>,
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="ident">sb::C_SkSurface_MakeFromCAMetalLayer</span>(
+            <span class="ident">context</span>.<span class="ident">native_mut</span>(),
+            <span class="ident">layer</span>,
+            <span class="ident">origin</span>,
+            <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+            <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
+            <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+            <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+            <span class="ident">drawable</span>,
+        ))
+    }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_backend_texture_with_caracterization</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">gpu</span>::<span class="ident">Context</span>,
-        <span class="ident">characterization</span>: <span class="kw-2">&amp;</span><span class="ident">SurfaceCharacterization</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeFromBackendTexture2</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">characterization</span>.<span class="ident">native</span>(),
-                <span class="ident">backend_texture</span>.<span class="ident">native</span>(),
-            )
-        })
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.36.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use from_mtk_view()&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ca_mtk_view</span>(
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::DirectContext</span>,
+        <span class="ident">mtk_view</span>: <span class="ident">gpu::mtl::Handle</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
+        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
+        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_mtk_view</span>(
+            <span class="ident">context</span>,
+            <span class="ident">mtk_view</span>,
+            <span class="ident">origin</span>,
+            <span class="ident">sample_count</span>,
+            <span class="ident">color_type</span>,
+            <span class="ident">color_space</span>,
+            <span class="ident">surface_props</span>,
+        )
+    }
+
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_mtk_view</span>(
+        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
+        <span class="ident">mtk_view</span>: <span class="ident">gpu::mtl::Handle</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
+        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
+        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="ident">sb::C_SkSurface_MakeFromMTKView</span>(
+            <span class="ident">context</span>.<span class="ident">native_mut</span>(),
+            <span class="ident">mtk_view</span>,
+            <span class="ident">origin</span>,
+            <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+            <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
+            <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+            <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+        ))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_compatible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">characterization</span>: <span class="kw-2">&amp;</span><span class="ident">SurfaceCharacterization</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">impl</span> <span class="ident">Surface</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_compatible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">characterization</span>: <span class="kw-2">&amp;</span><span class="ident">SurfaceCharacterization</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isCompatible</span>(<span class="ident">characterization</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_null</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_null</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="self">Self</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurface_MakeNull</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>) })
+        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_MakeNull</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurface_width</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_width</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurface_height</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_height</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ImageInfo</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurface_imageInfo</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native_mut</span>()) };
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_info</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">ImageInfo</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::default</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_imageInfo</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native_mut</span>()) };
         <span class="ident">info</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">generationID</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">notify_content_will_change</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">ContentChangeMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">notify_content_will_change</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">ContentChangeMode</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">notifyContentWillChange</span>(<span class="ident">mode</span>) }
         <span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu</span>::<span class="ident">Context</span><span class="op">&gt;</span> {
-        <span class="ident">gpu</span>::<span class="ident">Context</span>::<span class="ident">from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getContext</span>() })
+<span class="kw">impl</span> <span class="ident">Surface</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recording_context</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::RecordingContext</span><span class="op">&gt;</span> {
+        <span class="ident">gpu::RecordingContext::from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">recordingContext</span>() })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_backend_texture</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">handle_access</span>: <span class="ident">BackendHandleAccess</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::BackendTexture</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_texture</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">bt</span><span class="op">|</span> <span class="ident">sb</span>::<span class="ident">C_GrBackendTexture_Construct</span>(<span class="ident">bt</span>));
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_getBackendTexture</span>(
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_texture</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">bt</span><span class="op">|</span> <span class="ident">sb::C_GrBackendTexture_Construct</span>(<span class="ident">bt</span>));
+            <span class="ident">sb::C_SkSurface_getBackendTexture</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">handle_access</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">backend_texture</span> <span class="kw">as</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">backend_texture</span> <span class="kw">as</span> <span class="kw">_</span>,
             );
 
-            <span class="ident">gpu</span>::<span class="ident">BackendTexture</span>::<span class="ident">from_native_if_valid</span>(<span class="ident">backend_texture</span>)
+            <span class="ident">gpu::BackendTexture::from_native_if_valid</span>(<span class="ident">backend_texture</span>)
         }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_backend_render_target</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">handle_access</span>: <span class="ident">BackendHandleAccess</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu</span>::<span class="ident">BackendRenderTarget</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::BackendRenderTarget</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_render_target</span> <span class="op">=</span>
-                <span class="ident">construct</span>(<span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">sb</span>::<span class="ident">C_GrBackendRenderTarget_Construct</span>(<span class="ident">rt</span>));
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_getBackendRenderTarget</span>(
+                <span class="ident">construct</span>(<span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">sb::C_GrBackendRenderTarget_Construct</span>(<span class="ident">rt</span>));
+            <span class="ident">sb::C_SkSurface_getBackendRenderTarget</span>(
                 <span class="self">self</span>.<span class="ident">native_mut</span>(),
                 <span class="ident">handle_access</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">backend_render_target</span> <span class="kw">as</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">backend_render_target</span>,
             );
 
-            <span class="ident">gpu</span>::<span class="ident">BackendRenderTarget</span>::<span class="ident">from_native_if_valid</span>(<span class="ident">backend_render_target</span>)
+            <span class="ident">gpu::BackendRenderTarget::from_native_c_if_valid</span>(<span class="ident">backend_render_target</span>)
         }
     }
 
-    <span class="comment">// TODO: support variant with TextureReleaseProc and ReleaseContext</span>
+    <span class="comment">// TODO: support variant with TextureReleaseProc and ReleaseContext</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_backend_texture</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">replace_backend_texture_with_mode</span>(<span class="ident">backend_texture</span>, <span class="ident">origin</span>, <span class="ident">ContentChangeMode</span>::<span class="ident">Retain</span>)
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
+    ) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">replace_backend_texture_with_mode</span>(<span class="ident">backend_texture</span>, <span class="ident">origin</span>, <span class="ident">ContentChangeMode::Retain</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_backend_texture_with_mode</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">BackendTexture</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu</span>::<span class="ident">SurfaceOrigin</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>,
+        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
         <span class="ident">mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ContentChangeMode</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    ) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">replaceBackendTexture</span>(
                 <span class="ident">backend_texture</span>.<span class="ident">native</span>(),
                 <span class="ident">origin</span>,
-                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ContentChangeMode</span>::<span class="ident">Retain</span>),
+                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ContentChangeMode::Retain</span>),
                 <span class="prelude-val">None</span>,
-                <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+                <span class="ident">ptr::null_mut</span>(),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">canvas</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Canvas</span> {
-        <span class="kw">let</span> <span class="ident">canvas_ref</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getCanvas</span>() };
-        <span class="ident">Canvas</span>::<span class="ident">borrow_from_native</span>(<span class="ident">canvas_ref</span>)
+<span class="kw">impl</span> <span class="ident">Surface</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">canvas</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">Canvas</span> {
+        <span class="kw">let</span> <span class="ident">canvas_ref</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getCanvas</span>() };
+        <span class="ident">Canvas::borrow_from_native_mut</span>(<span class="ident">canvas_ref</span>)
     }
 
-    <span class="comment">// TODO: why is self mutable here?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
-        <span class="ident">Surface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb</span>::<span class="ident">C_SkSurface_makeSurface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native</span>()) })
+    <span class="comment">// TODO: capabilities()</span>
+
+    <span class="comment">// TODO: why is self mutable here?</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
+        <span class="ident">Surface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_makeSurface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native</span>()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface_with_dimensions</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dim</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface_with_dimensions</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dim</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">dim</span> <span class="op">=</span> <span class="ident">dim</span>.<span class="ident">into</span>();
-        <span class="ident">Surface</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_makeSurface2</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">dim</span>.<span class="ident">width</span>, <span class="ident">dim</span>.<span class="ident">height</span>)
+        <span class="ident">Surface::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_makeSurface2</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">dim</span>.<span class="ident">width</span>, <span class="ident">dim</span>.<span class="ident">height</span>)
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_snapshot</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Image</span> {
-        <span class="ident">Image</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_makeImageSnapshot</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">ptr</span>::<span class="ident">null</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_snapshot</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Image</span> {
+        <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_makeImageSnapshot</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">ptr::null</span>())
         })
         .<span class="ident">unwrap</span>()
     }
 
-    <span class="comment">// TODO: combine this function with image_snapshot and make bounds optional()?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_snapshot_with_bounds</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bounds</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Image</span><span class="op">&gt;</span> {
-        <span class="ident">Image</span>::<span class="ident">from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb</span>::<span class="ident">C_SkSurface_makeImageSnapshot</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">bounds</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    <span class="comment">// TODO: combine this function with image_snapshot and make bounds optional()?</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_snapshot_with_bounds</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bounds</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Image</span><span class="op">&gt;</span> {
+        <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_makeImageSnapshot</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">bounds</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">canvas</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Canvas</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">canvas</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Canvas</span>,
+        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
+        <span class="ident">sampling</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span>,
+        <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>,
+    ) {
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">sampling</span> <span class="op">=</span> <span class="ident">sampling</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">draw</span>(
                 <span class="ident">canvas</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">size</span>.<span class="ident">width</span>,
-                <span class="ident">size</span>.<span class="ident">height</span>,
+                <span class="ident">offset</span>.<span class="ident">x</span>,
+                <span class="ident">offset</span>.<span class="ident">y</span>,
+                <span class="ident">sampling</span>.<span class="ident">native</span>(),
                 <span class="ident">paint</span>.<span class="ident">native_ptr_or_null</span>(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pm</span> <span class="op">=</span> <span class="ident">Pixmap</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pm</span> <span class="op">=</span> <span class="ident">Pixmap::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">peekPixels</span>(<span class="ident">pm</span>.<span class="ident">native_mut</span>()) }
             .<span class="ident">if_true_then_some</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">pm</span>.<span class="ident">borrows</span>(<span class="self">self</span>))
     }
 
-    <span class="comment">// TODO: why is self mut?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_pixmap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="comment">// TODO: why is self mut?</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_pixmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels</span>(<span class="ident">dst</span>.<span class="ident">native</span>(), <span class="ident">src</span>.<span class="ident">x</span>, <span class="ident">src</span>.<span class="ident">y</span>) }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">dst_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">dst_pixels</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
+        <span class="ident">dst_pixels</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
         <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
         <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="ident">dst_row_bytes</span> <span class="op">&lt;</span> <span class="ident">dst_info</span>.<span class="ident">min_row_bytes</span>() {
+    ) -&gt; <span class="ident">bool</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">dst_info</span>.<span class="ident">valid_pixels</span>(<span class="ident">dst_row_bytes</span>, <span class="ident">dst_pixels</span>) {
             <span class="kw">return</span> <span class="bool-val">false</span>;
-        };
-        <span class="kw">let</span> <span class="ident">height</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">dst_info</span>.<span class="ident">height</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
-        <span class="kw">if</span> <span class="ident">dst_pixels</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">dst_row_bytes</span> <span class="op">*</span> <span class="ident">height</span> {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
-        };
+        }
         <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels1</span>(
@@ -963,23 +1028,23 @@
         }
     }
 
-    <span class="comment">// TODO: why is self mut?</span>
-    <span class="comment">// TODO: why is Bitmap non-mutable.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_bitmap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="comment">// TODO: why is self mut?</span>
+    <span class="comment">// TODO: why is Bitmap non-mutable.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_bitmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels2</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>(), <span class="ident">src</span>.<span class="ident">x</span>, <span class="ident">src</span>.<span class="ident">y</span>) }
     }
 
-    <span class="comment">// TODO: wrap AsyncReadResult (m79)</span>
-    <span class="comment">// TODO: wrap asyncRescaleAndReadPixels (m76/m79)</span>
-    <span class="comment">// TODO: wrap asyncRescaleAndReadPixelsYUV420 (m77/m79)</span>
+    <span class="comment">// TODO: AsyncReadResult, RescaleGamma (m79, m86)</span>
+    <span class="comment">// TODO: wrap asyncRescaleAndReadPixels (m76, m79, m89)</span>
+    <span class="comment">// TODO: wrap asyncRescaleAndReadPixelsYUV420 (m77, m79, m89)</span>
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels_from_pixmap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels_from_pixmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">writePixels</span>(<span class="ident">src</span>.<span class="ident">native</span>(), <span class="ident">dst</span>.<span class="ident">x</span>, <span class="ident">dst</span>.<span class="ident">y</span>) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels_from_bitmap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels_from_bitmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native_mut</span>()
@@ -987,92 +1052,136 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span> {
-        <span class="ident">SurfaceProps</span>::<span class="ident">from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb</span>::<span class="ident">C_SkSurface_props</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span> {
+        <span class="ident">SurfaceProps::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkSurface_props</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_and_submit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_and_submit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flushAndSubmit</span>();
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flushAndSubmit</span>(<span class="bool-val">false</span>);
         }
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use flush_and_submit()&quot;</span>)]</span>
-    <span class="comment">// when removed, replace it with flush_with_access() and deprecate it.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">flush_and_submit</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_submit_and_sync_cpu</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flushAndSubmit</span>(<span class="bool-val">true</span>);
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resolve_msaa</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">resolveMSAA</span>() }
+    }
+
+    <span class="comment">// After deprecated since 0.30.0 (m85), the default flush() behavior changed in m86.</span>
+    <span class="comment">// For more information, take a look at the documentation in Skia&#39;s SkSurface.h</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">gpu::FlushInfo::default</span>();
+        <span class="self">self</span>.<span class="ident">flush_with_mutable_state</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="prelude-val">None</span>);
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_with_access_info</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">access</span>: <span class="ident">BackendSurfaceAccess</span>,
-        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">gpu</span>::<span class="ident">FlushInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gpu</span>::<span class="ident">SemaphoresSubmitted</span> {
+        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::FlushInfo</span>,
+    ) -&gt; <span class="ident">gpu::SemaphoresSubmitted</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flush</span>(<span class="ident">access</span>, <span class="ident">info</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="comment">// TODO: flush(FlushInfo, GrBackendSurfaceMutableState)</span>
-    <span class="comment">// TODO: wait()</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_with_mutable_state</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::FlushInfo</span>,
+        <span class="ident">new_state</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">gpu::BackendSurfaceMutableState</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="ident">gpu::SemaphoresSubmitted</span> {
+        <span class="kw">unsafe</span> {
+            <span class="self">self</span>.<span class="ident">native_mut</span>()
+                .<span class="ident">flush1</span>(<span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">new_state</span>.<span class="ident">into</span>().<span class="ident">native_ptr_or_null</span>())
+        }
+    }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">characterize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SurfaceCharacterization</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sc</span> <span class="op">=</span> <span class="ident">SurfaceCharacterization</span>::<span class="ident">default</span>();
+    <span class="comment">// TODO: wait()</span>
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">characterize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SurfaceCharacterization</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sc</span> <span class="op">=</span> <span class="ident">SurfaceCharacterization::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">characterize</span>(<span class="ident">sc</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">sc</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_display_list</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">deferred_display_list</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DeferredDisplayList</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">draw1</span>(<span class="ident">deferred_display_list</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_display_list</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">deferred_display_list</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">DeferredDisplayList</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">draw_display_list_with_offset</span>(<span class="ident">deferred_display_list</span>, <span class="ident">IVector::default</span>())
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_display_list_with_offset</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">deferred_display_list</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">DeferredDisplayList</span><span class="op">&gt;</span>,
+        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="ident">bool</span> {
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
+        <span class="kw">unsafe</span> {
+            <span class="ident">sb::C_SkSurface_draw</span>(
+                <span class="self">self</span>.<span class="ident">native_mut</span>(),
+                <span class="ident">deferred_display_list</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+                <span class="ident">offset</span>.<span class="ident">x</span>,
+                <span class="ident">offset</span>.<span class="ident">y</span>,
+            )
+        }
     }
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">create</span>() {
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">0</span>, <span class="number">0</span>)).<span class="ident">is_none</span>());
-    <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">1</span>, <span class="number">1</span>)).<span class="ident">unwrap</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">surface</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>())
+    <span class="macro">assert!</span>(<span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">0</span>, <span class="number">0</span>)).<span class="ident">is_none</span>());
+    <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">1</span>, <span class="number">1</span>)).<span class="ident">unwrap</span>();
+    <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">surface</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>())
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_raster_direct</span>() {
-    <span class="kw">let</span> <span class="ident">image_info</span> <span class="op">=</span> <span class="ident">ImageInfo</span>::<span class="ident">new</span>(
+    <span class="kw">let</span> <span class="ident">image_info</span> <span class="op">=</span> <span class="ident">ImageInfo::new</span>(
         (<span class="number">20</span>, <span class="number">20</span>),
-        <span class="kw">crate</span>::<span class="ident">ColorType</span>::<span class="ident">RGBA8888</span>,
-        <span class="kw">crate</span>::<span class="ident">AlphaType</span>::<span class="ident">Unpremul</span>,
+        <span class="ident"><span class="kw">crate</span>::ColorType::RGBA8888</span>,
+        <span class="ident"><span class="kw">crate</span>::AlphaType::Unpremul</span>,
         <span class="prelude-val">None</span>,
     );
     <span class="kw">let</span> <span class="ident">min_row_bytes</span> <span class="op">=</span> <span class="ident">image_info</span>.<span class="ident">min_row_bytes</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0u8</span>; <span class="ident">image_info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">min_row_bytes</span>)];
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface</span>::<span class="ident">new_raster_direct</span>(
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">image_info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">min_row_bytes</span>)];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_direct</span>(
         <span class="kw-2">&amp;</span><span class="ident">image_info</span>,
         <span class="ident">pixels</span>.<span class="ident">as_mut_slice</span>(),
         <span class="prelude-val">Some</span>(<span class="ident">min_row_bytes</span>),
         <span class="prelude-val">None</span>,
     )
     .<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint</span>::<span class="ident">default</span>();
+    <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
     <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">draw_circle</span>((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span><span class="ident">paint</span>);
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_drawing_owned_as_exclusive_ref_ergonomics</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">16</span>, <span class="number">16</span>)).<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">16</span>, <span class="number">16</span>)).<span class="ident">unwrap</span>();
 
-    <span class="comment">// option1:</span>
-    <span class="comment">// - An &amp;mut canvas can be drawn to.</span>
+    <span class="comment">// option1:</span>
+    <span class="comment">// - An &amp;mut canvas can be drawn to.</span>
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas</span>::<span class="ident">new</span>(<span class="ident">ISize</span>::<span class="ident">new</span>(<span class="number">16</span>, <span class="number">16</span>), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">canvas</span>, (<span class="number">5.0</span>, <span class="number">5.0</span>), <span class="prelude-val">None</span>);
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">canvas</span>, (<span class="number">10.0</span>, <span class="number">10.0</span>), <span class="prelude-val">None</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::new</span>(<span class="ident">ISize::new</span>(<span class="number">16</span>, <span class="number">16</span>), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
+        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="kw-2">&amp;mut</span> <span class="ident">canvas</span>, (<span class="number">5.0</span>, <span class="number">5.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
+        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="kw-2">&amp;mut</span> <span class="ident">canvas</span>, (<span class="number">10.0</span>, <span class="number">10.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
     }
 
-    <span class="comment">// option2:</span>
-    <span class="comment">// - A canvas from another surface can be drawn to.</span>
+    <span class="comment">// option2:</span>
+    <span class="comment">// - A canvas from another surface can be drawn to.</span>
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface2</span> <span class="op">=</span> <span class="ident">Surface</span>::<span class="ident">new_raster_n32_premul</span>((<span class="number">16</span>, <span class="number">16</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface2</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">16</span>, <span class="number">16</span>)).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">surface2</span>.<span class="ident">canvas</span>();
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="ident">canvas</span>, (<span class="number">5.0</span>, <span class="number">5.0</span>), <span class="prelude-val">None</span>);
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="ident">canvas</span>, (<span class="number">10.0</span>, <span class="number">10.0</span>), <span class="prelude-val">None</span>);
+        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="ident">canvas</span>, (<span class="number">5.0</span>, <span class="number">5.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
+        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="ident">canvas</span>, (<span class="number">10.0</span>, <span class="number">10.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "skia_safe";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

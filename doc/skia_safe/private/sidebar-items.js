@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["gpu",""]]});
+window.SIDEBAR_ITEMS = {};
