@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["NUM_COLORS",""]],"fn":[["new",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["NUM_COLORS",""]],"fn":[["new",""]]};

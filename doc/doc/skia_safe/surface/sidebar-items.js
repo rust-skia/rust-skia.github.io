@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["BackendHandleAccess",""],["BackendSurfaceAccess",""],["ContentChangeMode",""]],"type":[["Surface",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["BackendHandleAccess",""],["BackendSurfaceAccess",""],["ContentChangeMode",""]],"type":[["Surface",""]]};

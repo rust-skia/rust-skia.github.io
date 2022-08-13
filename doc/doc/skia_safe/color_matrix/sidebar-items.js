@@ -1,1 +1,1 @@
-initSidebarItems({"type":[["ColorMatrix",""]]});
+window.SIDEBAR_ITEMS = {"type":[["ColorMatrix",""]]};

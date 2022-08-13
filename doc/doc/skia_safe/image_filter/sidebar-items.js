@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MapDirection",""]],"type":[["ImageFilter",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["MapDirection",""]],"type":[["ImageFilter",""]]};

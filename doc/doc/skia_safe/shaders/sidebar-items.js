@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["blend",""],["color",""],["color_in_space",""],["empty",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["blend",""],["color",""],["color_in_space",""],["empty",""]]};

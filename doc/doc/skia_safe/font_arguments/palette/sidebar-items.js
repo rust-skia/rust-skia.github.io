@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Override",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Override",""]]};

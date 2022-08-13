@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Cap",""],["Join",""],["Style",""]],"type":[["Paint",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Cap",""],["Join",""],["Style",""]],"type":[["Paint",""]]};

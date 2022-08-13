@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Mode",""]],"fn":[["new",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Mode",""]],"fn":[["new",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Enable",""],["ShaderCacheStrategy",""]],"struct":[["ContextOptions",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Enable",""],["ShaderCacheStrategy",""]],"struct":[["ContextOptions",""]]};

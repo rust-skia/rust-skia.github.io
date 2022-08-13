@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["from_argb",""],["from_table",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["from_argb",""],["from_table",""]]};

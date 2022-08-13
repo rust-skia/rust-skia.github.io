@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Canvas",""],["Flags",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Canvas",""],["Flags",""]]};

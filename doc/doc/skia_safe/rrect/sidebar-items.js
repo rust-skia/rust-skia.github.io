@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Corner",""],["Type",""]],"struct":[["RRect",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Corner",""],["Type",""]],"struct":[["RRect",""]]};
