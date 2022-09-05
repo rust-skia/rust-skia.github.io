@@ -2463,6 +2463,19 @@
 <span id="2457">2457</span>
 <span id="2458">2458</span>
 <span id="2459">2459</span>
+<span id="2460">2460</span>
+<span id="2461">2461</span>
+<span id="2462">2462</span>
+<span id="2463">2463</span>
+<span id="2464">2464</span>
+<span id="2465">2465</span>
+<span id="2466">2466</span>
+<span id="2467">2467</span>
+<span id="2468">2468</span>
+<span id="2469">2469</span>
+<span id="2470">2470</span>
+<span id="2471">2471</span>
+<span id="2472">2472</span>
 </pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::gpu</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -2927,6 +2940,19 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sp</span> <span class="op">=</span> <span class="ident">SurfaceProps::default</span>();
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getProps</span>(<span class="ident">sp</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">sp</span>)
+    }
+
+    <span class="doccomment">/// Returns the [`SurfaceProps`] associated with the canvas (i.e., at the base of the layer</span>
+    <span class="doccomment">/// stack).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">base_props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SurfaceProps</span> {
+        <span class="ident">SurfaceProps::from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getBaseProps</span>() })
+    }
+
+    <span class="doccomment">/// Returns the [`SurfaceProps`] associated with the canvas that are currently active (i.e., at</span>
+    <span class="doccomment">/// the top of the layer stack). This can differ from [`Self::base_props`] depending on the flags</span>
+    <span class="doccomment">/// passed to saveLayer (see [`SaveLayerFlags`]).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top_props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SurfaceProps</span> {
+        <span class="ident">SurfaceProps::from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getTopProps</span>() })
     }
 
     <span class="doccomment">/// Triggers the immediate execution of all pending draw operations.</span>

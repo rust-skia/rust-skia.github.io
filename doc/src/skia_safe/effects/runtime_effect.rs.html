@@ -423,6 +423,24 @@
 <span id="417">417</span>
 <span id="418">418</span>
 <span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">AsStr</span>},
     <span class="ident">prelude</span>::<span class="kw-2">*</span>,
@@ -432,7 +450,7 @@
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
     <span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkRefCntBase</span>, <span class="ident">SkRuntimeEffect</span>, <span class="ident">SkRuntimeEffect_Options</span>, <span class="ident">SkRuntimeEffect_Uniform</span>,
 };
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::CStr</span>, <span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::DerefMut</span>, <span class="ident">ptr</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::DerefMut</span>, <span class="ident">ptr</span>};
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Uniform</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRuntimeEffect_Uniform</span><span class="op">&gt;</span>;
 <span class="macro">unsafe_send_sync!</span>(<span class="ident">Uniform</span>);
@@ -498,6 +516,7 @@
             <span class="kw">const</span> <span class="ident">COLOR</span> <span class="op">=</span> <span class="ident">sb::SkRuntimeEffect_Uniform_Flags_kColor_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
             <span class="kw">const</span> <span class="ident">VERTEX</span> <span class="op">=</span> <span class="ident">sb::SkRuntimeEffect_Uniform_Flags_kVertex_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
             <span class="kw">const</span> <span class="ident">FRAGMENT</span> <span class="op">=</span> <span class="ident">sb::SkRuntimeEffect_Uniform_Flags_kFragment_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+            <span class="kw">const</span> <span class="ident">HALF_PRECISION</span> <span class="op">=</span> <span class="ident">sb::SkRuntimeEffect_Uniform_Flags_kHalfPrecision_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
         }
     }
 }
@@ -551,8 +570,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Options</span> {
     <span class="kw">pub</span> <span class="ident">force_unoptimized</span>: <span class="ident">bool</span>,
-    <span class="ident">enforce_es2_restrictions</span>: <span class="ident">bool</span>,
     <span class="ident">use_private_rt_shader_module</span>: <span class="ident">bool</span>,
+    <span class="ident">max_version_allowed</span>: <span class="ident">sb::SkSL_Version</span>,
 }
 
 <span class="macro">native_transmutable!</span>(<span class="ident">SkRuntimeEffect_Options</span>, <span class="ident">Options</span>, <span class="ident">options_layout</span>);
@@ -561,8 +580,8 @@
     <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">Options</span> {
             <span class="ident">force_unoptimized</span>: <span class="bool-val">false</span>,
-            <span class="ident">enforce_es2_restrictions</span>: <span class="bool-val">true</span>,
             <span class="ident">use_private_rt_shader_module</span>: <span class="bool-val">false</span>,
+            <span class="ident">max_version_allowed</span>: <span class="ident">sb::SkSL_Version::k100</span>,
         }
     }
 }
@@ -573,6 +592,9 @@
             .<span class="ident">field</span>(<span class="string">&quot;uniform_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">uniform_size</span>())
             .<span class="ident">field</span>(<span class="string">&quot;uniforms&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">uniforms</span>())
             .<span class="ident">field</span>(<span class="string">&quot;children&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">children</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;allow_shader&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">allow_shader</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;allow_color_filter&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">allow_color_filter</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;allow_blender&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">allow_blender</span>())
             .<span class="ident">finish</span>()
     }
 }
@@ -764,20 +786,34 @@
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Use find_uniform()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_input</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Uniform</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_input</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Uniform</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">find_uniform</span>(<span class="ident">name</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_uniform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Uniform</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">findUniform</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">as_ptr</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_uniform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Uniform</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRuntimeEffect_findUniform</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">name</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">name</span>.<span class="ident">len</span>()) }
             .<span class="ident">into_option</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">Uniform::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span> }))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_child</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">CStr</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Child</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">findChild</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">as_ptr</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_child</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Child</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>();
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRuntimeEffect_findChild</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">name</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">name</span>.<span class="ident">len</span>()) }
             .<span class="ident">into_option</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">Child::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span> }))
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_shader</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRuntimeEffect_allowShader</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_color_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRuntimeEffect_allowColorFilter</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_blender</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRuntimeEffect_allowBlender</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 }
 

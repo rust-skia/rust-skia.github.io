@@ -835,6 +835,9 @@
 <span id="829">829</span>
 <span id="830">830</span>
 <span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">AlphaType</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">Image</span>,
     <span class="ident">ImageInfo</span>, <span class="ident">Matrix</span>, <span class="ident">Paint</span>, <span class="ident">PixelRef</span>, <span class="ident">Pixmap</span>, <span class="ident">SamplingOptions</span>, <span class="ident">Shader</span>, <span class="ident">TileMode</span>,
@@ -842,26 +845,26 @@
 <span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkBitmap</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>};
 
-<span class="doccomment">/// [Bitmap] describes a two-dimensional raster pixel array. [Bitmap] is built on [ImageInfo],</span>
-<span class="doccomment">/// containing integer width and height, [ColorType] and [AlphaType] describing the pixel format,</span>
-<span class="doccomment">/// and [ColorSpace] describing the range of colors. [Bitmap] points to [PixelRef], which describes</span>
-<span class="doccomment">/// the physical array of pixels. [ImageInfo] bounds may be located anywhere fully inside [PixelRef]</span>
-<span class="doccomment">/// bounds.</span>
+<span class="doccomment">/// [`Bitmap`] describes a two-dimensional raster pixel array. [`Bitmap`] is built on [`ImageInfo`],</span>
+<span class="doccomment">/// containing integer width and height, [`ColorType`] and [`AlphaType`] describing the pixel</span>
+<span class="doccomment">/// format, and [`ColorSpace`] describing the range of colors. [`Bitmap`] points to [`PixelRef`],</span>
+<span class="doccomment">/// which describes the physical array of pixels. [`ImageInfo`] bounds may be located anywhere fully</span>
+<span class="doccomment">/// inside [PixelRef] bounds.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [Bitmap] can be drawn using [crate::Canvas]. [Bitmap] can be a drawing destination for</span>
-<span class="doccomment">/// [crate::Canvas] draw member functions. [Bitmap] flexibility as a pixel container limits some</span>
+<span class="doccomment">/// [`Bitmap`] can be drawn using [crate::Canvas]. [`Bitmap`] can be a drawing destination for</span>
+<span class="doccomment">/// [`crate::Canvas`] draw member functions. [`Bitmap`] flexibility as a pixel container limits some</span>
 <span class="doccomment">/// optimizations available to the target platform.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If pixel array is primarily read-only, use [Image] for better performance.</span>
+<span class="doccomment">/// If pixel array is primarily read-only, use [`Image`] for better performance.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If pixel array is primarily written to, use [crate::Surface] for better performance.</span>
+<span class="doccomment">/// If pixel array is primarily written to, use [`crate::Surface`] for better performance.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Declaring [Bitmap] const prevents altering [ImageInfo]: the [Bitmap] height, width,</span>
-<span class="doccomment">/// and so on cannot change. It does not affect [PixelRef]: a caller may write its</span>
-<span class="doccomment">/// pixels. Declaring [Bitmap] const affects [Bitmap] configuration, not its contents.</span>
+<span class="doccomment">/// Declaring [`Bitmap`] const prevents altering [`ImageInfo`]: the [`Bitmap`] height, width, and so</span>
+<span class="doccomment">/// on cannot change. It does not affect [`PixelRef`]: a caller may write its pixels. Declaring</span>
+<span class="doccomment">/// [`Bitmap`] const affects [`Bitmap`] configuration, not its contents.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [Bitmap] is not thread safe. Each thread must have its own copy of [Bitmap] fields,</span>
-<span class="doccomment">/// although threads may share the underlying pixel array.</span>
+<span class="doccomment">/// [`Bitmap`] is not thread safe. Each thread must have its own copy of [`Bitmap`] fields, although</span>
+<span class="doccomment">/// threads may share the underlying pixel array.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bitmap</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkBitmap</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkBitmap</span> {
@@ -871,7 +874,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkBitmap</span> {
-    <span class="doccomment">/// Copies settings from `self` to returned [Bitmap]. Shares pixels if `self` has pixels</span>
+    <span class="doccomment">/// Copies settings from `self` to returned [`Bitmap`]. Shares pixels if `self` has pixels</span>
     <span class="doccomment">/// allocated, so both bitmaps reference the same pixels.</span>
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">SkBitmap::new1</span>(<span class="self">self</span>) }
@@ -894,11 +897,11 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Bitmap</span> {
-    <span class="doccomment">/// Creates an empty [Bitmap] without pixels, with [ColorType::Unknown], [AlphaType::Unknown],</span>
-    <span class="doccomment">/// and with a width and height of zero. [PixelRef] origin is set to `(0, 0)`.</span>
+    <span class="doccomment">/// Creates an empty [`Bitmap`] without pixels, with [`ColorType::Unknown`], [`AlphaType::Unknown`],</span>
+    <span class="doccomment">/// and with a width and height of zero. [`PixelRef`] origin is set to `(0, 0)`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Use [Bitmap::set_info(&amp;self, ImageInfo&amp;, usize)] to associate [ColorType], [AlphaType],</span>
-    <span class="doccomment">/// width, and height after [Bitmap] has been created.</span>
+    <span class="doccomment">/// Use [`Self::set_info()`] to associate [`ColorType`], [`AlphaType`], width, and height after</span>
+    <span class="doccomment">/// [`Bitmap`] has been created.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bitmap</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_Construct</span>(<span class="ident">bitmap</span>) })
     }
@@ -908,19 +911,19 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">swap</span>(<span class="ident">other</span>.<span class="ident">native_mut</span>()) }
     }
 
-    <span class="doccomment">/// Returns a constant reference to the [Pixmap] holding the [Bitmap] pixel address, row bytes,</span>
-    <span class="doccomment">/// and [ImageInfo].</span>
+    <span class="doccomment">/// Returns a constant reference to the [`Pixmap`] holding the [`Bitmap`] pixel address, row</span>
+    <span class="doccomment">/// bytes, and [`ImageInfo`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Pixmap</span> {
         <span class="ident">Pixmap::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixmap</span>)
     }
 
-    <span class="doccomment">/// Returns width, height, [AlphaType], [ColorType], and [ColorSpace].</span>
+    <span class="doccomment">/// Returns width, height, [`AlphaType`], [ColorType], and [`ColorSpace`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">info</span>()
     }
 
-    <span class="doccomment">/// Returns pixel count in each row. Should be equal or less than `Self::row_bytes()` /</span>
-    <span class="doccomment">/// `Self::info().bytes_per_pixel()`.</span>
+    <span class="doccomment">/// Returns pixel count in each row. Should be equal or less than `row_bytes()` /</span>
+    <span class="doccomment">/// `info().bytes_per_pixel()`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// May be less than `pixel_ref().width()`. Will not exceed `pixel_ref().width()` less</span>
     <span class="doccomment">/// `pixel_ref_origin().x`.</span>
@@ -944,15 +947,15 @@
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">alpha_type</span>()
     }
 
-    <span class="doccomment">/// Returns [ColorSpace], the range of colors, associated with [ImageInfo]. The returned</span>
-    <span class="doccomment">/// [ColorSpace] is immutable.</span>
+    <span class="doccomment">/// Returns [`ColorSpace`], the range of colors, associated with [`ImageInfo`]. The returned</span>
+    <span class="doccomment">/// [`ColorSpace`] is immutable.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span> {
         <span class="ident">ColorSpace::from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">colorSpace</span>() })
     }
 
-    <span class="doccomment">/// Returns number of bytes per pixel required by [ColorType].</span>
+    <span class="doccomment">/// Returns number of bytes per pixel required by [`ColorType`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero if `color_type()` is [ColorType::Unknown].</span>
+    <span class="doccomment">/// Returns zero if `color_type()` is [`ColorType::Unknown`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">bytes_per_pixel</span>()
     }
@@ -964,30 +967,30 @@
 
     <span class="doccomment">/// Returns bit shift converting row bytes to row pixels.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero for [ColorType::Unknown].</span>
+    <span class="doccomment">/// Returns zero for [`ColorType::Unknown`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shift_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">shift_per_pixel</span>()
     }
 
     <span class="doccomment">/// Returns `true` if either `width()` or `height()` are zero.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Does not check if [PixelRef] is None; call `draws_nothing()` to check `width()`,</span>
-    <span class="doccomment">/// `height()`, and [PixelRef].</span>
+    <span class="doccomment">/// Does not check if [`PixelRef`] is `None`; call `draws_nothing()` to check `width()`,</span>
+    <span class="doccomment">/// `height()`, and [`PixelRef`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">is_empty</span>()
     }
 
-    <span class="doccomment">/// Returns `true` if [PixelRef] is `None`.</span>
+    <span class="doccomment">/// Returns `true` if [`PixelRef`] is `None`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Does not check if `width()` or `height()` are zero; call `draws_nothing()` to check</span>
-    <span class="doccomment">/// `width()`, `height()`, and [PixelRef].</span>
+    <span class="doccomment">/// `width()`, `height()`, and [`PixelRef`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixelRef</span>.<span class="ident">fPtr</span>.<span class="ident">is_null</span>()
     }
 
-    <span class="doccomment">/// Returns `true` if `width()` or `height()` are zero, or if [PixelRef] is `None`.</span>
+    <span class="doccomment">/// Returns `true` if `width()` or `height()` are zero, or if [`PixelRef`] is `None`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If `true`, [Bitmap] has no effect when drawn or drawn into.</span>
+    <span class="doccomment">/// If `true`, [`Bitmap`] has no effect when drawn or drawn into.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draws_nothing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">is_null</span>()
     }
@@ -995,73 +998,68 @@
     <span class="doccomment">/// Returns row bytes, the interval from one pixel row to the next. Row bytes is at least as</span>
     <span class="doccomment">/// large as: `width()` * `info().bytes_per_pixel()`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero if `color_type()` is [ColorType::Unknown], or if row bytes supplied to</span>
+    <span class="doccomment">/// Returns zero if `color_type()` is [`ColorType::Unknown`], or if row bytes supplied to</span>
     <span class="doccomment">/// `set_info()` is not large enough to hold a row of pixels.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">row_bytes</span>()
     }
 
-    <span class="doccomment">/// Sets [AlphaType], if `alpha_type` is compatible with [ColorType]. Returns `true` unless</span>
-    <span class="doccomment">/// `alpha_type` is [AlphaType::Unknown] and current [AlphaType] is not [AlphaType::Unknown].</span>
+    <span class="doccomment">/// Sets [`AlphaType`], if `alpha_type` is compatible with [`ColorType`]. Returns `true` unless</span>
+    <span class="doccomment">/// `alpha_type` is [`AlphaType::Unknown`] and current [`AlphaType`] is not [`AlphaType::Unknown`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `true` if [ColorType] is [ColorType::Unknown]. `alpha_type` is ignored, and</span>
-    <span class="doccomment">/// [AlphaType] remains [AlphaType::Unknown].</span>
+    <span class="doccomment">/// Returns `true` if [`ColorType`] is [`ColorType::Unknown`]. `alpha_type` is ignored, and</span>
+    <span class="doccomment">/// [`AlphaType`] remains [`AlphaType::Unknown`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `true` if [ColorType] is [crate::ColorType::RGB565] or [ColorType::Gray8]. `alpha_type`</span>
-    <span class="doccomment">/// is ignored, and [AlphaType] remains [AlphaType::Opaque].</span>
+    <span class="doccomment">/// Returns `true` if [`ColorType`] is [`ColorType::RGB565`] or [`ColorType::Gray8`].</span>
+    <span class="doccomment">/// `alpha_type` is ignored, and [`AlphaType`] remains [`AlphaType::Opaque`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [ColorType] is [ColorType::ARGB4444], [ColorType::RGBA8888], [ColorType::BGRA8888], or</span>
-    <span class="doccomment">/// [ColorType::RGBAF16]: returns `true` unless `alpha_type` is [AlphaType::Unknown] and</span>
-    <span class="doccomment">/// [AlphaType] is not [AlphaType::Unknown]. If [AlphaType] is [AlphaType::Unknown],</span>
-    <span class="doccomment">/// `alpha_type` is ignored.</span>
+    <span class="doccomment">/// If [`ColorType`] is [`ColorType::ARGB4444`], [`ColorType::RGBA8888`],</span>
+    <span class="doccomment">/// [`ColorType::BGRA8888`], or [`ColorType::RGBAF16`]: returns `true` unless `alpha_type` is</span>
+    <span class="doccomment">/// [`AlphaType::Unknown`] and [`AlphaType`] is not [`AlphaType::Unknown`]. If [`AlphaType`] is</span>
+    <span class="doccomment">/// [`AlphaType::Unknown`], `alpha_type` is ignored.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [ColorType] is [ColorType::Alpha8], returns `true` unless `alpha_type` is</span>
-    <span class="doccomment">/// [AlphaType::Unknown] and [AlphaType] is not [AlphaType::Unknown]. If [AlphaType] is</span>
-    <span class="doccomment">/// kUnknown_SkAlphaType, `alpha_type` is ignored. If `alpha_type` is [AlphaType::Unpremul], it</span>
-    <span class="doccomment">/// is treated as [AlphaType::Premul].</span>
+    <span class="doccomment">/// If [`ColorType`] is [`ColorType::Alpha8`], returns `true` unless `alpha_type` is</span>
+    <span class="doccomment">/// [`AlphaType::Unknown`] and [`AlphaType`] is not [`AlphaType::Unknown`]. If [`AlphaType`] is</span>
+    <span class="doccomment">/// kUnknown_SkAlphaType, `alpha_type` is ignored. If `alpha_type` is [`AlphaType::Unpremul`],</span>
+    <span class="doccomment">/// it is treated as [`AlphaType::Premul`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This changes [AlphaType] in [PixelRef]; all bitmaps sharing [PixelRef] are affected.</span>
+    <span class="doccomment">/// This changes [`AlphaType`] in [`PixelRef`]; all bitmaps sharing [`PixelRef`] are affected.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">alpha_type</span>: <span class="ident">AlphaType</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setAlphaType</span>(<span class="ident">alpha_type</span>) }
     }
 
     <span class="doccomment">/// Returns pixel address, the base address corresponding to the pixel origin.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">writable_addr</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span> {
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">writable_addr</span>() }
     }
 
-    <span class="doccomment">/// Returns minimum memory required for pixel storage.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Does not include unused memory on last row when `row_bytes_as_pixels()` exceeds `width()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns [usize::MAX] if result does not fit in `usize`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero if `height()` or `width()` is 0.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `height()` times `row_bytes()` if `color_type()` is [ColorType::Unknown].</span>
+    <span class="doccomment">/// Returns minimum memory required for pixel storage.  </span>
+    <span class="doccomment">/// Does not include unused memory on last row when `row_bytes_as_pixels()` exceeds `width()`.  </span>
+    <span class="doccomment">/// Returns [`usize::MAX`] if result does not fit in `usize`.  </span>
+    <span class="doccomment">/// Returns zero if `height()` or `width()` is 0.  </span>
+    <span class="doccomment">/// Returns `height()` times `row_bytes()` if `color_type()` is [`ColorType::Unknown`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_byte_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">compute_byte_size</span>()
     }
 
     <span class="doccomment">/// Returns `true` if pixels can not change.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Most immutable [Bitmap] checks trigger an assert only on debug builds.</span>
+    <span class="doccomment">/// Most immutable [`Bitmap`] checks trigger an assert only on debug builds.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_immutable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isImmutable</span>() }
     }
 
-    <span class="doccomment">/// Sets internal flag to mark [Bitmap] as immutable. Once set, pixels can not change. Any other</span>
-    <span class="doccomment">/// bitmap sharing the same [PixelRef] are also marked as immutable.</span>
+    <span class="doccomment">/// Sets internal flag to mark [`Bitmap`] as immutable. Once set, pixels can not change. Any</span>
+    <span class="doccomment">/// other bitmap sharing the same [`PixelRef`] are also marked as immutable.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Once [PixelRef] is marked immutable, the setting cannot be cleared.</span>
+    <span class="doccomment">/// Once [`PixelRef`] is marked immutable, the setting cannot be cleared.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Writing to immutable SkBitmap pixels triggers an assert on debug builds.</span>
+    <span class="doccomment">/// Writing to immutable [`Bitmap`] pixels triggers an assert on debug builds.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_immutable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setImmutable</span>() }
     }
 
-    <span class="doccomment">/// Returns `true` if [AlphaType] is set to hint that all pixels are opaque; their alpha value</span>
+    <span class="doccomment">/// Returns `true` if [`AlphaType`] is set to hint that all pixels are opaque; their alpha value</span>
     <span class="doccomment">/// is implicitly or explicitly `1.0`. If `true`, and all pixels are not opaque, Skia may draw</span>
     <span class="doccomment">/// incorrectly.</span>
     <span class="doccomment">///</span>
@@ -1070,24 +1068,24 @@
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">is_opaque</span>()
     }
 
-    <span class="doccomment">/// Resets to its initial state; all fields are set to zero, as if [Bitmap] had</span>
-    <span class="doccomment">/// been initialized by [RCHandle&lt;SkBitmap&gt;::new()].</span>
+    <span class="doccomment">/// Resets to its initial state; all fields are set to zero, as if [`Bitmap`] had</span>
+    <span class="doccomment">/// been initialized by [`Bitmap::new()`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Sets width, height, row bytes to zero; pixel address to `None`; [ColorType] to</span>
-    <span class="doccomment">/// [ColorType::Unknown]; and [AlphaType] to [AlphaType::Unknown].</span>
+    <span class="doccomment">/// Sets width, height, row bytes to zero; pixel address to `None`; [`ColorType`] to</span>
+    <span class="doccomment">/// [`ColorType::Unknown`]; and [`AlphaType`] to [`AlphaType::Unknown`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [PixelRef] is allocated, its reference count is decreased by one, releasing</span>
-    <span class="doccomment">/// its memory if [Bitmap] is the sole owner.</span>
+    <span class="doccomment">/// If [`PixelRef`] is allocated, its reference count is decreased by one, releasing its memory</span>
+    <span class="doccomment">/// if [`Bitmap`] is the sole owner.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() }
     }
 
-    <span class="doccomment">/// Returns `true `if all pixels are opaque. [ColorType] determines how pixels are encoded, and</span>
-    <span class="doccomment">/// whether pixel describes alpha. Returns `true` for [ColorType] without alpha in each pixel;</span>
-    <span class="doccomment">/// for other [ColorType], returns `true` if all pixels have alpha values equivalent to 1.0 or</span>
+    <span class="doccomment">/// Returns `true `if all pixels are opaque. [`ColorType`] determines how pixels are encoded, and</span>
+    <span class="doccomment">/// whether pixel describes alpha. Returns `true` for [`ColorType`] without alpha in each pixel;</span>
+    <span class="doccomment">/// for other [`ColorType`], returns `true` if all pixels have alpha values equivalent to 1.0 or</span>
     <span class="doccomment">/// greater.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` for [ColorType::Unknown].</span>
+    <span class="doccomment">/// Returns `false` for [`ColorType::Unknown`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_is_opaque</span>(<span class="ident">bm</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_ComputeIsOpaque</span>(<span class="ident">bm</span>.<span class="ident">native</span>()) }
     }
@@ -1102,18 +1100,18 @@
         <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">dimensions</span>()
     }
 
-    <span class="doccomment">/// Returns the bounds of this bitmap, offset by its [PixelRef] origin.</span>
+    <span class="doccomment">/// Returns the bounds of this bitmap, offset by its [`PixelRef`] origin.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pixel_ref_origin</span>();
         <span class="ident">IRect::from_xywh</span>(<span class="ident">origin</span>.<span class="ident">x</span>, <span class="ident">origin</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
     }
 
-    <span class="doccomment">/// Sets width, height, [AlphaType], [ColorType], [ColorSpace], and optional `row_bytes`. Frees</span>
-    <span class="doccomment">/// pixels, and returns `true` if successful.</span>
+    <span class="doccomment">/// Sets width, height, [`AlphaType`], [ColorType], [`ColorSpace`], and optional `row_bytes`.</span>
+    <span class="doccomment">/// Frees pixels, and returns `true` if successful.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `row_bytes` must equal or exceed `image_info.min_row_bytes()`. If `image_info.color_space()`</span>
-    <span class="doccomment">/// is [ColorType::Unknown], `row_bytes` is ignored and treated as zero; for all other</span>
-    <span class="doccomment">/// [ColorSpace] values, `row_bytes` of zero is treated as `image_info.min_row_bytes()`.</span>
+    <span class="doccomment">/// is [`ColorType::Unknown`], `row_bytes` is ignored and treated as zero; for all other</span>
+    <span class="doccomment">/// [`ColorSpace`] values, `row_bytes` of zero is treated as `image_info.min_row_bytes()`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Calls `reset()` and returns `false` if:</span>
     <span class="doccomment">/// - rowBytes exceeds 31 bits</span>
@@ -1133,11 +1131,11 @@
         }
     }
 
-    <span class="doccomment">/// Sets [ImageInfo] to info following the rules in `set_info()` and allocates pixel memory.</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
     <span class="doccomment">/// Memory is zeroed.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` and calls `reset()` if [ImageInfo] could not be set, or memory could not be</span>
-    <span class="doccomment">/// allocated, or memory could not optionally be zeroed.</span>
+    <span class="doccomment">/// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not</span>
+    <span class="doccomment">/// be allocated, or memory could not optionally be zeroed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
     <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
@@ -1152,10 +1150,10 @@
         }
     }
 
-    <span class="doccomment">/// Sets [ImageInfo] to info following the rules in `set_info()` and allocates pixel memory.</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
     <span class="doccomment">/// Memory is zeroed.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` and calls `reset()` if [ImageInfo] could not be set, or memory could not be</span>
+    <span class="doccomment">/// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not be</span>
     <span class="doccomment">/// allocated, or memory could not optionally be zeroed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
@@ -1167,11 +1165,11 @@
             .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels_flags failed&quot;</span>);
     }
 
-    <span class="doccomment">/// Sets [ImageInfo] to info following the rules in `set_info()` and allocates pixel memory.</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
     <span class="doccomment">/// `row_bytes` must equal or exceed `info.width()` times `info.bytes_per_pixel()`, or equal</span>
     <span class="doccomment">/// `None`. Pass in `None` for `row_bytes` to compute the minimum valid value.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` and calls `reset()` if [ImageInfo] could not be set, or memory could not be</span>
+    <span class="doccomment">/// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not be</span>
     <span class="doccomment">/// allocated.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
@@ -1192,7 +1190,7 @@
         }
     }
 
-    <span class="doccomment">/// Sets [ImageInfo] to info following the rules in `set_info()` and allocates pixel memory.</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
     <span class="doccomment">/// `row_bytes` must equal or exceed `info.width()` times `info.bytes_per_pixel()`, or equal</span>
     <span class="doccomment">/// `None`. Pass in `None` for `row_bytes` to compute the minimum valid value.</span>
     <span class="doccomment">///</span>
@@ -1212,17 +1210,17 @@
             .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels_info failed&quot;</span>);
     }
 
-    <span class="doccomment">/// Sets [ImageInfo] to width, height, and native color type; and allocates pixel memory. If</span>
-    <span class="doccomment">/// `is_opaque` is `true`, sets [ImageInfo] to [AlphaType::Opaque]; otherwise, sets to</span>
-    <span class="doccomment">/// [AlphaType::Premul].</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If</span>
+    <span class="doccomment">/// `is_opaque` is `true`, sets [`ImageInfo`] to [`AlphaType::Opaque`]; otherwise, sets to</span>
+    <span class="doccomment">/// [`AlphaType::Premul`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Calls `reset()` and returns `false` if width exceeds 29 bits or is negative, or height is</span>
     <span class="doccomment">/// negative.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `false` if allocation fails.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Use to create [Bitmap] that matches [crate::PMColor], the native pixel arrangement on the platform.</span>
-    <span class="doccomment">/// [Bitmap] drawn to output device skips converting its pixel format.</span>
+    <span class="doccomment">/// Use to create [`Bitmap`] that matches [`crate::PMColor`], the native pixel arrangement on</span>
+    <span class="doccomment">/// the platform. [`Bitmap`] drawn to output device skips converting its pixel format.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_n32_pixels</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
@@ -1239,14 +1237,14 @@
         }
     }
 
-    <span class="doccomment">/// Sets [ImageInfo] to width, height, and native color type; and allocates pixel memory. If</span>
-    <span class="doccomment">/// `is_opaque` is `true`, sets [ImageInfo] to [AlphaType::Opaque]; otherwise, sets to</span>
-    <span class="doccomment">/// [AlphaType::Premul].</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If</span>
+    <span class="doccomment">/// `is_opaque` is `true`, sets [`ImageInfo`] to [`AlphaType::Opaque`]; otherwise, sets to</span>
+    <span class="doccomment">/// [`AlphaType::Premul`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Aborts if width exceeds 29 bits or is negative, or height is negative, or allocation fails.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Use to create [Bitmap] that matches [crate::PMColor], the native pixel arrangement on the platform.</span>
-    <span class="doccomment">/// [Bitmap] drawn to output device skips converting its pixel format.</span>
+    <span class="doccomment">/// Use to create [`Bitmap`] that matches [`crate::PMColor`], the native pixel arrangement on</span>
+    <span class="doccomment">/// the platform. [`Bitmap`] drawn to output device skips converting its pixel format.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_n32_pixels</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
@@ -1259,15 +1257,15 @@
 
     <span class="comment">// TODO: wrap installPixels with releaseProc.</span>
 
-    <span class="doccomment">/// Sets [ImageInfo] to info following the rules in `set_info()`, and creates [PixelRef]</span>
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()`, and creates [`PixelRef`]</span>
     <span class="doccomment">/// containing `pixels` and `row_bytes`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [ImageInfo] could not be set, or `row_bytes` is less than `info.min_row_bytes(): calls</span>
+    <span class="doccomment">/// If [`ImageInfo`] could not be set, or `row_bytes` is less than `info.min_row_bytes(): calls</span>
     <span class="doccomment">/// `reset()`, and returns `false`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Otherwise, if pixels equals `ptr::null_mut()`: sets [ImageInfo], returns `true`.</span>
+    <span class="doccomment">/// Otherwise, if pixels equals `ptr::null_mut()`: sets [`ImageInfo`], returns `true`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Caller must ensure that pixels are valid for the lifetime of [Bitmap] and [PixelRef].</span>
+    <span class="doccomment">/// Caller must ensure that pixels are valid for the lifetime of [`Bitmap`] and [`PixelRef`].</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_pixels</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
@@ -1283,19 +1281,19 @@
 
     <span class="comment">// TODO: setPixels()?</span>
 
-    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [PixelRef]. The allocation</span>
-    <span class="doccomment">/// size is determined by [ImageInfo] width, height, and [ColorType].</span>
+    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [`PixelRef`]. The</span>
+    <span class="doccomment">/// allocation size is determined by [`ImageInfo`] width, height, and [`ColorType`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` if `info().color_type()` is [ColorType::Unknown], or allocation fails.</span>
+    <span class="doccomment">/// Returns `false` if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_tryAllocPixels</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
     }
 
-    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [PixelRef]. The allocation</span>
-    <span class="doccomment">/// size is determined by [ImageInfo] width, height, and [ColorType].</span>
+    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [`PixelRef`]. The</span>
+    <span class="doccomment">/// allocation size is determined by [`ImageInfo`] width, height, and [`ColorType`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Aborts if `info().color_type()` is [ColorType::Unknown], or allocation fails.</span>
+    <span class="doccomment">/// Aborts if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">try_alloc_pixels</span>()
             .<span class="ident">into_option</span>()
@@ -1306,35 +1304,35 @@
 
     <span class="comment">// TODO: find a way to return pixel ref without increasing the ref count here?</span>
 
-    <span class="doccomment">/// Returns [PixelRef], which contains: pixel base address; its dimensions; and `row_bytes()`,</span>
-    <span class="doccomment">/// the interval from one row to the next. Does not change [PixelRef] reference count.</span>
-    <span class="doccomment">/// [PixelRef] may be shared by multiple bitmaps.</span>
+    <span class="doccomment">/// Returns [`PixelRef`], which contains: pixel base address; its dimensions; and `row_bytes()`,</span>
+    <span class="doccomment">/// the interval from one row to the next. Does not change [`PixelRef`] reference count.</span>
+    <span class="doccomment">/// [`PixelRef`] may be shared by multiple bitmaps.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [PixelRef] has not been set, returns `None`.</span>
+    <span class="doccomment">/// If [`PixelRef`] has not been set, returns `None`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span> {
         <span class="ident">PixelRef::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixelRef</span>.<span class="ident">fPtr</span>)
     }
 
-    <span class="doccomment">/// Returns origin of pixels within [PixelRef]. [Bitmap] bounds is always contained</span>
-    <span class="doccomment">/// by [PixelRef] bounds, which may be the same size or larger. Multiple [Bitmap]</span>
-    <span class="doccomment">/// can share the same [PixelRef], where each [Bitmap] has different bounds.</span>
+    <span class="doccomment">/// Returns origin of pixels within [`PixelRef`]. [`Bitmap`] bounds is always contained</span>
+    <span class="doccomment">/// by [`PixelRef`] bounds, which may be the same size or larger. Multiple [`Bitmap`]</span>
+    <span class="doccomment">/// can share the same [`PixelRef`], where each [`Bitmap`] has different bounds.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The returned origin added to [Bitmap] dimensions equals or is smaller than the</span>
-    <span class="doccomment">/// [PixelRef] dimensions.</span>
+    <span class="doccomment">/// The returned origin added to [`Bitmap`] dimensions equals or is smaller than the</span>
+    <span class="doccomment">/// [`PixelRef`] dimensions.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `(0, 0)` if [PixelRef] is `None`.</span>
+    <span class="doccomment">/// Returns `(0, 0)` if [`PixelRef`] is `None`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IPoint</span> {
         <span class="ident">IPoint::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_pixelRefOrigin</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
     }
 
-    <span class="doccomment">/// Replaces `pixel_ref` and origin in [Bitmap].  `offset` specifies the offset</span>
-    <span class="doccomment">/// within the [PixelRef] pixels for the top-left corner of the bitmap.</span>
+    <span class="doccomment">/// Replaces `pixel_ref` and origin in [`Bitmap`]. `offset` specifies the offset within the</span>
+    <span class="doccomment">/// [`PixelRef`] pixels for the top-left corner of the bitmap.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Asserts in debug builds if offset is out of range. Pins offset to legal range in release</span>
     <span class="doccomment">/// builds.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The caller is responsible for ensuring that the pixels match the [ColorType] and [AlphaType]</span>
-    <span class="doccomment">/// in [ImageInfo].</span>
+    <span class="doccomment">/// The caller is responsible for ensuring that the pixels match the [`ColorType`] and</span>
+    <span class="doccomment">/// [`AlphaType`] in [`ImageInfo`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pixel_ref</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">pixel_ref</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -1351,32 +1349,30 @@
         }
     }
 
-    <span class="doccomment">/// Returns `true` if [Bitmap] can be drawn.</span>
+    <span class="doccomment">/// Returns `true` if [`Bitmap`] can be drawn.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_ready_to_draw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_readyToDraw</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
     }
 
-    <span class="doccomment">/// Returns a unique value corresponding to the pixels in [PixelRef].</span>
-    <span class="doccomment">///     </span>
-    <span class="doccomment">/// Returns a different value after `notify_pixels_changed()` has been called.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero if [PixelRef] is `None`.</span>
+    <span class="doccomment">/// Returns a unique value corresponding to the pixels in [`PixelRef`].  </span>
+    <span class="doccomment">/// Returns a different value after `notify_pixels_changed()` has been called.  </span>
+    <span class="doccomment">/// Returns zero if [`PixelRef`] is `None`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Determines if pixels have changed since last examined.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getGenerationID</span>() }
     }
 
-    <span class="doccomment">/// Marks that pixels in [PixelRef] have changed. Subsequent calls to `generation_id()` return a</span>
-    <span class="doccomment">/// different value.</span>
+    <span class="doccomment">/// Marks that pixels in [`PixelRef`] have changed. Subsequent calls to `generation_id()` return</span>
+    <span class="doccomment">/// a different value.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">notify_pixels_changed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">notifyPixelsChanged</span>() }
     }
 
-    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [ColorSpace]. All pixels</span>
-    <span class="doccomment">/// contained by [bounds(&amp;self)] are affected. If the [color_type(&amp;self)] is [ColorType::Gray8]</span>
-    <span class="doccomment">/// or [ColorType::RGB565], then alpha is ignored; RGB is treated as opaque. If</span>
-    <span class="doccomment">/// [color_type(&amp;self)] is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [`ColorSpace`]. All pixels</span>
+    <span class="doccomment">/// contained by [`bounds(&amp;self)`] are affected. If the [`color_type(&amp;self)`] is</span>
+    <span class="doccomment">/// [`ColorType::Gray8`] or [`ColorType::RGB565`], then alpha is ignored; RGB is treated as</span>
+    <span class="doccomment">/// opaque. If [`color_type(&amp;self)`] is [`ColorType::Alpha8`], then RGB is ignored.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_color_4f`] will have</span>
     <span class="doccomment">/// higher color resolution.</span>
@@ -1384,10 +1380,10 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">eraseColor1</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) }
     }
 
-    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [ColorSpace]. All pixels</span>
-    <span class="doccomment">/// contained by [bounds(&amp;self)] are affected. If the [color_type(&amp;self)] is [ColorType::Gray8]</span>
-    <span class="doccomment">/// or [ColorType::RGB565], then alpha is ignored; RGB is treated as opaque. If</span>
-    <span class="doccomment">/// [color_type(&amp;self)] is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [`ColorSpace`]. All pixels</span>
+    <span class="doccomment">/// contained by [`bounds(&amp;self)`] are affected. If the [`color_type(&amp;self)`] is</span>
+    <span class="doccomment">/// [`ColorType::Gray8`] or [ColorType::RGB565], then alpha is ignored; RGB is treated as</span>
+    <span class="doccomment">/// opaque. If [`color_type(&amp;self)`] is [`ColorType::Alpha8`], then RGB is ignored.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_color_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>, <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span>) {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
@@ -1396,34 +1392,34 @@
     }
 
     <span class="doccomment">/// Replaces pixel values with unpremultiplied color built from `a`, `r`, `g`, and `b`,</span>
-    <span class="doccomment">/// interpreted as being in the sRGB [ColorSpace]. All pixels contained by [bounds(&amp;self)] are</span>
-    <span class="doccomment">/// affected. If the [color_type(&amp;self)] is [ColorType::Gray8] or [ColorType::RGB565], then `a`</span>
-    <span class="doccomment">/// is ignored; `r`, `g`, and `b` are treated as opaque. If [color_type(&amp;self)] is</span>
-    <span class="doccomment">/// [ColorType::Alpha8], then `r`, `g`, and `b` are ignored.</span>
+    <span class="doccomment">/// interpreted as being in the sRGB [`ColorSpace`]. All pixels contained by [`bounds(&amp;self)`]</span>
+    <span class="doccomment">/// are affected. If the [`color_type(&amp;self)`] is [`ColorType::Gray8`] or [`ColorType::RGB565`],</span>
+    <span class="doccomment">/// then `a` is ignored; `r`, `g`, and `b` are treated as opaque. If [`color_type(&amp;self)`] is</span>
+    <span class="doccomment">/// [`ColorType::Alpha8`], then `r`, `g`, and `b` are ignored.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_argb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">u8</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) {
         <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_eraseARGB</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">a</span>.<span class="ident">into</span>(), <span class="ident">r</span>.<span class="ident">into</span>(), <span class="ident">g</span>.<span class="ident">into</span>(), <span class="ident">b</span>.<span class="ident">into</span>()) }
     }
 
-    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [ColorSpace]. If</span>
-    <span class="doccomment">/// area does not intersect `bounds()`, call has no effect.</span>
+    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [`ColorSpace`].</span>
+    <span class="doccomment">/// If area does not intersect `bounds()`, call has no effect.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If the `color_type()` is [ColorType::Gray8] [ColorType::RGB565], then alpha is ignored; RGB</span>
-    <span class="doccomment">/// is treated as opaque. If `color_type()` is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="doccomment">/// If the `color_type()` is [`ColorType::Gray8`] [`ColorType::RGB565`], then alpha is ignored;</span>
+    <span class="doccomment">/// RGB is treated as opaque. If `color_type()` is [`ColorType::Alpha8`], then RGB is ignored.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Input color is ultimately converted to an SkColor4f, so [`Self::erase_4f`] will have higher</span>
-    <span class="doccomment">/// color resolution.</span>
+    <span class="doccomment">/// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_4f`] will have</span>
+    <span class="doccomment">/// higher color resolution.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>, <span class="ident">area</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">erase1</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+                .<span class="ident">erase2</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
         }
     }
 
-    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [ColorSpace]. If</span>
-    <span class="doccomment">/// area does not intersect `bounds()`, call has no effect.</span>
+    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [`ColorSpace`].</span>
+    <span class="doccomment">/// If area does not intersect `bounds()`, call has no effect.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If the `color_type()` is [ColorType::Gray8] [ColorType::RGB565], then alpha is ignored; RGB</span>
-    <span class="doccomment">/// is treated as opaque. If `color_type()` is [ColorType::Alpha8], then RGB is ignored.</span>
+    <span class="doccomment">/// If the `color_type()` is [`ColorType::Gray8`] [`ColorType::RGB565`], then alpha is ignored;</span>
+    <span class="doccomment">/// RGB is treated as opaque. If `color_type()` is [`ColorType::Alpha8`], then RGB is ignored.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_4f</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>,
@@ -1439,55 +1435,67 @@
         }
     }
 
-    <span class="doccomment">/// Returns pixel at (x, y) as unpremultiplied color.</span>
-    <span class="doccomment">/// Returns black with alpha if [ColorType] is [ColorType::Alpha8]</span>
+    <span class="doccomment">/// Returns pixel at `(x, y)` as unpremultiplied color.  </span>
+    <span class="doccomment">/// Returns black with alpha if [`ColorType`] is [`ColorType::Alpha8`]</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Input is not validated: out of bounds values of x or y trigger an assert().</span>
+    <span class="doccomment">/// Input is not validated: out of bounds values of `x` or `y` trigger an `assert()`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Fails if [ColorType] is [ColorType::Unknown] or pixel address is `nullptr`.</span>
+    <span class="doccomment">/// Fails if [`ColorType`] is [`ColorType::Unknown`] or pixel address is `nullptr`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [ColorSpace] in [ImageInfo] is ignored. Some color precision may be lost in the</span>
-    <span class="doccomment">/// conversion to unpremultiplied color; original pixel data may have additional</span>
-    <span class="doccomment">/// precision.</span>
+    <span class="doccomment">/// [`ColorSpace`] in [`ImageInfo`] is ignored. Some color precision may be lost in the</span>
+    <span class="doccomment">/// conversion to unpremultiplied color; original pixel data may have additional precision.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_color</span>(<span class="ident">p</span>)
     }
 
-    <span class="doccomment">/// Look up the pixel at (x,y) and return its alpha component, normalized to [0..1]. This is</span>
-    <span class="doccomment">/// roughly equivalent to [getColor().a()], but can be more efficient (and more precise if the</span>
+    <span class="doccomment">/// Returns pixel at `(x, y)` as unpremultiplied color.</span>
+    <span class="doccomment">/// Returns black with alpha if [ColorType] is [ColorType::Alpha8]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Input is not validated: out of bounds values of x or y trigger an `assert()`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Fails if [ColorType] is [ColorType::Unknown] or pixel address is `None`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`ColorSpace`] in [`ImageInfo`] is ignored. Some color precision may be lost in the</span>
+    <span class="doccomment">/// conversion to unpremultiplied color.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color4f</span> {
+        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_color_4f</span>(<span class="ident">p</span>)
+    }
+
+    <span class="doccomment">/// Look up the pixel at `(x,y)` and return its alpha component, normalized to `[0..1]`. This is</span>
+    <span class="doccomment">/// roughly equivalent to `get_color().a()`, but can be more efficient (and more precise if the</span>
     <span class="doccomment">/// pixels store more than 8 bits per component).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpha_f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">f32</span> {
         <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_alpha_f</span>(<span class="ident">p</span>)
     }
 
-    <span class="doccomment">/// Returns pixel address at (x, y).</span>
+    <span class="doccomment">/// Returns pixel address at `(x, y)`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Input is not validated: out of bounds values of x or y, or kUnknown_SkColorType, trigger an</span>
-    <span class="doccomment">/// assert(). Returns `nullptr` if [ColorType] is [ColorType::Unknown], or [PixelRef] is</span>
-    <span class="doccomment">/// `nullptr`.</span>
+    <span class="doccomment">/// Input is not validated: out of bounds values of `x` or `y`, or [`ColorType::Unknown`],</span>
+    <span class="doccomment">/// trigger an `assert()`. Returns `nullptr` if [`ColorType`] is [`ColorType::Unknown`], or</span>
+    <span class="doccomment">/// [`PixelRef`] is `nullptr`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Performs a lookup of pixel size; for better performance, call one of: `get_addr8()`,</span>
     <span class="doccomment">/// `get_addr16()`, or `get_addr32()`.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">ffi::c_void</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">ffi::c_void</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getAddr</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>)
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getAddr</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) }
     }
 
     <span class="comment">// TODO: get_addr_32(), get_addr_16(), get_addr_8()</span>
 
-    <span class="doccomment">/// Shares [PixelRef] with dst. Pixels are not copied; [Bitmap] and dst point to the same</span>
-    <span class="doccomment">/// pixels; dst [Self::bounds()] are set to the intersection of subset and the original</span>
-    <span class="doccomment">/// [Self::bounds()].</span>
+    <span class="doccomment">/// Shares [`PixelRef`] with `dst`. Pixels are not copied; [`Bitmap`] and dst point to the same</span>
+    <span class="doccomment">/// pixels; dst [`Self::bounds()`] are set to the intersection of subset and the original</span>
+    <span class="doccomment">/// [`Self::bounds()`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Subset may be larger than [Self::bounds()]. Any area outside of [Self::bounds()] is ignored.</span>
+    <span class="doccomment">/// Subset may be larger than [`Self::bounds()`]. Any area outside of [`Self::bounds()`] is</span>
+    <span class="doccomment">/// ignored.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Any contents of dst are discarded.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Return `false` if:</span>
     <span class="doccomment">/// - dst is `nullptr`</span>
-    <span class="doccomment">/// - [PixelRef] is `nullptr`</span>
-    <span class="doccomment">/// - subset does not intersect [Self::bounds()]</span>
+    <span class="doccomment">/// - [`PixelRef`] is `nullptr`</span>
+    <span class="doccomment">/// - subset does not intersect [`Self::bounds()`]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_extractSubset&gt;</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
@@ -1497,27 +1505,27 @@
         }
     }
 
-    <span class="doccomment">/// Copies a [crate::Rect] of pixels from [Bitmap] to `dst_pixels`. Copy starts at (`src_x`,</span>
-    <span class="doccomment">/// `src_y`), and does not exceed [Bitmap] `(width(), height())`.</span>
+    <span class="doccomment">/// Copies a [`crate::Rect`] of pixels from [`Bitmap`] to `dst_pixels`. Copy starts at `(src_x,</span>
+    <span class="doccomment">/// src_y)`, and does not exceed [`Bitmap`] `(width(), height())`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `dst_info` specifies width, height, [ColorType], [AlphaType], and [ColorSpace] of</span>
-    <span class="doccomment">/// destination.</span>
-    <span class="doccomment">/// `dst_row_bytes` specifics the gap from one destination row to the next.</span>
-    <span class="doccomment">/// Returns `true` if pixels are copied. Returns false if:</span>
+    <span class="doccomment">/// `dst_info` specifies width, height, [ColorType], [`AlphaType`], and [`ColorSpace`] of</span>
+    <span class="doccomment">/// destination.  </span>
+    <span class="doccomment">/// `dst_row_bytes` specifics the gap from one destination row to the next. Returns `true` if</span>
+    <span class="doccomment">/// pixels are copied. Returns `false` if:</span>
     <span class="doccomment">/// - `dst_info` has no address</span>
     <span class="doccomment">/// - `dst_row_bytes` is less than `dst_info.min_row_bytes()`</span>
-    <span class="doccomment">/// - [PixelRef] is `nullptr`</span>
+    <span class="doccomment">/// - [`PixelRef`] is `nullptr`</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Pixels are copied only if pixel conversion is possible. If [Self::color_type()] is</span>
-    <span class="doccomment">/// [ColorType::Gray8], or [ColorType::Alpha8]; `dst_info.color_type()` must match.</span>
-    <span class="doccomment">/// If [Self::color_type()] is [ColorType::Gray8], `dst_info.color_space()` must match.</span>
-    <span class="doccomment">/// If [Self::alpha_type()] is [AlphaType::Opaque], `dst_info.alpha_type()` must</span>
-    <span class="doccomment">/// match. If [Self::color_space()] is `nullptr`, `dst_info.color_space()` must match. Returns</span>
-    <span class="doccomment">/// `false` if pixel conversion is not possible.</span>
+    <span class="doccomment">/// Pixels are copied only if pixel conversion is possible. If [`Self::color_type()`] is</span>
+    <span class="doccomment">/// [`ColorType::Gray8`], or [`ColorType::Alpha8`]; `dst_info.color_type()` must match. If</span>
+    <span class="doccomment">/// [`Self::color_type()`] is [`ColorType::Gray8`], `dst_info.color_space()` must match. If</span>
+    <span class="doccomment">/// [`Self::alpha_type()`] is [`AlphaType::Opaque`], `dst_info.alpha_type()` must match. If</span>
+    <span class="doccomment">/// [`Self::color_space()`] is `nullptr`, `dst_info.color_space()` must match. Returns `false`</span>
+    <span class="doccomment">/// if pixel conversion is not possible.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `src_x` and `src_y` may be negative to copy only top or left of source. Returns</span>
-    <span class="doccomment">/// `false` if [Self::width()] or [Self::height()] is zero or negative.</span>
-    <span class="doccomment">/// Returns `false` if abs(src_x) &gt;= [Self::width()], or if abs(src_y) &gt;= [Self::height()].</span>
+    <span class="doccomment">/// `src_x` and `src_y` may be negative to copy only top or left of source. Returns `false` if</span>
+    <span class="doccomment">/// [`Self::width()`] or [`Self::height()`] is zero or negative. Returns `false` if `abs(src_x)`</span>
+    <span class="doccomment">/// &gt;= [`Self::width()`], or if `abs(src_y)` &gt;= [`Self::height()`].</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_pixels</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -1537,9 +1545,9 @@
     <span class="doccomment">/// Sets dst to alpha described by pixels. Returns `false` if `dst` cannot be written to or</span>
     <span class="doccomment">/// `dst` pixels cannot be allocated.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If `paint` is not `None` and contains [crate::MaskFilter], [crate::MaskFilter] generates</span>
-    <span class="doccomment">/// mask alpha from [Bitmap]. Uses HeapAllocator to reserve memory for `dst` [PixelRef]. Returns</span>
-    <span class="doccomment">/// offset to top-left position for `dst` for alignment with [Bitmap]; (0, 0) unless</span>
+    <span class="doccomment">/// If `paint` is not `None` and contains [`crate::MaskFilter`], [`crate::MaskFilter`] generates</span>
+    <span class="doccomment">/// mask alpha from [`Bitmap`]. Uses `HeapAllocator` to reserve memory for `dst` [`PixelRef`].</span>
+    <span class="doccomment">/// Returns offset to top-left position for `dst` for alignment with [`Bitmap`]; `(0, 0)` unless</span>
     <span class="doccomment">/// [crate::MaskFilter] generates mask.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">IPoint::default</span>();
@@ -1554,11 +1562,9 @@
         .<span class="ident">if_true_some</span>(<span class="ident">offset</span>)
     }
 
-    <span class="doccomment">/// Copies [Bitmap] pixel address, row bytes, and [ImageInfo] to pixmap, if address is</span>
-    <span class="doccomment">/// available, and returns [Some(Pixmap)]. If pixel address is not available, return `None` and</span>
-    <span class="doccomment">/// leave pixmap unchanged.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// pixmap contents become invalid on any future change to [Bitmap].</span>
+    <span class="doccomment">/// Copies [`Bitmap`] pixel address, row bytes, and [`ImageInfo`] to pixmap, if address is</span>
+    <span class="doccomment">/// available, and returns [`Some(Pixmap)`]. If pixel address is not available, return `None`</span>
+    <span class="doccomment">/// and leave pixmap unchanged.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_peekPixels&gt;</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
