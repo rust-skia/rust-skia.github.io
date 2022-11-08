@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\interop\stream.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/interop/stream.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -382,384 +376,383 @@
 <span id="376">376</span>
 <span id="377">377</span>
 <span id="378">378</span>
-</pre><pre class="rust"><code><span class="doccomment">//! `SkStream` and relatives.</span>
-<span class="doccomment">//! This implementation covers the minimal subset to interface with Rust streams.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Bindings that wrap functions that use Skia stream types _must_ use Rust streams instead.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! `SkStream` and relatives.
+//! This implementation covers the minimal subset to interface with Rust streams.
+//!
+//! Bindings that wrap functions that use Skia stream types _must_ use Rust streams instead.
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Data</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-    <span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkDynamicMemoryWStream</span>, <span class="ident">SkMemoryStream</span>, <span class="ident">SkStream</span>, <span class="ident">SkStreamAsset</span>, <span class="ident">SkWStream</span>,
+</span><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Data};
+<span class="kw">use </span>skia_bindings::{
+    <span class="self">self </span><span class="kw">as </span>sb, SkDynamicMemoryWStream, SkMemoryStream, SkStream, SkStreamAsset, SkWStream,
 };
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ptr</span>};
+<span class="kw">use </span>std::{ffi, fmt, io, marker::PhantomData, ptr};
 
-<span class="doccomment">/// Trait representing an Skia allocated Stream type with a base class of SkStream.</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeStreamBase</span><span class="op">&gt;</span>(<span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>);
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeStreamBase</span><span class="op">&gt;</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {}
+<span class="doccomment">/// Trait representing an Skia allocated Stream type with a base class of SkStream.
+</span><span class="attribute">#[repr(transparent)]
+</span><span class="kw">pub struct </span>Stream&lt;N: NativeStreamBase&gt;(ptr::NonNull&lt;N&gt;);
+<span class="kw">unsafe impl</span>&lt;N: NativeStreamBase&gt; Send <span class="kw">for </span>Stream&lt;N&gt; {}
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">NativeStreamBase</span> {
-    <span class="kw">fn</span> <span class="ident">as_stream_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkStream</span>;
+<span class="kw">pub trait </span>NativeStreamBase {
+    <span class="kw">fn </span>as_stream_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkStream;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">NativeStreamBase</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkStream_delete</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+<span class="kw">impl</span>&lt;T: NativeStreamBase&gt; Drop <span class="kw">for </span>Stream&lt;T&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            sb::C_SkStream_delete(<span class="self">self</span>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">NativeStreamBase</span><span class="op">&gt;</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">N</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">ptr::NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="ident">Stream</span>)
+<span class="kw">impl</span>&lt;N: NativeStreamBase&gt; Stream&lt;N&gt; {
+    <span class="kw">pub fn </span>from_ptr(ptr: <span class="kw-2">*mut </span>N) -&gt; <span class="prelude-ty">Option</span>&lt;Stream&lt;N&gt;&gt; {
+        ptr::NonNull::new(ptr).map(Stream)
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">StreamAsset</span> <span class="op">=</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">SkStreamAsset</span><span class="op">&gt;</span>;
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkStream</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkStreamAsset</span> {}
+<span class="kw">pub type </span>StreamAsset = Stream&lt;SkStreamAsset&gt;;
+<span class="kw">impl </span>NativeBase&lt;SkStream&gt; <span class="kw">for </span>SkStreamAsset {}
 
-<span class="kw">impl</span> <span class="ident">NativeStreamBase</span> <span class="kw">for</span> <span class="ident">SkStreamAsset</span> {
-    <span class="kw">fn</span> <span class="ident">as_stream_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkStream</span> {
-        <span class="self">self</span>.<span class="ident">base_mut</span>()
+<span class="kw">impl </span>NativeStreamBase <span class="kw">for </span>SkStreamAsset {
+    <span class="kw">fn </span>as_stream_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkStream {
+        <span class="self">self</span>.base_mut()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeAccess</span><span class="op">&lt;</span><span class="ident">SkStreamAsset</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StreamAsset</span> {
-    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkStreamAsset</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>() }
+<span class="kw">impl </span>NativeAccess&lt;SkStreamAsset&gt; <span class="kw">for </span>StreamAsset {
+    <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkStreamAsset {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.as_ref() }
     }
-    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkStreamAsset</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_mut</span>() }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">StreamAsset</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;StreamAsset&quot;</span>).<span class="ident">finish</span>()
+    <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkStreamAsset {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.as_mut() }
     }
 }
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MemoryStream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">native</span>: <span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">SkMemoryStream</span><span class="op">&gt;</span>,
-    <span class="ident">pd</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> ()<span class="op">&gt;</span>,
-}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">MemoryStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {}
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkStream</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkMemoryStream</span> {}
-
-<span class="kw">impl</span> <span class="ident">NativeStreamBase</span> <span class="kw">for</span> <span class="ident">SkMemoryStream</span> {
-    <span class="kw">fn</span> <span class="ident">as_stream_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkStream</span> {
-        <span class="self">self</span>.<span class="ident">base_mut</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>StreamAsset {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;StreamAsset&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MemoryStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkStream_delete</span>(<span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>());
+<span class="attribute">#[repr(C)]
+</span><span class="kw">pub struct </span>MemoryStream&lt;<span class="lifetime">&#39;a</span>&gt; {
+    native: ptr::NonNull&lt;SkMemoryStream&gt;,
+    pd: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>()&gt;,
+}
+<span class="kw">unsafe impl </span>Send <span class="kw">for </span>MemoryStream&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="kw">impl </span>NativeBase&lt;SkStream&gt; <span class="kw">for </span>SkMemoryStream {}
+
+<span class="kw">impl </span>NativeStreamBase <span class="kw">for </span>SkMemoryStream {
+    <span class="kw">fn </span>as_stream_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkStream {
+        <span class="self">self</span>.base_mut()
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>MemoryStream&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            sb::C_SkStream_delete(<span class="self">self</span>.native_mut().as_stream_mut());
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeAccess</span><span class="op">&lt;</span><span class="ident">SkMemoryStream</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MemoryStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkMemoryStream</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_ref</span>() }
+<span class="kw">impl </span>NativeAccess&lt;SkMemoryStream&gt; <span class="kw">for </span>MemoryStream&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkMemoryStream {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native.as_ref() }
     }
-    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkMemoryStream</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_mut</span>() }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MemoryStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MemoryStream&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;offset&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fOffset</span>)
-            .<span class="ident">finish</span>()
+    <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkMemoryStream {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native.as_mut() }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">MemoryStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="comment">// Create a stream asset that refers the bytes provided.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">MemoryStream</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMemoryStream_MakeDirect</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">bytes</span>.<span class="ident">len</span>()) };
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>MemoryStream&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;MemoryStream&quot;</span>)
+            .field(<span class="string">&quot;offset&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.native().fOffset)
+            .finish()
+    }
+}
 
-        <span class="ident">MemoryStream</span> {
-            <span class="ident">native</span>: <span class="ident">ptr::NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">pd</span>: <span class="ident">PhantomData</span>,
+<span class="kw">impl </span>MemoryStream&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="comment">// Create a stream asset that refers the bytes provided.
+    </span><span class="kw">pub fn </span>from_bytes(bytes: <span class="kw-2">&amp;</span>[u8]) -&gt; MemoryStream {
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ sb::C_SkMemoryStream_MakeDirect(bytes.as_ptr() <span class="kw">as _</span>, bytes.len()) };
+
+        MemoryStream {
+            native: ptr::NonNull::new(ptr).unwrap(),
+            pd: PhantomData,
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DynamicMemoryWStream</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkDynamicMemoryWStream</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>DynamicMemoryWStream = Handle&lt;SkDynamicMemoryWStream&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkWStream</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkDynamicMemoryWStream</span> {}
+<span class="kw">impl </span>NativeBase&lt;SkWStream&gt; <span class="kw">for </span>SkDynamicMemoryWStream {}
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkDynamicMemoryWStream</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkWStream_destruct</span>(<span class="self">self</span>.<span class="ident">base_mut</span>());
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkDynamicMemoryWStream {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            sb::C_SkWStream_destruct(<span class="self">self</span>.base_mut());
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">DynamicMemoryWStream</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DynamicMemoryWStream&quot;</span>)
-            .<span class="ident">field</span>(
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>DynamicMemoryWStream {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;DynamicMemoryWStream&quot;</span>)
+            .field(
                 <span class="string">&quot;bytes_written_before_tail&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBytesWrittenBeforeTail</span>,
+                <span class="kw-2">&amp;</span><span class="self">self</span>.native().fBytesWrittenBeforeTail,
             )
-            .<span class="ident">finish</span>()
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">DynamicMemoryWStream</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">w_stream</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkDynamicMemoryWStream_Construct</span>(<span class="ident">w_stream</span>) })
+<span class="kw">impl </span>DynamicMemoryWStream {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::construct(|w_stream| <span class="kw">unsafe </span>{ sb::C_SkDynamicMemoryWStream_Construct(w_stream) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">stream</span>.<span class="ident">write</span>(<span class="ident">bytes</span>);
-        <span class="ident">stream</span>
+    <span class="kw">pub fn </span>from_bytes(bytes: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = <span class="self">Self</span>::new();
+        stream.write(bytes);
+        stream
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkWStream_write</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>(),
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
+    <span class="kw">pub fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bytes: <span class="kw-2">&amp;</span>[u8]) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            sb::C_SkWStream_write(
+                <span class="self">self</span>.native_mut().base_mut(),
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">detach_as_data</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Data</span> {
-        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkDynamicMemoryWStream_detachAsData</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
-            .<span class="ident">unwrap</span>()
+    <span class="kw">pub fn </span>detach_as_data(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Data {
+        Data::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkDynamicMemoryWStream_detachAsData(<span class="self">self</span>.native_mut()) })
+            .unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">detach_as_stream</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">StreamAsset</span> {
-        <span class="ident">StreamAsset::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkDynamicMemoryWStream_detachAsStream</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+    <span class="kw">pub fn </span>detach_as_stream(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; StreamAsset {
+        StreamAsset::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkDynamicMemoryWStream_detachAsStream(<span class="self">self</span>.native_mut())
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RustStream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">sb::RustStream</span><span class="op">&gt;</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> ()<span class="op">&gt;</span>,
+<span class="attribute">#[allow(unused)]
+</span><span class="kw">pub struct </span>RustStream&lt;<span class="lifetime">&#39;a</span>&gt; {
+    inner: Handle&lt;sb::RustStream&gt;,
+    _phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>()&gt;,
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="kw">impl</span> <span class="ident">RustStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stream_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkStream</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>()
+<span class="attribute">#[allow(unused)]
+</span><span class="kw">impl </span>RustStream&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">pub fn </span>stream_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkStream {
+        <span class="self">self</span>.inner.native_mut().base_mut()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkStream</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">sb::RustStream</span> {}
+<span class="kw">impl </span>NativeBase&lt;SkStream&gt; <span class="kw">for </span>sb::RustStream {}
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">sb::RustStream</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_RustStream_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>sb::RustStream {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_RustStream_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">RustStream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">io::Read</span><span class="op">&gt;</span>(<span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">read_trampoline</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-            <span class="ident">val</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-            <span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-            <span class="ident">count</span>: <span class="ident">usize</span>,
-        ) -&gt; <span class="ident">usize</span>
-        <span class="kw">where</span>
-            <span class="ident">T</span>: <span class="ident">io::Read</span>,
+<span class="attribute">#[allow(unused)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RustStream&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>new&lt;T: io::Read&gt;(val: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>read_trampoline&lt;T&gt;(
+            val: <span class="kw-2">*mut </span>ffi::c_void,
+            buf: <span class="kw-2">*mut </span>ffi::c_void,
+            count: usize,
+        ) -&gt; usize
+        <span class="kw">where
+            </span>T: io::Read,
         {
-            <span class="kw">let</span> <span class="ident">val</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">val</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+            <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
 
-            <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">is_null</span>() {
-                <span class="kw">const</span> <span class="ident">BUF_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">128</span>;
+            <span class="kw">if </span>buf.is_null() {
+                <span class="kw">const </span>BUF_SIZE: usize = <span class="number">128</span>;
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident">BUF_SIZE</span>];
+                <span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0</span>; BUF_SIZE];
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out_bytes</span> <span class="op">=</span> <span class="number">0</span>;
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">count</span>;
+                <span class="kw">let </span><span class="kw-2">mut </span>out_bytes = <span class="number">0</span>;
+                <span class="kw">let </span><span class="kw-2">mut </span>count = count;
 
-                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try</span>
-                <span class="comment">// to continue at all.</span>
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">std::panic::AssertUnwindSafe</span>(<span class="ident">val</span>);
+                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
+                // to continue at all.
+                </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
 
-                <span class="kw">let</span> <span class="ident">out_bytes</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">std::panic::catch_unwind</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">while</span> <span class="ident">count</span> <span class="op">&gt;</span> <span class="number">0</span> {
-                        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">val</span>.<span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>[..<span class="ident">count</span>.<span class="ident">min</span>(<span class="ident">BUF_SIZE</span>)]) {
+                <span class="kw">let </span>out_bytes = <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
+                    <span class="kw">while </span>count &gt; <span class="number">0 </span>{
+                        <span class="kw">let </span>bytes = <span class="kw">match </span>val.read(<span class="kw-2">&amp;mut </span>buf[..count.min(BUF_SIZE)]) {
                             <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="kw">break</span>,
-                            <span class="prelude-val">Ok</span>(<span class="ident">bytes</span>) =&gt; <span class="ident">bytes</span>,
+                            <span class="prelude-val">Ok</span>(bytes) =&gt; bytes,
                             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="number">0</span>,
                         };
 
-                        <span class="ident">count</span> <span class="op">-</span><span class="op">=</span> <span class="ident">bytes</span>;
-                        <span class="ident">out_bytes</span> <span class="op">+</span><span class="op">=</span> <span class="ident">bytes</span>;
+                        count -= bytes;
+                        out_bytes += bytes;
                     }
 
-                    <span class="ident">out_bytes</span>
+                    out_bytes
                 }) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">res</span>) =&gt; <span class="ident">res</span>,
+                    <span class="prelude-val">Ok</span>(res) =&gt; res,
                     <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                         <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::read`&quot;</span>);
-                        <span class="ident">std::process::abort</span>();
+                        std::process::abort();
                     }
                 };
 
-                <span class="ident">out_bytes</span>
-            } <span class="kw">else</span> {
-                <span class="kw">let</span> <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="ident">std::slice::from_raw_parts_mut</span>(<span class="ident">buf</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">count</span> <span class="kw">as</span> <span class="kw">_</span>);
+                out_bytes
+            } <span class="kw">else </span>{
+                <span class="kw">let </span>buf: <span class="kw-2">&amp;mut </span>[u8] = std::slice::from_raw_parts_mut(buf <span class="kw">as _</span>, count <span class="kw">as _</span>);
 
-                <span class="ident">val</span>.<span class="ident">read</span>(<span class="ident">buf</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>)
+                val.read(buf).unwrap_or(<span class="number">0</span>)
             }
         }
 
-        <span class="kw">let</span> (<span class="ident">length</span>, <span class="ident">seek_start</span>, <span class="ident">seek_current</span>): (
-            <span class="ident">usize</span>,
-            <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span><span class="op">&gt;</span>,
-            <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span><span class="op">&gt;</span>,
+        <span class="kw">let </span>(length, seek_start, seek_current): (
+            usize,
+            <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span>&gt;,
+            <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span>&gt;,
         );
 
-        <span class="comment">// Requires feature &quot;specialization&quot; &lt;https://github.com/rust-lang/rust/issues/31844&gt;</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>)]</span>
-        {
-            <span class="kw">trait</span> <span class="ident">MaybeSeek</span> {
-                <span class="kw">fn</span> <span class="ident">maybe_seek</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">from</span>: <span class="ident">io::SeekFrom</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>;
+        <span class="comment">// Requires feature &quot;specialization&quot; &lt;https://github.com/rust-lang/rust/issues/31844&gt;
+        </span><span class="attribute">#[cfg(feature = <span class="string">&quot;nightly&quot;</span>)]
+        </span>{
+            <span class="kw">trait </span>MaybeSeek {
+                <span class="kw">fn </span>maybe_seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, from: io::SeekFrom) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt;;
             }
 
-            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">MaybeSeek</span> <span class="kw">for</span> <span class="ident">T</span> {
-                <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">maybe_seek</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">io::SeekFrom</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-                    <span class="prelude-val">None</span>
-                }
+            <span class="kw">impl</span>&lt;T&gt; MaybeSeek <span class="kw">for </span>T {
+                default <span class="kw">fn </span>maybe_seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw">_</span>: io::SeekFrom) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
+                    <span class="prelude-val">None
+                </span>}
             }
 
-            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">MaybeSeek</span> <span class="kw">for</span> <span class="ident">T</span>
-            <span class="kw">where</span>
-                <span class="ident">T</span>: <span class="ident">io::Seek</span>,
+            <span class="kw">impl</span>&lt;T&gt; MaybeSeek <span class="kw">for </span>T
+            <span class="kw">where
+                </span>T: io::Seek,
             {
-                <span class="kw">fn</span> <span class="ident">maybe_seek</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">from</span>: <span class="ident">io::SeekFrom</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-                    <span class="self">self</span>.<span class="ident">seek</span>(<span class="ident">from</span>).<span class="ident">ok</span>()
+                <span class="kw">fn </span>maybe_seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, from: io::SeekFrom) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
+                    <span class="self">self</span>.seek(from).ok()
                 }
             }
 
-            <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">seek_start_trampoline</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MaybeSeek</span><span class="op">&gt;</span>(
-                <span class="ident">val</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-                <span class="ident">pos</span>: <span class="ident">usize</span>,
-            ) -&gt; <span class="ident">bool</span> {
-                <span class="kw">let</span> <span class="ident">val</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">val</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+            <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>seek_start_trampoline&lt;T: MaybeSeek&gt;(
+                val: <span class="kw-2">*mut </span>ffi::c_void,
+                pos: usize,
+            ) -&gt; bool {
+                <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
 
-                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try</span>
-                <span class="comment">// to continue at all.</span>
-                <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">std::panic::AssertUnwindSafe</span>(<span class="ident">val</span>);
+                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
+                // to continue at all.
+                </span><span class="kw">let </span>val = std::panic::AssertUnwindSafe(val);
 
-                <span class="kw">match</span> <span class="ident">std::panic::catch_unwind</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                    <span class="ident">val</span>.<span class="ident">maybe_seek</span>(<span class="ident">io::SeekFrom::Start</span>(<span class="ident">pos</span> <span class="kw">as</span> <span class="kw">_</span>)).<span class="ident">is_some</span>()
+                <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
+                    val.maybe_seek(io::SeekFrom::Start(pos <span class="kw">as _</span>)).is_some()
                 }) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">res</span>) =&gt; <span class="ident">res</span>,
+                    <span class="prelude-val">Ok</span>(res) =&gt; res,
                     <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                         <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::seek`&quot;</span>);
-                        <span class="ident">std::process::abort</span>();
+                        std::process::abort();
                     }
                 }
             }
 
-            <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">seek_current_trampoline</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MaybeSeek</span><span class="op">&gt;</span>(
-                <span class="ident">val</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-                <span class="ident">offset</span>: <span class="ident">libc::c_long</span>,
-            ) -&gt; <span class="ident">bool</span> {
-                <span class="kw">let</span> <span class="ident">val</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">val</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+            <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>seek_current_trampoline&lt;T: MaybeSeek&gt;(
+                val: <span class="kw-2">*mut </span>ffi::c_void,
+                offset: libc::c_long,
+            ) -&gt; bool {
+                <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
 
-                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try</span>
-                <span class="comment">// to continue at all.</span>
-                <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">std::panic::AssertUnwindSafe</span>(<span class="ident">val</span>);
+                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
+                // to continue at all.
+                </span><span class="kw">let </span>val = std::panic::AssertUnwindSafe(val);
 
-                <span class="kw">match</span> <span class="ident">std::panic::catch_unwind</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                    <span class="ident">val</span>.<span class="ident">maybe_seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="kw">_</span>)).<span class="ident">is_some</span>()
+                <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
+                    val.maybe_seek(io::SeekFrom::Current(offset <span class="kw">as _</span>)).is_some()
                 }) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">res</span>) =&gt; <span class="ident">res</span>,
+                    <span class="prelude-val">Ok</span>(res) =&gt; res,
                     <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                         <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::move`&quot;</span>);
-                        <span class="ident">std::process::abort</span>();
+                        std::process::abort();
                     }
                 }
             }
 
-            <span class="ident">length</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cur</span>) <span class="op">=</span> <span class="ident">val</span>.<span class="ident">maybe_seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="number">0</span>)) {
-                <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">val</span>.<span class="ident">maybe_seek</span>(<span class="ident">io::SeekFrom::End</span>(<span class="number">0</span>)).<span class="ident">unwrap</span>();
+            length = <span class="kw">if let </span><span class="prelude-val">Some</span>(cur) = val.maybe_seek(io::SeekFrom::Current(<span class="number">0</span>)) {
+                <span class="kw">let </span>length = val.maybe_seek(io::SeekFrom::End(<span class="number">0</span>)).unwrap();
 
-                <span class="ident">val</span>.<span class="ident">maybe_seek</span>(<span class="ident">io::SeekFrom::Start</span>(<span class="ident">cur</span>));
+                val.maybe_seek(io::SeekFrom::Start(cur));
 
-                <span class="ident">length</span> <span class="kw">as</span> <span class="ident">usize</span>
-            } <span class="kw">else</span> {
-                <span class="ident">std::usize::MAX</span>
+                length <span class="kw">as </span>usize
+            } <span class="kw">else </span>{
+                std::usize::MAX
             };
 
-            <span class="ident">seek_start</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">seek_start_trampoline</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-            <span class="ident">seek_current</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">seek_current_trampoline</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+            seek_start = <span class="prelude-val">Some</span>(seek_start_trampoline::&lt;T&gt;);
+            seek_current = <span class="prelude-val">Some</span>(seek_current_trampoline::&lt;T&gt;);
         }
 
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>))]</span>
-        {
-            <span class="ident">length</span> <span class="op">=</span> <span class="ident">usize::MAX</span>;
-            <span class="ident">seek_start</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-            <span class="ident">seek_current</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="attribute">#[cfg(not(feature = <span class="string">&quot;nightly&quot;</span>))]
+        </span>{
+            length = usize::MAX;
+            seek_start = <span class="prelude-val">None</span>;
+            seek_current = <span class="prelude-val">None</span>;
         }
 
-        <span class="ident">RustStream</span> {
-            <span class="ident">inner</span>: <span class="ident">Handle::construct</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="kw">unsafe</span> {
-                <span class="ident">sb::C_RustStream_construct</span>(
-                    <span class="ident">ptr</span>,
-                    <span class="ident">val</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-                    <span class="ident">length</span>,
-                    <span class="prelude-val">Some</span>(<span class="ident">read_trampoline</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>),
-                    <span class="ident">seek_start</span>,
-                    <span class="ident">seek_current</span>,
+        RustStream {
+            inner: Handle::construct(|ptr| <span class="kw">unsafe </span>{
+                sb::C_RustStream_construct(
+                    ptr,
+                    val <span class="kw">as </span><span class="kw-2">*mut </span>T <span class="kw">as </span><span class="kw-2">*mut </span>ffi::c_void,
+                    length,
+                    <span class="prelude-val">Some</span>(read_trampoline::&lt;T&gt;),
+                    seek_start,
+                    seek_current,
                 );
             }),
-            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+            _phantom: PhantomData,
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">MemoryStream</span>, <span class="ident">RustStream</span>};
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::interop::DynamicMemoryWStream</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::{MemoryStream, RustStream};
+    <span class="kw">use </span><span class="kw">crate</span>::interop::DynamicMemoryWStream;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">detaching_empty_dynamic_memory_w_stream_leads_to_non_null_data</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">DynamicMemoryWStream::new</span>();
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">detach_as_data</span>();
-        <span class="macro">assert_eq!</span>(<span class="number">0</span>, <span class="ident">data</span>.<span class="ident">size</span>())
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>detaching_empty_dynamic_memory_w_stream_leads_to_non_null_data() {
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = DynamicMemoryWStream::new();
+        <span class="kw">let </span>data = stream.detach_as_data();
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, data.size())
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">memory_stream_from_bytes</span>() {
-        <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">MemoryStream::from_bytes</span>(<span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
-        <span class="ident">drop</span>(<span class="ident">stream</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memory_stream_from_bytes() {
+        <span class="kw">let </span>stream = MemoryStream::from_bytes(<span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
+        drop(stream);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_from_rust_stream</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">12u8</span>, <span class="number">13u8</span>, <span class="number">14u8</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">RustStream::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">data</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>read_from_rust_stream() {
+        <span class="kw">let </span><span class="kw-2">mut </span>data: <span class="kw-2">&amp;</span>[u8] = <span class="kw-2">&amp;</span>[<span class="number">12u8</span>, <span class="number">13u8</span>, <span class="number">14u8</span>];
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = RustStream::new(<span class="kw-2">&amp;mut </span>data);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">first_byte</span> <span class="op">=</span> <span class="number">0i8</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">stream</span>.<span class="ident">stream_mut</span>().<span class="ident">readS8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">first_byte</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>first_byte = <span class="number">0i8</span>;
+        <span class="kw">unsafe </span>{
+            stream.stream_mut().readS8(<span class="kw-2">&amp;mut </span>first_byte);
         }
-        <span class="macro">assert_eq!</span>(<span class="ident">first_byte</span>, <span class="number">12i8</span>)
+        <span class="macro">assert_eq!</span>(first_byte, <span class="number">12i8</span>)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

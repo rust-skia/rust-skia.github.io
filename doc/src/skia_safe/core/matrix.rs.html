@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\matrix.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>matrix.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/matrix.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>matrix.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -859,861 +853,860 @@
 <span id="853">853</span>
 <span id="854">854</span>
 <span id="855">855</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">super</span>::scalar_</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Point</span>, <span class="ident">Point3</span>, <span class="ident">RSXform</span>, <span class="ident">Rect</span>, <span class="ident">Scalar</span>, <span class="ident">Size</span>, <span class="ident">Vector</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkMatrix</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">Mul</span>},
-    <span class="ident">slice</span>,
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::scalar_;
+<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Point, Point3, RSXform, Rect, Scalar, Size, Vector};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkMatrix};
+<span class="kw">use </span>std::{
+    ops::{Index, IndexMut, Mul},
+    slice,
 };
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkApplyPerspectiveClip</span> <span class="kw">as</span> <span class="ident">ApplyPerspectiveClip</span>;
-<span class="macro">variant_name!</span>(<span class="ident">ApplyPerspectiveClip::Yes</span>, <span class="ident">perspective_clip_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkApplyPerspectiveClip <span class="kw">as </span>ApplyPerspectiveClip;
+<span class="macro">variant_name!</span>(ApplyPerspectiveClip::Yes, perspective_clip_naming);
 
-<span class="macro">bitflags!</span> {
-    <span class="comment">// m85: On Windows the SkMatrix_TypeMask is defined as i32,</span>
-    <span class="comment">// but we stick to u32 (macOS / Linux), because there is no need to leak</span>
-    <span class="comment">// the platform difference to the Rust side.</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TypeMask</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">IDENTITY</span> <span class="op">=</span> <span class="ident">sb::SkMatrix_TypeMask_kIdentity_Mask</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">TRANSLATE</span> <span class="op">=</span> <span class="ident">sb::SkMatrix_TypeMask_kTranslate_Mask</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">SCALE</span> <span class="op">=</span> <span class="ident">sb::SkMatrix_TypeMask_kScale_Mask</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">AFFINE</span> <span class="op">=</span> <span class="ident">sb::SkMatrix_TypeMask_kAffine_Mask</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">PERSPECTIVE</span> <span class="op">=</span> <span class="ident">sb::SkMatrix_TypeMask_kPerspective_Mask</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="macro">bitflags! </span>{
+    <span class="comment">// m85: On Windows the SkMatrix_TypeMask is defined as i32,
+    // but we stick to u32 (macOS / Linux), because there is no need to leak
+    // the platform difference to the Rust side.
+    </span><span class="kw">pub struct </span>TypeMask: u32 {
+        <span class="kw">const </span>IDENTITY = sb::SkMatrix_TypeMask_kIdentity_Mask <span class="kw">as _</span>;
+        <span class="kw">const </span>TRANSLATE = sb::SkMatrix_TypeMask_kTranslate_Mask <span class="kw">as _</span>;
+        <span class="kw">const </span>SCALE = sb::SkMatrix_TypeMask_kScale_Mask <span class="kw">as _</span>;
+        <span class="kw">const </span>AFFINE = sb::SkMatrix_TypeMask_kAffine_Mask <span class="kw">as _</span>;
+        <span class="kw">const </span>PERSPECTIVE = sb::SkMatrix_TypeMask_kPerspective_Mask <span class="kw">as _</span>;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TypeMask</span> {
-    <span class="kw">const</span> <span class="ident">UNKNOWN</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">sb::SkMatrix_kUnknown_Mask</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="kw">impl </span>TypeMask {
+    <span class="kw">const </span>UNKNOWN: u32 = sb::SkMatrix_kUnknown_Mask <span class="kw">as _</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkMatrix_ScaleToFit</span> <span class="kw">as</span> <span class="ident">ScaleToFit</span>;
-<span class="macro">variant_name!</span>(<span class="ident">ScaleToFit::Fill</span>, <span class="ident">scale_to_fit_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkMatrix_ScaleToFit <span class="kw">as </span>ScaleToFit;
+<span class="macro">variant_name!</span>(ScaleToFit::Fill, scale_to_fit_naming);
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Matrix</span> {
-    <span class="ident">mat</span>: [<span class="ident">scalar</span>; <span class="number">9usize</span>],
-    <span class="ident">type_mask</span>: <span class="ident">u32</span>,
+<span class="attribute">#[repr(C)]
+#[derive(Copy, Clone, Debug)]
+</span><span class="kw">pub struct </span>Matrix {
+    mat: [scalar; <span class="number">9usize</span>],
+    type_mask: u32,
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkMatrix</span>, <span class="ident">Matrix</span>, <span class="ident">matrix_layout</span>);
+<span class="macro">native_transmutable!</span>(SkMatrix, Matrix, matrix_layout);
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_Equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">rhs</span>.<span class="ident">native</span>()) }
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>Matrix {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_Equals(<span class="self">self</span>.native(), rhs.native()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Mul</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Matrix</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="ident">Matrix::concat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">rhs</span>)
+<span class="kw">impl </span>Mul <span class="kw">for </span>Matrix {
+    <span class="kw">type </span>Output = <span class="self">Self</span>;
+    <span class="kw">fn </span>mul(<span class="self">self</span>, rhs: Matrix) -&gt; <span class="self">Self</span>::Output {
+        Matrix::concat(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span>rhs)
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Member</span> {
-    <span class="ident">ScaleX</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">SkewX</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">TransX</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">SkewY</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="ident">ScaleY</span> <span class="op">=</span> <span class="number">4</span>,
-    <span class="ident">TransY</span> <span class="op">=</span> <span class="number">5</span>,
-    <span class="ident">Persp0</span> <span class="op">=</span> <span class="number">6</span>,
-    <span class="ident">Persp1</span> <span class="op">=</span> <span class="number">7</span>,
-    <span class="ident">Persp2</span> <span class="op">=</span> <span class="number">8</span>,
+<span class="attribute">#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+</span><span class="kw">pub enum </span>Member {
+    ScaleX = <span class="number">0</span>,
+    SkewX = <span class="number">1</span>,
+    TransX = <span class="number">2</span>,
+    SkewY = <span class="number">3</span>,
+    ScaleY = <span class="number">4</span>,
+    TransY = <span class="number">5</span>,
+    Persp0 = <span class="number">6</span>,
+    Persp1 = <span class="number">7</span>,
+    Persp2 = <span class="number">8</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AffineMember</span> {
-    <span class="ident">ScaleX</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">SkewY</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">SkewX</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">ScaleY</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="ident">TransX</span> <span class="op">=</span> <span class="number">4</span>,
-    <span class="ident">TransY</span> <span class="op">=</span> <span class="number">5</span>,
+<span class="attribute">#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+</span><span class="kw">pub enum </span>AffineMember {
+    ScaleX = <span class="number">0</span>,
+    SkewY = <span class="number">1</span>,
+    SkewX = <span class="number">2</span>,
+    ScaleY = <span class="number">3</span>,
+    TransX = <span class="number">4</span>,
+    TransY = <span class="number">5</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">Member</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">scalar</span>;
+<span class="kw">impl </span>Index&lt;Member&gt; <span class="kw">for </span>Matrix {
+    <span class="kw">type </span>Output = scalar;
 
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">Member</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>]
+    <span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>, index: Member) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Output {
+        <span class="kw-2">&amp;</span><span class="self">self</span>[index <span class="kw">as </span>usize]
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">AffineMember</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">scalar</span>;
+<span class="kw">impl </span>Index&lt;AffineMember&gt; <span class="kw">for </span>Matrix {
+    <span class="kw">type </span>Output = scalar;
 
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">AffineMember</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>]
+    <span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>, index: AffineMember) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Output {
+        <span class="kw-2">&amp;</span><span class="self">self</span>[index <span class="kw">as </span>usize]
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">scalar</span>;
+<span class="kw">impl </span>Index&lt;usize&gt; <span class="kw">for </span>Matrix {
+    <span class="kw">type </span>Output = scalar;
 
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMat</span>[<span class="ident">index</span>]
+    <span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Output {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.native().fMat[index]
     }
 }
 
-<span class="kw">impl</span> <span class="ident">IndexMut</span><span class="op">&lt;</span><span class="ident">Member</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">Member</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="self">self</span>.<span class="ident">index_mut</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>)
+<span class="kw">impl </span>IndexMut&lt;Member&gt; <span class="kw">for </span>Matrix {
+    <span class="kw">fn </span>index_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: Member) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Output {
+        <span class="self">self</span>.index_mut(index <span class="kw">as </span>usize)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">IndexMut</span><span class="op">&lt;</span><span class="ident">AffineMember</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">AffineMember</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="self">self</span>.<span class="ident">index_mut</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>)
+<span class="kw">impl </span>IndexMut&lt;AffineMember&gt; <span class="kw">for </span>Matrix {
+    <span class="kw">fn </span>index_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: AffineMember) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Output {
+        <span class="self">self</span>.index_mut(index <span class="kw">as </span>usize)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">IndexMut</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">sb::C_SkMatrix_SubscriptMut</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">index</span>) }
+<span class="kw">impl </span>IndexMut&lt;usize&gt; <span class="kw">for </span>Matrix {
+    <span class="kw">fn </span>index_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Output {
+        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>sb::C_SkMatrix_SubscriptMut(<span class="self">self</span>.native_mut(), index) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Matrix</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">Matrix::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>Matrix {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        Matrix::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Matrix</span> {
-    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">mat</span>: [<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>],
-            <span class="ident">type_mask</span>: <span class="ident">TypeMask::IDENTITY</span>.<span class="ident">bits</span>() <span class="op">|</span> <span class="number">0x10</span>,
+<span class="kw">impl </span>Matrix {
+    <span class="kw">const fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            mat: [<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>],
+            type_mask: TypeMask::IDENTITY.bits() | <span class="number">0x10</span>,
         }
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.33.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use Matrix::scale()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_scale</span>(<span class="ident">scale</span>: (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::scale</span>(<span class="ident">scale</span>)
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.33.0&quot;</span>, note = <span class="string">&quot;use Matrix::scale()&quot;</span>)]
+    </span><span class="kw">pub fn </span>new_scale(scale: (scalar, scalar)) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::scale(scale)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_scale</span>((<span class="ident">sx</span>, <span class="ident">sy</span>), <span class="prelude-val">None</span>);
-        <span class="ident">m</span>
+    <span class="kw">pub fn </span>scale((sx, sy): (scalar, scalar)) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new();
+        m.set_scale((sx, sy), <span class="prelude-val">None</span>);
+        m
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.33.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use Matrix::translate()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trans</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::translate</span>(<span class="ident">d</span>)
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.33.0&quot;</span>, note = <span class="string">&quot;use Matrix::translate()&quot;</span>)]
+    </span><span class="kw">pub fn </span>new_trans(d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::translate(d)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_translate</span>(<span class="ident">d</span>);
-        <span class="ident">m</span>
+    <span class="kw">pub fn </span>translate(d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new();
+        m.set_translate(d);
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_deg</span>(<span class="ident">deg</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_rotate</span>(<span class="ident">deg</span>, <span class="prelude-val">None</span>);
-        <span class="ident">m</span>
+    <span class="kw">pub fn </span>rotate_deg(deg: scalar) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new();
+        m.set_rotate(deg, <span class="prelude-val">None</span>);
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_deg_pivot</span>(<span class="ident">deg</span>: <span class="ident">scalar</span>, <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_rotate</span>(<span class="ident">deg</span>, <span class="ident">pivot</span>.<span class="ident">into</span>());
-        <span class="ident">m</span>
+    <span class="kw">pub fn </span>rotate_deg_pivot(deg: scalar, pivot: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new();
+        m.set_rotate(deg, pivot.into());
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_rad</span>(<span class="ident">rad</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::rotate_deg</span>(<span class="ident">scalar_::radians_to_degrees</span>(<span class="ident">rad</span>))
+    <span class="kw">pub fn </span>rotate_rad(rad: scalar) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::rotate_deg(scalar_::radians_to_degrees(rad))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skew</span>((<span class="ident">kx</span>, <span class="ident">ky</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>)) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_skew</span>((<span class="ident">kx</span>, <span class="ident">ky</span>), <span class="prelude-val">None</span>);
-        <span class="ident">m</span>
+    <span class="kw">pub fn </span>skew((kx, ky): (scalar, scalar)) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new();
+        m.set_skew((kx, ky), <span class="prelude-val">None</span>);
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_to_rect</span>(
-        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">scale_to_fit</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScaleToFit</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_rect_to_rect</span>(<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">scale_to_fit</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ScaleToFit::Fill</span>))
+    <span class="kw">pub fn </span>rect_to_rect(
+        src: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        scale_to_fit: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ScaleToFit&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_rect_to_rect(src, dst, scale_to_fit.into().unwrap_or(ScaleToFit::Fill))
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_all</span>(
-        <span class="ident">scale_x</span>: <span class="ident">scalar</span>,
-        <span class="ident">skew_x</span>: <span class="ident">scalar</span>,
-        <span class="ident">trans_x</span>: <span class="ident">scalar</span>,
-        <span class="ident">skew_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">scale_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">trans_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">pers_0</span>: <span class="ident">scalar</span>,
-        <span class="ident">pers_1</span>: <span class="ident">scalar</span>,
-        <span class="ident">pers_2</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_all</span>(
-            <span class="ident">scale_x</span>, <span class="ident">skew_x</span>, <span class="ident">trans_x</span>, <span class="ident">skew_y</span>, <span class="ident">scale_y</span>, <span class="ident">trans_y</span>, <span class="ident">pers_0</span>, <span class="ident">pers_1</span>, <span class="ident">pers_2</span>,
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">pub fn </span>new_all(
+        scale_x: scalar,
+        skew_x: scalar,
+        trans_x: scalar,
+        skew_y: scalar,
+        scale_y: scalar,
+        trans_y: scalar,
+        pers_0: scalar,
+        pers_1: scalar,
+        pers_2: scalar,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new();
+        m.set_all(
+            scale_x, skew_x, trans_x, skew_y, scale_y, trans_y, pers_0, pers_1, pers_2,
         );
-        <span class="ident">m</span>
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">TypeMask</span> {
-        <span class="ident">TypeMask::from_bits_truncate</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_getType</span>(<span class="self">self</span>.<span class="ident">native</span>()) } <span class="kw">as</span> <span class="kw">_</span>)
+    <span class="kw">pub fn </span>get_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypeMask {
+        TypeMask::from_bits_truncate(<span class="kw">unsafe </span>{ sb::C_SkMatrix_getType(<span class="self">self</span>.native()) } <span class="kw">as _</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_identity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">get_type</span>() <span class="op">==</span> <span class="ident">TypeMask::IDENTITY</span>
+    <span class="kw">pub fn </span>is_identity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.get_type() == TypeMask::IDENTITY
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_scale_translate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        (<span class="self">self</span>.<span class="ident">get_type</span>() <span class="op">&amp;</span> <span class="op">!</span>(<span class="ident">TypeMask::SCALE</span> <span class="op">|</span> <span class="ident">TypeMask::TRANSLATE</span>)).<span class="ident">is_empty</span>()
+    <span class="kw">pub fn </span>is_scale_translate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        (<span class="self">self</span>.get_type() &amp; !(TypeMask::SCALE | TypeMask::TRANSLATE)).is_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_translate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        (<span class="self">self</span>.<span class="ident">get_type</span>() <span class="op">&amp;</span> <span class="op">!</span><span class="ident">TypeMask::TRANSLATE</span>).<span class="ident">is_empty</span>()
+    <span class="kw">pub fn </span>is_translate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        (<span class="self">self</span>.get_type() &amp; !TypeMask::TRANSLATE).is_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_stays_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_rectStaysRect</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>rect_stays_rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_rectStaysRect(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">preserves_axis_alignment</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">rect_stays_rect</span>()
+    <span class="kw">pub fn </span>preserves_axis_alignment(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.rect_stays_rect()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perspective</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_hasPerspective</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>has_perspective(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_hasPerspective(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_similarity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isSimilarity</span>(<span class="ident">scalar::NEARLY_ZERO</span>) }
+    <span class="kw">pub fn </span>is_similarity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isSimilarity(scalar::NEARLY_ZERO) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">preserves_right_angles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">preservesRightAngles</span>(<span class="ident">scalar::NEARLY_ZERO</span>) }
+    <span class="kw">pub fn </span>preserves_right_angles(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().preservesRightAngles(scalar::NEARLY_ZERO) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">c</span>: <span class="ident">usize</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="macro">assert!</span>(<span class="ident">r</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">2</span>);
-        <span class="macro">assert!</span>(<span class="ident">c</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">2</span>);
-        <span class="self">self</span>[<span class="ident">r</span> <span class="op">*</span> <span class="number">3</span> <span class="op">+</span> <span class="ident">c</span>]
+    <span class="kw">pub fn </span>rc(<span class="kw-2">&amp;</span><span class="self">self</span>, r: usize, c: usize) -&gt; scalar {
+        <span class="macro">assert!</span>(r &lt;= <span class="number">2</span>);
+        <span class="macro">assert!</span>(c &lt;= <span class="number">2</span>);
+        <span class="self">self</span>[r * <span class="number">3 </span>+ c]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::ScaleX</span>]
+    <span class="kw">pub fn </span>scale_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::ScaleX]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::ScaleY</span>]
+    <span class="kw">pub fn </span>scale_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::ScaleY]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skew_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::SkewY</span>]
+    <span class="kw">pub fn </span>skew_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::SkewY]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skew_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::SkewX</span>]
+    <span class="kw">pub fn </span>skew_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::SkewX]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::TransX</span>]
+    <span class="kw">pub fn </span>translate_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::TransX]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::TransY</span>]
+    <span class="kw">pub fn </span>translate_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::TransY]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">persp_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::Persp0</span>]
+    <span class="kw">pub fn </span>persp_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::Persp0]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">persp_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>[<span class="ident">Member::Persp1</span>]
+    <span class="kw">pub fn </span>persp_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>[Member::Persp1]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale_x</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::ScaleX</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_scale_x(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::ScaleX, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale_y</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::ScaleY</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_scale_y(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::ScaleY, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_skew_y</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::SkewY</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_skew_y(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::SkewY, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_skew_x</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::SkewX</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_skew_x(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::SkewX, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_translate_x</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::TransX</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_translate_x(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::TransX, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_translate_y</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::TransY</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_translate_y(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::TransY, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_persp_x</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::Persp0</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_persp_x(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::Persp0, v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_persp_y</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">Member::Persp1</span>, <span class="ident">v</span>)
+    <span class="kw">pub fn </span>set_persp_y(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set(Member::Persp1, v)
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_all</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">scale_x</span>: <span class="ident">scalar</span>,
-        <span class="ident">skew_x</span>: <span class="ident">scalar</span>,
-        <span class="ident">trans_x</span>: <span class="ident">scalar</span>,
-        <span class="ident">skew_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">scale_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">trans_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">persp_0</span>: <span class="ident">scalar</span>,
-        <span class="ident">persp_1</span>: <span class="ident">scalar</span>,
-        <span class="ident">persp_2</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>[<span class="ident">Member::ScaleX</span>] <span class="op">=</span> <span class="ident">scale_x</span>;
-        <span class="self">self</span>[<span class="ident">Member::SkewX</span>] <span class="op">=</span> <span class="ident">skew_x</span>;
-        <span class="self">self</span>[<span class="ident">Member::TransX</span>] <span class="op">=</span> <span class="ident">trans_x</span>;
-        <span class="self">self</span>[<span class="ident">Member::SkewY</span>] <span class="op">=</span> <span class="ident">skew_y</span>;
-        <span class="self">self</span>[<span class="ident">Member::ScaleY</span>] <span class="op">=</span> <span class="ident">scale_y</span>;
-        <span class="self">self</span>[<span class="ident">Member::TransY</span>] <span class="op">=</span> <span class="ident">trans_y</span>;
-        <span class="self">self</span>[<span class="ident">Member::Persp0</span>] <span class="op">=</span> <span class="ident">persp_0</span>;
-        <span class="self">self</span>[<span class="ident">Member::Persp1</span>] <span class="op">=</span> <span class="ident">persp_1</span>;
-        <span class="self">self</span>[<span class="ident">Member::Persp2</span>] <span class="op">=</span> <span class="ident">persp_2</span>;
-        <span class="self">self</span>.<span class="ident">type_mask</span> <span class="op">=</span> <span class="ident">TypeMask::UNKNOWN</span>;
-        <span class="self">self</span>
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">pub fn </span>set_all(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        scale_x: scalar,
+        skew_x: scalar,
+        trans_x: scalar,
+        skew_y: scalar,
+        scale_y: scalar,
+        trans_y: scalar,
+        persp_0: scalar,
+        persp_1: scalar,
+        persp_2: scalar,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>[Member::ScaleX] = scale_x;
+        <span class="self">self</span>[Member::SkewX] = skew_x;
+        <span class="self">self</span>[Member::TransX] = trans_x;
+        <span class="self">self</span>[Member::SkewY] = skew_y;
+        <span class="self">self</span>[Member::ScaleY] = scale_y;
+        <span class="self">self</span>[Member::TransY] = trans_y;
+        <span class="self">self</span>[Member::Persp0] = persp_0;
+        <span class="self">self</span>[Member::Persp1] = persp_1;
+        <span class="self">self</span>[Member::Persp2] = persp_2;
+        <span class="self">self</span>.type_mask = TypeMask::UNKNOWN;
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>get_9(<span class="kw-2">&amp;</span><span class="self">self</span>, buffer: <span class="kw-2">&amp;mut </span>[scalar; <span class="number">9</span>]) {
+        buffer.copy_from_slice(<span class="kw-2">&amp;</span><span class="self">self</span>.mat)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_9</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">scalar</span>; <span class="number">9</span>]) {
-        <span class="ident">buffer</span>.<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mat</span>)
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_9</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="number">9</span>]) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">set9</span>(<span class="ident">buffer</span>.<span class="ident">as_ptr</span>());
+    <span class="kw">pub fn </span>set_9(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>[scalar; <span class="number">9</span>]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().set9(buffer.as_ptr());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>();
+    <span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().reset();
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_identity</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">reset</span>();
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>set_identity(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.reset();
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_translate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setTranslate</span>(<span class="ident">v</span>.<span class="ident">x</span>, <span class="ident">v</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>set_translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>v = v.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setTranslate(v.x, v.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setScale</span>(<span class="ident">sx</span>, <span class="ident">sy</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>set_scale(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (sx, sy): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setScale(sx, sy, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rotate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">degrees</span>: <span class="ident">scalar</span>, <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRotate</span>(<span class="ident">degrees</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>set_rotate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, degrees: scalar, pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setRotate(degrees, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sin_cos</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">sin_value</span>, <span class="ident">cos_value</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setSinCos</span>(<span class="ident">sin_value</span>, <span class="ident">cos_value</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>set_sin_cos(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (sin_value, cos_value): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setSinCos(sin_value, cos_value, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rsxform</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rsxform</span>: <span class="kw-2">&amp;</span><span class="ident">RSXform</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRSXform</span>(<span class="ident">rsxform</span>.<span class="ident">native</span>());
+    <span class="kw">pub fn </span>set_rsxform(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rsxform: <span class="kw-2">&amp;</span>RSXform) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setRSXform(rsxform.native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_skew</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">kx</span>, <span class="ident">ky</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setSkew</span>(<span class="ident">kx</span>, <span class="ident">ky</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>set_skew(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (kx, ky): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setSkew(kx, ky, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_concat</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setConcat</span>(<span class="ident">a</span>.<span class="ident">native</span>(), <span class="ident">b</span>.<span class="ident">native</span>());
+    <span class="kw">pub fn </span>set_concat(<span class="kw-2">&amp;mut </span><span class="self">self</span>, a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setConcat(a.native(), b.native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_translate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preTranslate</span>(<span class="ident">delta</span>.<span class="ident">x</span>, <span class="ident">delta</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>pre_translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>delta = delta.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().preTranslate(delta.x, delta.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_scale</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preScale</span>(<span class="ident">sx</span>, <span class="ident">sy</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>pre_scale(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (sx, sy): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().preScale(sx, sy, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_rotate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">degrees</span>: <span class="ident">scalar</span>, <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preRotate</span>(<span class="ident">degrees</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>pre_rotate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, degrees: scalar, pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().preRotate(degrees, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_skew</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">kx</span>, <span class="ident">ky</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preSkew</span>(<span class="ident">kx</span>, <span class="ident">ky</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>pre_skew(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (kx, ky): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().preSkew(kx, ky, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pre_concat</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">preConcat</span>(<span class="ident">other</span>.<span class="ident">native</span>());
+    <span class="kw">pub fn </span>pre_concat(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().preConcat(other.native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_translate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">postTranslate</span>(<span class="ident">delta</span>.<span class="ident">x</span>, <span class="ident">delta</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>post_translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>delta = delta.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().postTranslate(delta.x, delta.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_scale</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">postScale</span>(<span class="ident">sx</span>, <span class="ident">sy</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>post_scale(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (sx, sy): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().postScale(sx, sy, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.27.0&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use post_scale((1.0 / x as scalar, 1.0 / y as scalar), None)&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_idiv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, (<span class="ident">div_x</span>, <span class="ident">div_y</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>)) -&gt; <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="ident">div_x</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">div_y</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
+    <span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.27.0&quot;</span>,
+        note = <span class="string">&quot;use post_scale((1.0 / x as scalar, 1.0 / y as scalar), None)&quot;
+    </span>)]
+    </span><span class="kw">pub fn </span>post_idiv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, (div_x, div_y): (i32, i32)) -&gt; bool {
+        <span class="kw">if </span>div_x == <span class="number">0 </span>|| div_y == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        <span class="self">self</span>.<span class="ident">post_scale</span>((<span class="number">1.0</span> <span class="op">/</span> <span class="ident">div_x</span> <span class="kw">as</span> <span class="ident">scalar</span>, <span class="number">1.0</span> <span class="op">/</span> <span class="ident">div_y</span> <span class="kw">as</span> <span class="ident">scalar</span>), <span class="prelude-val">None</span>);
-        <span class="bool-val">true</span>
-    }
+        <span class="self">self</span>.post_scale((<span class="number">1.0 </span>/ div_x <span class="kw">as </span>scalar, <span class="number">1.0 </span>/ div_y <span class="kw">as </span>scalar), <span class="prelude-val">None</span>);
+        <span class="bool-val">true
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_rotate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">degrees</span>: <span class="ident">scalar</span>, <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">postRotate</span>(<span class="ident">degrees</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>post_rotate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, degrees: scalar, pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().postRotate(degrees, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_skew</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">kx</span>, <span class="ident">ky</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">pivot</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">postSkew</span>(<span class="ident">kx</span>, <span class="ident">ky</span>, <span class="ident">pivot</span>.<span class="ident">x</span>, <span class="ident">pivot</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>post_skew(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (kx, ky): (scalar, scalar),
+        pivot: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>pivot = pivot.into().unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().postSkew(kx, ky, pivot.x, pivot.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_concat</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">postConcat</span>(<span class="ident">other</span>.<span class="ident">native</span>());
+    <span class="kw">pub fn </span>post_concat(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().postConcat(other.native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rect_to_rect</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">stf</span>: <span class="ident">ScaleToFit</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setRectToRect</span>(<span class="ident">src</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">dst</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">stf</span>)
+    <span class="kw">pub fn </span>set_rect_to_rect(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        src: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        stf: ScaleToFit,
+    ) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setRectToRect(src.as_ref().native(), dst.as_ref().native(), stf)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_rect_to_rect</span>(
-        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">stf</span>: <span class="ident">ScaleToFit</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_identity</span>();
-        <span class="ident">m</span>.<span class="ident">set_rect_to_rect</span>(<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">stf</span>).<span class="ident">if_true_some</span>(<span class="ident">m</span>)
+    <span class="kw">pub fn </span>from_rect_to_rect(
+        src: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        stf: ScaleToFit,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = <span class="self">Self</span>::new_identity();
+        m.set_rect_to_rect(src, dst, stf).if_true_some(m)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_poly_to_poly</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>], <span class="ident">dst</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) -&gt; <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="ident">src</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">dst</span>.<span class="ident">len</span>() {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
+    <span class="kw">pub fn </span>set_poly_to_poly(<span class="kw-2">&amp;mut </span><span class="self">self</span>, src: <span class="kw-2">&amp;</span>[Point], dst: <span class="kw-2">&amp;</span>[Point]) -&gt; bool {
+        <span class="kw">if </span>src.len() != dst.len() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setPolyToPoly</span>(
-                <span class="ident">src</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">dst</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().setPolyToPoly(
+                src.native().as_ptr(),
+                dst.native().as_ptr(),
+                src.len().try_into().unwrap(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_poly_to_poly</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>], <span class="ident">dst</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Matrix</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
-        <span class="ident">m</span>.<span class="ident">set_poly_to_poly</span>(<span class="ident">src</span>, <span class="ident">dst</span>).<span class="ident">if_true_some</span>(<span class="ident">m</span>)
+    <span class="kw">pub fn </span>from_poly_to_poly(src: <span class="kw-2">&amp;</span>[Point], dst: <span class="kw-2">&amp;</span>[Point]) -&gt; <span class="prelude-ty">Option</span>&lt;Matrix&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::new_identity();
+        m.set_poly_to_poly(src, dst).if_true_some(m)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Matrix</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_invert</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">m</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">m</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>invert(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Matrix&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::new_identity();
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_invert(<span class="self">self</span>.native(), m.native_mut()) }.if_true_some(m)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_affine_identity</span>(<span class="ident">affine</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">scalar</span>; <span class="number">6</span>]) {
-        <span class="kw">unsafe</span> { <span class="ident">SkMatrix::SetAffineIdentity</span>(<span class="ident">affine</span>.<span class="ident">as_mut_ptr</span>()) }
+    <span class="kw">pub fn </span>set_affine_identity(affine: <span class="kw-2">&amp;mut </span>[scalar; <span class="number">6</span>]) {
+        <span class="kw">unsafe </span>{ SkMatrix::SetAffineIdentity(affine.as_mut_ptr()) }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_affine</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">scalar</span>; <span class="number">6</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">affine</span> <span class="op">=</span> [<span class="ident">scalar::default</span>(); <span class="number">6</span>];
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">asAffine</span>(<span class="ident">affine</span>.<span class="ident">as_mut_ptr</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">affine</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>to_affine(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;[scalar; <span class="number">6</span>]&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>affine = [scalar::default(); <span class="number">6</span>];
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().asAffine(affine.as_mut_ptr()) }.if_true_some(affine)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_affine</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">affine</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="number">6</span>]) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setAffine</span>(<span class="ident">affine</span>.<span class="ident">as_ptr</span>()) };
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>set_affine(<span class="kw-2">&amp;mut </span><span class="self">self</span>, affine: <span class="kw-2">&amp;</span>[scalar; <span class="number">6</span>]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setAffine(affine.as_ptr()) };
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_affine</span>(<span class="ident">affine</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="number">6</span>]) -&gt; <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">m</span>.<span class="ident">native_mut</span>().<span class="ident">setAffine</span>(<span class="ident">affine</span>.<span class="ident">as_ptr</span>());
+    <span class="kw">pub fn </span>from_affine(affine: <span class="kw-2">&amp;</span>[scalar; <span class="number">6</span>]) -&gt; Matrix {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::new_identity();
+        <span class="kw">unsafe </span>{
+            m.native_mut().setAffine(affine.as_ptr());
         }
-        <span class="ident">m</span>
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">normalize_perspective</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_normalizePerspective</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">pub fn </span>normalize_perspective(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_normalizePerspective(<span class="self">self</span>.native_mut()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_points</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Point</span>], <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) {
-        <span class="macro">assert!</span>(<span class="ident">dst</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">src</span>.<span class="ident">len</span>());
+    <span class="kw">pub fn </span>map_points(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>[Point], src: <span class="kw-2">&amp;</span>[Point]) {
+        <span class="macro">assert!</span>(dst.len() &gt;= src.len());
 
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapPoints</span>(
-                <span class="ident">dst</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().mapPoints(
+                dst.native_mut().as_mut_ptr(),
+                src.native().as_ptr(),
+                src.len().try_into().unwrap(),
             )
         };
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_points_inplace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pts</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Point</span>]) {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">pts</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">mapPoints</span>(<span class="ident">ptr</span>, <span class="ident">ptr</span>, <span class="ident">pts</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+    <span class="kw">pub fn </span>map_points_inplace(<span class="kw-2">&amp;</span><span class="self">self</span>, pts: <span class="kw-2">&amp;mut </span>[Point]) {
+        <span class="kw">let </span>ptr = pts.native_mut().as_mut_ptr();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .mapPoints(ptr, ptr, pts.len().try_into().unwrap())
         };
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_homogeneous_points</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Point3</span>], <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point3</span>]) {
-        <span class="macro">assert!</span>(<span class="ident">dst</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">src</span>.<span class="ident">len</span>());
+    <span class="kw">pub fn </span>map_homogeneous_points(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>[Point3], src: <span class="kw-2">&amp;</span>[Point3]) {
+        <span class="macro">assert!</span>(dst.len() &gt;= src.len());
 
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapHomogeneousPoints</span>(
-                <span class="ident">dst</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().mapHomogeneousPoints(
+                dst.native_mut().as_mut_ptr(),
+                src.native().as_ptr(),
+                src.len().try_into().unwrap(),
             )
         };
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_homogeneous_points_2d</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Point3</span>], <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) {
-        <span class="macro">assert!</span>(<span class="ident">dst</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">src</span>.<span class="ident">len</span>());
+    <span class="kw">pub fn </span>map_homogeneous_points_2d(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>[Point3], src: <span class="kw-2">&amp;</span>[Point]) {
+        <span class="macro">assert!</span>(dst.len() &gt;= src.len());
 
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapHomogeneousPoints1</span>(
-                <span class="ident">dst</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().mapHomogeneousPoints1(
+                dst.native_mut().as_mut_ptr(),
+                src.native().as_ptr(),
+                src.len().try_into().unwrap(),
             )
         };
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="ident">Point</span> {
-        <span class="kw">let</span> <span class="ident">point</span> <span class="op">=</span> <span class="ident">point</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">Point::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapXY</span>(<span class="ident">point</span>.<span class="ident">x</span>, <span class="ident">point</span>.<span class="ident">y</span>, <span class="ident">p</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">p</span>
+    <span class="kw">pub fn </span>map_point(<span class="kw-2">&amp;</span><span class="self">self</span>, point: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; Point {
+        <span class="kw">let </span>point = point.into();
+        <span class="kw">let </span><span class="kw-2">mut </span>p = Point::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().mapXY(point.x, point.y, p.native_mut()) };
+        p
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_xy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>) -&gt; <span class="ident">Point</span> {
-        <span class="self">self</span>.<span class="ident">map_point</span>((<span class="ident">x</span>, <span class="ident">y</span>))
+    <span class="kw">pub fn </span>map_xy(<span class="kw-2">&amp;</span><span class="self">self</span>, x: scalar, y: scalar) -&gt; Point {
+        <span class="self">self</span>.map_point((x, y))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">translate_x</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">y</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">translate_y</span>();
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">has_perspective</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="self">self</span>[<span class="ident">Member::Persp2</span>];
-            <span class="kw">if</span> <span class="ident">w</span> <span class="op">!</span><span class="op">=</span> <span class="number">0.0</span> {
-                <span class="ident">w</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">/</span> <span class="ident">w</span>;
+    <span class="kw">pub fn </span>map_origin(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point {
+        <span class="kw">let </span><span class="kw-2">mut </span>x = <span class="self">self</span>.translate_x();
+        <span class="kw">let </span><span class="kw-2">mut </span>y = <span class="self">self</span>.translate_y();
+        <span class="kw">if </span><span class="self">self</span>.has_perspective() {
+            <span class="kw">let </span><span class="kw-2">mut </span>w = <span class="self">self</span>[Member::Persp2];
+            <span class="kw">if </span>w != <span class="number">0.0 </span>{
+                w = <span class="number">1.0 </span>/ w;
             }
-            <span class="ident">x</span> <span class="kw-2">*</span><span class="op">=</span> <span class="ident">w</span>;
-            <span class="ident">y</span> <span class="kw-2">*</span><span class="op">=</span> <span class="ident">w</span>;
+            x <span class="kw-2">*</span>= w;
+            y <span class="kw-2">*</span>= w;
         }
-        <span class="ident">Point::new</span>(<span class="ident">x</span>, <span class="ident">y</span>)
+        Point::new(x, y)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_vectors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Vector</span>], <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vector</span>]) {
-        <span class="macro">assert!</span>(<span class="ident">dst</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">src</span>.<span class="ident">len</span>());
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapVectors</span>(
-                <span class="ident">dst</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+    <span class="kw">pub fn </span>map_vectors(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>[Vector], src: <span class="kw-2">&amp;</span>[Vector]) {
+        <span class="macro">assert!</span>(dst.len() &gt;= src.len());
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().mapVectors(
+                dst.native_mut().as_mut_ptr(),
+                src.native().as_ptr(),
+                src.len().try_into().unwrap(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_vectors_inplace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">vecs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">Vector</span>]) {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">vecs</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">mapVectors</span>(<span class="ident">ptr</span>, <span class="ident">ptr</span>, <span class="ident">vecs</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+    <span class="kw">pub fn </span>map_vectors_inplace(<span class="kw-2">&amp;</span><span class="self">self</span>, vecs: <span class="kw-2">&amp;mut </span>[Vector]) {
+        <span class="kw">let </span>ptr = vecs.native_mut().as_mut_ptr();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .mapVectors(ptr, ptr, vecs.len().try_into().unwrap())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_vector</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">vec</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vector</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vec</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">map_vectors_inplace</span>(<span class="ident">slice::from_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">vec</span>));
-        <span class="ident">vec</span>
+    <span class="kw">pub fn </span>map_vector(<span class="kw-2">&amp;</span><span class="self">self</span>, vec: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; Vector {
+        <span class="kw">let </span><span class="kw-2">mut </span>vec = vec.into();
+        <span class="self">self</span>.map_vectors_inplace(slice::from_mut(<span class="kw-2">&amp;mut </span>vec));
+        vec
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; (<span class="ident">Rect</span>, <span class="ident">bool</span>) {
-        <span class="self">self</span>.<span class="ident">map_rect_with_perspective_clip</span>(<span class="ident">rect</span>, <span class="ident">ApplyPerspectiveClip::Yes</span>)
+    <span class="kw">pub fn </span>map_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; (Rect, bool) {
+        <span class="self">self</span>.map_rect_with_perspective_clip(rect, ApplyPerspectiveClip::Yes)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_rect_with_perspective_clip</span>(
+    <span class="kw">pub fn </span>map_rect_with_perspective_clip(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">perspective_clip</span>: <span class="ident">ApplyPerspectiveClip</span>,
-    ) -&gt; (<span class="ident">Rect</span>, <span class="ident">bool</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rect</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">rect</span>.<span class="ident">as_ref</span>();
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">rect</span>.<span class="ident">native_mut</span>();
-        <span class="kw">let</span> <span class="ident">rect_stays_rect</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapRect</span>(<span class="ident">ptr</span>, <span class="ident">ptr</span>, <span class="ident">perspective_clip</span>) };
-        (<span class="ident">rect</span>, <span class="ident">rect_stays_rect</span>)
+        rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        perspective_clip: ApplyPerspectiveClip,
+    ) -&gt; (Rect, bool) {
+        <span class="kw">let </span><span class="kw-2">mut </span>rect = <span class="kw-2">*</span>rect.as_ref();
+        <span class="kw">let </span>ptr = rect.native_mut();
+        <span class="kw">let </span>rect_stays_rect = <span class="kw">unsafe </span>{ <span class="self">self</span>.native().mapRect(ptr, ptr, perspective_clip) };
+        (rect, rect_stays_rect)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_rect_to_quad</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; [<span class="ident">Point</span>; <span class="number">4</span>] {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">quad</span> <span class="op">=</span> <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">to_quad</span>();
-        <span class="self">self</span>.<span class="ident">map_points_inplace</span>(<span class="ident">quad</span>.<span class="ident">as_mut</span>());
-        <span class="ident">quad</span>
+    <span class="kw">pub fn </span>map_rect_to_quad(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; [Point; <span class="number">4</span>] {
+        <span class="kw">let </span><span class="kw-2">mut </span>quad = rect.as_ref().to_quad();
+        <span class="self">self</span>.map_points_inplace(quad.as_mut());
+        quad
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_rect_scale_translate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_scale_translate</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect::default</span>();
-            <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">native</span>()
-                    .<span class="ident">mapRectScaleTranslate</span>(<span class="ident">rect</span>.<span class="ident">native_mut</span>(), <span class="ident">src</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    <span class="kw">pub fn </span>map_rect_scale_translate(<span class="kw-2">&amp;</span><span class="self">self</span>, src: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Rect&gt; {
+        <span class="kw">if </span><span class="self">self</span>.is_scale_translate() {
+            <span class="kw">let </span><span class="kw-2">mut </span>rect = Rect::default();
+            <span class="kw">unsafe </span>{
+                <span class="self">self</span>.native()
+                    .mapRectScaleTranslate(rect.native_mut(), src.as_ref().native())
             };
-            <span class="prelude-val">Some</span>(<span class="ident">rect</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
+            <span class="prelude-val">Some</span>(rect)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_radius</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">radius</span>: <span class="ident">scalar</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">has_perspective</span>() {
-            <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">mapRadius</span>(<span class="ident">radius</span>) })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
+    <span class="kw">pub fn </span>map_radius(<span class="kw-2">&amp;</span><span class="self">self</span>, radius: scalar) -&gt; <span class="prelude-ty">Option</span>&lt;scalar&gt; {
+        <span class="kw">if </span>!<span class="self">self</span>.has_perspective() {
+            <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ <span class="self">self</span>.native().mapRadius(radius) })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.27.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;removed without replacement&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_fixed_step_in_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="op">!</span> {
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.27.0&quot;</span>, note = <span class="string">&quot;removed without replacement&quot;</span>)]
+    </span><span class="kw">pub fn </span>is_fixed_step_in_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ! {
         <span class="macro">unimplemented!</span>(<span class="string">&quot;removed without replacement&quot;</span>)
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.27.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;removed without replacement&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fixed_step_in_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_y</span>: <span class="ident">scalar</span>) -&gt; <span class="op">!</span> {
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.27.0&quot;</span>, note = <span class="string">&quot;removed without replacement&quot;</span>)]
+    </span><span class="kw">pub fn </span>fixed_step_in_x(<span class="kw-2">&amp;</span><span class="self">self</span>, _y: scalar) -&gt; ! {
         <span class="macro">unimplemented!</span>(<span class="string">&quot;removed without replacement&quot;</span>)
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.27.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;removed without replacement&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cheap_equal_to</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_other</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="op">!</span> {
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.27.0&quot;</span>, note = <span class="string">&quot;removed without replacement&quot;</span>)]
+    </span><span class="kw">pub fn </span>cheap_equal_to(<span class="kw-2">&amp;</span><span class="self">self</span>, _other: <span class="kw-2">&amp;</span>Matrix) -&gt; ! {
         <span class="macro">unimplemented!</span>(<span class="string">&quot;removed without replacement&quot;</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dump</span>() }
+    <span class="kw">pub fn </span>dump(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().dump() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">min_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMinScale</span>() }
+    <span class="kw">pub fn </span>min_scale(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getMinScale() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMaxScale</span>() }
+    <span class="kw">pub fn </span>max_scale(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getMaxScale() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">min_max_scales</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">scalar</span>, <span class="ident">scalar</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span>: [<span class="ident">scalar</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMinMaxScales</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>()) };
-        (<span class="ident">r</span>[<span class="number">0</span>], <span class="ident">r</span>[<span class="number">1</span>])
+    <span class="kw">pub fn </span>min_max_scales(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (scalar, scalar) {
+        <span class="kw">let </span><span class="kw-2">mut </span>r: [scalar; <span class="number">2</span>] = Default::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getMinMaxScales(r.as_mut_ptr()) };
+        (r[<span class="number">0</span>], r[<span class="number">1</span>])
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decompose_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">remaining</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Matrix</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Size::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">decomposeScale</span>(<span class="ident">size</span>.<span class="ident">native_mut</span>(), <span class="ident">remaining</span>.<span class="ident">native_ptr_or_null_mut</span>())
+    <span class="kw">pub fn </span>decompose_scale(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>remaining: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Matrix&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Size&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>size = Size::default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .decomposeScale(size.native_mut(), remaining.native_ptr_or_null_mut())
         }
-        .<span class="ident">if_true_some</span>(<span class="ident">size</span>)
+        .if_true_some(size)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">i</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Matrix</span> {
-        <span class="kw-2">&amp;</span><span class="ident">IDENTITY</span>
+    <span class="kw">pub fn </span>i() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Matrix {
+        <span class="kw-2">&amp;</span>IDENTITY
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invalid_matrix</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Matrix</span> {
-        <span class="ident"><span class="self">Self</span>::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkMatrix_InvalidMatrix</span>() })
+    <span class="kw">pub fn </span>invalid_matrix() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Matrix {
+        <span class="self">Self</span>::from_native_ref(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>sb::C_SkMatrix_InvalidMatrix() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">concat</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
-        <span class="kw">unsafe</span> { <span class="ident">m</span>.<span class="ident">native_mut</span>().<span class="ident">setConcat</span>(<span class="ident">a</span>.<span class="ident">native</span>(), <span class="ident">b</span>.<span class="ident">native</span>()) };
-        <span class="ident">m</span>
+    <span class="kw">pub fn </span>concat(a: <span class="kw-2">&amp;</span>Matrix, b: <span class="kw-2">&amp;</span>Matrix) -&gt; Matrix {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::new_identity();
+        <span class="kw">unsafe </span>{ m.native_mut().setConcat(a.native(), b.native()) };
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dirty_matrix_type_cache</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fTypeMask</span> <span class="op">=</span> <span class="number">0x80</span>;
+    <span class="kw">pub fn </span>dirty_matrix_type_cache(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.native_mut().fTypeMask = <span class="number">0x80</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale_translate</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">sx</span>, <span class="ident">sy</span>): (<span class="ident">scalar</span>, <span class="ident">scalar</span>),
-        <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_setScaleTranslate</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">sx</span>, <span class="ident">sy</span>, <span class="ident">t</span>.<span class="ident">x</span>, <span class="ident">t</span>.<span class="ident">y</span>) }
-        <span class="self">self</span>
+    <span class="kw">pub fn </span>set_scale_translate(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (sx, sy): (scalar, scalar),
+        t: <span class="kw">impl </span>Into&lt;Vector&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>t = t.into();
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_setScaleTranslate(<span class="self">self</span>.native_mut(), sx, sy, t.x, t.y) }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>is_finite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkMatrix_isFinite(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_finite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrix_isFinite</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
-    }
-
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_identity</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+    <span class="kw">pub const fn </span>new_identity() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">IndexGet</span> <span class="kw">for</span> <span class="ident">Matrix</span> {}
-<span class="kw">impl</span> <span class="ident">IndexSet</span> <span class="kw">for</span> <span class="ident">Matrix</span> {}
+<span class="kw">impl </span>IndexGet <span class="kw">for </span>Matrix {}
+<span class="kw">impl </span>IndexSet <span class="kw">for </span>Matrix {}
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IDENTITY</span>: <span class="ident">Matrix</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
+<span class="kw">pub const </span>IDENTITY: Matrix = Matrix::new_identity();
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">AffineMember</span>, <span class="ident">Matrix</span>, <span class="ident">TypeMask</span>};
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::{AffineMember, Matrix, TypeMask};
+    <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_get_set_trait_compilation</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
-        <span class="kw">let</span> <span class="ident">_x</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">get</span>(<span class="ident">AffineMember::ScaleX</span>);
-        <span class="ident">m</span>.<span class="ident">set</span>(<span class="ident">AffineMember::ScaleX</span>, <span class="number">1.0</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_get_set_trait_compilation() {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::new_identity();
+        <span class="kw">let </span>_x = m.get(AffineMember::ScaleX);
+        m.set(AffineMember::ScaleX, <span class="number">1.0</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::float_cmp</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">test_tuple_to_vector</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::new_identity</span>();
-        <span class="ident">m</span>.<span class="ident">set_translate</span>((<span class="number">10.0</span>, <span class="number">11.0</span>));
-        <span class="macro">assert_eq!</span>(<span class="number">10.0</span>, <span class="ident">m</span>.<span class="ident">translate_x</span>());
-        <span class="macro">assert_eq!</span>(<span class="number">11.0</span>, <span class="ident">m</span>.<span class="ident">translate_y</span>());
+    <span class="attribute">#[test]
+    #[allow(clippy::float_cmp)]
+    </span><span class="kw">fn </span>test_tuple_to_vector() {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::new_identity();
+        m.set_translate((<span class="number">10.0</span>, <span class="number">11.0</span>));
+        <span class="macro">assert_eq!</span>(<span class="number">10.0</span>, m.translate_x());
+        <span class="macro">assert_eq!</span>(<span class="number">11.0</span>, m.translate_y());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">setting_a_matrix_component_recomputes_typemask</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::default</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">TypeMask::IDENTITY</span>, <span class="ident">m</span>.<span class="ident">get_type</span>());
-        <span class="ident">m</span>.<span class="ident">set_persp_x</span>(<span class="number">0.1</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>setting_a_matrix_component_recomputes_typemask() {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::default();
+        <span class="macro">assert_eq!</span>(TypeMask::IDENTITY, m.get_type());
+        m.set_persp_x(<span class="number">0.1</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">TypeMask::TRANSLATE</span> <span class="op">|</span> <span class="ident">TypeMask::SCALE</span> <span class="op">|</span> <span class="ident">TypeMask::AFFINE</span> <span class="op">|</span> <span class="ident">TypeMask::PERSPECTIVE</span>,
-            <span class="ident">m</span>.<span class="ident">get_type</span>()
+            TypeMask::TRANSLATE | TypeMask::SCALE | TypeMask::AFFINE | TypeMask::PERSPECTIVE,
+            m.get_type()
         );
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

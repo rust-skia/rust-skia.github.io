@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\path_builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>path_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/path_builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>path_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -379,381 +373,380 @@
 <span id="373">373</span>
 <span id="374">374</span>
 <span id="375">375</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Path</span>, <span class="ident">PathDirection</span>, <span class="ident">PathFillType</span>, <span class="ident">Point</span>, <span class="ident">RRect</span>, <span class="ident">Rect</span>, <span class="ident">Vector</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkPathBuilder</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem</span>};
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Path, PathDirection, PathFillType, Point, RRect, Rect, Vector};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkPathBuilder};
+<span class="kw">use </span>std::{fmt, mem};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkPathBuilder_ArcSize</span> <span class="kw">as</span> <span class="ident">ArcSize</span>;
-<span class="macro">variant_name!</span>(<span class="ident">ArcSize::Large</span>, <span class="ident">arc_size_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkPathBuilder_ArcSize <span class="kw">as </span>ArcSize;
+<span class="macro">variant_name!</span>(ArcSize::Large, arc_size_naming);
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PathBuilder</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPathBuilder</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">PathBuilder</span>);
+<span class="kw">pub type </span>PathBuilder = Handle&lt;SkPathBuilder&gt;;
+<span class="macro">unsafe_send_sync!</span>(PathBuilder);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPathBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkPathBuilder {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkPathBuilder_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">PathBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">pb</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_CopyConstruct</span>(<span class="ident">pb</span>, <span class="self">self</span>.<span class="ident">native</span>()) })
+<span class="kw">impl </span>Clone <span class="kw">for </span>PathBuilder {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::construct(|pb| <span class="kw">unsafe </span>{ sb::C_SkPathBuilder_CopyConstruct(pb, <span class="self">self</span>.native()) })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">PathBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PathBuilder&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;fill_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fill_type</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>PathBuilder {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;PathBuilder&quot;</span>)
+            .field(<span class="string">&quot;fill_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.fill_type())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PathBuilder</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">pb</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_Construct</span>(<span class="ident">pb</span>) })
+<span class="kw">impl </span>PathBuilder {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::construct(|pb| <span class="kw">unsafe </span>{ sb::C_SkPathBuilder_Construct(pb) })
     }
 
     <span class="comment">/* m87: No Implementation.
     pub fn new_fill_type(fill_type: PathFillType) -&gt; Self {
         Self::construct(|pb| unsafe { sb::C_SkPathBuilder_Construct2(pb, fill_type) })
     }
-    */</span>
+    */
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">pb</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_Construct3</span>(<span class="ident">pb</span>, <span class="ident">path</span>.<span class="ident">native</span>()) })
+    </span><span class="kw">pub fn </span>new_path(path: <span class="kw-2">&amp;</span>Path) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::construct(|pb| <span class="kw">unsafe </span>{ sb::C_SkPathBuilder_Construct3(pb, path.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PathFillType</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fFillType</span>
+    <span class="kw">pub fn </span>fill_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PathFillType {
+        <span class="self">self</span>.native().fFillType
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="ident">Rect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_computeBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>compute_bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
+        Rect::from_native_c(<span class="kw">unsafe </span>{ sb::C_SkPathBuilder_computeBounds(<span class="self">self</span>.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">snapshot</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Path</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_snapshot</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">path</span>.<span class="ident">native_mut</span>()) }
-        <span class="ident">path</span>
+    <span class="kw">pub fn </span>snapshot(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Path {
+        <span class="kw">let </span><span class="kw-2">mut </span>path = Path::default();
+        <span class="kw">unsafe </span>{ sb::C_SkPathBuilder_snapshot(<span class="self">self</span>.native(), path.native_mut()) }
+        path
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">detach</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Path</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPathBuilder_detach</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">path</span>.<span class="ident">native_mut</span>()) }
-        <span class="ident">path</span>
+    <span class="kw">pub fn </span>detach(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Path {
+        <span class="kw">let </span><span class="kw-2">mut </span>path = Path::default();
+        <span class="kw">unsafe </span>{ sb::C_SkPathBuilder_detach(<span class="self">self</span>.native_mut(), path.native_mut()) }
+        path
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_fill_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ft</span>: <span class="ident">PathFillType</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fFillType</span> <span class="op">=</span> <span class="ident">ft</span>;
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>set_fill_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ft: PathFillType) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.native_mut().fFillType = ft;
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_is_volatile</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">is_volatile</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fIsVolatile</span> <span class="op">=</span> <span class="ident">is_volatile</span>;
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>set_is_volatile(<span class="kw-2">&amp;mut </span><span class="self">self</span>, is_volatile: bool) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.native_mut().fIsVolatile = is_volatile;
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>();
+    <span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().reset();
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pt</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">moveTo</span>(<span class="ident">pt</span>.<span class="ident">into</span>().<span class="ident">into_native</span>());
+    <span class="kw">pub fn </span>move_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pt: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().moveTo(pt.into().into_native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">line_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pt</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">lineTo</span>(<span class="ident">pt</span>.<span class="ident">into</span>().<span class="ident">into_native</span>());
+    <span class="kw">pub fn </span>line_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pt: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().lineTo(pt.into().into_native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quad_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">quadTo</span>(<span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>());
+    <span class="kw">pub fn </span>quad_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, p1: <span class="kw">impl </span>Into&lt;Point&gt;, p2: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .quadTo(p1.into().into_native(), p2.into().into_native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">conic_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">w</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">conicTo</span>(<span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">w</span>);
+    <span class="kw">pub fn </span>conic_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, p1: <span class="kw">impl </span>Into&lt;Point&gt;, p2: <span class="kw">impl </span>Into&lt;Point&gt;, w: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .conicTo(p1.into().into_native(), p2.into().into_native(), w);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cubic_to</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">p3</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">cubicTo</span>(
-                <span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-                <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-                <span class="ident">p3</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>cubic_to(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        p1: <span class="kw">impl </span>Into&lt;Point&gt;,
+        p2: <span class="kw">impl </span>Into&lt;Point&gt;,
+        p3: <span class="kw">impl </span>Into&lt;Point&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().cubicTo(
+                p1.into().into_native(),
+                p2.into().into_native(),
+                p3.into().into_native(),
             )
         };
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">close</span>();
+    <span class="kw">pub fn </span>close(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().close();
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polyline_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">polylineTo</span>(<span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">points</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
+    <span class="kw">pub fn </span>polyline_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, points: <span class="kw-2">&amp;</span>[Point]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .polylineTo(points.native().as_ptr(), points.len().try_into().unwrap());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_line_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pt</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rLineTo</span>(<span class="ident">pt</span>.<span class="ident">into</span>().<span class="ident">into_native</span>());
+    <span class="kw">pub fn </span>r_line_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pt: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().rLineTo(pt.into().into_native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_quad_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pt1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">pt2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">rQuadTo</span>(<span class="ident">pt1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">pt2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>());
+    <span class="kw">pub fn </span>r_quad_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pt1: <span class="kw">impl </span>Into&lt;Point&gt;, pt2: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .rQuadTo(pt1.into().into_native(), pt2.into().into_native());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_conic_to</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">pt1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">pt2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">w</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">rConicTo</span>(<span class="ident">pt1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">pt2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">w</span>);
+    <span class="kw">pub fn </span>r_conic_to(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        pt1: <span class="kw">impl </span>Into&lt;Point&gt;,
+        pt2: <span class="kw">impl </span>Into&lt;Point&gt;,
+        w: scalar,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .rConicTo(pt1.into().into_native(), pt2.into().into_native(), w);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_cubic_to</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">pt1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">pt2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">pt3</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rCubicTo</span>(
-                <span class="ident">pt1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-                <span class="ident">pt2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-                <span class="ident">pt3</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>r_cubic_to(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        pt1: <span class="kw">impl </span>Into&lt;Point&gt;,
+        pt2: <span class="kw">impl </span>Into&lt;Point&gt;,
+        pt3: <span class="kw">impl </span>Into&lt;Point&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().rCubicTo(
+                pt1.into().into_native(),
+                pt2.into().into_native(),
+                pt3.into().into_native(),
             );
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arc_to</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">start_angle_deg</span>: <span class="ident">scalar</span>,
-        <span class="ident">sweep_angle_deg</span>: <span class="ident">scalar</span>,
-        <span class="ident">force_move_to</span>: <span class="ident">bool</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">arcTo</span>(
-                <span class="ident">oval</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
-                <span class="ident">start_angle_deg</span>,
-                <span class="ident">sweep_angle_deg</span>,
-                <span class="ident">force_move_to</span>,
+    <span class="kw">pub fn </span>arc_to(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        oval: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        start_angle_deg: scalar,
+        sweep_angle_deg: scalar,
+        force_move_to: bool,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().arcTo(
+                oval.as_ref().native(),
+                start_angle_deg,
+                sweep_angle_deg,
+                force_move_to,
             );
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arc_to_tangent</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">p2</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">radius</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">arcTo1</span>(<span class="ident">p1</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">p2</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">radius</span>);
+    <span class="kw">pub fn </span>arc_to_tangent(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        p1: <span class="kw">impl </span>Into&lt;Point&gt;,
+        p2: <span class="kw">impl </span>Into&lt;Point&gt;,
+        radius: scalar,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .arcTo1(p1.into().into_native(), p2.into().into_native(), radius);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arc_to_radius</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">x_axis_rotate</span>: <span class="ident">scalar</span>,
-        <span class="ident">large_arc</span>: <span class="ident">ArcSize</span>,
-        <span class="ident">sweep</span>: <span class="ident">PathDirection</span>,
-        <span class="ident">xy</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">arcTo2</span>(
-                <span class="ident">r</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-                <span class="ident">x_axis_rotate</span>,
-                <span class="ident">large_arc</span>,
-                <span class="ident">sweep</span>,
-                <span class="ident">xy</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>arc_to_radius(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        r: <span class="kw">impl </span>Into&lt;Point&gt;,
+        x_axis_rotate: scalar,
+        large_arc: ArcSize,
+        sweep: PathDirection,
+        xy: <span class="kw">impl </span>Into&lt;Point&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().arcTo2(
+                r.into().into_native(),
+                x_axis_rotate,
+                large_arc,
+                sweep,
+                xy.into().into_native(),
             );
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_arc</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">oval</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">start_angle_deg</span>: <span class="ident">scalar</span>,
-        <span class="ident">sweep_angle_deg</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">addArc</span>(<span class="ident">oval</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">start_angle_deg</span>, <span class="ident">sweep_angle_deg</span>);
+    <span class="kw">pub fn </span>add_arc(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        oval: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        start_angle_deg: scalar,
+        sweep_angle_deg: scalar,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .addArc(oval.as_ref().native(), start_angle_deg, sweep_angle_deg);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_rect</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">start_index</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>);
-        <span class="kw">let</span> <span class="ident">start_index</span> <span class="op">=</span> <span class="ident">start_index</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>);
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">addRect</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">dir</span>, <span class="ident">start_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
+    <span class="kw">pub fn </span>add_rect(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        dir: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;PathDirection&gt;&gt;,
+        start_index: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>dir = dir.into().unwrap_or(PathDirection::CW);
+        <span class="kw">let </span>start_index = start_index.into().unwrap_or(<span class="number">0</span>);
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .addRect(rect.as_ref().native(), dir, start_index.try_into().unwrap());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_oval</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-        <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">start_index</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>);
-        <span class="comment">// m86: default start index changed from 0 to 1</span>
-        <span class="kw">let</span> <span class="ident">start_index</span> <span class="op">=</span> <span class="ident">start_index</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">1</span>);
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">addOval</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">dir</span>, <span class="ident">start_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
+    <span class="kw">pub fn </span>add_oval(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        dir: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;PathDirection&gt;&gt;,
+        start_index: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>dir = dir.into().unwrap_or(PathDirection::CW);
+        <span class="comment">// m86: default start index changed from 0 to 1
+        </span><span class="kw">let </span>start_index = start_index.into().unwrap_or(<span class="number">1</span>);
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .addOval(rect.as_ref().native(), dir, start_index.try_into().unwrap());
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_rrect</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">RRect</span><span class="op">&gt;</span>,
-        <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">start_index</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>);
-        <span class="comment">// m86: default start index changed from 0 to 6 or 7 depending on the path&#39;s direction.</span>
-        <span class="kw">let</span> <span class="ident">start_index</span> <span class="op">=</span>
-            <span class="ident">start_index</span>
-                .<span class="ident">into</span>()
-                .<span class="ident">unwrap_or</span>(<span class="kw">if</span> <span class="ident">dir</span> <span class="op">==</span> <span class="ident">PathDirection::CW</span> { <span class="number">6</span> } <span class="kw">else</span> { <span class="number">7</span> });
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">addRRect</span>(
-                <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
-                <span class="ident">dir</span>,
-                <span class="ident">start_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+    <span class="kw">pub fn </span>add_rrect(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        rect: <span class="kw">impl </span>AsRef&lt;RRect&gt;,
+        dir: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;PathDirection&gt;&gt;,
+        start_index: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>dir = dir.into().unwrap_or(PathDirection::CW);
+        <span class="comment">// m86: default start index changed from 0 to 6 or 7 depending on the path&#39;s direction.
+        </span><span class="kw">let </span>start_index =
+            start_index
+                .into()
+                .unwrap_or(<span class="kw">if </span>dir == PathDirection::CW { <span class="number">6 </span>} <span class="kw">else </span>{ <span class="number">7 </span>});
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().addRRect(
+                rect.as_ref().native(),
+                dir,
+                start_index.try_into().unwrap(),
             );
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_circle</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">center</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">radius</span>: <span class="ident">scalar</span>,
-        <span class="ident">dir</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathDirection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">center</span> <span class="op">=</span> <span class="ident">center</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">PathDirection::CW</span>);
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">addCircle</span>(<span class="ident">center</span>.<span class="ident">x</span>, <span class="ident">center</span>.<span class="ident">y</span>, <span class="ident">radius</span>, <span class="ident">dir</span>);
+    <span class="kw">pub fn </span>add_circle(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        center: <span class="kw">impl </span>Into&lt;Point&gt;,
+        radius: scalar,
+        dir: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;PathDirection&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>center = center.into();
+        <span class="kw">let </span>dir = dir.into().unwrap_or(PathDirection::CW);
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().addCircle(center.x, center.y, radius, dir);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_polygon</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pts</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>], <span class="ident">is_closed</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">addPolygon</span>(
-                <span class="ident">pts</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">pts</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">is_closed</span>,
+    <span class="kw">pub fn </span>add_polygon(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pts: <span class="kw-2">&amp;</span>[Point], is_closed: bool) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().addPolygon(
+                pts.native().as_ptr(),
+                pts.len().try_into().unwrap(),
+                is_closed,
             );
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_path</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">addPath</span>(<span class="ident">path</span>.<span class="ident">native</span>()) };
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>add_path(<span class="kw-2">&amp;mut </span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().addPath(path.native()) };
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_reserve</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">extra_pt_count</span>: <span class="ident">usize</span>, <span class="ident">extra_verb_count</span>: <span class="ident">usize</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">incReserve</span>(
-                <span class="ident">extra_pt_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">extra_verb_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+    <span class="kw">pub fn </span>inc_reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extra_pt_count: usize, extra_verb_count: usize) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().incReserve(
+                extra_pt_count.try_into().unwrap(),
+                extra_verb_count.try_into().unwrap(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">offset</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>offset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>d = d.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().offset(d.x, d.y);
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">toggle_inverse_fill_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>();
-        <span class="ident">n</span>.<span class="ident">fFillType</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">n</span>.<span class="ident">fFillType</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">^</span> <span class="number">2</span>) };
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>toggle_inverse_fill_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>n = <span class="self">self</span>.native_mut();
+        n.fFillType = <span class="kw">unsafe </span>{ mem::transmute(n.fFillType <span class="kw">as </span>i32 ^ <span class="number">2</span>) };
+        <span class="self">self
+    </span>}
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.35.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Removed without replacement&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make</span>(
-        <span class="ident">_points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>],
-        <span class="ident">_verbs</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">_conic_weights</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>],
-        <span class="ident">_fill_type</span>: <span class="ident">PathFillType</span>,
-        <span class="ident">_is_volatile</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="op">!</span> {
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.35.0&quot;</span>, note = <span class="string">&quot;Removed without replacement&quot;</span>)]
+    </span><span class="kw">pub fn </span>make(
+        _points: <span class="kw-2">&amp;</span>[Point],
+        _verbs: <span class="kw-2">&amp;</span>[u8],
+        _conic_weights: <span class="kw-2">&amp;</span>[scalar],
+        _fill_type: PathFillType,
+        _is_volatile: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
+    ) -&gt; ! {
         <span class="macro">panic!</span>(<span class="string">&quot;Removed without replacement&quot;</span>);
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_creation_snapshot_and_detach</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">PathBuilder::new</span>();
-    <span class="kw">let</span> <span class="ident">_path</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">snapshot</span>();
-    <span class="kw">let</span> <span class="ident">_path</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">detach</span>();
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_creation_snapshot_and_detach() {
+    <span class="kw">let </span><span class="kw-2">mut </span>builder = PathBuilder::new();
+    <span class="kw">let </span>_path = builder.snapshot();
+    <span class="kw">let </span>_path = builder.detach();
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

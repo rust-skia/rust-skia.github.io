@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\typeface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>typeface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/typeface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>typeface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -381,383 +375,382 @@
 <span id="375">375</span>
 <span id="376">376</span>
 <span id="377">377</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">font_arguments</span>,
-    <span class="ident">font_parameters::VariationAxis</span>,
-    <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">MemoryStream</span>, <span class="ident">NativeStreamBase</span>, <span class="ident">StreamAsset</span>},
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>,
-    <span class="ident">Data</span>, <span class="ident">FontArguments</span>, <span class="ident">FontStyle</span>, <span class="ident">GlyphId</span>, <span class="ident">Rect</span>, <span class="ident">TextEncoding</span>, <span class="ident">Unichar</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    font_arguments,
+    font_parameters::VariationAxis,
+    interop::{<span class="self">self</span>, MemoryStream, NativeStreamBase, StreamAsset},
+    prelude::<span class="kw-2">*</span>,
+    Data, FontArguments, FontStyle, GlyphId, Rect, TextEncoding, Unichar,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkRefCntBase</span>, <span class="ident">SkTypeface</span>, <span class="ident">SkTypeface_LocalizedStrings</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkRefCntBase, SkTypeface, SkTypeface_LocalizedStrings};
+<span class="kw">use </span>std::{ffi, fmt, mem, ptr};
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TypefaceId</span> <span class="op">=</span> <span class="ident">skia_bindings::SkTypefaceID</span>;
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.49.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use TypefaceId&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontId</span> <span class="op">=</span> <span class="ident">TypefaceId</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontTableTag</span> <span class="op">=</span> <span class="ident">skia_bindings::SkFontTableTag</span>;
+<span class="kw">pub type </span>TypefaceId = skia_bindings::SkTypefaceID;
+<span class="attribute">#[deprecated(since = <span class="string">&quot;0.49.0&quot;</span>, note = <span class="string">&quot;use TypefaceId&quot;</span>)]
+</span><span class="kw">pub type </span>FontId = TypefaceId;
+<span class="kw">pub type </span>FontTableTag = skia_bindings::SkFontTableTag;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkTypeface_SerializeBehavior</span> <span class="kw">as</span> <span class="ident">SerializeBehavior</span>;
+<span class="kw">pub use </span>skia_bindings::SkTypeface_SerializeBehavior <span class="kw">as </span>SerializeBehavior;
 <span class="macro">variant_name!</span>(
-    <span class="ident">SerializeBehavior::DontIncludeData</span>,
-    <span class="ident">serialize_behavior_naming</span>
+    SerializeBehavior::DontIncludeData,
+    serialize_behavior_naming
 );
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LocalizedString</span> {
-    <span class="kw">pub</span> <span class="ident">string</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">language</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone, PartialEq, Eq, Debug)]
+</span><span class="kw">pub struct </span>LocalizedString {
+    <span class="kw">pub </span>string: String,
+    <span class="kw">pub </span>language: String,
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Typeface</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkTypeface</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">Typeface</span>);
+<span class="kw">pub type </span>Typeface = RCHandle&lt;SkTypeface&gt;;
+<span class="macro">unsafe_send_sync!</span>(Typeface);
 
-<span class="kw">impl</span> <span class="ident">NativeRefCountedBase</span> <span class="kw">for</span> <span class="ident">SkTypeface</span> {
-    <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">SkRefCntBase</span>;
+<span class="kw">impl </span>NativeRefCountedBase <span class="kw">for </span>SkTypeface {
+    <span class="kw">type </span>Base = SkRefCntBase;
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Typeface</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_MakeDefault</span>() }).<span class="ident">unwrap</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Typeface</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Typeface&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;font_style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_style</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;is_fixed_pitch&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_fixed_pitch</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;unique_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">unique_id</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;family_name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">family_name</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>Typeface {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        Typeface::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTypeface_MakeDefault() }).unwrap()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Typeface</span> {
-    <span class="comment">// Canonical new:</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">family_name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_name</span>(<span class="ident">family_name</span>, <span class="ident">font_style</span>)
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Typeface {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Typeface&quot;</span>)
+            .field(<span class="string">&quot;font_style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_style())
+            .field(<span class="string">&quot;is_fixed_pitch&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_fixed_pitch())
+            .field(<span class="string">&quot;unique_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.unique_id())
+            .field(<span class="string">&quot;family_name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.family_name())
+            .field(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
+            .finish()
+    }
+}
+
+<span class="kw">impl </span>Typeface {
+    <span class="comment">// Canonical new:
+    </span><span class="kw">pub fn </span>new(family_name: <span class="kw">impl </span>AsRef&lt;str&gt;, font_style: FontStyle) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_name(family_name, font_style)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FontStyle</span> {
-        <span class="ident">FontStyle::from_native_c</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fStyle</span>)
+    <span class="kw">pub fn </span>font_style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; FontStyle {
+        FontStyle::from_native_c(<span class="self">self</span>.native().fStyle)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_bold</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_isBold</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>is_bold(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkTypeface_isBold(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_italic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_isItalic</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>is_italic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkTypeface_isItalic(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_fixed_pitch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fIsFixedPitch</span>
+    <span class="kw">pub fn </span>is_fixed_pitch(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.native().fIsFixedPitch
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variation_design_position</span>(
+    <span class="kw">pub fn </span>variation_design_position(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">font_arguments::variation_position::Coordinate</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getVariationDesignPosition</span>(<span class="ident">ptr::null_mut</span>(), <span class="number">0</span>);
-            <span class="kw">if</span> <span class="ident">r</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">font_arguments::variation_position::Coordinate::default</span>(); <span class="ident">r</span> <span class="kw">as</span> <span class="kw">_</span>];
-                <span class="kw">let</span> <span class="ident">elements</span> <span class="op">=</span> <span class="self">self</span>
-                    .<span class="ident">native</span>()
-                    .<span class="ident">getVariationDesignPosition</span>(<span class="ident">v</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(), <span class="ident">r</span>);
-                <span class="macro">assert_eq!</span>(<span class="ident">elements</span>, <span class="ident">r</span>);
-                <span class="prelude-val">Some</span>(<span class="ident">v</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
-            }
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;font_arguments::variation_position::Coordinate&gt;&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>r = <span class="self">self</span>.native().getVariationDesignPosition(ptr::null_mut(), <span class="number">0</span>);
+            <span class="kw">if </span>r != -<span class="number">1 </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>v = <span class="macro">vec!</span>[font_arguments::variation_position::Coordinate::default(); r <span class="kw">as _</span>];
+                <span class="kw">let </span>elements = <span class="self">self
+                    </span>.native()
+                    .getVariationDesignPosition(v.native_mut().as_mut_ptr(), r);
+                <span class="macro">assert_eq!</span>(elements, r);
+                <span class="prelude-val">Some</span>(v)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variation_design_parameters</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">VariationAxis</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>
-                .<span class="ident">native</span>()
-                .<span class="ident">getVariationDesignParameters</span>(<span class="ident">ptr::null_mut</span>(), <span class="number">0</span>);
-            <span class="kw">if</span> <span class="ident">r</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">VariationAxis::default</span>(); <span class="ident">r</span> <span class="kw">as</span> <span class="kw">_</span>];
-                <span class="kw">let</span> <span class="ident">elements</span> <span class="op">=</span> <span class="self">self</span>
-                    .<span class="ident">native</span>()
-                    .<span class="ident">getVariationDesignParameters</span>(<span class="ident">v</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(), <span class="ident">r</span>);
-                <span class="macro">assert_eq!</span>(<span class="ident">elements</span>, <span class="ident">r</span>);
-                <span class="prelude-val">Some</span>(<span class="ident">v</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
-            }
+    <span class="kw">pub fn </span>variation_design_parameters(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;VariationAxis&gt;&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>r = <span class="self">self
+                </span>.native()
+                .getVariationDesignParameters(ptr::null_mut(), <span class="number">0</span>);
+            <span class="kw">if </span>r != -<span class="number">1 </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>v = <span class="macro">vec!</span>[VariationAxis::default(); r <span class="kw">as _</span>];
+                <span class="kw">let </span>elements = <span class="self">self
+                    </span>.native()
+                    .getVariationDesignParameters(v.native_mut().as_mut_ptr(), r);
+                <span class="macro">assert_eq!</span>(elements, r);
+                <span class="prelude-val">Some</span>(v)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unique_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">TypefaceId</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fUniqueID</span>
+    <span class="kw">pub fn </span>unique_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypefaceId {
+        <span class="self">self</span>.native().fUniqueID
     }
 
-    <span class="comment">// TODO: wrap SkTypeface::UniqueID()?</span>
+    <span class="comment">// TODO: wrap SkTypeface::UniqueID()?
 
-    <span class="comment">// Decided not to support PartialEq instead of this function,</span>
-    <span class="comment">// because Skia does not support the operator ==.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equal</span>(<span class="ident">face_a</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>, <span class="ident">face_b</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkTypeface::Equal</span>(<span class="ident">face_a</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">face_b</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
+    // Decided not to support PartialEq instead of this function,
+    // because Skia does not support the operator ==.
+    </span><span class="kw">pub fn </span>equal(face_a: <span class="kw">impl </span>AsRef&lt;Typeface&gt;, face_b: <span class="kw">impl </span>AsRef&lt;Typeface&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{ SkTypeface::Equal(face_a.as_ref().native(), face_b.as_ref().native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_name</span>(<span class="ident">family_name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font_style</span>: <span class="ident">FontStyle</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">family_name</span> <span class="op">=</span> <span class="ident">ffi::CString::new</span>(<span class="ident">family_name</span>.<span class="ident">as_ref</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>;
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTypeface_MakeFromName</span>(<span class="ident">family_name</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">*</span><span class="ident">font_style</span>.<span class="ident">native</span>())
+    <span class="kw">pub fn </span>from_name(family_name: <span class="kw">impl </span>AsRef&lt;str&gt;, font_style: FontStyle) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        <span class="kw">let </span>family_name = ffi::CString::new(family_name.as_ref()).ok()<span class="question-mark">?</span>;
+        Typeface::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTypeface_MakeFromName(family_name.as_ptr(), <span class="kw-2">*</span>font_style.native())
         })
     }
 
-    <span class="comment">// from_file is unsupported, because it is unclear what the</span>
-    <span class="comment">// encoding of the path name is. from_data can be used instead.</span>
+    <span class="comment">// from_file is unsupported, because it is unclear what the
+    // encoding of the path name is. from_data can be used instead.
 
-    <span class="comment">// TODO: MakeFromStream()?</span>
+    // TODO: MakeFromStream()?
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_data</span>(<span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>, <span class="ident">index</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTypeface_MakeFromData</span>(
-                <span class="ident">data</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
-                <span class="ident">index</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+    </span><span class="kw">pub fn </span>from_data(data: <span class="kw">impl </span>Into&lt;Data&gt;, index: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        Typeface::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTypeface_MakeFromData(
+                data.into().into_ptr(),
+                index.into().unwrap_or_default().try_into().unwrap(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_with_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">arguments</span>: <span class="kw-2">&amp;</span><span class="ident">FontArguments</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_makeClone</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">arguments</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>clone_with_arguments(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;</span>FontArguments) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        Typeface::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTypeface_makeClone(<span class="self">self</span>.native(), arguments.native()) })
     }
 
-    <span class="comment">// TODO: serialize(Write)?</span>
+    <span class="comment">// TODO: serialize(Write)?
 
-    <span class="comment">// TODO: return Data as impl Deref&lt;[u8]&gt; / Borrow&lt;[u8]&gt; here?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">behavior</span>: <span class="ident">SerializeBehavior</span>) -&gt; <span class="ident">Data</span> {
-        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">behavior</span>) }).<span class="ident">unwrap</span>()
+    // TODO: return Data as impl Deref&lt;[u8]&gt; / Borrow&lt;[u8]&gt; here?
+    </span><span class="kw">pub fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, behavior: SerializeBehavior) -&gt; Data {
+        Data::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTypeface_serialize(<span class="self">self</span>.native(), behavior) }).unwrap()
     }
 
-    <span class="comment">// TODO: Deserialize(Read?)</span>
+    <span class="comment">// TODO: Deserialize(Read?)
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">MemoryStream::from_bytes</span>(<span class="ident">data</span>);
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTypeface_MakeDeserialize</span>(<span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>())
+    </span><span class="kw">pub fn </span>deserialize(data: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = MemoryStream::from_bytes(data);
+        Typeface::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTypeface_MakeDeserialize(stream.native_mut().as_stream_mut())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unichars_to_glyphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uni</span>: <span class="kw-2">&amp;</span>[<span class="ident">Unichar</span>], <span class="ident">glyphs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>]) {
-        <span class="macro">assert_eq!</span>(<span class="ident">uni</span>.<span class="ident">len</span>(), <span class="ident">glyphs</span>.<span class="ident">len</span>());
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">unicharsToGlyphs</span>(
-                <span class="ident">uni</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">uni</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">glyphs</span>.<span class="ident">as_mut_ptr</span>(),
+    <span class="kw">pub fn </span>unichars_to_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, uni: <span class="kw-2">&amp;</span>[Unichar], glyphs: <span class="kw-2">&amp;mut </span>[GlyphId]) {
+        <span class="macro">assert_eq!</span>(uni.len(), glyphs.len());
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().unicharsToGlyphs(
+                uni.as_ptr(),
+                uni.len().try_into().unwrap(),
+                glyphs.as_mut_ptr(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">str_to_glyphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">glyphs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>]) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">text_to_glyphs</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding::UTF8</span>, <span class="ident">glyphs</span>)
+    <span class="kw">pub fn </span>str_to_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, str: <span class="kw">impl </span>AsRef&lt;str&gt;, glyphs: <span class="kw-2">&amp;mut </span>[GlyphId]) -&gt; usize {
+        <span class="self">self</span>.text_to_glyphs(str.as_ref().as_bytes(), TextEncoding::UTF8, glyphs)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text_to_glyphs</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>(
+    <span class="kw">pub fn </span>text_to_glyphs&lt;C&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">C</span>],
-        <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>,
-        <span class="ident">glyphs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>],
-    ) -&gt; <span class="ident">usize</span> {
-        <span class="kw">let</span> <span class="ident">byte_length</span> <span class="op">=</span> <span class="ident">mem::size_of_val</span>(<span class="ident">text</span>);
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">textToGlyphs</span>(
-                <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">byte_length</span>,
-                <span class="ident">encoding</span>.<span class="ident">into_native</span>(),
-                <span class="ident">glyphs</span>.<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">glyphs</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+        text: <span class="kw-2">&amp;</span>[C],
+        encoding: TextEncoding,
+        glyphs: <span class="kw-2">&amp;mut </span>[GlyphId],
+    ) -&gt; usize {
+        <span class="kw">let </span>byte_length = mem::size_of_val(text);
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().textToGlyphs(
+                text.as_ptr() <span class="kw">as _</span>,
+                byte_length,
+                encoding.into_native(),
+                glyphs.as_mut_ptr(),
+                glyphs.len().try_into().unwrap(),
             )
         }
-        .<span class="ident">try_into</span>()
-        .<span class="ident">unwrap</span>()
+        .try_into()
+        .unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unichar_to_glyph</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">unichar</span>: <span class="ident">Unichar</span>) -&gt; <span class="ident">GlyphId</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">unicharToGlyph</span>(<span class="ident">unichar</span>) }
+    <span class="kw">pub fn </span>unichar_to_glyph(<span class="kw-2">&amp;</span><span class="self">self</span>, unichar: Unichar) -&gt; GlyphId {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().unicharToGlyph(unichar) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_glyphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">countGlyphs</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>() }
+    <span class="kw">pub fn </span>count_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().countGlyphs().try_into().unwrap() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count_tables</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">countTables</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>() }
+    <span class="kw">pub fn </span>count_tables(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().countTables().try_into().unwrap() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">table_tags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FontTableTag</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FontTableTag</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="self">self</span>.<span class="ident">count_tables</span>()];
-        (<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getTableTags</span>(<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>()) } <span class="op">!</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">if_true_some</span>(<span class="ident">v</span>)
+    <span class="kw">pub fn </span>table_tags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;FontTableTag&gt;&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>v: Vec&lt;FontTableTag&gt; = <span class="macro">vec!</span>[<span class="number">0</span>; <span class="self">self</span>.count_tables()];
+        (<span class="kw">unsafe </span>{ <span class="self">self</span>.native().getTableTags(v.as_mut_ptr()) } != <span class="number">0</span>).if_true_some(v)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_table_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">FontTableTag</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getTableSize</span>(<span class="ident">tag</span>) };
-        <span class="kw">if</span> <span class="ident">size</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">size</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
+    <span class="kw">pub fn </span>get_table_size(<span class="kw-2">&amp;</span><span class="self">self</span>, tag: FontTableTag) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
+        <span class="kw">let </span>size = <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getTableSize(tag) };
+        <span class="kw">if </span>size != <span class="number">0 </span>{
+            <span class="prelude-val">Some</span>(size)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
+
+    <span class="kw">pub fn </span>get_table_data(<span class="kw-2">&amp;</span><span class="self">self</span>, tag: FontTableTag, data: <span class="kw-2">&amp;mut </span>[u8]) -&gt; usize {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .getTableData(tag, <span class="number">0</span>, data.len(), data.as_mut_ptr() <span class="kw">as _</span>)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_table_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">FontTableTag</span>, <span class="ident">data</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">getTableData</span>(<span class="ident">tag</span>, <span class="number">0</span>, <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>)
-        }
+    <span class="kw">pub fn </span>copy_table_data(<span class="kw-2">&amp;</span><span class="self">self</span>, tag: FontTableTag) -&gt; <span class="prelude-ty">Option</span>&lt;Data&gt; {
+        Data::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTypeface_copyTableData(<span class="self">self</span>.native(), tag) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_table_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">FontTableTag</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span> {
-        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_copyTableData</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">tag</span>) })
+    <span class="kw">pub fn </span>units_per_em(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;i32&gt; {
+        <span class="kw">let </span>units = <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getUnitsPerEm() };
+        <span class="kw">if </span>units != <span class="number">0 </span>{
+            <span class="prelude-val">Some</span>(units)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">units_per_em</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">units</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getUnitsPerEm</span>() };
-        <span class="kw">if</span> <span class="ident">units</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">units</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
-    }
-
-    <span class="comment">// note: adjustments slice length must be equal to glyph&#39;s len - 1.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_kerning_pair_adjustments</span>(
+    <span class="comment">// note: adjustments slice length must be equal to glyph&#39;s len - 1.
+    </span><span class="kw">pub fn </span>get_kerning_pair_adjustments(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span>[<span class="ident">GlyphId</span>],
-        <span class="ident">adjustments</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">i32</span>],
-    ) -&gt; <span class="ident">bool</span> {
-        (<span class="ident">adjustments</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span> <span class="op">==</span> <span class="ident">glyphs</span>.<span class="ident">len</span>())
-            <span class="op">&amp;&amp;</span> <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getKerningPairAdjustments</span>(
-                    <span class="ident">glyphs</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">glyphs</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                    <span class="ident">adjustments</span>.<span class="ident">as_mut_ptr</span>(),
+        glyphs: <span class="kw-2">&amp;</span>[GlyphId],
+        adjustments: <span class="kw-2">&amp;mut </span>[i32],
+    ) -&gt; bool {
+        (adjustments.len() + <span class="number">1 </span>== glyphs.len())
+            &amp;&amp; <span class="kw">unsafe </span>{
+                <span class="self">self</span>.native().getKerningPairAdjustments(
+                    glyphs.as_ptr(),
+                    glyphs.len().try_into().unwrap(),
+                    adjustments.as_mut_ptr(),
                 )
             }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_family_name_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">LocalizedString</span><span class="op">&gt;</span> {
-        <span class="ident">LocalizedStringsIter::from_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">createFamilyNameIterator</span>() }).<span class="ident">unwrap</span>()
+    <span class="kw">pub fn </span>new_family_name_iterator(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = LocalizedString&gt; {
+        LocalizedStringsIter::from_ptr(<span class="kw">unsafe </span>{ <span class="self">self</span>.native().createFamilyNameIterator() }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">family_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getFamilyName</span>(<span class="ident">name</span>.<span class="ident">native_mut</span>());
+    <span class="kw">pub fn </span>family_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="kw">let </span><span class="kw-2">mut </span>name = interop::String::default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().getFamilyName(name.native_mut());
         };
-        <span class="ident">name</span>.<span class="ident">as_str</span>().<span class="ident">into</span>()
+        name.as_str().into()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">post_script_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getPostScriptName</span>(<span class="ident">name</span>.<span class="ident">native_mut</span>()) }
-            .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">as_str</span>().<span class="ident">into</span>())
+    <span class="kw">pub fn </span>post_script_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>name = interop::String::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getPostScriptName(name.native_mut()) }
+            .if_true_then_some(|| name.as_str().into())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_font_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ttc_index</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">StreamAsset::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_openStream</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">ttc_index</span>) })
-            .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">stream</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStreamAsset_getLength</span>(<span class="ident">stream</span>.<span class="ident">native</span>()) };
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">length</span>];
-                <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">as_stream_mut</span>();
-                <span class="kw">let</span> <span class="ident">read</span> <span class="op">=</span>
-                    <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStream_read</span>(<span class="ident">stream</span>, <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) };
-                (<span class="ident">read</span> <span class="op">==</span> <span class="ident">data</span>.<span class="ident">len</span>()).<span class="ident">if_true_some</span>((<span class="ident">data</span>, <span class="ident">ttc_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()))
+    <span class="kw">pub fn </span>to_font_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(Vec&lt;u8&gt;, usize)&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>ttc_index = <span class="number">0</span>;
+        StreamAsset::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTypeface_openStream(<span class="self">self</span>.native(), <span class="kw-2">&amp;mut </span>ttc_index) })
+            .and_then(|<span class="kw-2">mut </span>stream| {
+                <span class="kw">let </span>length = <span class="kw">unsafe </span>{ sb::C_SkStreamAsset_getLength(stream.native()) };
+                <span class="kw">let </span><span class="kw-2">mut </span>data = <span class="macro">vec!</span>[<span class="number">0u8</span>; length];
+                <span class="kw">let </span>stream = stream.native_mut().as_stream_mut();
+                <span class="kw">let </span>read =
+                    <span class="kw">unsafe </span>{ sb::C_SkStream_read(stream, data.as_mut_ptr() <span class="kw">as _</span>, data.len()) };
+                (read == data.len()).if_true_some((data, ttc_index.try_into().unwrap()))
             })
     }
 
-    <span class="comment">// TODO: openExistingStream()</span>
+    <span class="comment">// TODO: openExistingStream()
 
-    <span class="comment">// TODO: createScalerContext()</span>
+    // TODO: createScalerContext()
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="ident">Rect::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_getBounds</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    </span><span class="kw">pub fn </span>bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
+        Rect::from_native_c(<span class="kw">unsafe </span>{ sb::C_SkTypeface_getBounds(<span class="self">self</span>.native()) })
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LocalizedStringsIter</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkTypeface_LocalizedStrings</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>LocalizedStringsIter = RefHandle&lt;SkTypeface_LocalizedStrings&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkTypeface_LocalizedStrings</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTypeface_LocalizedStrings_unref</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkTypeface_LocalizedStrings {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkTypeface_LocalizedStrings_unref(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">LocalizedStringsIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;LocalizedStringsIter&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>LocalizedStringsIter {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;LocalizedStringsIter&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">LocalizedStringsIter</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">LocalizedString</span>;
+<span class="kw">impl </span>Iterator <span class="kw">for </span>LocalizedStringsIter {
+    <span class="kw">type </span>Item = LocalizedString;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">string</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">language</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTypeface_LocalizedStrings_next</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">string</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">language</span>.<span class="ident">native_mut</span>(),
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>string = interop::String::default();
+        <span class="kw">let </span><span class="kw-2">mut </span>language = interop::String::default();
+        <span class="kw">unsafe </span>{
+            sb::C_SkTypeface_LocalizedStrings_next(
+                <span class="self">self</span>.native_mut(),
+                string.native_mut(),
+                language.native_mut(),
             )
         }
-        .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">LocalizedString</span> {
-            <span class="ident">string</span>: <span class="ident">string</span>.<span class="ident">as_str</span>().<span class="ident">into</span>(),
-            <span class="ident">language</span>: <span class="ident">language</span>.<span class="ident">as_str</span>().<span class="ident">into</span>(),
+        .if_true_then_some(|| LocalizedString {
+            string: string.as_str().into(),
+            language: language.as_str().into(),
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">SerializeBehavior</span>, <span class="ident">Typeface</span>};
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::{SerializeBehavior, Typeface};
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">serialize_and_deserialize_default_typeface</span>() {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
-        <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior::DoIncludeData</span>);
-        <span class="comment">// On Android, the deserialized typeface name changes from sans-serif to Roboto.</span>
-        <span class="comment">// (which is probably OK, because Roboto _is_ the default font, so we do another</span>
-        <span class="comment">// serialization / deserialization and compare the family name with already deserialized</span>
-        <span class="comment">// one.)</span>
-        <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">Typeface::deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">serialized2</span> <span class="op">=</span> <span class="ident">deserialized</span>.<span class="ident">serialize</span>(<span class="ident">SerializeBehavior::DoIncludeData</span>);
-        <span class="kw">let</span> <span class="ident">deserialized2</span> <span class="op">=</span> <span class="ident">Typeface::deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">serialized2</span>).<span class="ident">unwrap</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>serialize_and_deserialize_default_typeface() {
+        <span class="kw">let </span>tf = Typeface::default();
+        <span class="kw">let </span>serialized = tf.serialize(SerializeBehavior::DoIncludeData);
+        <span class="comment">// On Android, the deserialized typeface name changes from sans-serif to Roboto.
+        // (which is probably OK, because Roboto _is_ the default font, so we do another
+        // serialization / deserialization and compare the family name with already deserialized
+        // one.)
+        </span><span class="kw">let </span>deserialized = Typeface::deserialize(<span class="kw-2">&amp;</span>serialized).unwrap();
+        <span class="kw">let </span>serialized2 = deserialized.serialize(SerializeBehavior::DoIncludeData);
+        <span class="kw">let </span>deserialized2 = Typeface::deserialize(<span class="kw-2">&amp;</span>serialized2).unwrap();
 
-        <span class="comment">// why aren&#39;t they not equal?</span>
-        <span class="comment">// assert!(Typeface::equal(&amp;tf, &amp;deserialized));</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">deserialized</span>.<span class="ident">family_name</span>(), <span class="ident">deserialized2</span>.<span class="ident">family_name</span>());
+        <span class="comment">// why aren&#39;t they not equal?
+        // assert!(Typeface::equal(&amp;tf, &amp;deserialized));
+        </span><span class="macro">assert_eq!</span>(deserialized.family_name(), deserialized2.family_name());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">family_name_iterator_owns_the_strings_and_returns_at_least_one_name_for_the_default_typeface</span>(
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>family_name_iterator_owns_the_strings_and_returns_at_least_one_name_for_the_default_typeface(
     ) {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
-        <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">new_family_name_iterator</span>();
-        <span class="ident">drop</span>(<span class="ident">tf</span>);
+        <span class="kw">let </span>tf = Typeface::default();
+        <span class="kw">let </span>family_names = tf.new_family_name_iterator();
+        drop(tf);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">false</span>;
-        <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="ident">family_names</span> {
-            <span class="macro">println!</span>(<span class="string">&quot;family: {}, language: {}&quot;</span>, <span class="ident">name</span>.<span class="ident">string</span>, <span class="ident">name</span>.<span class="ident">language</span>);
-            <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">true</span>
-        }
-        <span class="macro">assert!</span>(<span class="ident">any</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>any = <span class="bool-val">false</span>;
+        <span class="kw">for </span>name <span class="kw">in </span>family_names {
+            <span class="macro">println!</span>(<span class="string">&quot;family: {}, language: {}&quot;</span>, name.string, name.language);
+            any = <span class="bool-val">true
+        </span>}
+        <span class="macro">assert!</span>(any);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_font_data_of_default</span>() {
-        <span class="kw">let</span> <span class="ident">tf</span> <span class="op">=</span> <span class="ident">Typeface::default</span>();
-        <span class="kw">let</span> (<span class="ident">data</span>, <span class="ident">_ttc_index</span>) <span class="op">=</span> <span class="ident">tf</span>.<span class="ident">to_font_data</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">is_empty</span>());
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>get_font_data_of_default() {
+        <span class="kw">let </span>tf = Typeface::default();
+        <span class="kw">let </span>(data, _ttc_index) = tf.to_font_data().unwrap();
+        <span class="macro">assert!</span>(!data.is_empty());
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

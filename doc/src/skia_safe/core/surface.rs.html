@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -593,595 +587,594 @@
 <span id="587">587</span>
 <span id="588">588</span>
 <span id="589">589</span>
-</pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::gpu</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Bitmap</span>, <span class="ident">Canvas</span>, <span class="ident">DeferredDisplayList</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">IVector</span>, <span class="ident">Image</span>,
-    <span class="ident">ImageInfo</span>, <span class="ident">Paint</span>, <span class="ident">Pixmap</span>, <span class="ident">Point</span>, <span class="ident">SamplingOptions</span>, <span class="ident">SurfaceCharacterization</span>, <span class="ident">SurfaceProps</span>,
+</pre><pre class="rust"><code><span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::gpu;
+<span class="kw">use crate</span>::{
+    prelude::<span class="kw-2">*</span>, Bitmap, Canvas, DeferredDisplayList, IPoint, IRect, ISize, IVector, Image,
+    ImageInfo, Paint, Pixmap, Point, SamplingOptions, SurfaceCharacterization, SurfaceProps,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkRefCntBase</span>, <span class="ident">SkSurface</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ptr</span>};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkRefCntBase, SkSurface};
+<span class="kw">use </span>std::{fmt, ptr};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkSurface_ContentChangeMode</span> <span class="kw">as</span> <span class="ident">ContentChangeMode</span>;
-<span class="macro">variant_name!</span>(<span class="ident">ContentChangeMode::Retain</span>, <span class="ident">content_change_mode_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkSurface_ContentChangeMode <span class="kw">as </span>ContentChangeMode;
+<span class="macro">variant_name!</span>(ContentChangeMode::Retain, content_change_mode_naming);
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkSurface_BackendHandleAccess</span> <span class="kw">as</span> <span class="ident">BackendHandleAccess</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="macro">variant_name!</span>(
-    <span class="ident">BackendHandleAccess::FlushWrite</span>,
-    <span class="ident">backend_handle_access_naming</span>
+<span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+</span><span class="kw">pub use </span>skia_bindings::SkSurface_BackendHandleAccess <span class="kw">as </span>BackendHandleAccess;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+</span><span class="macro">variant_name!</span>(
+    BackendHandleAccess::FlushWrite,
+    backend_handle_access_naming
 );
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkSurface_BackendSurfaceAccess</span> <span class="kw">as</span> <span class="ident">BackendSurfaceAccess</span>;
+<span class="kw">pub use </span>skia_bindings::SkSurface_BackendSurfaceAccess <span class="kw">as </span>BackendSurfaceAccess;
 <span class="macro">variant_name!</span>(
-    <span class="ident">BackendSurfaceAccess::Present</span>,
-    <span class="ident">surface_backend_surface_access_naming</span>
+    BackendSurfaceAccess::Present,
+    surface_backend_surface_access_naming
 );
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Surface</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkSurface</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>Surface = RCHandle&lt;SkSurface&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeRefCountedBase</span> <span class="kw">for</span> <span class="ident">SkSurface</span> {
-    <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">SkRefCntBase</span>;
+<span class="kw">impl </span>NativeRefCountedBase <span class="kw">for </span>SkSurface {
+    <span class="kw">type </span>Base = SkRefCntBase;
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Surface</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Surface&quot;</span>)
-            <span class="comment">// self must be mutable (this goes through Canvas).</span>
-            <span class="comment">// .field(&quot;image_info&quot;, &amp;self.image_info())</span>
-            <span class="comment">// .field(&quot;generation_id&quot;, &amp;self.generation_id())</span>
-            .<span class="ident">field</span>(<span class="string">&quot;props&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">props</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Surface {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Surface&quot;</span>)
+            <span class="comment">// self must be mutable (this goes through Canvas).
+            // .field(&quot;image_info&quot;, &amp;self.image_info())
+            // .field(&quot;generation_id&quot;, &amp;self.generation_id())
+            </span>.field(<span class="string">&quot;props&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.props())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Surface</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster_direct</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span><span class="op">&gt;</span>(
-        <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>],
-        <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span>, <span class="ident">Surface</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">row_bytes</span>
-            .<span class="ident">into</span>()
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">image_info</span>.<span class="ident">min_row_bytes</span>());
+<span class="kw">impl </span>Surface {
+    <span class="kw">pub fn </span>new_raster_direct&lt;<span class="lifetime">&#39;pixels</span>&gt;(
+        image_info: <span class="kw-2">&amp;</span>ImageInfo,
+        pixels: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span><span class="kw-2">mut </span>[u8],
+        row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Borrows&lt;<span class="lifetime">&#39;pixels</span>, Surface&gt;&gt; {
+        <span class="kw">let </span>row_bytes = row_bytes
+            .into()
+            .unwrap_or_else(|| image_info.min_row_bytes());
 
-        <span class="kw">if</span> <span class="ident">pixels</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">image_info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">row_bytes</span>) {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">if </span>pixels.len() &lt; image_info.compute_byte_size(row_bytes) {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         };
 
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeRasterDirect</span>(
-                <span class="ident">image_info</span>.<span class="ident">native</span>(),
-                <span class="ident">pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">row_bytes</span>,
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeRasterDirect(
+                image_info.native(),
+                pixels.as_mut_ptr() <span class="kw">as _</span>,
+                row_bytes,
+                surface_props.native_ptr_or_null(),
             )
         })
-        .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">surface</span><span class="op">|</span> <span class="ident">surface</span>.<span class="ident">borrows</span>(<span class="ident">pixels</span>))
+        .map(<span class="kw">move </span>|surface| surface.borrows(pixels))
     }
 
-    <span class="comment">// TODO: MakeRasterDirect(&amp;Pixmap)</span>
-    <span class="comment">// TODO: MakeRasterDirectReleaseProc()?</span>
+    <span class="comment">// TODO: MakeRasterDirect(&amp;Pixmap)
+    // TODO: MakeRasterDirectReleaseProc()?
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster</span>(
-        <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeRaster</span>(
-                <span class="ident">image_info</span>.<span class="ident">native</span>(),
-                <span class="ident">row_bytes</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>(),
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+    </span><span class="kw">pub fn </span>new_raster(
+        image_info: <span class="kw-2">&amp;</span>ImageInfo,
+        row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeRaster(
+                image_info.native(),
+                row_bytes.into().unwrap_or_default(),
+                surface_props.native_ptr_or_null(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_raster_n32_premul</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeRasterN32Premul</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>, <span class="ident">ptr::null</span>())
+    <span class="kw">pub fn </span>new_raster_n32_premul(size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>size = size.into();
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeRasterN32Premul(size.width, size.height, ptr::null())
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Surface</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_backend_texture</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeFromBackendTexture</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">backend_texture</span>.<span class="ident">native</span>(),
-                <span class="ident">origin</span>,
-                <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
-                <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+<span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+</span><span class="kw">impl </span>Surface {
+    <span class="kw">pub fn </span>from_backend_texture(
+        context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
+        backend_texture: <span class="kw-2">&amp;</span>gpu::BackendTexture,
+        origin: gpu::SurfaceOrigin,
+        sample_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        color_type: <span class="kw">crate</span>::ColorType,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::ColorSpace&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeFromBackendTexture(
+                context.native_mut(),
+                backend_texture.native(),
+                origin,
+                sample_count.into().unwrap_or(<span class="number">0</span>).try_into().unwrap(),
+                color_type.into_native(),
+                color_space.into().into_ptr_or_null(),
+                surface_props.native_ptr_or_null(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_backend_render_target</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
-        <span class="ident">backend_render_target</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendRenderTarget</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeFromBackendRenderTarget</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">backend_render_target</span>.<span class="ident">native</span>(),
-                <span class="ident">origin</span>,
-                <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
-                <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>from_backend_render_target(
+        context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
+        backend_render_target: <span class="kw-2">&amp;</span>gpu::BackendRenderTarget,
+        origin: gpu::SurfaceOrigin,
+        color_type: <span class="kw">crate</span>::ColorType,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::ColorSpace&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeFromBackendRenderTarget(
+                context.native_mut(),
+                backend_render_target.native(),
+                origin,
+                color_type.into_native(),
+                color_space.into().into_ptr_or_null(),
+                surface_props.native_ptr_or_null(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_render_target</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
-        <span class="ident">budgeted</span>: <span class="ident"><span class="kw">crate</span>::Budgeted</span>,
-        <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_origin</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::SurfaceOrigin</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-        <span class="ident">should_create_with_mips</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeRenderTarget</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">budgeted</span>.<span class="ident">into_native</span>(),
-                <span class="ident">image_info</span>.<span class="ident">native</span>(),
-                <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">surface_origin</span>
-                    .<span class="ident">into</span>()
-                    .<span class="ident">unwrap_or</span>(<span class="ident">gpu::SurfaceOrigin::BottomLeft</span>),
-                <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
-                <span class="ident">should_create_with_mips</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>(),
+    <span class="kw">pub fn </span>new_render_target(
+        context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
+        budgeted: <span class="kw">crate</span>::Budgeted,
+        image_info: <span class="kw-2">&amp;</span>ImageInfo,
+        sample_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        surface_origin: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gpu::SurfaceOrigin&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+        should_create_with_mips: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeRenderTarget(
+                context.native_mut(),
+                budgeted.into_native(),
+                image_info.native(),
+                sample_count.into().unwrap_or(<span class="number">0</span>).try_into().unwrap(),
+                surface_origin
+                    .into()
+                    .unwrap_or(gpu::SurfaceOrigin::BottomLeft),
+                surface_props.native_ptr_or_null(),
+                should_create_with_mips.into().unwrap_or_default(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_render_target_with_characterization</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
-        <span class="ident">characterization</span>: <span class="kw-2">&amp;</span><span class="ident">SurfaceCharacterization</span>,
-        <span class="ident">budgeted</span>: <span class="ident"><span class="kw">crate</span>::Budgeted</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_MakeRenderTarget2</span>(
-                <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">characterization</span>.<span class="ident">native</span>(),
-                <span class="ident">budgeted</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>new_render_target_with_characterization(
+        context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
+        characterization: <span class="kw-2">&amp;</span>SurfaceCharacterization,
+        budgeted: <span class="kw">crate</span>::Budgeted,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_MakeRenderTarget2(
+                context.native_mut(),
+                characterization.native(),
+                budgeted.into_native(),
             )
         })
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ca_metal_layer</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
-        <span class="ident">layer</span>: <span class="ident">gpu::mtl::Handle</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-        <span class="ident">drawable</span>: <span class="kw-2">*mut</span> <span class="ident">gpu::mtl::Handle</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="ident">sb::C_SkSurface_MakeFromCAMetalLayer</span>(
-            <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-            <span class="ident">layer</span>,
-            <span class="ident">origin</span>,
-            <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-            <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
-            <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-            <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
-            <span class="ident">drawable</span>,
+    <span class="attribute">#[allow(clippy::missing_safety_doc)]
+    #[allow(clippy::too_many_arguments)]
+    #[cfg(feature = <span class="string">&quot;metal&quot;</span>)]
+    </span><span class="kw">pub unsafe fn </span>from_ca_metal_layer(
+        context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
+        layer: gpu::mtl::Handle,
+        origin: gpu::SurfaceOrigin,
+        sample_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        color_type: <span class="kw">crate</span>::ColorType,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::ColorSpace&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+        drawable: <span class="kw-2">*mut </span>gpu::mtl::Handle,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(sb::C_SkSurface_MakeFromCAMetalLayer(
+            context.native_mut(),
+            layer,
+            origin,
+            sample_count.into().unwrap_or(<span class="number">0</span>).try_into().unwrap(),
+            color_type.into_native(),
+            color_space.into().into_ptr_or_null(),
+            surface_props.native_ptr_or_null(),
+            drawable,
         ))
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.36.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use from_mtk_view()&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ca_mtk_view</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::DirectContext</span>,
-        <span class="ident">mtk_view</span>: <span class="ident">gpu::mtl::Handle</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_mtk_view</span>(
-            <span class="ident">context</span>,
-            <span class="ident">mtk_view</span>,
-            <span class="ident">origin</span>,
-            <span class="ident">sample_count</span>,
-            <span class="ident">color_type</span>,
-            <span class="ident">color_space</span>,
-            <span class="ident">surface_props</span>,
+    <span class="attribute">#[allow(clippy::missing_safety_doc)]
+    #[cfg(feature = <span class="string">&quot;metal&quot;</span>)]
+    #[deprecated(since = <span class="string">&quot;0.36.0&quot;</span>, note = <span class="string">&quot;use from_mtk_view()&quot;</span>)]
+    </span><span class="kw">pub unsafe fn </span>from_ca_mtk_view(
+        context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
+        mtk_view: gpu::mtl::Handle,
+        origin: gpu::SurfaceOrigin,
+        sample_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        color_type: <span class="kw">crate</span>::ColorType,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::ColorSpace&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_mtk_view(
+            context,
+            mtk_view,
+            origin,
+            sample_count,
+            color_type,
+            color_space,
+            surface_props,
         )
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;metal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_mtk_view</span>(
-        <span class="ident">context</span>: <span class="kw-2">&amp;mut</span> <span class="ident">gpu::RecordingContext</span>,
-        <span class="ident">mtk_view</span>: <span class="ident">gpu::mtl::Handle</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-        <span class="ident">sample_count</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">color_type</span>: <span class="ident"><span class="kw">crate</span>::ColorType</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">surface_props</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="ident">sb::C_SkSurface_MakeFromMTKView</span>(
-            <span class="ident">context</span>.<span class="ident">native_mut</span>(),
-            <span class="ident">mtk_view</span>,
-            <span class="ident">origin</span>,
-            <span class="ident">sample_count</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>).<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-            <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
-            <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-            <span class="ident">surface_props</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="attribute">#[allow(clippy::missing_safety_doc)]
+    #[cfg(feature = <span class="string">&quot;metal&quot;</span>)]
+    </span><span class="kw">pub unsafe fn </span>from_mtk_view(
+        context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
+        mtk_view: gpu::mtl::Handle,
+        origin: gpu::SurfaceOrigin,
+        sample_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        color_type: <span class="kw">crate</span>::ColorType,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::ColorSpace&gt;&gt;,
+        surface_props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_ptr(sb::C_SkSurface_MakeFromMTKView(
+            context.native_mut(),
+            mtk_view,
+            origin,
+            sample_count.into().unwrap_or(<span class="number">0</span>).try_into().unwrap(),
+            color_type.into_native(),
+            color_space.into().into_ptr_or_null(),
+            surface_props.native_ptr_or_null(),
         ))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Surface</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_compatible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">characterization</span>: <span class="kw-2">&amp;</span><span class="ident">SurfaceCharacterization</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isCompatible</span>(<span class="ident">characterization</span>.<span class="ident">native</span>()) }
+<span class="kw">impl </span>Surface {
+    <span class="kw">pub fn </span>is_compatible(<span class="kw-2">&amp;</span><span class="self">self</span>, characterization: <span class="kw-2">&amp;</span>SurfaceCharacterization) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isCompatible(characterization.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_null</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_MakeNull</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>) })
+    <span class="kw">pub fn </span>new_null(size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>size = size.into();
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkSurface_MakeNull(size.width, size.height) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_width</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ sb::C_SkSurface_width(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_height</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ sb::C_SkSurface_height(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_info</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">ImageInfo</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_imageInfo</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">info</span>
+    <span class="kw">pub fn </span>image_info(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ImageInfo {
+        <span class="kw">let </span><span class="kw-2">mut </span>info = ImageInfo::default();
+        <span class="kw">unsafe </span>{ sb::C_SkSurface_imageInfo(<span class="self">self</span>.native_mut(), info.native_mut()) };
+        info
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">generationID</span>() }
+    <span class="kw">pub fn </span>generation_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().generationID() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">notify_content_will_change</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">ContentChangeMode</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">notifyContentWillChange</span>(<span class="ident">mode</span>) }
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>notify_content_will_change(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mode: ContentChangeMode) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().notifyContentWillChange(mode) }
+        <span class="self">self
+    </span>}
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Surface</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recording_context</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::RecordingContext</span><span class="op">&gt;</span> {
-        <span class="ident">gpu::RecordingContext::from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">recordingContext</span>() })
+<span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+</span><span class="kw">impl </span>Surface {
+    <span class="kw">pub fn </span>recording_context(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;gpu::RecordingContext&gt; {
+        gpu::RecordingContext::from_unshared_ptr(<span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().recordingContext() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_backend_texture</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">handle_access</span>: <span class="ident">BackendHandleAccess</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::BackendTexture</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_texture</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">bt</span><span class="op">|</span> <span class="ident">sb::C_GrBackendTexture_Construct</span>(<span class="ident">bt</span>));
-            <span class="ident">sb::C_SkSurface_getBackendTexture</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">handle_access</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">backend_texture</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="kw">pub fn </span>get_backend_texture(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        handle_access: BackendHandleAccess,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;gpu::BackendTexture&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>backend_texture = construct(|bt| sb::C_GrBackendTexture_Construct(bt));
+            sb::C_SkSurface_getBackendTexture(
+                <span class="self">self</span>.native_mut(),
+                handle_access,
+                <span class="kw-2">&amp;mut </span>backend_texture <span class="kw">as _</span>,
             );
 
-            <span class="ident">gpu::BackendTexture::from_native_if_valid</span>(<span class="ident">backend_texture</span>)
+            gpu::BackendTexture::from_native_if_valid(backend_texture)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_backend_render_target</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">handle_access</span>: <span class="ident">BackendHandleAccess</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gpu::BackendRenderTarget</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend_render_target</span> <span class="op">=</span>
-                <span class="ident">construct</span>(<span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">sb::C_GrBackendRenderTarget_Construct</span>(<span class="ident">rt</span>));
-            <span class="ident">sb::C_SkSurface_getBackendRenderTarget</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">handle_access</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">backend_render_target</span>,
+    <span class="kw">pub fn </span>get_backend_render_target(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        handle_access: BackendHandleAccess,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;gpu::BackendRenderTarget&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>backend_render_target =
+                construct(|rt| sb::C_GrBackendRenderTarget_Construct(rt));
+            sb::C_SkSurface_getBackendRenderTarget(
+                <span class="self">self</span>.native_mut(),
+                handle_access,
+                <span class="kw-2">&amp;mut </span>backend_render_target,
             );
 
-            <span class="ident">gpu::BackendRenderTarget::from_native_c_if_valid</span>(<span class="ident">backend_render_target</span>)
+            gpu::BackendRenderTarget::from_native_c_if_valid(backend_render_target)
         }
     }
 
-    <span class="comment">// TODO: support variant with TextureReleaseProc and ReleaseContext</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_backend_texture</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">replace_backend_texture_with_mode</span>(<span class="ident">backend_texture</span>, <span class="ident">origin</span>, <span class="ident">ContentChangeMode::Retain</span>)
+    <span class="comment">// TODO: support variant with TextureReleaseProc and ReleaseContext
+    </span><span class="kw">pub fn </span>replace_backend_texture(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        backend_texture: <span class="kw-2">&amp;</span>gpu::BackendTexture,
+        origin: gpu::SurfaceOrigin,
+    ) -&gt; bool {
+        <span class="self">self</span>.replace_backend_texture_with_mode(backend_texture, origin, ContentChangeMode::Retain)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_backend_texture_with_mode</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">backend_texture</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::BackendTexture</span>,
-        <span class="ident">origin</span>: <span class="ident">gpu::SurfaceOrigin</span>,
-        <span class="ident">mode</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ContentChangeMode</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">replaceBackendTexture</span>(
-                <span class="ident">backend_texture</span>.<span class="ident">native</span>(),
-                <span class="ident">origin</span>,
-                <span class="ident">mode</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="ident">ContentChangeMode::Retain</span>),
+    <span class="kw">pub fn </span>replace_backend_texture_with_mode(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        backend_texture: <span class="kw-2">&amp;</span>gpu::BackendTexture,
+        origin: gpu::SurfaceOrigin,
+        mode: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ContentChangeMode&gt;&gt;,
+    ) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().replaceBackendTexture(
+                backend_texture.native(),
+                origin,
+                mode.into().unwrap_or(ContentChangeMode::Retain),
                 <span class="prelude-val">None</span>,
-                <span class="ident">ptr::null_mut</span>(),
+                ptr::null_mut(),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Surface</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">canvas</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">Canvas</span> {
-        <span class="kw">let</span> <span class="ident">canvas_ref</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">getCanvas</span>() };
-        <span class="ident">Canvas::borrow_from_native_mut</span>(<span class="ident">canvas_ref</span>)
+<span class="kw">impl </span>Surface {
+    <span class="kw">pub fn </span>canvas(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Canvas {
+        <span class="kw">let </span>canvas_ref = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span><span class="self">self</span>.native_mut().getCanvas() };
+        Canvas::borrow_from_native_mut(canvas_ref)
     }
 
-    <span class="comment">// TODO: capabilities()</span>
+    <span class="comment">// TODO: capabilities()
 
-    <span class="comment">// TODO: why is self mutable here?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
-        <span class="ident">Surface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkSurface_makeSurface</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">info</span>.<span class="ident">native</span>()) })
+    // TODO: why is self mutable here?
+    </span><span class="kw">pub fn </span>new_surface(<span class="kw-2">&amp;mut </span><span class="self">self</span>, info: <span class="kw-2">&amp;</span>ImageInfo) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
+        Surface::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkSurface_makeSurface(<span class="self">self</span>.native_mut(), info.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_surface_with_dimensions</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dim</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Surface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">dim</span> <span class="op">=</span> <span class="ident">dim</span>.<span class="ident">into</span>();
-        <span class="ident">Surface::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_makeSurface2</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">dim</span>.<span class="ident">width</span>, <span class="ident">dim</span>.<span class="ident">height</span>)
+    <span class="kw">pub fn </span>new_surface_with_dimensions(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dim: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
+        <span class="kw">let </span>dim = dim.into();
+        Surface::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_makeSurface2(<span class="self">self</span>.native_mut(), dim.width, dim.height)
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_snapshot</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Image</span> {
-        <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_makeImageSnapshot</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">ptr::null</span>())
+    <span class="kw">pub fn </span>image_snapshot(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Image {
+        Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_makeImageSnapshot(<span class="self">self</span>.native_mut(), ptr::null())
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 
-    <span class="comment">// TODO: combine this function with image_snapshot and make bounds optional()?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_snapshot_with_bounds</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bounds</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Image</span><span class="op">&gt;</span> {
-        <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_makeImageSnapshot</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">bounds</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    <span class="comment">// TODO: combine this function with image_snapshot and make bounds optional()?
+    </span><span class="kw">pub fn </span>image_snapshot_with_bounds(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bounds: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkSurface_makeImageSnapshot(<span class="self">self</span>.native_mut(), bounds.as_ref().native())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">canvas</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Canvas</span>,
-        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">sampling</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span>,
-        <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>,
+    <span class="kw">pub fn </span>draw(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        canvas: <span class="kw-2">&amp;mut </span>Canvas,
+        offset: <span class="kw">impl </span>Into&lt;Point&gt;,
+        sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;,
+        paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
     ) {
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">sampling</span> <span class="op">=</span> <span class="ident">sampling</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">draw</span>(
-                <span class="ident">canvas</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">offset</span>.<span class="ident">x</span>,
-                <span class="ident">offset</span>.<span class="ident">y</span>,
-                <span class="ident">sampling</span>.<span class="ident">native</span>(),
-                <span class="ident">paint</span>.<span class="ident">native_ptr_or_null</span>(),
+        <span class="kw">let </span>offset = offset.into();
+        <span class="kw">let </span>sampling = sampling.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().draw(
+                canvas.native_mut(),
+                offset.x,
+                offset.y,
+                sampling.native(),
+                paint.native_ptr_or_null(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pm</span> <span class="op">=</span> <span class="ident">Pixmap::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">peekPixels</span>(<span class="ident">pm</span>.<span class="ident">native_mut</span>()) }
-            .<span class="ident">if_true_then_some</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">pm</span>.<span class="ident">borrows</span>(<span class="self">self</span>))
+    <span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Borrows&lt;Pixmap&gt;&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>pm = Pixmap::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().peekPixels(pm.native_mut()) }
+            .if_true_then_some(<span class="kw">move </span>|| pm.borrows(<span class="self">self</span>))
     }
 
-    <span class="comment">// TODO: why is self mut?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_pixmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels</span>(<span class="ident">dst</span>.<span class="ident">native</span>(), <span class="ident">src</span>.<span class="ident">x</span>, <span class="ident">src</span>.<span class="ident">y</span>) }
+    <span class="comment">// TODO: why is self mut?
+    </span><span class="kw">pub fn </span>read_pixels_to_pixmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dst: <span class="kw-2">&amp;</span>Pixmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+        <span class="kw">let </span>src = src.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().readPixels(dst.native(), src.x, src.y) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">dst_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">dst_pixels</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-        <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
-        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">dst_info</span>.<span class="ident">valid_pixels</span>(<span class="ident">dst_row_bytes</span>, <span class="ident">dst_pixels</span>) {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
+    <span class="kw">pub fn </span>read_pixels(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        dst_info: <span class="kw-2">&amp;</span>ImageInfo,
+        dst_pixels: <span class="kw-2">&amp;mut </span>[u8],
+        dst_row_bytes: usize,
+        src: <span class="kw">impl </span>Into&lt;IPoint&gt;,
+    ) -&gt; bool {
+        <span class="kw">if </span>!dst_info.valid_pixels(dst_row_bytes, dst_pixels) {
+            <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels1</span>(
-                <span class="ident">dst_info</span>.<span class="ident">native</span>(),
-                <span class="ident">dst_pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">dst_row_bytes</span>,
-                <span class="ident">src</span>.<span class="ident">x</span>,
-                <span class="ident">src</span>.<span class="ident">y</span>,
+        <span class="kw">let </span>src = src.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().readPixels1(
+                dst_info.native(),
+                dst_pixels.as_mut_ptr() <span class="kw">as _</span>,
+                dst_row_bytes,
+                src.x,
+                src.y,
             )
         }
     }
 
-    <span class="comment">// TODO: why is self mut?</span>
-    <span class="comment">// TODO: why is Bitmap non-mutable.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_bitmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">readPixels2</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>(), <span class="ident">src</span>.<span class="ident">x</span>, <span class="ident">src</span>.<span class="ident">y</span>) }
+    <span class="comment">// TODO: why is self mut?
+    // TODO: why is Bitmap non-mutable.
+    </span><span class="kw">pub fn </span>read_pixels_to_bitmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bitmap: <span class="kw-2">&amp;</span>Bitmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+        <span class="kw">let </span>src = src.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().readPixels2(bitmap.native(), src.x, src.y) }
     }
 
-    <span class="comment">// TODO: AsyncReadResult, RescaleGamma (m79, m86)</span>
-    <span class="comment">// TODO: wrap asyncRescaleAndReadPixels (m76, m79, m89)</span>
-    <span class="comment">// TODO: wrap asyncRescaleAndReadPixelsYUV420 (m77, m79, m89)</span>
+    <span class="comment">// TODO: AsyncReadResult, RescaleGamma (m79, m86)
+    // TODO: wrap asyncRescaleAndReadPixels (m76, m79, m89)
+    // TODO: wrap asyncRescaleAndReadPixelsYUV420 (m77, m79, m89)
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels_from_pixmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">writePixels</span>(<span class="ident">src</span>.<span class="ident">native</span>(), <span class="ident">dst</span>.<span class="ident">x</span>, <span class="ident">dst</span>.<span class="ident">y</span>) }
+    </span><span class="kw">pub fn </span>write_pixels_from_pixmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, src: <span class="kw-2">&amp;</span>Pixmap, dst: <span class="kw">impl </span>Into&lt;IPoint&gt;) {
+        <span class="kw">let </span>dst = dst.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().writePixels(src.native(), dst.x, dst.y) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_pixels_from_bitmap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bitmap</span>: <span class="kw-2">&amp;</span><span class="ident">Bitmap</span>, <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">writePixels1</span>(<span class="ident">bitmap</span>.<span class="ident">native</span>(), <span class="ident">dst</span>.<span class="ident">x</span>, <span class="ident">dst</span>.<span class="ident">y</span>)
+    <span class="kw">pub fn </span>write_pixels_from_bitmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bitmap: <span class="kw-2">&amp;</span>Bitmap, dst: <span class="kw">impl </span>Into&lt;IPoint&gt;) {
+        <span class="kw">let </span>dst = dst.into();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .writePixels1(bitmap.native(), dst.x, dst.y)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">props</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SurfaceProps</span> {
-        <span class="ident">SurfaceProps::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkSurface_props</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>props(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SurfaceProps {
+        SurfaceProps::from_native_ref(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>sb::C_SkSurface_props(<span class="self">self</span>.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_and_submit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flushAndSubmit</span>(<span class="bool-val">false</span>);
+    <span class="kw">pub fn </span>flush_and_submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().flushAndSubmit(<span class="bool-val">false</span>);
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_submit_and_sync_cpu</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flushAndSubmit</span>(<span class="bool-val">true</span>);
+    <span class="kw">pub fn </span>flush_submit_and_sync_cpu(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().flushAndSubmit(<span class="bool-val">true</span>);
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resolve_msaa</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">resolveMSAA</span>() }
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    </span><span class="kw">pub fn </span>resolve_msaa(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().resolveMSAA() }
     }
 
-    <span class="comment">// After deprecated since 0.30.0 (m85), the default flush() behavior changed in m86.</span>
-    <span class="comment">// For more information, take a look at the documentation in Skia&#39;s SkSurface.h</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">gpu::FlushInfo::default</span>();
-        <span class="self">self</span>.<span class="ident">flush_with_mutable_state</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="prelude-val">None</span>);
+    <span class="comment">// After deprecated since 0.30.0 (m85), the default flush() behavior changed in m86.
+    // For more information, take a look at the documentation in Skia&#39;s SkSurface.h
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    </span><span class="kw">pub fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>info = gpu::FlushInfo::default();
+        <span class="self">self</span>.flush_with_mutable_state(<span class="kw-2">&amp;</span>info, <span class="prelude-val">None</span>);
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_with_access_info</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">access</span>: <span class="ident">BackendSurfaceAccess</span>,
-        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::FlushInfo</span>,
-    ) -&gt; <span class="ident">gpu::SemaphoresSubmitted</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">flush</span>(<span class="ident">access</span>, <span class="ident">info</span>.<span class="ident">native</span>()) }
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    </span><span class="kw">pub fn </span>flush_with_access_info(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        access: BackendSurfaceAccess,
+        info: <span class="kw-2">&amp;</span>gpu::FlushInfo,
+    ) -&gt; gpu::SemaphoresSubmitted {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().flush(access, info.native()) }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;gpu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_with_mutable_state</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">gpu::FlushInfo</span>,
-        <span class="ident">new_state</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">gpu::BackendSurfaceMutableState</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">gpu::SemaphoresSubmitted</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">flush1</span>(<span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">new_state</span>.<span class="ident">into</span>().<span class="ident">native_ptr_or_null</span>())
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    </span><span class="kw">pub fn </span>flush_with_mutable_state&lt;<span class="lifetime">&#39;a</span>&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        info: <span class="kw-2">&amp;</span>gpu::FlushInfo,
+        new_state: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>gpu::BackendSurfaceMutableState&gt;&gt;,
+    ) -&gt; gpu::SemaphoresSubmitted {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .flush1(info.native(), new_state.into().native_ptr_or_null())
         }
     }
 
-    <span class="comment">// TODO: wait()</span>
+    <span class="comment">// TODO: wait()
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">characterize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SurfaceCharacterization</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sc</span> <span class="op">=</span> <span class="ident">SurfaceCharacterization::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">characterize</span>(<span class="ident">sc</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">sc</span>)
+    </span><span class="kw">pub fn </span>characterize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;SurfaceCharacterization&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>sc = SurfaceCharacterization::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().characterize(sc.native_mut()) }.if_true_some(sc)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_display_list</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">deferred_display_list</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">DeferredDisplayList</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">draw_display_list_with_offset</span>(<span class="ident">deferred_display_list</span>, <span class="ident">IVector::default</span>())
+    <span class="kw">pub fn </span>draw_display_list(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        deferred_display_list: <span class="kw">impl </span>Into&lt;DeferredDisplayList&gt;,
+    ) -&gt; bool {
+        <span class="self">self</span>.draw_display_list_with_offset(deferred_display_list, IVector::default())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_display_list_with_offset</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">deferred_display_list</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">DeferredDisplayList</span><span class="op">&gt;</span>,
-        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSurface_draw</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">deferred_display_list</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="ident">offset</span>.<span class="ident">x</span>,
-                <span class="ident">offset</span>.<span class="ident">y</span>,
+    <span class="kw">pub fn </span>draw_display_list_with_offset(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        deferred_display_list: <span class="kw">impl </span>Into&lt;DeferredDisplayList&gt;,
+        offset: <span class="kw">impl </span>Into&lt;IVector&gt;,
+    ) -&gt; bool {
+        <span class="kw">let </span>offset = offset.into();
+        <span class="kw">unsafe </span>{
+            sb::C_SkSurface_draw(
+                <span class="self">self</span>.native_mut(),
+                deferred_display_list.into().into_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                offset.x,
+                offset.y,
             )
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">create</span>() {
-    <span class="macro">assert!</span>(<span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">0</span>, <span class="number">0</span>)).<span class="ident">is_none</span>());
-    <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">1</span>, <span class="number">1</span>)).<span class="ident">unwrap</span>();
-    <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">surface</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>())
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>create() {
+    <span class="macro">assert!</span>(Surface::new_raster_n32_premul((<span class="number">0</span>, <span class="number">0</span>)).is_none());
+    <span class="kw">let </span>surface = Surface::new_raster_n32_premul((<span class="number">1</span>, <span class="number">1</span>)).unwrap();
+    <span class="macro">assert_eq!</span>(<span class="number">1</span>, surface.native().ref_counted_base()._ref_cnt())
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_raster_direct</span>() {
-    <span class="kw">let</span> <span class="ident">image_info</span> <span class="op">=</span> <span class="ident">ImageInfo::new</span>(
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_raster_direct() {
+    <span class="kw">let </span>image_info = ImageInfo::new(
         (<span class="number">20</span>, <span class="number">20</span>),
-        <span class="ident"><span class="kw">crate</span>::ColorType::RGBA8888</span>,
-        <span class="ident"><span class="kw">crate</span>::AlphaType::Unpremul</span>,
+        <span class="kw">crate</span>::ColorType::RGBA8888,
+        <span class="kw">crate</span>::AlphaType::Unpremul,
         <span class="prelude-val">None</span>,
     );
-    <span class="kw">let</span> <span class="ident">min_row_bytes</span> <span class="op">=</span> <span class="ident">image_info</span>.<span class="ident">min_row_bytes</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixels</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">image_info</span>.<span class="ident">compute_byte_size</span>(<span class="ident">min_row_bytes</span>)];
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_direct</span>(
-        <span class="kw-2">&amp;</span><span class="ident">image_info</span>,
-        <span class="ident">pixels</span>.<span class="ident">as_mut_slice</span>(),
-        <span class="prelude-val">Some</span>(<span class="ident">min_row_bytes</span>),
+    <span class="kw">let </span>min_row_bytes = image_info.min_row_bytes();
+    <span class="kw">let </span><span class="kw-2">mut </span>pixels = <span class="macro">vec!</span>[<span class="number">0u8</span>; image_info.compute_byte_size(min_row_bytes)];
+    <span class="kw">let </span><span class="kw-2">mut </span>surface = Surface::new_raster_direct(
+        <span class="kw-2">&amp;</span>image_info,
+        pixels.as_mut_slice(),
+        <span class="prelude-val">Some</span>(min_row_bytes),
         <span class="prelude-val">None</span>,
     )
-    .<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
-    <span class="ident">surface</span>.<span class="ident">canvas</span>().<span class="ident">draw_circle</span>((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span><span class="ident">paint</span>);
+    .unwrap();
+    <span class="kw">let </span>paint = Paint::default();
+    surface.canvas().draw_circle((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span>paint);
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_drawing_owned_as_exclusive_ref_ergonomics</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">16</span>, <span class="number">16</span>)).<span class="ident">unwrap</span>();
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_drawing_owned_as_exclusive_ref_ergonomics() {
+    <span class="kw">let </span><span class="kw-2">mut </span>surface = Surface::new_raster_n32_premul((<span class="number">16</span>, <span class="number">16</span>)).unwrap();
 
-    <span class="comment">// option1:</span>
-    <span class="comment">// - An &amp;mut canvas can be drawn to.</span>
-    {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::new</span>(<span class="ident">ISize::new</span>(<span class="number">16</span>, <span class="number">16</span>), <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="kw-2">&amp;mut</span> <span class="ident">canvas</span>, (<span class="number">5.0</span>, <span class="number">5.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="kw-2">&amp;mut</span> <span class="ident">canvas</span>, (<span class="number">10.0</span>, <span class="number">10.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
+    <span class="comment">// option1:
+    // - An &amp;mut canvas can be drawn to.
+    </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>canvas = Canvas::new(ISize::new(<span class="number">16</span>, <span class="number">16</span>), <span class="prelude-val">None</span>).unwrap();
+        surface.draw(<span class="kw-2">&amp;mut </span>canvas, (<span class="number">5.0</span>, <span class="number">5.0</span>), SamplingOptions::default(), <span class="prelude-val">None</span>);
+        surface.draw(<span class="kw-2">&amp;mut </span>canvas, (<span class="number">10.0</span>, <span class="number">10.0</span>), SamplingOptions::default(), <span class="prelude-val">None</span>);
     }
 
-    <span class="comment">// option2:</span>
-    <span class="comment">// - A canvas from another surface can be drawn to.</span>
-    {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface2</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">16</span>, <span class="number">16</span>)).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">surface2</span>.<span class="ident">canvas</span>();
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="ident">canvas</span>, (<span class="number">5.0</span>, <span class="number">5.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
-        <span class="ident">surface</span>.<span class="ident">draw</span>(<span class="ident">canvas</span>, (<span class="number">10.0</span>, <span class="number">10.0</span>), <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
+    <span class="comment">// option2:
+    // - A canvas from another surface can be drawn to.
+    </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>surface2 = Surface::new_raster_n32_premul((<span class="number">16</span>, <span class="number">16</span>)).unwrap();
+        <span class="kw">let </span>canvas = surface2.canvas();
+        surface.draw(canvas, (<span class="number">5.0</span>, <span class="number">5.0</span>), SamplingOptions::default(), <span class="prelude-val">None</span>);
+        surface.draw(canvas, (<span class="number">10.0</span>, <span class="number">10.0</span>), SamplingOptions::default(), <span class="prelude-val">None</span>);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

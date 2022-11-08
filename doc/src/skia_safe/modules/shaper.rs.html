@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\shaper.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shaper.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/shaper.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shaper.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -778,780 +772,779 @@
 <span id="772">772</span>
 <span id="773">773</span>
 <span id="774">774</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Font</span>, <span class="ident">FontMgr</span>, <span class="ident">FourByteTag</span>, <span class="ident">Point</span>, <span class="ident">TextBlob</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-    <span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">RustRunHandler</span>, <span class="ident">SkShaper</span>, <span class="ident">SkShaper_BiDiRunIterator</span>, <span class="ident">SkShaper_FontRunIterator</span>,
-    <span class="ident">SkShaper_LanguageRunIterator</span>, <span class="ident">SkShaper_RunHandler</span>, <span class="ident">SkShaper_RunIterator</span>,
-    <span class="ident">SkShaper_ScriptRunIterator</span>, <span class="ident">SkTextBlobBuilderRunHandler</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Font, FontMgr, FourByteTag, Point, TextBlob};
+<span class="kw">use </span>skia_bindings::{
+    <span class="self">self </span><span class="kw">as </span>sb, RustRunHandler, SkShaper, SkShaper_BiDiRunIterator, SkShaper_FontRunIterator,
+    SkShaper_LanguageRunIterator, SkShaper_RunHandler, SkShaper_RunIterator,
+    SkShaper_ScriptRunIterator, SkTextBlobBuilderRunHandler,
 };
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::CStr</span>, <span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">os::raw</span>};
+<span class="kw">use </span>std::{ffi::CStr, fmt, marker::PhantomData, os::raw};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">run_handler::RunHandler</span>;
+<span class="kw">pub use </span>run_handler::RunHandler;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Shaper</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">Shaper</span>);
+<span class="kw">pub type </span>Shaper = RefHandle&lt;SkShaper&gt;;
+<span class="macro">unsafe_send_sync!</span>(Shaper);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkShaper</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_delete</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkShaper {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_delete(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Shaper</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="prelude-val">None</span>)
+<span class="kw">impl </span>Default <span class="kw">for </span>Shaper {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="prelude-val">None</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Shaper</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Shaper&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Shaper {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Shaper&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_primitive</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_MakePrimitive</span>() }).<span class="ident">unwrap</span>()
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>new_primitive() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaper_MakePrimitive() }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_shaper_driven_wrapper</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
-        <span class="ident"><span class="kw">crate</span>::icu::init</span>();
+    <span class="kw">pub fn </span>new_shaper_driven_wrapper(font_mgr: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;embed-icudtl&quot;</span>)]
+        </span><span class="kw">crate</span>::icu::init();
 
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeShaperDrivenWrapper</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeShaperDrivenWrapper(font_mgr.into().into_ptr_or_null())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_shape_then_wrap</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
-        <span class="ident"><span class="kw">crate</span>::icu::init</span>();
+    <span class="kw">pub fn </span>new_shape_then_wrap(font_mgr: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;embed-icudtl&quot;</span>)]
+        </span><span class="kw">crate</span>::icu::init();
 
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeShapeThenWrap</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeShapeThenWrap(font_mgr.into().into_ptr_or_null())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_shape_dont_wrap_or_reorder</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
-        <span class="ident"><span class="kw">crate</span>::icu::init</span>();
+    <span class="kw">pub fn </span>new_shape_dont_wrap_or_reorder(font_mgr: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;embed-icudtl&quot;</span>)]
+        </span><span class="kw">crate</span>::icu::init();
 
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeShapeDontWrapOrReorder</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeShapeDontWrapOrReorder(font_mgr.into().into_ptr_or_null())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">purge_harf_buzz_cache</span>() {
-        <span class="kw">unsafe</span> { <span class="ident">sb::SkShaper_PurgeHarfBuzzCache</span>() }
+    <span class="kw">pub fn </span>purge_harf_buzz_cache() {
+        <span class="kw">unsafe </span>{ sb::SkShaper_PurgeHarfBuzzCache() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_core_text</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
-        <span class="ident"><span class="kw">crate</span>::icu::init</span>();
+    <span class="kw">pub fn </span>new_core_text() -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;embed-icudtl&quot;</span>)]
+        </span><span class="kw">crate</span>::icu::init();
 
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_MakeCoreText</span>() })
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaper_MakeCoreText() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">font_mgr</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>)]</span>
-        <span class="ident"><span class="kw">crate</span>::icu::init</span>();
+    <span class="kw">pub fn </span>new(font_mgr: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;embed-icudtl&quot;</span>)]
+        </span><span class="kw">crate</span>::icu::init();
 
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_Make</span>(<span class="ident">font_mgr</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>()) }).<span class="ident">unwrap</span>()
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaper_Make(font_mgr.into().into_ptr_or_null()) }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">purge_caches</span>() {
-        <span class="kw">unsafe</span> { <span class="ident">sb::SkShaper_PurgeCaches</span>() }
+    <span class="kw">pub fn </span>purge_caches() {
+        <span class="kw">unsafe </span>{ sb::SkShaper_PurgeCaches() }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkShaper_Feature</span> <span class="kw">as</span> <span class="ident">Feature</span>;
+<span class="kw">pub use </span>skia_bindings::SkShaper_Feature <span class="kw">as </span>Feature;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">consume</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>);
-    <span class="kw">fn</span> <span class="ident">end_of_current_run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span>;
-    <span class="kw">fn</span> <span class="ident">at_end</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+<span class="kw">pub trait </span>RunIterator {
+    <span class="kw">fn </span>consume(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+    <span class="kw">fn </span>end_of_current_run(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize;
+    <span class="kw">fn </span>at_end(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">RunIterator</span> <span class="kw">for</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">NativeDrop</span>,
-    <span class="ident">T</span>: <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunIterator</span><span class="op">&gt;</span>,
+<span class="kw">impl</span>&lt;T&gt; RunIterator <span class="kw">for </span>RefHandle&lt;T&gt;
+<span class="kw">where
+    </span>T: NativeDrop,
+    T: NativeBase&lt;SkShaper_RunIterator&gt;,
 {
-    <span class="kw">fn</span> <span class="ident">consume</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_consume</span>(<span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>()) }
+    <span class="kw">fn </span>consume(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_consume(<span class="self">self</span>.native_mut().base_mut()) }
     }
 
-    <span class="kw">fn</span> <span class="ident">end_of_current_run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_endOfCurrentRun</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">base</span>()) }
+    <span class="kw">fn </span>end_of_current_run(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_endOfCurrentRun(<span class="self">self</span>.native().base()) }
     }
 
-    <span class="kw">fn</span> <span class="ident">at_end</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_atEnd</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">base</span>()) }
-    }
-}
-
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontRunIterator</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper_FontRunIterator</span><span class="op">&gt;</span>;
-
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunIterator</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkShaper_FontRunIterator</span> {}
-
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkShaper_FontRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_delete</span>(<span class="self">self</span>.<span class="ident">base_mut</span>()) }
+    <span class="kw">fn </span>at_end(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_atEnd(<span class="self">self</span>.native().base()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FontRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;FontRunIterator&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;current_font&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">current_font</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">pub type </span>FontRunIterator = RefHandle&lt;SkShaper_FontRunIterator&gt;;
+
+<span class="kw">impl </span>NativeBase&lt;SkShaper_RunIterator&gt; <span class="kw">for </span>SkShaper_FontRunIterator {}
+
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkShaper_FontRunIterator {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_delete(<span class="self">self</span>.base_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FontRunIterator</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_font</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Font</span> {
-        <span class="ident">Font::from_native_ref</span>(<span class="kw">unsafe</span> {
-            <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_SkShaper_FontRunIterator_currentFont</span>(<span class="self">self</span>.<span class="ident">native</span>())
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>FontRunIterator {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;FontRunIterator&quot;</span>)
+            .field(<span class="string">&quot;current_font&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.current_font())
+            .finish()
+    }
+}
+
+<span class="kw">impl </span>FontRunIterator {
+    <span class="kw">pub fn </span>current_font(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Font {
+        Font::from_native_ref(<span class="kw">unsafe </span>{
+            <span class="kw-2">&amp;*</span>sb::C_SkShaper_FontRunIterator_currentFont(<span class="self">self</span>.native())
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_font_mgr_run_iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">fallback</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">FontRunIterator</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="ident">FontRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeFontMgrRunIterator</span>(
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">fallback</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>new_font_mgr_run_iterator&lt;<span class="lifetime">&#39;a</span>&gt;(
+        utf8: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+        font: <span class="kw-2">&amp;</span>Font,
+        fallback: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;,
+    ) -&gt; Borrows&lt;<span class="lifetime">&#39;a</span>, FontRunIterator&gt; {
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        FontRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeFontMgrRunIterator(
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
+                font.native(),
+                fallback.into().into_ptr_or_null(),
             )
         })
-        .<span class="ident">unwrap</span>()
-        .<span class="ident">borrows</span>(<span class="ident">utf8</span>)
+        .unwrap()
+        .borrows(utf8)
     }
 
-    <span class="comment">// TODO: m79: wrap MakeFontMgrRunIterator with requestName (borrowed), requestStyle and</span>
-    <span class="comment">//       a LanguageRunIterator.</span>
+    <span class="comment">// TODO: m79: wrap MakeFontMgrRunIterator with requestName (borrowed), requestStyle and
+    //       a LanguageRunIterator.
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trivial_font_run_iterator</span>(<span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>, <span class="ident">utf8_bytes</span>: <span class="ident">usize</span>) -&gt; <span class="ident">FontRunIterator</span> {
-        <span class="ident">FontRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_TrivialFontRunIterator_new</span>(<span class="ident">font</span>.<span class="ident">native</span>(), <span class="ident">utf8_bytes</span>)
+    </span><span class="kw">pub fn </span>new_trivial_font_run_iterator(font: <span class="kw-2">&amp;</span>Font, utf8_bytes: usize) -&gt; FontRunIterator {
+        FontRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_TrivialFontRunIterator_new(font.native(), utf8_bytes)
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BiDiRunIterator</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper_BiDiRunIterator</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>BiDiRunIterator = RefHandle&lt;SkShaper_BiDiRunIterator&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunIterator</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkShaper_BiDiRunIterator</span> {}
+<span class="kw">impl </span>NativeBase&lt;SkShaper_RunIterator&gt; <span class="kw">for </span>SkShaper_BiDiRunIterator {}
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkShaper_BiDiRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_delete</span>(<span class="self">self</span>.<span class="ident">base_mut</span>()) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkShaper_BiDiRunIterator {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_delete(<span class="self">self</span>.base_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BiDiRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BiDiRunIterator&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;current_level&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">current_level</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>BiDiRunIterator {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;BiDiRunIterator&quot;</span>)
+            .field(<span class="string">&quot;current_level&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.current_level())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">BiDiRunIterator</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_level</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_BiDiRunIterator_currentLevel</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+<span class="kw">impl </span>BiDiRunIterator {
+    <span class="kw">pub fn </span>current_level(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u8 {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_BiDiRunIterator_currentLevel(<span class="self">self</span>.native()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_bidi_run_iterator</span>(<span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">bidi_level</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">BiDiRunIterator</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="ident">BiDiRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeBidiRunIterator</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">bytes</span>.<span class="ident">len</span>(), <span class="ident">bidi_level</span>)
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>new_bidi_run_iterator(utf8: <span class="kw-2">&amp;</span>str, bidi_level: u8) -&gt; <span class="prelude-ty">Option</span>&lt;Borrows&lt;BiDiRunIterator&gt;&gt; {
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        BiDiRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeBidiRunIterator(bytes.as_ptr() <span class="kw">as _</span>, bytes.len(), bidi_level)
         })
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">borrows</span>(<span class="ident">utf8</span>))
+        .map(|i| i.borrows(utf8))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_icu_bidi_run_iterator</span>(<span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">level</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">BiDiRunIterator</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="ident">BiDiRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeIcuBidiRunIterator</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">bytes</span>.<span class="ident">len</span>(), <span class="ident">level</span>)
+    <span class="kw">pub fn </span>new_icu_bidi_run_iterator(utf8: <span class="kw-2">&amp;</span>str, level: u8) -&gt; <span class="prelude-ty">Option</span>&lt;Borrows&lt;BiDiRunIterator&gt;&gt; {
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        BiDiRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeIcuBidiRunIterator(bytes.as_ptr() <span class="kw">as _</span>, bytes.len(), level)
         })
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">borrows</span>(<span class="ident">utf8</span>))
+        .map(|i| i.borrows(utf8))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trivial_bidi_run_iterator</span>(<span class="ident">bidi_level</span>: <span class="ident">u8</span>, <span class="ident">utf8_bytes</span>: <span class="ident">usize</span>) -&gt; <span class="ident">BiDiRunIterator</span> {
-        <span class="ident">BiDiRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_TrivialBidiRunIterator_new</span>(<span class="ident">bidi_level</span>, <span class="ident">utf8_bytes</span>)
+    <span class="kw">pub fn </span>new_trivial_bidi_run_iterator(bidi_level: u8, utf8_bytes: usize) -&gt; BiDiRunIterator {
+        BiDiRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_TrivialBidiRunIterator_new(bidi_level, utf8_bytes)
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ScriptRunIterator</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper_ScriptRunIterator</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>ScriptRunIterator = RefHandle&lt;SkShaper_ScriptRunIterator&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunIterator</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkShaper_ScriptRunIterator</span> {}
+<span class="kw">impl </span>NativeBase&lt;SkShaper_RunIterator&gt; <span class="kw">for </span>SkShaper_ScriptRunIterator {}
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkShaper_ScriptRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_delete</span>(<span class="self">self</span>.<span class="ident">base_mut</span>()) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkShaper_ScriptRunIterator {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_delete(<span class="self">self</span>.base_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ScriptRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ScriptRunIterator&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;current_script&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">current_script</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ScriptRunIterator {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;ScriptRunIterator&quot;</span>)
+            .field(<span class="string">&quot;current_script&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.current_script())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ScriptRunIterator</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_script</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FourByteTag</span> {
-        <span class="ident">FourByteTag::from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_ScriptRunIterator_currentScript</span>(<span class="self">self</span>.<span class="ident">native</span>())
+<span class="kw">impl </span>ScriptRunIterator {
+    <span class="kw">pub fn </span>current_script(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; FourByteTag {
+        FourByteTag::from_native_c(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_ScriptRunIterator_currentScript(<span class="self">self</span>.native())
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_script_run_iterator</span>(<span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">script</span>: <span class="ident">FourByteTag</span>) -&gt; <span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">ScriptRunIterator</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="ident">ScriptRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeScriptRunIterator</span>(
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">script</span>.<span class="ident">into_native</span>(),
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>new_script_run_iterator(utf8: <span class="kw-2">&amp;</span>str, script: FourByteTag) -&gt; Borrows&lt;ScriptRunIterator&gt; {
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        ScriptRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeScriptRunIterator(
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
+                script.into_native(),
             )
         })
-        .<span class="ident">unwrap</span>()
-        .<span class="ident">borrows</span>(<span class="ident">utf8</span>)
+        .unwrap()
+        .borrows(utf8)
     }
 
-    <span class="comment">// TODO: wrap MakeSkUnicodeHbScriptRunIterator (m88: uses type SkUnicode defined in src/).</span>
+    <span class="comment">// TODO: wrap MakeSkUnicodeHbScriptRunIterator (m88: uses type SkUnicode defined in src/).
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_hb_icu_script_run_iterator</span>(<span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">ScriptRunIterator</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="ident">ScriptRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeHbIcuScriptRunIterator</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">bytes</span>.<span class="ident">len</span>())
+    </span><span class="kw">pub fn </span>new_hb_icu_script_run_iterator(utf8: <span class="kw-2">&amp;</span>str) -&gt; Borrows&lt;ScriptRunIterator&gt; {
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        ScriptRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeHbIcuScriptRunIterator(bytes.as_ptr() <span class="kw">as _</span>, bytes.len())
         })
-        .<span class="ident">unwrap</span>()
-        .<span class="ident">borrows</span>(<span class="ident">utf8</span>)
+        .unwrap()
+        .borrows(utf8)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trivial_script_run_iterator</span>(<span class="ident">bidi_level</span>: <span class="ident">u8</span>, <span class="ident">utf8_bytes</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ScriptRunIterator</span> {
-        <span class="ident">ScriptRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_TrivialScriptRunIterator_new</span>(<span class="ident">bidi_level</span>, <span class="ident">utf8_bytes</span>)
+    <span class="kw">pub fn </span>new_trivial_script_run_iterator(bidi_level: u8, utf8_bytes: usize) -&gt; ScriptRunIterator {
+        ScriptRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_TrivialScriptRunIterator_new(bidi_level, utf8_bytes)
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LanguageRunIterator</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">SkShaper_LanguageRunIterator</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>LanguageRunIterator = RefHandle&lt;SkShaper_LanguageRunIterator&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunIterator</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkShaper_LanguageRunIterator</span> {}
+<span class="kw">impl </span>NativeBase&lt;SkShaper_RunIterator&gt; <span class="kw">for </span>SkShaper_LanguageRunIterator {}
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkShaper_LanguageRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaper_RunIterator_delete</span>(<span class="self">self</span>.<span class="ident">base_mut</span>()) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkShaper_LanguageRunIterator {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkShaper_RunIterator_delete(<span class="self">self</span>.base_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">LanguageRunIterator</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;LanguageRunIterator&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;current_language&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">current_language</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>LanguageRunIterator {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;LanguageRunIterator&quot;</span>)
+            .field(<span class="string">&quot;current_language&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.current_language())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">LanguageRunIterator</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_language</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">CStr</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">CStr::from_ptr</span>(<span class="ident">sb::C_SkShaper_LanguageRunIterator_currentLanguage</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
+<span class="kw">impl </span>LanguageRunIterator {
+    <span class="kw">pub fn </span>current_language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
+        <span class="kw">unsafe </span>{
+            CStr::from_ptr(sb::C_SkShaper_LanguageRunIterator_currentLanguage(
+                <span class="self">self</span>.native(),
             ))
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_std_language_run_iterator</span>(<span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LanguageRunIterator</span><span class="op">&gt;</span> {
-        <span class="comment">// a LanguageRunIterator never accesses the UTF8 string, so it&#39;s safe to</span>
-        <span class="comment">// not borrow the string.</span>
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="ident">LanguageRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_MakeStdLanguageRunIterator</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">bytes</span>.<span class="ident">len</span>())
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>new_std_language_run_iterator(utf8: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;LanguageRunIterator&gt; {
+        <span class="comment">// a LanguageRunIterator never accesses the UTF8 string, so it&#39;s safe to
+        // not borrow the string.
+        </span><span class="kw">let </span>bytes = utf8.as_bytes();
+        LanguageRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_MakeStdLanguageRunIterator(bytes.as_ptr() <span class="kw">as _</span>, bytes.len())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_trivial_language_run_iterator</span>(<span class="ident">language</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">LanguageRunIterator</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">language</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>();
-        <span class="ident">LanguageRunIterator::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_TrivialLanguageRunIterator_new</span>(
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">raw::c_char</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
+    <span class="kw">pub fn </span>new_trivial_language_run_iterator(language: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; LanguageRunIterator {
+        <span class="kw">let </span>bytes = language.as_ref().as_bytes();
+        LanguageRunIterator::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaper_TrivialLanguageRunIterator_new(
+                bytes.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>raw::c_char,
+                bytes.len(),
             )
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">run_handler</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Font</span>, <span class="ident">GlyphId</span>, <span class="ident">Point</span>, <span class="ident">Vector</span>};
-    <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-        <span class="ident">SkShaper_RunHandler_Buffer</span>, <span class="ident">SkShaper_RunHandler_Range</span>, <span class="ident">SkShaper_RunHandler_RunInfo</span>,
+<span class="kw">pub mod </span>run_handler {
+    <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::{Font, GlyphId, Point, Vector};
+    <span class="kw">use </span>skia_bindings::{
+        SkShaper_RunHandler_Buffer, SkShaper_RunHandler_Range, SkShaper_RunHandler_RunInfo,
     };
-    <span class="kw">use</span> <span class="ident">std::ops::Range</span>;
-    <span class="kw">use</span> <span class="ident">std::slice</span>;
+    <span class="kw">use </span>std::ops::Range;
+    <span class="kw">use </span>std::slice;
 
-    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RunHandler</span> {
-        <span class="kw">fn</span> <span class="ident">begin_line</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>);
-        <span class="kw">fn</span> <span class="ident">run_info</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">RunInfo</span>);
-        <span class="kw">fn</span> <span class="ident">commit_run_info</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>);
-        <span class="kw">fn</span> <span class="ident">run_buffer</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">RunInfo</span>) -&gt; <span class="ident">Buffer</span>;
-        <span class="kw">fn</span> <span class="ident">commit_run_buffer</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">RunInfo</span>);
-        <span class="kw">fn</span> <span class="ident">commit_line</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>);
+    <span class="kw">pub trait </span>RunHandler {
+        <span class="kw">fn </span>begin_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+        <span class="kw">fn </span>run_info(<span class="kw-2">&amp;mut </span><span class="self">self</span>, info: <span class="kw-2">&amp;</span>RunInfo);
+        <span class="kw">fn </span>commit_run_info(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+        <span class="kw">fn </span>run_buffer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, info: <span class="kw-2">&amp;</span>RunInfo) -&gt; Buffer;
+        <span class="kw">fn </span>commit_run_buffer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, info: <span class="kw-2">&amp;</span>RunInfo);
+        <span class="kw">fn </span>commit_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
     }
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunInfo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">pub</span> <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Font</span>,
-        <span class="kw">pub</span> <span class="ident">bidi_level</span>: <span class="ident">u8</span>,
-        <span class="kw">pub</span> <span class="ident">advance</span>: <span class="ident">Vector</span>,
-        <span class="kw">pub</span> <span class="ident">glyph_count</span>: <span class="ident">usize</span>,
-        <span class="kw">pub</span> <span class="ident">utf8_range</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="attribute">#[derive(Debug)]
+    </span><span class="kw">pub struct </span>RunInfo&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="kw">pub </span>font: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Font,
+        <span class="kw">pub </span>bidi_level: u8,
+        <span class="kw">pub </span>advance: Vector,
+        <span class="kw">pub </span>glyph_count: usize,
+        <span class="kw">pub </span>utf8_range: Range&lt;usize&gt;,
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">RunInfo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_native</span>(<span class="ident">ri</span>: <span class="kw-2">&amp;</span><span class="ident">SkShaper_RunHandler_RunInfo</span>) -&gt; <span class="self">Self</span> {
-            <span class="comment">// TODO: should we avoid that copy and wrap RunInfo with functions?</span>
-            <span class="kw">let</span> <span class="ident">utf8_range</span> <span class="op">=</span> <span class="ident">ri</span>.<span class="ident">utf8Range</span>;
-            <span class="ident">RunInfo</span> {
-                <span class="ident">font</span>: <span class="ident">Font::from_native_ref</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ri</span>.<span class="ident">fFont</span> }),
-                <span class="ident">bidi_level</span>: <span class="ident">ri</span>.<span class="ident">fBidiLevel</span>,
-                <span class="ident">advance</span>: <span class="ident">Vector::from_native_c</span>(<span class="ident">ri</span>.<span class="ident">fAdvance</span>),
-                <span class="ident">glyph_count</span>: <span class="ident">ri</span>.<span class="ident">glyphCount</span>,
-                <span class="ident">utf8_range</span>: <span class="ident">utf8_range</span>.<span class="ident">fBegin</span>..<span class="ident">utf8_range</span>.<span class="ident">fBegin</span> <span class="op">+</span> <span class="ident">utf8_range</span>.<span class="ident">fSize</span>,
+    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RunInfo&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_native(ri: <span class="kw-2">&amp;</span>SkShaper_RunHandler_RunInfo) -&gt; <span class="self">Self </span>{
+            <span class="comment">// TODO: should we avoid that copy and wrap RunInfo with functions?
+            </span><span class="kw">let </span>utf8_range = ri.utf8Range;
+            RunInfo {
+                font: Font::from_native_ref(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>ri.fFont }),
+                bidi_level: ri.fBidiLevel,
+                advance: Vector::from_native_c(ri.fAdvance),
+                glyph_count: ri.glyphCount,
+                utf8_range: utf8_range.fBegin..utf8_range.fBegin + utf8_range.fSize,
             }
         }
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SkShaper_RunHandler_RunInfo</span> {
-            <span class="ident">SkShaper_RunHandler_RunInfo</span> {
-                <span class="ident">fFont</span>: <span class="self">self</span>.<span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">fBidiLevel</span>: <span class="self">self</span>.<span class="ident">bidi_level</span>,
-                <span class="ident">fAdvance</span>: <span class="self">self</span>.<span class="ident">advance</span>.<span class="ident">into_native</span>(),
-                <span class="ident">glyphCount</span>: <span class="self">self</span>.<span class="ident">glyph_count</span>,
-                <span class="ident">utf8Range</span>: <span class="ident">SkShaper_RunHandler_Range</span> {
-                    <span class="ident">fBegin</span>: <span class="self">self</span>.<span class="ident">utf8_range</span>.<span class="ident">start</span>,
-                    <span class="ident">fSize</span>: <span class="self">self</span>.<span class="ident">utf8_range</span>.<span class="ident">end</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">utf8_range</span>.<span class="ident">start</span>,
+        <span class="attribute">#[allow(unused)]
+        </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SkShaper_RunHandler_RunInfo {
+            SkShaper_RunHandler_RunInfo {
+                fFont: <span class="self">self</span>.font.native(),
+                fBidiLevel: <span class="self">self</span>.bidi_level,
+                fAdvance: <span class="self">self</span>.advance.into_native(),
+                glyphCount: <span class="self">self</span>.glyph_count,
+                utf8Range: SkShaper_RunHandler_Range {
+                    fBegin: <span class="self">self</span>.utf8_range.start,
+                    fSize: <span class="self">self</span>.utf8_range.end - <span class="self">self</span>.utf8_range.start,
                 },
             }
         }
     }
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Buffer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">pub</span> <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">GlyphId</span>],
-        <span class="kw">pub</span> <span class="ident">positions</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">Point</span>],
-        <span class="kw">pub</span> <span class="ident">offsets</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">Point</span>]<span class="op">&gt;</span>,
-        <span class="kw">pub</span> <span class="ident">clusters</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u32</span>]<span class="op">&gt;</span>,
-        <span class="kw">pub</span> <span class="ident">point</span>: <span class="ident">Point</span>,
+    <span class="attribute">#[derive(Debug)]
+    </span><span class="kw">pub struct </span>Buffer&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="kw">pub </span>glyphs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[GlyphId],
+        <span class="kw">pub </span>positions: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[Point],
+        <span class="kw">pub </span>offsets: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[Point]&gt;,
+        <span class="kw">pub </span>clusters: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[u32]&gt;,
+        <span class="kw">pub </span>point: Point,
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Buffer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-            <span class="ident">glyphs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">GlyphId</span>],
-            <span class="ident">positions</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">Point</span>],
-            <span class="ident">point</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="self">Self</span> {
-            <span class="ident">Buffer</span> {
-                <span class="ident">glyphs</span>,
-                <span class="ident">positions</span>,
-                <span class="ident">offsets</span>: <span class="prelude-val">None</span>,
-                <span class="ident">clusters</span>: <span class="prelude-val">None</span>,
-                <span class="ident">point</span>: <span class="ident">point</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>(),
+    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Buffer&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="kw">pub fn </span>new(
+            glyphs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[GlyphId],
+            positions: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[Point],
+            point: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Point&gt;&gt;,
+        ) -&gt; <span class="self">Self </span>{
+            Buffer {
+                glyphs,
+                positions,
+                offsets: <span class="prelude-val">None</span>,
+                clusters: <span class="prelude-val">None</span>,
+                point: point.into().unwrap_or_default(),
             }
         }
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_native</span>(
-            <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="ident">SkShaper_RunHandler_Buffer</span>,
-            <span class="ident">glyph_count</span>: <span class="ident">usize</span>,
-        ) -&gt; <span class="ident">Buffer</span> {
-            <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">buffer</span>.<span class="ident">offsets</span>.<span class="ident">into_option</span>().<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">offsets</span><span class="op">|</span> {
-                <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">Point::from_native_ref_mut</span>(<span class="ident">offsets</span>.<span class="ident">as_mut</span>()), <span class="ident">glyph_count</span>)
+        <span class="attribute">#[allow(unused)]
+        </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>from_native(
+            buffer: <span class="kw-2">&amp;</span>SkShaper_RunHandler_Buffer,
+            glyph_count: usize,
+        ) -&gt; Buffer {
+            <span class="kw">let </span>offsets = buffer.offsets.into_option().map(|<span class="kw-2">mut </span>offsets| {
+                slice::from_raw_parts_mut(Point::from_native_ref_mut(offsets.as_mut()), glyph_count)
             });
 
-            <span class="kw">let</span> <span class="ident">clusters</span> <span class="op">=</span> <span class="ident">buffer</span>
-                .<span class="ident">clusters</span>
-                .<span class="ident">into_option</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">clusters</span><span class="op">|</span> <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">clusters</span>.<span class="ident">as_ptr</span>(), <span class="ident">glyph_count</span>));
+            <span class="kw">let </span>clusters = buffer
+                .clusters
+                .into_option()
+                .map(|clusters| slice::from_raw_parts_mut(clusters.as_ptr(), glyph_count));
 
-            <span class="ident">Buffer</span> {
-                <span class="ident">glyphs</span>: <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">glyph_count</span>),
-                <span class="ident">positions</span>: <span class="ident">safer::from_raw_parts_mut</span>(
-                    <span class="ident">Point::from_native_ptr_mut</span>(<span class="ident">buffer</span>.<span class="ident">positions</span>),
-                    <span class="ident">glyph_count</span>,
+            Buffer {
+                glyphs: safer::from_raw_parts_mut(buffer.glyphs, glyph_count),
+                positions: safer::from_raw_parts_mut(
+                    Point::from_native_ptr_mut(buffer.positions),
+                    glyph_count,
                 ),
-                <span class="ident">offsets</span>,
-                <span class="ident">clusters</span>,
-                <span class="ident">point</span>: <span class="ident">Point::from_native_c</span>(<span class="ident">buffer</span>.<span class="ident">point</span>),
+                offsets,
+                clusters,
+                point: Point::from_native_c(buffer.point),
             }
         }
 
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">native_buffer_mut</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="ident">glyph_count</span>: <span class="ident">usize</span>,
-        ) -&gt; <span class="ident">SkShaper_RunHandler_Buffer</span> {
-            <span class="macro">assert_eq!</span>(<span class="self">self</span>.<span class="ident">glyphs</span>.<span class="ident">len</span>(), <span class="ident">glyph_count</span>);
-            <span class="macro">assert_eq!</span>(<span class="self">self</span>.<span class="ident">positions</span>.<span class="ident">len</span>(), <span class="ident">glyph_count</span>);
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">offsets</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">offsets</span> {
-                <span class="macro">assert_eq!</span>(<span class="ident">offsets</span>.<span class="ident">len</span>(), <span class="ident">glyph_count</span>)
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>native_buffer_mut(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+            glyph_count: usize,
+        ) -&gt; SkShaper_RunHandler_Buffer {
+            <span class="macro">assert_eq!</span>(<span class="self">self</span>.glyphs.len(), glyph_count);
+            <span class="macro">assert_eq!</span>(<span class="self">self</span>.positions.len(), glyph_count);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(offsets) = <span class="kw-2">&amp;</span><span class="self">self</span>.offsets {
+                <span class="macro">assert_eq!</span>(offsets.len(), glyph_count)
             }
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">clusters</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">clusters</span> {
-                <span class="macro">assert_eq!</span>(<span class="ident">clusters</span>.<span class="ident">len</span>(), <span class="ident">glyph_count</span>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(clusters) = <span class="kw-2">&amp;</span><span class="self">self</span>.clusters {
+                <span class="macro">assert_eq!</span>(clusters.len(), glyph_count)
             }
-            <span class="ident">SkShaper_RunHandler_Buffer</span> {
-                <span class="ident">glyphs</span>: <span class="self">self</span>.<span class="ident">glyphs</span>.<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">positions</span>: <span class="self">self</span>.<span class="ident">positions</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">offsets</span>: <span class="self">self</span>.<span class="ident">offsets</span>.<span class="ident">native_mut</span>().<span class="ident">as_ptr_or_null_mut</span>(),
-                <span class="ident">clusters</span>: <span class="self">self</span>.<span class="ident">clusters</span>.<span class="ident">as_ptr_or_null_mut</span>(),
-                <span class="ident">point</span>: <span class="self">self</span>.<span class="ident">point</span>.<span class="ident">into_native</span>(),
+            SkShaper_RunHandler_Buffer {
+                glyphs: <span class="self">self</span>.glyphs.as_mut_ptr(),
+                positions: <span class="self">self</span>.positions.native_mut().as_mut_ptr(),
+                offsets: <span class="self">self</span>.offsets.native_mut().as_ptr_or_null_mut(),
+                clusters: <span class="self">self</span>.clusters.as_ptr_or_null_mut(),
+                point: <span class="self">self</span>.point.into_native(),
             }
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">RunHandler</span>: <span class="ident">AsNativeRunHandler</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
-    <span class="kw">fn</span> <span class="ident">as_run_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::RunHandler</span>
-    <span class="kw">where</span>
-        <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>;
+<span class="kw">pub trait </span>AsRunHandler&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>RunHandler: AsNativeRunHandler + <span class="lifetime">&#39;a</span>;
+    <span class="kw">fn </span>as_run_handler&lt;<span class="lifetime">&#39;b</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::RunHandler
+    <span class="kw">where
+        </span><span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>;
 }
 
-<span class="doccomment">/// A trait for accessing the native run handler instance used in the shape_native* functions.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsNativeRunHandler</span> {
-    <span class="kw">fn</span> <span class="ident">as_native_run_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkShaper_RunHandler</span>;
+<span class="doccomment">/// A trait for accessing the native run handler instance used in the shape_native* functions.
+</span><span class="kw">pub trait </span>AsNativeRunHandler {
+    <span class="kw">fn </span>as_native_run_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkShaper_RunHandler;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">RunHandler</span><span class="op">&gt;</span> <span class="ident">AsRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
-    <span class="kw">type</span> <span class="ident">RunHandler</span> <span class="op">=</span> <span class="ident">RustRunHandler</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: RunHandler&gt; AsRunHandler&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>T {
+    <span class="kw">type </span>RunHandler = RustRunHandler;
 
-    <span class="kw">fn</span> <span class="ident">as_run_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::RunHandler</span>
-    <span class="kw">where</span>
-        <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>,
+    <span class="kw">fn </span>as_run_handler&lt;<span class="lifetime">&#39;b</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::RunHandler
+    <span class="kw">where
+        </span><span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>,
     {
-        <span class="kw">let</span> <span class="ident">param</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">rust_run_handler::new_param</span>(<span class="self">self</span>) };
-        <span class="ident">rust_run_handler::from_param</span>(<span class="kw-2">&amp;</span><span class="ident">param</span>)
+        <span class="kw">let </span>param = <span class="kw">unsafe </span>{ rust_run_handler::new_param(<span class="self">self</span>) };
+        rust_run_handler::from_param(<span class="kw-2">&amp;</span>param)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shape</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>shape&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">left_to_right</span>: <span class="ident">bool</span>,
-        <span class="ident">width</span>: <span class="ident">scalar</span>,
-        <span class="ident">run_handler</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">AsRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        utf8: <span class="kw-2">&amp;</span>str,
+        font: <span class="kw-2">&amp;</span>Font,
+        left_to_right: bool,
+        width: scalar,
+        run_handler: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span><span class="kw">impl </span>AsRunHandler&lt;<span class="lifetime">&#39;a</span>&gt;,
     ) {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">run_handler</span> <span class="op">=</span> <span class="ident">run_handler</span>.<span class="ident">as_run_handler</span>();
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        <span class="kw">let </span><span class="kw-2">mut </span>run_handler = run_handler.as_run_handler();
 
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_shape</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">left_to_right</span>,
-                <span class="ident">width</span>,
-                <span class="ident">run_handler</span>.<span class="ident">as_native_run_handler</span>(),
+        <span class="kw">unsafe </span>{
+            sb::C_SkShaper_shape(
+                <span class="self">self</span>.native(),
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
+                font.native(),
+                left_to_right,
+                width,
+                run_handler.as_native_run_handler(),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shape_with_iterators</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">pub fn </span>shape_with_iterators&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">font_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FontRunIterator</span>,
-        <span class="ident">bidi_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">BiDiRunIterator</span>,
-        <span class="ident">script_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ScriptRunIterator</span>,
-        <span class="ident">language_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">LanguageRunIterator</span>,
-        <span class="ident">width</span>: <span class="ident">scalar</span>,
-        <span class="ident">run_handler</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">AsRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        utf8: <span class="kw-2">&amp;</span>str,
+        font_run_iterator: <span class="kw-2">&amp;mut </span>FontRunIterator,
+        bidi_run_iterator: <span class="kw-2">&amp;mut </span>BiDiRunIterator,
+        script_run_iterator: <span class="kw-2">&amp;mut </span>ScriptRunIterator,
+        language_run_iterator: <span class="kw-2">&amp;mut </span>LanguageRunIterator,
+        width: scalar,
+        run_handler: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span><span class="kw">impl </span>AsRunHandler&lt;<span class="lifetime">&#39;a</span>&gt;,
     ) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">run_handler</span> <span class="op">=</span> <span class="ident">run_handler</span>.<span class="ident">as_run_handler</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>run_handler = run_handler.as_run_handler();
 
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_shape2</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">font_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">bidi_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">script_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">language_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">width</span>,
-                <span class="ident">run_handler</span>.<span class="ident">as_native_run_handler</span>(),
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        <span class="kw">unsafe </span>{
+            sb::C_SkShaper_shape2(
+                <span class="self">self</span>.native(),
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
+                font_run_iterator.native_mut(),
+                bidi_run_iterator.native_mut(),
+                script_run_iterator.native_mut(),
+                language_run_iterator.native_mut(),
+                width,
+                run_handler.as_native_run_handler(),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shape_with_iterators_and_features</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">pub fn </span>shape_with_iterators_and_features&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">utf8</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">font_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FontRunIterator</span>,
-        <span class="ident">bidi_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">BiDiRunIterator</span>,
-        <span class="ident">script_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ScriptRunIterator</span>,
-        <span class="ident">language_run_iterator</span>: <span class="kw-2">&amp;mut</span> <span class="ident">LanguageRunIterator</span>,
-        <span class="ident">features</span>: <span class="kw-2">&amp;</span>[<span class="ident">Feature</span>],
-        <span class="ident">width</span>: <span class="ident">scalar</span>,
-        <span class="ident">run_handler</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">AsRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        utf8: <span class="kw-2">&amp;</span>str,
+        font_run_iterator: <span class="kw-2">&amp;mut </span>FontRunIterator,
+        bidi_run_iterator: <span class="kw-2">&amp;mut </span>BiDiRunIterator,
+        script_run_iterator: <span class="kw-2">&amp;mut </span>ScriptRunIterator,
+        language_run_iterator: <span class="kw-2">&amp;mut </span>LanguageRunIterator,
+        features: <span class="kw-2">&amp;</span>[Feature],
+        width: scalar,
+        run_handler: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span><span class="kw">impl </span>AsRunHandler&lt;<span class="lifetime">&#39;a</span>&gt;,
     ) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">run_handler</span> <span class="op">=</span> <span class="ident">run_handler</span>.<span class="ident">as_run_handler</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>run_handler = run_handler.as_run_handler();
 
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">utf8</span>.<span class="ident">as_bytes</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_shape3</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">font_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">bidi_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">script_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">language_run_iterator</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">features</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">features</span>.<span class="ident">len</span>(),
-                <span class="ident">width</span>,
-                <span class="ident">run_handler</span>.<span class="ident">as_native_run_handler</span>(),
+        <span class="kw">let </span>bytes = utf8.as_bytes();
+        <span class="kw">unsafe </span>{
+            sb::C_SkShaper_shape3(
+                <span class="self">self</span>.native(),
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
+                font_run_iterator.native_mut(),
+                bidi_run_iterator.native_mut(),
+                script_run_iterator.native_mut(),
+                language_run_iterator.native_mut(),
+                features.as_ptr(),
+                features.len(),
+                width,
+                run_handler.as_native_run_handler(),
             )
         }
     }
 }
 
-<span class="kw">mod</span> <span class="ident">rust_run_handler</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::shaper::run_handler::RunInfo</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::shaper</span>::{<span class="ident">AsNativeRunHandler</span>, <span class="ident">RunHandler</span>};
-    <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-    <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-        <span class="ident">RustRunHandler</span>, <span class="ident">RustRunHandler_Param</span>, <span class="ident">SkShaper_RunHandler</span>, <span class="ident">SkShaper_RunHandler_Buffer</span>,
-        <span class="ident">SkShaper_RunHandler_RunInfo</span>, <span class="ident">TraitObject</span>,
+<span class="kw">mod </span>rust_run_handler {
+    <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::shaper::run_handler::RunInfo;
+    <span class="kw">use </span><span class="kw">crate</span>::shaper::{AsNativeRunHandler, RunHandler};
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
+    <span class="kw">use </span>skia_bindings::{
+        RustRunHandler, RustRunHandler_Param, SkShaper_RunHandler, SkShaper_RunHandler_Buffer,
+        SkShaper_RunHandler_RunInfo, TraitObject,
     };
-    <span class="kw">use</span> <span class="ident">std::mem</span>;
+    <span class="kw">use </span>std::mem;
 
-    <span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunHandler</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RustRunHandler</span> {}
+    <span class="kw">impl </span>NativeBase&lt;SkShaper_RunHandler&gt; <span class="kw">for </span>RustRunHandler {}
 
-    <span class="kw">impl</span> <span class="ident">AsNativeRunHandler</span> <span class="kw">for</span> <span class="ident">RustRunHandler</span> {
-        <span class="kw">fn</span> <span class="ident">as_native_run_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkShaper_RunHandler</span> {
-            <span class="self">self</span>.<span class="ident">base_mut</span>()
+    <span class="kw">impl </span>AsNativeRunHandler <span class="kw">for </span>RustRunHandler {
+        <span class="kw">fn </span>as_native_run_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkShaper_RunHandler {
+            <span class="self">self</span>.base_mut()
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_param</span>(<span class="ident">run_handler</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">RunHandler</span>) -&gt; <span class="ident">RustRunHandler_Param</span> {
-        <span class="ident">RustRunHandler_Param</span> {
-            <span class="ident">trait_</span>: <span class="ident">mem::transmute</span>(<span class="ident">run_handler</span>),
-            <span class="ident">beginLine</span>: <span class="prelude-val">Some</span>(<span class="ident">begin_line</span>),
-            <span class="ident">runInfo</span>: <span class="prelude-val">Some</span>(<span class="ident">run_info</span>),
-            <span class="ident">commitRunInfo</span>: <span class="prelude-val">Some</span>(<span class="ident">commit_run_info</span>),
-            <span class="ident">runBuffer</span>: <span class="prelude-val">Some</span>(<span class="ident">run_buffer</span>),
-            <span class="ident">commitRunBuffer</span>: <span class="prelude-val">Some</span>(<span class="ident">commit_run_buffer</span>),
-            <span class="ident">commitLine</span>: <span class="prelude-val">Some</span>(<span class="ident">commit_line</span>),
+    <span class="kw">pub unsafe fn </span>new_param(run_handler: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>RunHandler) -&gt; RustRunHandler_Param {
+        RustRunHandler_Param {
+            trait_: mem::transmute(run_handler),
+            beginLine: <span class="prelude-val">Some</span>(begin_line),
+            runInfo: <span class="prelude-val">Some</span>(run_info),
+            commitRunInfo: <span class="prelude-val">Some</span>(commit_run_info),
+            runBuffer: <span class="prelude-val">Some</span>(run_buffer),
+            commitRunBuffer: <span class="prelude-val">Some</span>(commit_run_buffer),
+            commitLine: <span class="prelude-val">Some</span>(commit_line),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_param</span>(<span class="ident">param</span>: <span class="kw-2">&amp;</span><span class="ident">RustRunHandler_Param</span>) -&gt; <span class="ident">RustRunHandler</span> {
-        <span class="ident">construct</span>(<span class="op">|</span><span class="ident">rh</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_RustRunHandler_construct</span>(<span class="ident">rh</span>, <span class="ident">param</span>) })
+    <span class="kw">pub fn </span>from_param(param: <span class="kw-2">&amp;</span>RustRunHandler_Param) -&gt; RustRunHandler {
+        construct(|rh| <span class="kw">unsafe </span>{ sb::C_RustRunHandler_construct(rh, param) })
     }
 
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">begin_line</span>(<span class="ident">to</span>: <span class="ident">TraitObject</span>) {
-        <span class="ident">to_run_handler</span>(<span class="ident">to</span>).<span class="ident">begin_line</span>()
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>begin_line(to: TraitObject) {
+        to_run_handler(to).begin_line()
     }
 
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">run_info</span>(<span class="ident">to</span>: <span class="ident">TraitObject</span>, <span class="ident">ri</span>: <span class="kw-2">*const</span> <span class="ident">SkShaper_RunHandler_RunInfo</span>) {
-        <span class="ident">to_run_handler</span>(<span class="ident">to</span>).<span class="ident">run_info</span>(<span class="kw-2">&amp;</span><span class="ident">RunInfo::from_native</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ri</span> }));
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>run_info(to: TraitObject, ri: <span class="kw-2">*const </span>SkShaper_RunHandler_RunInfo) {
+        to_run_handler(to).run_info(<span class="kw-2">&amp;</span>RunInfo::from_native(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>ri }));
     }
 
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">commit_run_info</span>(<span class="ident">to</span>: <span class="ident">TraitObject</span>) {
-        <span class="ident">to_run_handler</span>(<span class="ident">to</span>).<span class="ident">commit_run_info</span>()
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>commit_run_info(to: TraitObject) {
+        to_run_handler(to).commit_run_info()
     }
 
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">run_buffer</span>(
-        <span class="ident">to</span>: <span class="ident">TraitObject</span>,
-        <span class="ident">ri</span>: <span class="kw-2">*const</span> <span class="ident">SkShaper_RunHandler_RunInfo</span>,
-    ) -&gt; <span class="ident">SkShaper_RunHandler_Buffer</span> {
-        <span class="kw">let</span> <span class="ident">ri</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ri</span> };
-        <span class="ident">to_run_handler</span>(<span class="ident">to</span>)
-            .<span class="ident">run_buffer</span>(<span class="kw-2">&amp;</span><span class="ident">RunInfo::from_native</span>(<span class="ident">ri</span>))
-            .<span class="ident">native_buffer_mut</span>(<span class="ident">ri</span>.<span class="ident">glyphCount</span>)
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>run_buffer(
+        to: TraitObject,
+        ri: <span class="kw-2">*const </span>SkShaper_RunHandler_RunInfo,
+    ) -&gt; SkShaper_RunHandler_Buffer {
+        <span class="kw">let </span>ri = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>ri };
+        to_run_handler(to)
+            .run_buffer(<span class="kw-2">&amp;</span>RunInfo::from_native(ri))
+            .native_buffer_mut(ri.glyphCount)
     }
 
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">commit_run_buffer</span>(<span class="ident">to</span>: <span class="ident">TraitObject</span>, <span class="ident">ri</span>: <span class="kw-2">*const</span> <span class="ident">SkShaper_RunHandler_RunInfo</span>) {
-        <span class="ident">to_run_handler</span>(<span class="ident">to</span>).<span class="ident">commit_run_buffer</span>(<span class="kw-2">&amp;</span><span class="ident">RunInfo::from_native</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ri</span> }))
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>commit_run_buffer(to: TraitObject, ri: <span class="kw-2">*const </span>SkShaper_RunHandler_RunInfo) {
+        to_run_handler(to).commit_run_buffer(<span class="kw-2">&amp;</span>RunInfo::from_native(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>ri }))
     }
 
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">commit_line</span>(<span class="ident">to</span>: <span class="ident">TraitObject</span>) {
-        <span class="ident">to_run_handler</span>(<span class="ident">to</span>).<span class="ident">commit_line</span>()
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>commit_line(to: TraitObject) {
+        to_run_handler(to).commit_line()
     }
 
-    <span class="kw">fn</span> <span class="ident">to_run_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">to</span>: <span class="ident">TraitObject</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">RunHandler</span> {
-        <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">to</span>) }
-    }
-}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextBlobBuilderRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;text</span><span class="op">&gt;</span>(<span class="ident">SkTextBlobBuilderRunHandler</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;text</span> <span class="ident">str</span><span class="op">&gt;</span>);
-
-<span class="kw">impl</span> <span class="ident">NativeAccess</span><span class="op">&lt;</span><span class="ident">SkTextBlobBuilderRunHandler</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TextBlobBuilderRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkTextBlobBuilderRunHandler</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
-    }
-    <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkTextBlobBuilderRunHandler</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="number">0</span>
+    <span class="kw">fn </span>to_run_handler&lt;<span class="lifetime">&#39;a</span>&gt;(to: TraitObject) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>RunHandler {
+        <span class="kw">unsafe </span>{ mem::transmute(to) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkShaper_RunHandler</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkTextBlobBuilderRunHandler</span> {}
+<span class="attribute">#[repr(transparent)]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>TextBlobBuilderRunHandler&lt;<span class="lifetime">&#39;text</span>&gt;(SkTextBlobBuilderRunHandler, PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;text </span>str&gt;);
 
-<span class="kw">impl</span> <span class="ident">TextBlobBuilderRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="ident">TextBlobBuilderRunHandler</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">text</span>.<span class="ident">as_ptr</span>();
-        <span class="comment">// we can safely pass a ptr to the utf8 text string to the RunHandler, because it does not</span>
-        <span class="comment">// expect it to be 0 terminated, but this introduces another problem because</span>
-        <span class="comment">// we can never be sure that the RunHandler callbacks refer to that range. For</span>
-        <span class="comment">// now we ensure that by not exposing the RunHandler of a TextBlobBuilder.</span>
-        <span class="kw">let</span> <span class="ident">run_handler</span> <span class="op">=</span> <span class="ident">construct</span>(<span class="op">|</span><span class="ident">rh</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTextBlobBuilderRunHandler_construct</span>(
-                <span class="ident">rh</span>,
-                <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">raw::c_char</span>,
-                <span class="ident">offset</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
+<span class="kw">impl </span>NativeAccess&lt;SkTextBlobBuilderRunHandler&gt; <span class="kw">for </span>TextBlobBuilderRunHandler&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkTextBlobBuilderRunHandler {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+    <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkTextBlobBuilderRunHandler {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0
+    </span>}
+}
+
+<span class="kw">impl </span>NativeBase&lt;SkShaper_RunHandler&gt; <span class="kw">for </span>SkTextBlobBuilderRunHandler {}
+
+<span class="kw">impl </span>TextBlobBuilderRunHandler&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">pub fn </span>new(text: <span class="kw-2">&amp;</span>str, offset: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; TextBlobBuilderRunHandler {
+        <span class="kw">let </span>ptr = text.as_ptr();
+        <span class="comment">// we can safely pass a ptr to the utf8 text string to the RunHandler, because it does not
+        // expect it to be 0 terminated, but this introduces another problem because
+        // we can never be sure that the RunHandler callbacks refer to that range. For
+        // now we ensure that by not exposing the RunHandler of a TextBlobBuilder.
+        </span><span class="kw">let </span>run_handler = construct(|rh| <span class="kw">unsafe </span>{
+            sb::C_SkTextBlobBuilderRunHandler_construct(
+                rh,
+                ptr <span class="kw">as </span><span class="kw-2">*const </span>raw::c_char,
+                offset.into().native(),
             )
         });
-        <span class="ident">TextBlobBuilderRunHandler</span>(<span class="ident">run_handler</span>, <span class="ident">PhantomData</span>)
+        TextBlobBuilderRunHandler(run_handler, PhantomData)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_blob</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlobBuilderRunHandler_makeBlob</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
+    <span class="kw">pub fn </span>make_blob(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        TextBlob::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTextBlobBuilderRunHandler_makeBlob(<span class="self">self</span>.native_mut()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end_point</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Point</span> {
-        <span class="ident">Point::from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTextBlobBuilderRunHandler_endPoint</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+    <span class="kw">pub fn </span>end_point(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Point {
+        Point::from_native_c(<span class="kw">unsafe </span>{
+            sb::C_SkTextBlobBuilderRunHandler_endPoint(<span class="self">self</span>.native_mut())
         })
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TextBlobBuilderRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">RunHandler</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">SkShaper_RunHandler</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; AsRunHandler&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>TextBlobBuilderRunHandler&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">type </span>RunHandler = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>SkShaper_RunHandler;
 
-    <span class="kw">fn</span> <span class="ident">as_run_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::RunHandler</span>
-    <span class="kw">where</span>
-        <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>,
+    <span class="kw">fn </span>as_run_handler&lt;<span class="lifetime">&#39;b</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::RunHandler
+    <span class="kw">where
+        </span><span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>,
     {
-        (<span class="kw-2">*</span><span class="self">self</span>).<span class="ident">as_native_run_handler</span>()
+        (<span class="kw-2">*</span><span class="self">self</span>).as_native_run_handler()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AsNativeRunHandler</span> <span class="kw">for</span> <span class="kw-2">&amp;mut</span> <span class="ident">SkShaper_RunHandler</span> {
-    <span class="kw">fn</span> <span class="ident">as_native_run_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkShaper_RunHandler</span> {
-        <span class="self">self</span>
+<span class="kw">impl </span>AsNativeRunHandler <span class="kw">for </span><span class="kw-2">&amp;mut </span>SkShaper_RunHandler {
+    <span class="kw">fn </span>as_native_run_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkShaper_RunHandler {
+        <span class="self">self
+    </span>}
+}
+
+<span class="kw">impl </span>AsNativeRunHandler <span class="kw">for </span>TextBlobBuilderRunHandler&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>as_native_run_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkShaper_RunHandler {
+        <span class="self">self</span>.<span class="number">0</span>.base_mut()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AsNativeRunHandler</span> <span class="kw">for</span> <span class="ident">TextBlobBuilderRunHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_native_run_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkShaper_RunHandler</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">base_mut</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Shaper</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shape_text_blob</span>(
+<span class="kw">impl </span>Shaper {
+    <span class="kw">pub fn </span>shape_text_blob(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">left_to_right</span>: <span class="ident">bool</span>,
-        <span class="ident">width</span>: <span class="ident">scalar</span>,
-        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">TextBlob</span>, <span class="ident">Point</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">text</span>.<span class="ident">as_bytes</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">TextBlobBuilderRunHandler::new</span>(<span class="ident">text</span>, <span class="ident">offset</span>);
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaper_shape</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">bytes</span>.<span class="ident">len</span>(),
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">left_to_right</span>,
-                <span class="ident">width</span>,
-                <span class="ident">builder</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>(),
+        text: <span class="kw-2">&amp;</span>str,
+        font: <span class="kw-2">&amp;</span>Font,
+        left_to_right: bool,
+        width: scalar,
+        offset: <span class="kw">impl </span>Into&lt;Point&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(TextBlob, Point)&gt; {
+        <span class="kw">let </span>bytes = text.as_bytes();
+        <span class="kw">let </span><span class="kw-2">mut </span>builder = TextBlobBuilderRunHandler::new(text, offset);
+        <span class="kw">unsafe </span>{
+            sb::C_SkShaper_shape(
+                <span class="self">self</span>.native(),
+                bytes.as_ptr() <span class="kw">as _</span>,
+                bytes.len(),
+                font.native(),
+                left_to_right,
+                width,
+                builder.native_mut().base_mut(),
             )
         };
-        <span class="ident">builder</span>.<span class="ident">make_blob</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">tb</span><span class="op">|</span> (<span class="ident">tb</span>, <span class="ident">builder</span>.<span class="ident">end_point</span>()))
+        builder.make_blob().map(|tb| (tb, builder.end_point()))
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">icu</span> {
+<span class="kw">pub mod </span>icu {
 
-    <span class="doccomment">/// On Windows, and if the default feature &quot;embed-icudtl&quot; is _not_ set, this function writes the</span>
-    <span class="doccomment">/// file `icudtl.dat` into the current executable&#39;s directory making sure that it&#39;s available</span>
-    <span class="doccomment">/// when text shaping is used in Skia.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If your executable directory can not be written to, make sure that `icudtl.dat` is</span>
-    <span class="doccomment">/// available.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that it is currently not possible to load `icudtl.dat` from another location.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the default feature &quot;embed-icudtl&quot; is set, the `icudtl.dat` file is directly used from</span>
-    <span class="doccomment">/// memory, so no `icudtl.dat` file is needed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
-        <span class="ident">skia_bindings::icu::init</span>();
+    <span class="doccomment">/// On Windows, and if the default feature &quot;embed-icudtl&quot; is _not_ set, this function writes the
+    /// file `icudtl.dat` into the current executable&#39;s directory making sure that it&#39;s available
+    /// when text shaping is used in Skia.
+    ///
+    /// If your executable directory can not be written to, make sure that `icudtl.dat` is
+    /// available.
+    ///
+    /// Note that it is currently not possible to load `icudtl.dat` from another location.
+    ///
+    /// If the default feature &quot;embed-icudtl&quot; is set, the `icudtl.dat` file is directly used from
+    /// memory, so no `icudtl.dat` file is needed.
+    </span><span class="kw">pub fn </span>init() {
+        skia_bindings::icu::init();
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_text_blob_builder_run_handler</span>() {
-        <span class="ident">init</span>();
-        <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;العربية&quot;</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">text_blob_builder_run_handler</span> <span class="op">=</span>
-            <span class="ident"><span class="kw">crate</span>::shaper::TextBlobBuilderRunHandler::new</span>(<span class="ident">str</span>, <span class="ident"><span class="kw">crate</span>::Point::default</span>());
+    <span class="attribute">#[test]
+    #[serial_test::serial]
+    </span><span class="kw">fn </span>test_text_blob_builder_run_handler() {
+        init();
+        <span class="kw">let </span>str = <span class="string">&quot;العربية&quot;</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>text_blob_builder_run_handler =
+            <span class="kw">crate</span>::shaper::TextBlobBuilderRunHandler::new(str, <span class="kw">crate</span>::Point::default());
 
-        <span class="kw">let</span> <span class="ident">shaper</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::Shaper::new</span>(<span class="prelude-val">None</span>);
+        <span class="kw">let </span>shaper = <span class="kw">crate</span>::Shaper::new(<span class="prelude-val">None</span>);
 
-        <span class="ident">shaper</span>.<span class="ident">shape</span>(
+        shaper.shape(
             <span class="string">&quot;العربية&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::Font::default</span>(),
+            <span class="kw-2">&amp;</span><span class="kw">crate</span>::Font::default(),
             <span class="bool-val">false</span>,
             <span class="number">10000.0</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">text_blob_builder_run_handler</span>,
+            <span class="kw-2">&amp;mut </span>text_blob_builder_run_handler,
         );
 
-        <span class="kw">let</span> <span class="ident">blob</span> <span class="op">=</span> <span class="ident">text_blob_builder_run_handler</span>.<span class="ident">make_blob</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">blob</span>.<span class="ident">bounds</span>();
-        <span class="macro">assert!</span>(<span class="ident">bounds</span>.<span class="ident">width</span>() <span class="op">&gt;</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="ident">bounds</span>.<span class="ident">height</span>() <span class="op">&gt;</span> <span class="number">0.0</span>);
+        <span class="kw">let </span>blob = text_blob_builder_run_handler.make_blob().unwrap();
+        <span class="kw">let </span>bounds = blob.bounds();
+        <span class="macro">assert!</span>(bounds.width() &gt; <span class="number">0.0 </span>&amp;&amp; bounds.height() &gt; <span class="number">0.0</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
-    <span class="kw">fn</span> <span class="ident">icu_init_is_idempotent</span>() {
-        <span class="ident">init</span>();
-        <span class="ident">init</span>();
+    <span class="attribute">#[test]
+    #[serial_test::serial]
+    </span><span class="kw">fn </span>icu_init_is_idempotent() {
+        init();
+        init();
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

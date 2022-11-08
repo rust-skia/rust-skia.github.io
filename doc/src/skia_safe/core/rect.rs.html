@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\rect.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/rect.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -821,823 +815,838 @@
 <span id="815">815</span>
 <span id="816">816</span>
 <span id="817">817</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>,
-    <span class="ident">private::safe32</span>::{<span class="ident">sk32</span>, <span class="ident">sk64</span>},
-    <span class="ident">scalar</span>, <span class="ident">Contains</span>, <span class="ident">IPoint</span>, <span class="ident">ISize</span>, <span class="ident">IVector</span>, <span class="ident">Point</span>, <span class="ident">Size</span>, <span class="ident">Vector</span>,
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    prelude::<span class="kw-2">*</span>,
+    private::safe32::{sk32, sk64},
+    scalar, Contains, IPoint, ISize, IVector, Point, Size, Vector,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkIRect</span>, <span class="ident">SkRect</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">cmp</span>::{<span class="ident">max</span>, <span class="ident">min</span>},
-    <span class="ident">mem</span>,
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkIRect, SkRect};
+<span class="kw">use </span>std::{
+    cmp::{max, min},
+    mem,
 };
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IRect</span> {
-    <span class="kw">pub</span> <span class="ident">left</span>: <span class="ident">i32</span>,
-    <span class="kw">pub</span> <span class="ident">top</span>: <span class="ident">i32</span>,
-    <span class="kw">pub</span> <span class="ident">right</span>: <span class="ident">i32</span>,
-    <span class="kw">pub</span> <span class="ident">bottom</span>: <span class="ident">i32</span>,
+<span class="attribute">#[repr(C)]
+#[derive(Copy, Clone, PartialEq, Eq, Default, Debug)]
+</span><span class="kw">pub struct </span>IRect {
+    <span class="doccomment">/// The x coordinate of the rectangle&#39;s left edge.
+    </span><span class="kw">pub </span>left: i32,
+    <span class="doccomment">/// The y coordinate of the rectangle&#39;s top edge.
+    </span><span class="kw">pub </span>top: i32,
+    <span class="doccomment">/// The x coordinate of the rectangle&#39;s right edge.
+    </span><span class="kw">pub </span>right: i32,
+    <span class="doccomment">/// The y coordinate of the rectangle&#39;s bottom edge.
+    </span><span class="kw">pub </span>bottom: i32,
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkIRect</span>, <span class="ident">IRect</span>, <span class="ident">irect_layout</span>);
+<span class="macro">native_transmutable!</span>(SkIRect, IRect, irect_layout);
 
-<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
-        <span class="self">self</span>
-    }
+<span class="kw">impl </span>AsRef&lt;IRect&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>IRect {
+        <span class="self">self
+    </span>}
 }
 
-<span class="kw">impl</span> <span class="ident">IRect</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">top</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>, <span class="ident">bottom</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">left</span>,
-            <span class="ident">top</span>,
-            <span class="ident">right</span>,
-            <span class="ident">bottom</span>,
+<span class="kw">impl </span>IRect {
+    <span class="kw">pub const fn </span>new(left: i32, top: i32, right: i32, bottom: i32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            left,
+            top,
+            right,
+            bottom,
         }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_empty</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub const fn </span>new_empty() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_wh</span>(<span class="ident">w</span>: <span class="ident">i32</span>, <span class="ident">h</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_size</span>((<span class="ident">w</span>, <span class="ident">h</span>))
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>from_wh(w: i32, h: i32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_size((w, h))
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_size</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>from_size(size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>size = size.into();
+        <span class="self">Self</span>::new(<span class="number">0</span>, <span class="number">0</span>, size.width, size.height)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_pt_size</span>(<span class="ident">pt</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">pt</span> <span class="op">=</span> <span class="ident">pt</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::from_xywh</span>(<span class="ident">pt</span>.<span class="ident">x</span>, <span class="ident">pt</span>.<span class="ident">y</span>, <span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>from_pt_size(pt: <span class="kw">impl </span>Into&lt;IPoint&gt;, size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>pt = pt.into();
+        <span class="kw">let </span>size = size.into();
+        <span class="self">Self</span>::from_xywh(pt.x, pt.y, size.width, size.height)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_ltrb</span>(<span class="ident">l</span>: <span class="ident">i32</span>, <span class="ident">t</span>: <span class="ident">i32</span>, <span class="ident">r</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">l</span>, <span class="ident">t</span>, <span class="ident">r</span>, <span class="ident">b</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub const fn </span>from_ltrb(l: i32, t: i32, r: i32, b: i32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(l, t, r, b)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_xywh</span>(<span class="ident">x</span>: <span class="ident">i32</span>, <span class="ident">y</span>: <span class="ident">i32</span>, <span class="ident">w</span>: <span class="ident">i32</span>, <span class="ident">h</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">IRect</span> {
-            <span class="ident">left</span>: <span class="ident">x</span>,
-            <span class="ident">top</span>: <span class="ident">y</span>,
-            <span class="ident">right</span>: <span class="ident">sk32::sat_add</span>(<span class="ident">x</span>, <span class="ident">w</span>),
-            <span class="ident">bottom</span>: <span class="ident">sk32::sat_add</span>(<span class="ident">y</span>, <span class="ident">h</span>),
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>from_xywh(x: i32, y: i32, w: i32, h: i32) -&gt; <span class="self">Self </span>{
+        IRect {
+            left: x,
+            top: y,
+            right: sk32::sat_add(x, w),
+            bottom: sk32::sat_add(y, h),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">left</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">left</span>
+    <span class="kw">pub const fn </span>left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.left
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">top</span>
+    <span class="kw">pub const fn </span>top(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.top
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">right</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">right</span>
+    <span class="kw">pub const fn </span>right(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.right
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">bottom</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">bottom</span>
+    <span class="kw">pub const fn </span>bottom(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.bottom
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">left</span>
+    <span class="kw">pub const fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.left
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">top</span>
+    <span class="kw">pub const fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.top
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="ident">sk32::can_overflow_sub</span>(<span class="self">self</span>.<span class="ident">right</span>, <span class="self">self</span>.<span class="ident">left</span>)
+    <span class="kw">pub const fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        sk32::can_overflow_sub(<span class="self">self</span>.right, <span class="self">self</span>.left)
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="ident">sk32::can_overflow_sub</span>(<span class="self">self</span>.<span class="ident">bottom</span>, <span class="self">self</span>.<span class="ident">top</span>)
+    <span class="kw">pub const fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        sk32::can_overflow_sub(<span class="self">self</span>.bottom, <span class="self">self</span>.top)
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
-        <span class="ident">ISize::new</span>(<span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
+    <span class="kw">pub const fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ISize {
+        ISize::new(<span class="self">self</span>.width(), <span class="self">self</span>.height())
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">width_64</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i64</span> {
-        <span class="self">self</span>.<span class="ident">right</span> <span class="kw">as</span> <span class="ident">i64</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">left</span> <span class="kw">as</span> <span class="ident">i64</span>
+    <span class="kw">pub const fn </span>width_64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i64 {
+        <span class="self">self</span>.right <span class="kw">as </span>i64 - <span class="self">self</span>.left <span class="kw">as </span>i64
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">height_64</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i64</span> {
-        <span class="self">self</span>.<span class="ident">bottom</span> <span class="kw">as</span> <span class="ident">i64</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">top</span> <span class="kw">as</span> <span class="ident">i64</span>
+    <span class="kw">pub const fn </span>height_64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i64 {
+        <span class="self">self</span>.bottom <span class="kw">as </span>i64 - <span class="self">self</span>.top <span class="kw">as </span>i64
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty_64</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">right</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span>
+    <span class="kw">pub fn </span>is_empty_64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.right &lt;= <span class="self">self</span>.left || <span class="self">self</span>.bottom &lt;= <span class="self">self</span>.top
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkIRect_isEmpty</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkIRect_isEmpty(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_empty</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_empty</span>()
+    <span class="kw">pub fn </span>set_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::new_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ltrb</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">top</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>, <span class="ident">bottom</span>: <span class="ident">i32</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">left</span>, <span class="ident">top</span>, <span class="ident">right</span>, <span class="ident">bottom</span>);
+    <span class="kw">pub fn </span>set_ltrb(<span class="kw-2">&amp;mut </span><span class="self">self</span>, left: i32, top: i32, right: i32, bottom: i32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::new(left, top, right, bottom);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_xywh</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>, <span class="ident">y</span>: <span class="ident">i32</span>, <span class="ident">w</span>: <span class="ident">i32</span>, <span class="ident">h</span>: <span class="ident">i32</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::from_xywh</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">w</span>, <span class="ident">h</span>);
+    <span class="kw">pub fn </span>set_xywh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, x: i32, y: i32, w: i32, h: i32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_xywh(x, y, w, h);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_wh</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">width</span>: <span class="ident">i32</span>, <span class="ident">height</span>: <span class="ident">i32</span>) {
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="self">self</span>.<span class="ident">right</span> <span class="op">=</span> <span class="ident">width</span>;
-        <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">=</span> <span class="ident">height</span>;
+    <span class="kw">pub fn </span>set_wh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, width: i32, height: i32) {
+        <span class="self">self</span>.left = <span class="number">0</span>;
+        <span class="self">self</span>.top = <span class="number">0</span>;
+        <span class="self">self</span>.right = width;
+        <span class="self">self</span>.bottom = height;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_size</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="self">self</span>.<span class="ident">right</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">width</span>;
-        <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">height</span>;
+    <span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, size: <span class="kw">impl </span>Into&lt;ISize&gt;) {
+        <span class="kw">let </span>size = size.into();
+        <span class="self">self</span>.left = <span class="number">0</span>;
+        <span class="self">self</span>.top = <span class="number">0</span>;
+        <span class="self">self</span>.right = size.width;
+        <span class="self">self</span>.bottom = size.height;
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">copied</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
-        <span class="ident">copied</span>.<span class="ident">offset</span>(<span class="ident">delta</span>);
-        <span class="ident">copied</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_offset(<span class="kw-2">&amp;</span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;IVector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>copied = <span class="kw-2">*</span><span class="self">self</span>;
+        copied.offset(delta);
+        copied
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_inset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">with_outset</span>(<span class="op">-</span><span class="ident">delta</span>.<span class="ident">into</span>())
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_inset(<span class="kw-2">&amp;</span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;IVector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.with_outset(-delta.into())
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_outset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> (<span class="ident">dx</span>, <span class="ident">dy</span>) <span class="op">=</span> (<span class="ident">delta</span>.<span class="ident">x</span>, <span class="ident">delta</span>.<span class="ident">y</span>);
-        <span class="ident">IRect::new</span>(
-            <span class="ident">sk32::sat_sub</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="ident">dx</span>),
-            <span class="ident">sk32::sat_sub</span>(<span class="self">self</span>.<span class="ident">top</span>, <span class="ident">dy</span>),
-            <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">right</span>, <span class="ident">dx</span>),
-            <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">bottom</span>, <span class="ident">dy</span>),
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_outset(<span class="kw-2">&amp;</span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;IVector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>delta = delta.into();
+        <span class="kw">let </span>(dx, dy) = (delta.x, delta.y);
+        IRect::new(
+            sk32::sat_sub(<span class="self">self</span>.left, dx),
+            sk32::sat_sub(<span class="self">self</span>.top, dy),
+            sk32::sat_add(<span class="self">self</span>.right, dx),
+            sk32::sat_add(<span class="self">self</span>.bottom, dy),
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> (<span class="ident">dx</span>, <span class="ident">dy</span>) <span class="op">=</span> (<span class="ident">delta</span>.<span class="ident">x</span>, <span class="ident">delta</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>offset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;IPoint&gt;) {
+        <span class="kw">let </span>delta = delta.into();
+        <span class="kw">let </span>(dx, dy) = (delta.x, delta.y);
 
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">=</span> <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="ident">dx</span>);
-        <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">top</span>, <span class="ident">dy</span>);
-        <span class="self">self</span>.<span class="ident">right</span> <span class="op">=</span> <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">right</span>, <span class="ident">dx</span>);
-        <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">=</span> <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">bottom</span>, <span class="ident">dy</span>);
+        <span class="self">self</span>.left = sk32::sat_add(<span class="self">self</span>.left, dx);
+        <span class="self">self</span>.top = sk32::sat_add(<span class="self">self</span>.top, dy);
+        <span class="self">self</span>.right = sk32::sat_add(<span class="self">self</span>.right, dx);
+        <span class="self">self</span>.bottom = sk32::sat_add(<span class="self">self</span>.bottom, dy);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">new_p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_offset_to</span>(<span class="ident">new_p</span>)
+    <span class="kw">pub fn </span>offset_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_p: <span class="kw">impl </span>Into&lt;IPoint&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_offset_to(new_p)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_offset_to</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">new_p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">new_p</span> <span class="op">=</span> <span class="ident">new_p</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> (<span class="ident">new_x</span>, <span class="ident">new_y</span>) <span class="op">=</span> (<span class="ident">new_p</span>.<span class="ident">x</span>, <span class="ident">new_p</span>.<span class="ident">y</span>);
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_offset_to(<span class="kw-2">&amp;</span><span class="self">self</span>, new_p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>new_p = new_p.into();
+        <span class="kw">let </span>(new_x, new_y) = (new_p.x, new_p.y);
 
-        <span class="ident">IRect::new</span>(
-            <span class="ident">sk64::pin_to_s32</span>(<span class="ident">i64::from</span>(<span class="self">self</span>.<span class="ident">right</span>) <span class="op">+</span> <span class="ident">i64::from</span>(<span class="ident">new_x</span>) <span class="op">-</span> <span class="ident">i64::from</span>(<span class="self">self</span>.<span class="ident">left</span>)),
-            <span class="ident">sk64::pin_to_s32</span>(<span class="ident">i64::from</span>(<span class="self">self</span>.<span class="ident">bottom</span>) <span class="op">+</span> <span class="ident">i64::from</span>(<span class="ident">new_y</span>) <span class="op">-</span> <span class="ident">i64::from</span>(<span class="self">self</span>.<span class="ident">top</span>)),
-            <span class="ident">new_x</span>,
-            <span class="ident">new_y</span>,
+        IRect::new(
+            sk64::pin_to_s32(i64::from(<span class="self">self</span>.right) + i64::from(new_x) - i64::from(<span class="self">self</span>.left)),
+            sk64::pin_to_s32(i64::from(<span class="self">self</span>.bottom) + i64::from(new_y) - i64::from(<span class="self">self</span>.top)),
+            new_x,
+            new_y,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_inset</span>(<span class="ident">delta</span>)
+    <span class="kw">pub fn </span>inset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;IVector&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_inset(delta)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">delta</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_outset</span>(<span class="ident">delta</span>)
+    <span class="kw">pub fn </span>outset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, delta: <span class="kw">impl </span>Into&lt;IVector&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_outset(delta)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_adjustment</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d_l</span>: <span class="ident">i32</span>, <span class="ident">d_t</span>: <span class="ident">i32</span>, <span class="ident">d_r</span>: <span class="ident">i32</span>, <span class="ident">d_b</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">IRect::new</span>(
-            <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="ident">d_l</span>),
-            <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">top</span>, <span class="ident">d_t</span>),
-            <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">right</span>, <span class="ident">d_r</span>),
-            <span class="ident">sk32::sat_add</span>(<span class="self">self</span>.<span class="ident">bottom</span>, <span class="ident">d_b</span>),
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_adjustment(<span class="kw-2">&amp;</span><span class="self">self</span>, d_l: i32, d_t: i32, d_r: i32, d_b: i32) -&gt; <span class="self">Self </span>{
+        IRect::new(
+            sk32::sat_add(<span class="self">self</span>.left, d_l),
+            sk32::sat_add(<span class="self">self</span>.top, d_t),
+            sk32::sat_add(<span class="self">self</span>.right, d_r),
+            sk32::sat_add(<span class="self">self</span>.bottom, d_b),
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">adjust</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d_l</span>: <span class="ident">i32</span>, <span class="ident">d_t</span>: <span class="ident">i32</span>, <span class="ident">d_r</span>: <span class="ident">i32</span>, <span class="ident">d_b</span>: <span class="ident">i32</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_adjustment</span>(<span class="ident">d_l</span>, <span class="ident">d_t</span>, <span class="ident">d_r</span>, <span class="ident">d_b</span>)
+    <span class="kw">pub fn </span>adjust(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d_l: i32, d_t: i32, d_r: i32, d_b: i32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_adjustment(d_l, d_t, d_r, d_b)
     }
 
-    <span class="comment">// contains() is implemented through a trait below.</span>
+    <span class="comment">// contains() is implemented through a trait below.
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_no_empty_check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">bottom</span>);
-        <span class="macro">debug_assert!</span>(<span class="ident">r</span>.<span class="ident">left</span> <span class="op">&lt;</span> <span class="ident">r</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="ident">r</span>.<span class="ident">top</span> <span class="op">&lt;</span> <span class="ident">r</span>.<span class="ident">bottom</span>);
+    </span><span class="kw">pub fn </span>contains_no_empty_check(<span class="kw-2">&amp;</span><span class="self">self</span>, r: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.left &lt; <span class="self">self</span>.right &amp;&amp; <span class="self">self</span>.top &lt; <span class="self">self</span>.bottom);
+        <span class="macro">debug_assert!</span>(r.left &lt; r.right &amp;&amp; r.top &lt; r.bottom);
 
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">left</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">top</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">bottom</span>
+        <span class="self">self</span>.left &lt;= r.left &amp;&amp; <span class="self">self</span>.top &lt;= r.top &amp;&amp; <span class="self">self</span>.right &gt;= r.right &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">r</span>.<span class="ident">native_mut</span>().<span class="ident">intersect</span>(<span class="ident">a</span>.<span class="ident">native</span>(), <span class="ident">b</span>.<span class="ident">native</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">r</span>)
+    <span class="kw">pub fn </span>intersect(a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">Self</span>::default();
+        <span class="kw">unsafe </span>{ r.native_mut().intersect(a.native(), b.native()) }.if_true_some(r)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident"><span class="self">Self</span>::intersect</span>(<span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">is_some</span>()
+    <span class="kw">pub fn </span>intersects(a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="self">Self</span>::intersect(a, b).is_some()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersect_no_empty_check_</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">a</span>.<span class="ident">is_empty_64</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">b</span>.<span class="ident">is_empty_64</span>());
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect::new</span>(
-            <span class="ident">max</span>(<span class="ident">a</span>.<span class="ident">left</span>, <span class="ident">b</span>.<span class="ident">left</span>),
-            <span class="ident">max</span>(<span class="ident">a</span>.<span class="ident">top</span>, <span class="ident">b</span>.<span class="ident">top</span>),
-            <span class="ident">min</span>(<span class="ident">a</span>.<span class="ident">right</span>, <span class="ident">b</span>.<span class="ident">right</span>),
-            <span class="ident">min</span>(<span class="ident">a</span>.<span class="ident">bottom</span>, <span class="ident">b</span>.<span class="ident">bottom</span>),
+    <span class="kw">pub fn </span>intersect_no_empty_check_(a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="macro">debug_assert!</span>(!a.is_empty_64() &amp;&amp; !b.is_empty_64());
+        <span class="kw">let </span>r = IRect::new(
+            max(a.left, b.left),
+            max(a.top, b.top),
+            min(a.right, b.right),
+            min(a.bottom, b.bottom),
         );
-        <span class="ident">r</span>.<span class="ident">is_empty</span>().<span class="ident">if_false_some</span>(<span class="ident">r</span>)
+        r.is_empty().if_false_some(r)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">copied</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">a</span>;
-        <span class="kw">unsafe</span> { <span class="ident">copied</span>.<span class="ident">native_mut</span>().<span class="ident">join</span>(<span class="ident">b</span>.<span class="ident">native</span>()) }
-        <span class="ident">copied</span>
+    <span class="kw">pub fn </span>join(a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>copied = <span class="kw-2">*</span>a;
+        <span class="kw">unsafe </span>{ copied.native_mut().join(b.native()) }
+        copied
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sorted</span>()
+    <span class="kw">pub fn </span>sort(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.sorted()
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sorted</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(
-            <span class="ident">min</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="self">self</span>.<span class="ident">right</span>),
-            <span class="ident">min</span>(<span class="self">self</span>.<span class="ident">top</span>, <span class="self">self</span>.<span class="ident">bottom</span>),
-            <span class="ident">max</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="self">self</span>.<span class="ident">right</span>),
-            <span class="ident">max</span>(<span class="self">self</span>.<span class="ident">top</span>, <span class="self">self</span>.<span class="ident">bottom</span>),
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>sorted(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(
+            min(<span class="self">self</span>.left, <span class="self">self</span>.right),
+            min(<span class="self">self</span>.top, <span class="self">self</span>.bottom),
+            max(<span class="self">self</span>.left, <span class="self">self</span>.right),
+            max(<span class="self">self</span>.top, <span class="self">self</span>.bottom),
         )
     }
 
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.27.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;removed without replacement&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">Self</span> {
-        <span class="kw-2">&amp;</span><span class="ident">EMPTY_IRECT</span>
+    <span class="attribute">#[deprecated(since = <span class="string">&quot;0.27.0&quot;</span>, note = <span class="string">&quot;removed without replacement&quot;</span>)]
+    #[must_use]
+    </span><span class="kw">pub fn </span>empty() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="self">Self </span>{
+        <span class="kw-2">&amp;</span>EMPTY_IRECT
     }
 }
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EMPTY_IRECT</span>: <span class="ident">IRect</span> <span class="op">=</span> <span class="ident">IRect</span> {
-    <span class="ident">left</span>: <span class="number">0</span>,
-    <span class="ident">top</span>: <span class="number">0</span>,
-    <span class="ident">right</span>: <span class="number">0</span>,
-    <span class="ident">bottom</span>: <span class="number">0</span>,
+<span class="kw">pub const </span>EMPTY_IRECT: IRect = IRect {
+    left: <span class="number">0</span>,
+    top: <span class="number">0</span>,
+    right: <span class="number">0</span>,
+    bottom: <span class="number">0</span>,
 };
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="ident">IPoint</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=</span> (<span class="ident">other</span>.<span class="ident">x</span>, <span class="ident">other</span>.<span class="ident">y</span>);
-        <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&amp;&amp;</span> <span class="ident">x</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="ident">y</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&amp;&amp;</span> <span class="ident">y</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">bottom</span>
+<span class="kw">impl </span>Contains&lt;IPoint&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, other: IPoint) -&gt; bool {
+        <span class="kw">let </span>(x, y) = (other.x, other.y);
+        x &gt;= <span class="self">self</span>.left &amp;&amp; x &lt; <span class="self">self</span>.right &amp;&amp; y &gt;= <span class="self">self</span>.top &amp;&amp; y &lt; <span class="self">self</span>.bottom
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="op">!</span><span class="ident">r</span>.<span class="ident">is_empty</span>()
-            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_empty</span>()
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">left</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">top</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">right</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">bottom</span>
+<span class="kw">impl </span>Contains&lt;<span class="kw-2">&amp;</span>IRect&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, r: <span class="kw-2">&amp;</span>IRect) -&gt; bool {
+        !r.is_empty()
+            &amp;&amp; !<span class="self">self</span>.is_empty()
+            &amp;&amp; <span class="self">self</span>.left &lt;= r.left
+            &amp;&amp; <span class="self">self</span>.top &lt;= r.top
+            &amp;&amp; <span class="self">self</span>.right &gt;= r.right
+            &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Rect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkIRect_contains</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">other</span>.<span class="ident">native</span>()) }
+<span class="kw">impl </span>Contains&lt;<span class="kw-2">&amp;</span>Rect&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Rect) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkIRect_contains(<span class="self">self</span>.native(), other.native()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>)
+<span class="kw">impl </span>Contains&lt;IRect&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, other: IRect) -&gt; bool {
+        <span class="self">self</span>.contains(<span class="kw-2">&amp;</span>other)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>)
+<span class="kw">impl </span>Contains&lt;Rect&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, other: Rect) -&gt; bool {
+        <span class="self">self</span>.contains(<span class="kw-2">&amp;</span>other)
     }
 }
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Rect</span> {
-    <span class="kw">pub</span> <span class="ident">left</span>: <span class="ident">scalar</span>,
-    <span class="kw">pub</span> <span class="ident">top</span>: <span class="ident">scalar</span>,
-    <span class="kw">pub</span> <span class="ident">right</span>: <span class="ident">scalar</span>,
-    <span class="kw">pub</span> <span class="ident">bottom</span>: <span class="ident">scalar</span>,
+<span class="attribute">#[repr(C)]
+#[derive(Copy, Clone, PartialEq, Default, Debug)]
+</span><span class="kw">pub struct </span>Rect {
+    <span class="doccomment">/// The x coordinate of the rectangle&#39;s left edge.
+    </span><span class="kw">pub </span>left: scalar,
+    <span class="doccomment">/// The y coordinate of the rectangle&#39;s top edge.
+    </span><span class="kw">pub </span>top: scalar,
+    <span class="doccomment">/// The x coordinate of the rectangle&#39;s right edge.
+    </span><span class="kw">pub </span>right: scalar,
+    <span class="doccomment">/// The y coordinate of the rectangle&#39;s bottom edge.
+    </span><span class="kw">pub </span>bottom: scalar,
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkRect</span>, <span class="ident">Rect</span>, <span class="ident">rect_layout</span>);
+<span class="macro">native_transmutable!</span>(SkRect, Rect, rect_layout);
 
-<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Rect</span> {
-        <span class="self">self</span>
-    }
+<span class="kw">impl </span>AsRef&lt;Rect&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Rect {
+        <span class="self">self
+    </span>}
 }
 
-<span class="kw">impl</span> <span class="ident">Rect</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">left</span>: <span class="ident">scalar</span>, <span class="ident">top</span>: <span class="ident">scalar</span>, <span class="ident">right</span>: <span class="ident">scalar</span>, <span class="ident">bottom</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">left</span>,
-            <span class="ident">top</span>,
-            <span class="ident">right</span>,
-            <span class="ident">bottom</span>,
+<span class="kw">impl </span>Rect {
+    <span class="kw">pub fn </span>new(left: scalar, top: scalar, right: scalar, bottom: scalar) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            left,
+            top,
+            right,
+            bottom,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_empty</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
+    <span class="kw">pub fn </span>new_empty() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_wh</span>(<span class="ident">w</span>: <span class="ident">scalar</span>, <span class="ident">h</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="ident">w</span>, <span class="ident">h</span>)
+    <span class="kw">pub fn </span>from_wh(w: scalar, h: scalar) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="number">0.0</span>, <span class="number">0.0</span>, w, h)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_iwh</span>(<span class="ident">w</span>: <span class="ident">i32</span>, <span class="ident">h</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_wh</span>(<span class="ident">w</span> <span class="kw">as</span> <span class="ident">scalar</span>, <span class="ident">h</span> <span class="kw">as</span> <span class="ident">scalar</span>)
+    <span class="kw">pub fn </span>from_iwh(w: i32, h: i32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_wh(w <span class="kw">as </span>scalar, h <span class="kw">as </span>scalar)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_size</span>(<span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        (<span class="ident">Point::default</span>(), <span class="ident">size</span>.<span class="ident">into</span>()).<span class="ident">into</span>()
+    <span class="kw">pub fn </span>from_size(size: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; <span class="self">Self </span>{
+        (Point::default(), size.into()).into()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_xywh</span>(<span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">w</span>: <span class="ident">scalar</span>, <span class="ident">h</span>: <span class="ident">scalar</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">x</span> <span class="op">+</span> <span class="ident">w</span>, <span class="ident">y</span> <span class="op">+</span> <span class="ident">h</span>)
+    <span class="kw">pub fn </span>from_xywh(x: scalar, y: scalar, w: scalar, h: scalar) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(x, y, x + w, y + h)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_point_and_size</span>(<span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">sz</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        (<span class="ident">p</span>.<span class="ident">into</span>(), <span class="ident">sz</span>.<span class="ident">into</span>()).<span class="ident">into</span>()
+    <span class="kw">pub fn </span>from_point_and_size(p: <span class="kw">impl </span>Into&lt;Point&gt;, sz: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; <span class="self">Self </span>{
+        (p.into(), sz.into()).into()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_isize</span>(<span class="ident">isize</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">isize</span> <span class="op">=</span> <span class="ident">isize</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::from_iwh</span>(<span class="ident">isize</span>.<span class="ident">width</span>, <span class="ident">isize</span>.<span class="ident">height</span>)
+    <span class="kw">pub fn </span>from_isize(isize: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>isize = isize.into();
+        <span class="self">Self</span>::from_iwh(isize.width, isize.height)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_irect</span>(<span class="ident">irect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">irect</span> <span class="op">=</span> <span class="ident">irect</span>.<span class="ident">as_ref</span>();
-        <span class="ident"><span class="self">Self</span>::new</span>(
-            <span class="ident">irect</span>.<span class="ident">left</span> <span class="kw">as</span> <span class="ident">scalar</span>,
-            <span class="ident">irect</span>.<span class="ident">top</span> <span class="kw">as</span> <span class="ident">scalar</span>,
-            <span class="ident">irect</span>.<span class="ident">right</span> <span class="kw">as</span> <span class="ident">scalar</span>,
-            <span class="ident">irect</span>.<span class="ident">bottom</span> <span class="kw">as</span> <span class="ident">scalar</span>,
+    <span class="kw">pub fn </span>from_irect(irect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>irect = irect.as_ref();
+        <span class="self">Self</span>::new(
+            irect.left <span class="kw">as </span>scalar,
+            irect.top <span class="kw">as </span>scalar,
+            irect.right <span class="kw">as </span>scalar,
+            irect.bottom <span class="kw">as </span>scalar,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// We write it as the NOT of a non-empty rect, so we will return true if any values</span>
-        <span class="comment">// are NaN.</span>
-        <span class="op">!</span>(<span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">bottom</span>)
+    <span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="comment">// We write it as the NOT of a non-empty rect, so we will return true if any values
+        // are NaN.
+        </span>!(<span class="self">self</span>.left &lt; <span class="self">self</span>.right &amp;&amp; <span class="self">self</span>.top &lt; <span class="self">self</span>.bottom)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_sorted</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">bottom</span>
+    <span class="kw">pub fn </span>is_sorted(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.left &lt;= <span class="self">self</span>.right &amp;&amp; <span class="self">self</span>.top &lt;= <span class="self">self</span>.bottom
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_finite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">accum</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="number">0.0</span>;
-        <span class="ident">accum</span> <span class="kw-2">*</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">left</span>;
-        <span class="ident">accum</span> <span class="kw-2">*</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span>;
-        <span class="ident">accum</span> <span class="kw-2">*</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">right</span>;
-        <span class="ident">accum</span> <span class="kw-2">*</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">bottom</span>;
+    <span class="kw">pub fn </span>is_finite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>accum: f32 = <span class="number">0.0</span>;
+        accum <span class="kw-2">*</span>= <span class="self">self</span>.left;
+        accum <span class="kw-2">*</span>= <span class="self">self</span>.top;
+        accum <span class="kw-2">*</span>= <span class="self">self</span>.right;
+        accum <span class="kw-2">*</span>= <span class="self">self</span>.bottom;
 
-        <span class="comment">// accum is either NaN or it is finite (zero).</span>
-        <span class="macro">debug_assert!</span>(<span class="number">0.0</span> <span class="op">==</span> <span class="ident">accum</span> <span class="op">|</span><span class="op">|</span> <span class="ident">accum</span>.<span class="ident">is_nan</span>());
+        <span class="comment">// accum is either NaN or it is finite (zero).
+        </span><span class="macro">debug_assert!</span>(<span class="number">0.0 </span>== accum || accum.is_nan());
 
-        <span class="comment">// value==value will be true iff value is not NaN</span>
-        <span class="comment">// TODO: is it faster to say !accum or accum==accum?</span>
-        <span class="op">!</span><span class="ident">accum</span>.<span class="ident">is_nan</span>()
+        <span class="comment">// value==value will be true iff value is not NaN
+        // TODO: is it faster to say !accum or accum==accum?
+        </span>!accum.is_nan()
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">left</span>
+    <span class="kw">pub const fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.left
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">top</span>
+    <span class="kw">pub const fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.top
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">left</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">left</span>
+    <span class="kw">pub const fn </span>left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.left
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">top</span>
+    <span class="kw">pub const fn </span>top(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.top
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">right</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">right</span>
+    <span class="kw">pub const fn </span>right(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.right
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">bottom</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">bottom</span>
+    <span class="kw">pub const fn </span>bottom(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.bottom
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span> {
-        (<span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>()).<span class="ident">into</span>()
+    <span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Size {
+        (<span class="self">self</span>.width(), <span class="self">self</span>.height()).into()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRight</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fLeft</span>
+    <span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fRight - <span class="self">self</span>.native().fLeft
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBottom</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTop</span>
+    <span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fBottom - <span class="self">self</span>.native().fTop
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">center_x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="comment">// don&#39;t use (fLeft + fBottom) * 0.5 as that might overflow before the 0.5</span>
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">*</span> <span class="number">0.5</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">*</span> <span class="number">0.5</span>
+    <span class="kw">pub fn </span>center_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="comment">// don&#39;t use (fLeft + fBottom) * 0.5 as that might overflow before the 0.5
+        </span><span class="self">self</span>.left * <span class="number">0.5 </span>+ <span class="self">self</span>.right * <span class="number">0.5
+    </span>}
+
+    <span class="kw">pub fn </span>center_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="comment">// don&#39;t use (fTop + fBottom) * 0.5 as that might overflow before the 0.5
+        </span><span class="self">self</span>.top * <span class="number">0.5 </span>+ <span class="self">self</span>.bottom * <span class="number">0.5
+    </span>}
+
+    <span class="kw">pub fn </span>center(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point {
+        Point::from((<span class="self">self</span>.center_x(), <span class="self">self</span>.center_y()))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">center_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="comment">// don&#39;t use (fTop + fBottom) * 0.5 as that might overflow before the 0.5</span>
-        <span class="self">self</span>.<span class="ident">top</span> <span class="op">*</span> <span class="number">0.5</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">*</span> <span class="number">0.5</span>
+    <span class="kw">pub fn </span>to_quad(<span class="self">self</span>) -&gt; [Point; <span class="number">4</span>] {
+        <span class="kw">let </span><span class="kw-2">mut </span>quad = [Point::default(); <span class="number">4</span>];
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().toQuad(quad.native_mut().as_mut_ptr()) }
+        quad
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">center</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span> {
-        <span class="ident">Point::from</span>((<span class="self">self</span>.<span class="ident">center_x</span>(), <span class="self">self</span>.<span class="ident">center_y</span>()))
+    <span class="kw">pub fn </span>set_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::new_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_quad</span>(<span class="self">self</span>) -&gt; [<span class="ident">Point</span>; <span class="number">4</span>] {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">quad</span> <span class="op">=</span> [<span class="ident">Point::default</span>(); <span class="number">4</span>];
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">toQuad</span>(<span class="ident">quad</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>()) }
-        <span class="ident">quad</span>
+    <span class="comment">// TODO: deprecate and rename to set() as soon the other set() variant is removed.
+    </span><span class="kw">pub fn </span>set_irect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, irect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_irect(irect)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_empty</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_empty</span>()
+    <span class="kw">pub fn </span>set_ltrb(<span class="kw-2">&amp;mut </span><span class="self">self</span>, left: scalar, top: scalar, right: scalar, bottom: scalar) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::new(left, top, right, bottom)
     }
 
-    <span class="comment">// TODO: deprecate and rename to set() as soon the other set() variant is removed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_irect</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">irect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::from_irect</span>(<span class="ident">irect</span>)
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ltrb</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">left</span>: <span class="ident">scalar</span>, <span class="ident">top</span>: <span class="ident">scalar</span>, <span class="ident">right</span>: <span class="ident">scalar</span>, <span class="ident">bottom</span>: <span class="ident">scalar</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">left</span>, <span class="ident">top</span>, <span class="ident">right</span>, <span class="ident">bottom</span>)
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bounds</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setBoundsCheck</span>(<span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">points</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
+    <span class="kw">pub fn </span>set_bounds(<span class="kw-2">&amp;mut </span><span class="self">self</span>, points: <span class="kw-2">&amp;</span>[Point]) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setBoundsCheck(points.native().as_ptr(), points.len().try_into().unwrap());
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bounds_check</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setBoundsCheck</span>(<span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">points</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+    <span class="kw">pub fn </span>set_bounds_check(<span class="kw-2">&amp;mut </span><span class="self">self</span>, points: <span class="kw-2">&amp;</span>[Point]) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setBoundsCheck(points.native().as_ptr(), points.len().try_into().unwrap())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bounds_no_check</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setBoundsNoCheck</span>(<span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">points</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+    <span class="kw">pub fn </span>set_bounds_no_check(<span class="kw-2">&amp;mut </span><span class="self">self</span>, points: <span class="kw-2">&amp;</span>[Point]) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setBoundsNoCheck(points.native().as_ptr(), points.len().try_into().unwrap())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bounds2</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">p0</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">p1</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> (<span class="ident">p0</span>, <span class="ident">p1</span>) <span class="op">=</span> (<span class="ident">p0</span>.<span class="ident">into</span>(), <span class="ident">p1</span>.<span class="ident">into</span>());
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">=</span> <span class="ident">p0</span>.<span class="ident">x</span>.<span class="ident">min</span>(<span class="ident">p1</span>.<span class="ident">x</span>);
-        <span class="self">self</span>.<span class="ident">right</span> <span class="op">=</span> <span class="ident">p0</span>.<span class="ident">x</span>.<span class="ident">max</span>(<span class="ident">p1</span>.<span class="ident">x</span>);
-        <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="ident">p0</span>.<span class="ident">y</span>.<span class="ident">min</span>(<span class="ident">p1</span>.<span class="ident">y</span>);
-        <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">=</span> <span class="ident">p0</span>.<span class="ident">y</span>.<span class="ident">max</span>(<span class="ident">p1</span>.<span class="ident">y</span>);
+    <span class="kw">pub fn </span>set_bounds2(<span class="kw-2">&amp;mut </span><span class="self">self</span>, p0: <span class="kw">impl </span>Into&lt;Point&gt;, p1: <span class="kw">impl </span>Into&lt;Point&gt;) {
+        <span class="kw">let </span>(p0, p1) = (p0.into(), p1.into());
+        <span class="self">self</span>.left = p0.x.min(p1.x);
+        <span class="self">self</span>.right = p0.x.max(p1.x);
+        <span class="self">self</span>.top = p0.y.min(p1.y);
+        <span class="self">self</span>.bottom = p0.y.max(p1.y);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bounds</span>(<span class="ident">points</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">r</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setBoundsCheck</span>(<span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">points</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+    <span class="kw">pub fn </span>from_bounds(points: <span class="kw-2">&amp;</span>[Point]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">Self</span>::default();
+        <span class="kw">unsafe </span>{
+            r.native_mut()
+                .setBoundsCheck(points.native().as_ptr(), points.len().try_into().unwrap())
         }
-        .<span class="ident">if_true_some</span>(<span class="ident">r</span>)
+        .if_true_some(r)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_xywh</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">scalar</span>, <span class="ident">y</span>: <span class="ident">scalar</span>, <span class="ident">width</span>: <span class="ident">scalar</span>, <span class="ident">height</span>: <span class="ident">scalar</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::from_xywh</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">width</span>, <span class="ident">height</span>)
+    <span class="kw">pub fn </span>set_xywh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, x: scalar, y: scalar, width: scalar, height: scalar) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_xywh(x, y, width, height)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_wh</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">w</span>: <span class="ident">scalar</span>, <span class="ident">h</span>: <span class="ident">scalar</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::from_wh</span>(<span class="ident">w</span>, <span class="ident">h</span>)
+    <span class="kw">pub fn </span>set_wh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, w: scalar, h: scalar) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_wh(w, h)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_iwh</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">width</span>: <span class="ident">i32</span>, <span class="ident">height</span>: <span class="ident">i32</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::from_iwh</span>(<span class="ident">width</span>, <span class="ident">height</span>)
+    <span class="kw">pub fn </span>set_iwh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, width: i32, height: i32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_iwh(width, height)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::new</span>(
-            <span class="self">self</span>.<span class="ident">left</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">x</span>,
-            <span class="self">self</span>.<span class="ident">top</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">y</span>,
-            <span class="self">self</span>.<span class="ident">right</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">x</span>,
-            <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">y</span>,
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_offset(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>d = d.into();
+        <span class="self">Self</span>::new(
+            <span class="self">self</span>.left + d.x,
+            <span class="self">self</span>.top + d.y,
+            <span class="self">self</span>.right + d.x,
+            <span class="self">self</span>.bottom + d.y,
         )
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_inset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::new</span>(
-            <span class="self">self</span>.<span class="ident">left</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">x</span>,
-            <span class="self">self</span>.<span class="ident">top</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">y</span>,
-            <span class="self">self</span>.<span class="ident">right</span> <span class="op">-</span> <span class="ident">d</span>.<span class="ident">x</span>,
-            <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">-</span> <span class="ident">d</span>.<span class="ident">y</span>,
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_inset(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>d = d.into();
+        <span class="self">Self</span>::new(
+            <span class="self">self</span>.left + d.x,
+            <span class="self">self</span>.top + d.y,
+            <span class="self">self</span>.right - d.x,
+            <span class="self">self</span>.bottom - d.y,
         )
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_outset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::new</span>(
-            <span class="self">self</span>.<span class="ident">left</span> <span class="op">-</span> <span class="ident">d</span>.<span class="ident">x</span>,
-            <span class="self">self</span>.<span class="ident">top</span> <span class="op">-</span> <span class="ident">d</span>.<span class="ident">y</span>,
-            <span class="self">self</span>.<span class="ident">right</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">x</span>,
-            <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">y</span>,
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_outset(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>d = d.into();
+        <span class="self">Self</span>::new(
+            <span class="self">self</span>.left - d.x,
+            <span class="self">self</span>.top - d.y,
+            <span class="self">self</span>.right + d.x,
+            <span class="self">self</span>.bottom + d.y,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_offset</span>(<span class="ident">d</span>)
+    <span class="kw">pub fn </span>offset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_offset(d)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset_to</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">new_p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_offset_to</span>(<span class="ident">new_p</span>)
+    <span class="kw">pub fn </span>offset_to(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_p: <span class="kw">impl </span>Into&lt;Point&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_offset_to(new_p)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_offset_to</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">new_p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">new_p</span> <span class="op">=</span> <span class="ident">new_p</span>.<span class="ident">into</span>();
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">new_p</span>.<span class="ident">x</span>, <span class="ident">new_p</span>.<span class="ident">y</span>, <span class="ident">new_p</span>.<span class="ident">x</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">left</span>, <span class="ident">new_p</span>.<span class="ident">y</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">top</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_offset_to(<span class="kw-2">&amp;</span><span class="self">self</span>, new_p: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>new_p = new_p.into();
+        <span class="self">Self</span>::new(new_p.x, new_p.y, new_p.x - <span class="self">self</span>.left, new_p.y - <span class="self">self</span>.top)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_inset</span>(<span class="ident">d</span>)
+    <span class="kw">pub fn </span>inset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_inset(d)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_outset</span>(<span class="ident">d</span>)
+    <span class="kw">pub fn </span>outset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.with_outset(d)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">intersect</span>(<span class="ident">r</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>intersect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, r: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().intersect(r.as_ref().native()) }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersect2</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">b</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">intersect1</span>(<span class="ident">a</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">b</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>intersect2(<span class="kw-2">&amp;mut </span><span class="self">self</span>, a: <span class="kw">impl </span>AsRef&lt;Rect&gt;, b: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .intersect1(a.as_ref().native(), b.as_ref().native())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">as_ref</span>();
-        <span class="ident"><span class="self">Self</span>::intersects_</span>(
-            <span class="self">self</span>.<span class="ident">left</span>,
-            <span class="self">self</span>.<span class="ident">top</span>,
-            <span class="self">self</span>.<span class="ident">right</span>,
-            <span class="self">self</span>.<span class="ident">bottom</span>,
-            <span class="ident">r</span>.<span class="ident">left</span>,
-            <span class="ident">r</span>.<span class="ident">top</span>,
-            <span class="ident">r</span>.<span class="ident">right</span>,
-            <span class="ident">r</span>.<span class="ident">bottom</span>,
+    <span class="kw">pub fn </span>intersects(<span class="kw-2">&amp;</span><span class="self">self</span>, r: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; bool {
+        <span class="kw">let </span>r = r.as_ref();
+        <span class="self">Self</span>::intersects_(
+            <span class="self">self</span>.left,
+            <span class="self">self</span>.top,
+            <span class="self">self</span>.right,
+            <span class="self">self</span>.bottom,
+            r.left,
+            r.top,
+            r.right,
+            r.bottom,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects2</span>(<span class="ident">a</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">b</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">a</span>.<span class="ident">as_ref</span>().<span class="ident">intersects</span>(<span class="ident">b</span>)
+    <span class="kw">pub fn </span>intersects2(a: <span class="kw">impl </span>AsRef&lt;Rect&gt;, b: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; bool {
+        a.as_ref().intersects(b)
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">intersects_</span>(
-        <span class="ident">al</span>: <span class="ident">scalar</span>,
-        <span class="ident">at</span>: <span class="ident">scalar</span>,
-        <span class="ident">ar</span>: <span class="ident">scalar</span>,
-        <span class="ident">ab</span>: <span class="ident">scalar</span>,
-        <span class="ident">bl</span>: <span class="ident">scalar</span>,
-        <span class="ident">bt</span>: <span class="ident">scalar</span>,
-        <span class="ident">br</span>: <span class="ident">scalar</span>,
-        <span class="ident">bb</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">al</span>.<span class="ident">max</span>(<span class="ident">bl</span>);
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">ar</span>.<span class="ident">min</span>(<span class="ident">br</span>);
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">at</span>.<span class="ident">max</span>(<span class="ident">bt</span>);
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">ab</span>.<span class="ident">min</span>(<span class="ident">bb</span>);
-        <span class="ident">l</span> <span class="op">&lt;</span> <span class="ident">r</span> <span class="op">&amp;&amp;</span> <span class="ident">t</span> <span class="op">&lt;</span> <span class="ident">b</span>
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">fn </span>intersects_(
+        al: scalar,
+        at: scalar,
+        ar: scalar,
+        ab: scalar,
+        bl: scalar,
+        bt: scalar,
+        br: scalar,
+        bb: scalar,
+    ) -&gt; bool {
+        <span class="kw">let </span>l = al.max(bl);
+        <span class="kw">let </span>r = ar.min(br);
+        <span class="kw">let </span>t = at.max(bt);
+        <span class="kw">let </span>b = ab.min(bb);
+        l &lt; r &amp;&amp; t &lt; b
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">as_ref</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">join</span>(<span class="ident">r</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>join(<span class="kw-2">&amp;mut </span><span class="self">self</span>, r: <span class="kw">impl </span>AsRef&lt;Rect&gt;) {
+        <span class="kw">let </span>r = r.as_ref();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().join(r.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join2</span>(<span class="ident">a</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">b</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">as_ref</span>();
-        <span class="ident">result</span>.<span class="ident">join</span>(<span class="ident">b</span>);
-        <span class="ident">result</span>
+    <span class="kw">pub fn </span>join2(a: <span class="kw">impl </span>AsRef&lt;Rect&gt;, b: <span class="kw">impl </span>AsRef&lt;Rect&gt;) -&gt; Rect {
+        <span class="kw">let </span><span class="kw-2">mut </span>result = <span class="kw-2">*</span>a.as_ref();
+        result.join(b);
+        result
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join_non_empty_arg</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">as_ref</span>();
-        <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">r</span>.<span class="ident">is_empty</span>());
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">bottom</span> {
-            <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">r</span>;
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">join_possibly_empty_rect</span>(<span class="ident">r</span>);
+    <span class="kw">pub fn </span>join_non_empty_arg(<span class="kw-2">&amp;mut </span><span class="self">self</span>, r: <span class="kw">impl </span>AsRef&lt;Rect&gt;) {
+        <span class="kw">let </span>r = r.as_ref();
+        <span class="macro">debug_assert!</span>(!r.is_empty());
+        <span class="kw">if </span><span class="self">self</span>.left &gt;= <span class="self">self</span>.right || <span class="self">self</span>.top &gt;= <span class="self">self</span>.bottom {
+            <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">*</span>r;
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.join_possibly_empty_rect(r);
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join_possibly_empty_rect</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">as_ref</span>();
-        <span class="self">self</span>.<span class="ident">left</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">min</span>(<span class="ident">r</span>.<span class="ident">left</span>);
-        <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span>.<span class="ident">min</span>(<span class="ident">r</span>.<span class="ident">top</span>);
-        <span class="self">self</span>.<span class="ident">right</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">right</span>.<span class="ident">max</span>(<span class="ident">r</span>.<span class="ident">right</span>);
-        <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bottom</span>.<span class="ident">max</span>(<span class="ident">r</span>.<span class="ident">bottom</span>);
+    <span class="kw">pub fn </span>join_possibly_empty_rect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, r: <span class="kw">impl </span>AsRef&lt;Rect&gt;) {
+        <span class="kw">let </span>r = r.as_ref();
+        <span class="self">self</span>.left = <span class="self">self</span>.left.min(r.left);
+        <span class="self">self</span>.top = <span class="self">self</span>.top.min(r.top);
+        <span class="self">self</span>.right = <span class="self">self</span>.right.max(r.right);
+        <span class="self">self</span>.bottom = <span class="self">self</span>.bottom.max(r.bottom);
     }
 
-    <span class="comment">// The set of contains() functions are defined as a trait below.</span>
+    <span class="comment">// The set of contains() functions are defined as a trait below.
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">round</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRect_round</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">r</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">r</span>
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>round(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IRect {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = IRect::default();
+        <span class="kw">unsafe </span>{ sb::C_SkRect_round(<span class="self">self</span>.native(), r.native_mut()) };
+        r
     }
 
-    <span class="comment">// The functions round_out() are defined as a trait below.</span>
+    <span class="comment">// The functions round_out() are defined as a trait below.
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">round_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRect_roundIn</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">r</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">r</span>
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>round_in(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IRect {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = IRect::default();
+        <span class="kw">unsafe </span>{ sb::C_SkRect_roundIn(<span class="self">self</span>.native(), r.native_mut()) };
+        r
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">right</span> {
-            <span class="ident">mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">left</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">right</span>);
+    <span class="kw">pub fn </span>sort(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if </span><span class="self">self</span>.left &gt; <span class="self">self</span>.right {
+            mem::swap(<span class="kw-2">&amp;mut </span><span class="self">self</span>.left, <span class="kw-2">&amp;mut </span><span class="self">self</span>.right);
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">bottom</span> {
-            <span class="ident">mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">top</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">bottom</span>);
+        <span class="kw">if </span><span class="self">self</span>.top &gt; <span class="self">self</span>.bottom {
+            mem::swap(<span class="kw-2">&amp;mut </span><span class="self">self</span>.top, <span class="kw-2">&amp;mut </span><span class="self">self</span>.bottom);
         }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sorted</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="ident">Rect::new</span>(
-            <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">min</span>(<span class="self">self</span>.<span class="ident">right</span>),
-            <span class="self">self</span>.<span class="ident">top</span>.<span class="ident">min</span>(<span class="self">self</span>.<span class="ident">bottom</span>),
-            <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">max</span>(<span class="self">self</span>.<span class="ident">right</span>),
-            <span class="self">self</span>.<span class="ident">top</span>.<span class="ident">max</span>(<span class="self">self</span>.<span class="ident">bottom</span>),
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>sorted(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
+        Rect::new(
+            <span class="self">self</span>.left.min(<span class="self">self</span>.right),
+            <span class="self">self</span>.top.min(<span class="self">self</span>.bottom),
+            <span class="self">self</span>.left.max(<span class="self">self</span>.right),
+            <span class="self">self</span>.top.max(<span class="self">self</span>.bottom),
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_scalars</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>; <span class="number">4</span>] {
-        <span class="kw">unsafe</span> { <span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">left</span>) }
+    <span class="kw">pub fn </span>as_scalars(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[scalar; <span class="number">4</span>] {
+        <span class="kw">unsafe </span>{ transmute_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.left) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">as_hex</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dump</span>(<span class="ident">as_hex</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>()) }
+    <span class="kw">pub fn </span>dump(<span class="kw-2">&amp;</span><span class="self">self</span>, as_hex: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().dump(as_hex.into().unwrap_or_default()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dump_hex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">dump</span>(<span class="bool-val">true</span>)
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="ident">Point</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">p</span>.<span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">x</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">y</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">y</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">bottom</span>
+    <span class="kw">pub fn </span>dump_hex(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="self">self</span>.dump(<span class="bool-val">true</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// TODO: can we eliminate the this-&gt;is_empty check?</span>
-        <span class="op">!</span><span class="ident">r</span>.<span class="ident">is_empty</span>()
-            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_empty</span>()
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">left</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">top</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">right</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">bottom</span>
+<span class="kw">impl </span>Contains&lt;Point&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, p: Point) -&gt; bool {
+        p.x &gt;= <span class="self">self</span>.left &amp;&amp; p.x &lt; <span class="self">self</span>.right &amp;&amp; p.y &gt;= <span class="self">self</span>.top &amp;&amp; p.y &lt; <span class="self">self</span>.bottom
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// TODO: can we eliminate the this-&gt;isEmpty check?</span>
-        <span class="op">!</span><span class="ident">r</span>.<span class="ident">is_empty</span>()
-            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_empty</span>()
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">left</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">left</span> <span class="kw">as</span> <span class="ident">scalar</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">top</span> <span class="kw">as</span> <span class="ident">scalar</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">right</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">right</span> <span class="kw">as</span> <span class="ident">scalar</span>
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">r</span>.<span class="ident">bottom</span> <span class="kw">as</span> <span class="ident">scalar</span>
+<span class="kw">impl </span>Contains&lt;Rect&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, r: Rect) -&gt; bool {
+        <span class="comment">// TODO: can we eliminate the this-&gt;is_empty check?
+        </span>!r.is_empty()
+            &amp;&amp; !<span class="self">self</span>.is_empty()
+            &amp;&amp; <span class="self">self</span>.left &lt;= r.left
+            &amp;&amp; <span class="self">self</span>.top &lt;= r.top
+            &amp;&amp; <span class="self">self</span>.right &gt;= r.right
+            &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">contains_overloads_compile</span>() {
-    <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Rect::default</span>();
-    <span class="ident">r</span>.<span class="ident">contains</span>(<span class="ident">Point::default</span>());
-    <span class="ident">r</span>.<span class="ident">contains</span>(<span class="ident">Rect::default</span>());
-    <span class="ident">r</span>.<span class="ident">contains</span>(<span class="ident">IRect::default</span>());
-}
-
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RoundOut</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">round_out</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">R</span>;
-}
-
-<span class="kw">impl</span> <span class="ident">RoundOut</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">round_out</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">IRect::default</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRect_roundOut</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">r</span>.<span class="ident">native_mut</span>()) };
-        <span class="ident">r</span>
+<span class="kw">impl </span>Contains&lt;IRect&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, r: IRect) -&gt; bool {
+        <span class="comment">// TODO: can we eliminate the this-&gt;isEmpty check?
+        </span>!r.is_empty()
+            &amp;&amp; !<span class="self">self</span>.is_empty()
+            &amp;&amp; <span class="self">self</span>.left &lt;= r.left <span class="kw">as </span>scalar
+            &amp;&amp; <span class="self">self</span>.top &lt;= r.top <span class="kw">as </span>scalar
+            &amp;&amp; <span class="self">self</span>.right &gt;= r.right <span class="kw">as </span>scalar
+            &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom <span class="kw">as </span>scalar
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RoundOut</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">round_out</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="ident">Rect::new</span>(
-            <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">floor</span>(),
-            <span class="self">self</span>.<span class="ident">top</span>.<span class="ident">floor</span>(),
-            <span class="self">self</span>.<span class="ident">right</span>.<span class="ident">ceil</span>(),
-            <span class="self">self</span>.<span class="ident">bottom</span>.<span class="ident">ceil</span>(),
-        )
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>contains_overloads_compile() {
+    <span class="kw">let </span>r = Rect::default();
+    r.contains(Point::default());
+    r.contains(Rect::default());
+    r.contains(IRect::default());
+}
+
+<span class="kw">pub trait </span>RoundOut&lt;R&gt; {
+    <span class="kw">fn </span>round_out(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; R;
+}
+
+<span class="kw">impl </span>RoundOut&lt;IRect&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>round_out(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IRect {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = IRect::default();
+        <span class="kw">unsafe </span>{ sb::C_SkRect_roundOut(<span class="self">self</span>.native(), r.native_mut()) };
+        r
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// From</span>
-<span class="comment">//</span>
-
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">IPoint</span>, <span class="ident">ISize</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IRect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">point</span>, <span class="ident">size</span>): (<span class="ident">IPoint</span>, <span class="ident">ISize</span>)) -&gt; <span class="self">Self</span> {
-        <span class="ident">IRect::new</span>(
-            <span class="ident">point</span>.<span class="ident">x</span>,
-            <span class="ident">point</span>.<span class="ident">y</span>,
-            <span class="ident">point</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">size</span>.<span class="ident">width</span>,
-            <span class="ident">point</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">size</span>.<span class="ident">height</span>,
+<span class="kw">impl </span>RoundOut&lt;Rect&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>round_out(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
+        Rect::new(
+            <span class="self">self</span>.left.floor(),
+            <span class="self">self</span>.top.floor(),
+            <span class="self">self</span>.right.ceil(),
+            <span class="self">self</span>.bottom.ceil(),
         )
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">Point</span>, <span class="ident">Size</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>((<span class="ident">point</span>, <span class="ident">size</span>): (<span class="ident">Point</span>, <span class="ident">Size</span>)) -&gt; <span class="self">Self</span> {
-        <span class="ident">Rect::new</span>(
-            <span class="ident">point</span>.<span class="ident">x</span>,
-            <span class="ident">point</span>.<span class="ident">y</span>,
-            <span class="ident">point</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">size</span>.<span class="ident">width</span>,
-            <span class="ident">point</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">size</span>.<span class="ident">height</span>,
+<span class="comment">//
+// From
+//
+
+</span><span class="kw">impl </span>From&lt;(IPoint, ISize)&gt; <span class="kw">for </span>IRect {
+    <span class="kw">fn </span>from((point, size): (IPoint, ISize)) -&gt; <span class="self">Self </span>{
+        IRect::new(
+            point.x,
+            point.y,
+            point.x + size.width,
+            point.y + size.height,
         )
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ISize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">isize</span>: <span class="ident">ISize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_isize</span>(<span class="ident">isize</span>)
+<span class="kw">impl </span>From&lt;(Point, Size)&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>from((point, size): (Point, Size)) -&gt; <span class="self">Self </span>{
+        Rect::new(
+            point.x,
+            point.y,
+            point.x + size.width,
+            point.y + size.height,
+        )
     }
 }
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">irect</span>: <span class="ident">IRect</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_irect</span>(<span class="ident">irect</span>)
+
+<span class="kw">impl </span>From&lt;ISize&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>from(isize: ISize) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_isize(isize)
+    }
+}
+<span class="kw">impl </span>From&lt;IRect&gt; <span class="kw">for </span>Rect {
+    <span class="kw">fn </span>from(irect: IRect) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_irect(irect)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

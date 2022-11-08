@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\bitmap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>bitmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/bitmap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>bitmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -838,840 +832,839 @@
 <span id="832">832</span>
 <span id="833">833</span>
 <span id="834">834</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">AlphaType</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">Image</span>,
-    <span class="ident">ImageInfo</span>, <span class="ident">Matrix</span>, <span class="ident">Paint</span>, <span class="ident">PixelRef</span>, <span class="ident">Pixmap</span>, <span class="ident">SamplingOptions</span>, <span class="ident">Shader</span>, <span class="ident">TileMode</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    prelude::<span class="kw-2">*</span>, AlphaType, Color, Color4f, ColorSpace, ColorType, IPoint, IRect, ISize, Image,
+    ImageInfo, Matrix, Paint, PixelRef, Pixmap, SamplingOptions, Shader, TileMode,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkBitmap</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkBitmap};
+<span class="kw">use </span>std::{ffi, fmt, ptr};
 
-<span class="doccomment">/// [`Bitmap`] describes a two-dimensional raster pixel array. [`Bitmap`] is built on [`ImageInfo`],</span>
-<span class="doccomment">/// containing integer width and height, [`ColorType`] and [`AlphaType`] describing the pixel</span>
-<span class="doccomment">/// format, and [`ColorSpace`] describing the range of colors. [`Bitmap`] points to [`PixelRef`],</span>
-<span class="doccomment">/// which describes the physical array of pixels. [`ImageInfo`] bounds may be located anywhere fully</span>
-<span class="doccomment">/// inside [PixelRef] bounds.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Bitmap`] can be drawn using [crate::Canvas]. [`Bitmap`] can be a drawing destination for</span>
-<span class="doccomment">/// [`crate::Canvas`] draw member functions. [`Bitmap`] flexibility as a pixel container limits some</span>
-<span class="doccomment">/// optimizations available to the target platform.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If pixel array is primarily read-only, use [`Image`] for better performance.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If pixel array is primarily written to, use [`crate::Surface`] for better performance.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Declaring [`Bitmap`] const prevents altering [`ImageInfo`]: the [`Bitmap`] height, width, and so</span>
-<span class="doccomment">/// on cannot change. It does not affect [`PixelRef`]: a caller may write its pixels. Declaring</span>
-<span class="doccomment">/// [`Bitmap`] const affects [`Bitmap`] configuration, not its contents.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Bitmap`] is not thread safe. Each thread must have its own copy of [`Bitmap`] fields, although</span>
-<span class="doccomment">/// threads may share the underlying pixel array.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bitmap</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkBitmap</span><span class="op">&gt;</span>;
+<span class="doccomment">/// [`Bitmap`] describes a two-dimensional raster pixel array. [`Bitmap`] is built on [`ImageInfo`],
+/// containing integer width and height, [`ColorType`] and [`AlphaType`] describing the pixel
+/// format, and [`ColorSpace`] describing the range of colors. [`Bitmap`] points to [`PixelRef`],
+/// which describes the physical array of pixels. [`ImageInfo`] bounds may be located anywhere fully
+/// inside [PixelRef] bounds.
+///
+/// [`Bitmap`] can be drawn using [crate::Canvas]. [`Bitmap`] can be a drawing destination for
+/// [`crate::Canvas`] draw member functions. [`Bitmap`] flexibility as a pixel container limits some
+/// optimizations available to the target platform.
+///
+/// If pixel array is primarily read-only, use [`Image`] for better performance.
+///
+/// If pixel array is primarily written to, use [`crate::Surface`] for better performance.
+///
+/// Declaring [`Bitmap`] const prevents altering [`ImageInfo`]: the [`Bitmap`] height, width, and so
+/// on cannot change. It does not affect [`PixelRef`]: a caller may write its pixels. Declaring
+/// [`Bitmap`] const affects [`Bitmap`] configuration, not its contents.
+///
+/// [`Bitmap`] is not thread safe. Each thread must have its own copy of [`Bitmap`] fields, although
+/// threads may share the underlying pixel array.
+</span><span class="kw">pub type </span>Bitmap = Handle&lt;SkBitmap&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkBitmap</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkBitmap {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkBitmap_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkBitmap</span> {
-    <span class="doccomment">/// Copies settings from `self` to returned [`Bitmap`]. Shares pixels if `self` has pixels</span>
-    <span class="doccomment">/// allocated, so both bitmaps reference the same pixels.</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkBitmap::new1</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeClone <span class="kw">for </span>SkBitmap {
+    <span class="doccomment">/// Copies settings from `self` to returned [`Bitmap`]. Shares pixels if `self` has pixels
+    /// allocated, so both bitmaps reference the same pixels.
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ SkBitmap::new1(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Bitmap</span> {
-    <span class="doccomment">/// See [RCHandle&lt;SkBitmap&gt;::new()].</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>Bitmap {
+    <span class="doccomment">/// See [RCHandle&lt;SkBitmap&gt;::new()].
+    </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Bitmap</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Bitmap&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;pixmap&quot;</span>, <span class="self">self</span>.<span class="ident">pixmap</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Bitmap {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Bitmap&quot;</span>)
+            .field(<span class="string">&quot;pixmap&quot;</span>, <span class="self">self</span>.pixmap())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Bitmap</span> {
-    <span class="doccomment">/// Creates an empty [`Bitmap`] without pixels, with [`ColorType::Unknown`], [`AlphaType::Unknown`],</span>
-    <span class="doccomment">/// and with a width and height of zero. [`PixelRef`] origin is set to `(0, 0)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Use [`Self::set_info()`] to associate [`ColorType`], [`AlphaType`], width, and height after</span>
-    <span class="doccomment">/// [`Bitmap`] has been created.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">bitmap</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_Construct</span>(<span class="ident">bitmap</span>) })
+<span class="kw">impl </span>Bitmap {
+    <span class="doccomment">/// Creates an empty [`Bitmap`] without pixels, with [`ColorType::Unknown`], [`AlphaType::Unknown`],
+    /// and with a width and height of zero. [`PixelRef`] origin is set to `(0, 0)`.
+    ///
+    /// Use [`Self::set_info()`] to associate [`ColorType`], [`AlphaType`], width, and height after
+    /// [`Bitmap`] has been created.
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::construct(|bitmap| <span class="kw">unsafe </span>{ sb::C_SkBitmap_Construct(bitmap) })
     }
 
-    <span class="doccomment">/// Swaps the fields of the two bitmaps.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">swap</span>(<span class="ident">other</span>.<span class="ident">native_mut</span>()) }
+    <span class="doccomment">/// Swaps the fields of the two bitmaps.
+    </span><span class="kw">pub fn </span>swap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;mut </span><span class="self">Self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().swap(other.native_mut()) }
     }
 
-    <span class="doccomment">/// Returns a constant reference to the [`Pixmap`] holding the [`Bitmap`] pixel address, row</span>
-    <span class="doccomment">/// bytes, and [`ImageInfo`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Pixmap</span> {
-        <span class="ident">Pixmap::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixmap</span>)
+    <span class="doccomment">/// Returns a constant reference to the [`Pixmap`] holding the [`Bitmap`] pixel address, row
+    /// bytes, and [`ImageInfo`].
+    </span><span class="kw">pub fn </span>pixmap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Pixmap {
+        Pixmap::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fPixmap)
     }
 
-    <span class="doccomment">/// Returns width, height, [`AlphaType`], [ColorType], and [`ColorSpace`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">info</span>()
+    <span class="doccomment">/// Returns width, height, [`AlphaType`], [ColorType], and [`ColorSpace`].
+    </span><span class="kw">pub fn </span>info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ImageInfo {
+        <span class="self">self</span>.pixmap().info()
     }
 
-    <span class="doccomment">/// Returns pixel count in each row. Should be equal or less than `row_bytes()` /</span>
-    <span class="doccomment">/// `info().bytes_per_pixel()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// May be less than `pixel_ref().width()`. Will not exceed `pixel_ref().width()` less</span>
-    <span class="doccomment">/// `pixel_ref_origin().x`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">width</span>()
+    <span class="doccomment">/// Returns pixel count in each row. Should be equal or less than `row_bytes()` /
+    /// `info().bytes_per_pixel()`.
+    ///
+    /// May be less than `pixel_ref().width()`. Will not exceed `pixel_ref().width()` less
+    /// `pixel_ref_origin().x`.
+    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.pixmap().width()
     }
 
-    <span class="doccomment">/// Returns pixel row count.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Maybe be less than `pixel_ref().height()`. Will not exceed `pixel_ref().height()` less</span>
-    <span class="doccomment">/// `pixel_ref_origin().y`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">height</span>()
+    <span class="doccomment">/// Returns pixel row count.
+    ///
+    /// Maybe be less than `pixel_ref().height()`. Will not exceed `pixel_ref().height()` less
+    /// `pixel_ref_origin().y`.
+    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.pixmap().height()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ColorType</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">color_type</span>()
+    <span class="kw">pub fn </span>color_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ColorType {
+        <span class="self">self</span>.pixmap().color_type()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alpha_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">AlphaType</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">alpha_type</span>()
+    <span class="kw">pub fn </span>alpha_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AlphaType {
+        <span class="self">self</span>.pixmap().alpha_type()
     }
 
-    <span class="doccomment">/// Returns [`ColorSpace`], the range of colors, associated with [`ImageInfo`]. The returned</span>
-    <span class="doccomment">/// [`ColorSpace`] is immutable.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span> {
-        <span class="ident">ColorSpace::from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">colorSpace</span>() })
+    <span class="doccomment">/// Returns [`ColorSpace`], the range of colors, associated with [`ImageInfo`]. The returned
+    /// [`ColorSpace`] is immutable.
+    </span><span class="kw">pub fn </span>color_space(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ColorSpace&gt; {
+        ColorSpace::from_unshared_ptr(<span class="kw">unsafe </span>{ <span class="self">self</span>.native().colorSpace() })
     }
 
-    <span class="doccomment">/// Returns number of bytes per pixel required by [`ColorType`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero if `color_type()` is [`ColorType::Unknown`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">bytes_per_pixel</span>()
+    <span class="doccomment">/// Returns number of bytes per pixel required by [`ColorType`].
+    ///
+    /// Returns zero if `color_type()` is [`ColorType::Unknown`].
+    </span><span class="kw">pub fn </span>bytes_per_pixel(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.info().bytes_per_pixel()
     }
 
-    <span class="doccomment">/// Returns number of pixels that fit on row. Should be greater than or equal to `width()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes_as_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">row_bytes_as_pixels</span>()
+    <span class="doccomment">/// Returns number of pixels that fit on row. Should be greater than or equal to `width()`.
+    </span><span class="kw">pub fn </span>row_bytes_as_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.pixmap().row_bytes_as_pixels()
     }
 
-    <span class="doccomment">/// Returns bit shift converting row bytes to row pixels.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero for [`ColorType::Unknown`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shift_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">shift_per_pixel</span>()
+    <span class="doccomment">/// Returns bit shift converting row bytes to row pixels.
+    ///
+    /// Returns zero for [`ColorType::Unknown`].
+    </span><span class="kw">pub fn </span>shift_per_pixel(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.pixmap().shift_per_pixel()
     }
 
-    <span class="doccomment">/// Returns `true` if either `width()` or `height()` are zero.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Does not check if [`PixelRef`] is `None`; call `draws_nothing()` to check `width()`,</span>
-    <span class="doccomment">/// `height()`, and [`PixelRef`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">is_empty</span>()
+    <span class="doccomment">/// Returns `true` if either `width()` or `height()` are zero.
+    ///
+    /// Does not check if [`PixelRef`] is `None`; call `draws_nothing()` to check `width()`,
+    /// `height()`, and [`PixelRef`].
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.info().is_empty()
     }
 
-    <span class="doccomment">/// Returns `true` if [`PixelRef`] is `None`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Does not check if `width()` or `height()` are zero; call `draws_nothing()` to check</span>
-    <span class="doccomment">/// `width()`, `height()`, and [`PixelRef`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixelRef</span>.<span class="ident">fPtr</span>.<span class="ident">is_null</span>()
+    <span class="doccomment">/// Returns `true` if [`PixelRef`] is `None`.
+    ///
+    /// Does not check if `width()` or `height()` are zero; call `draws_nothing()` to check
+    /// `width()`, `height()`, and [`PixelRef`].
+    </span><span class="kw">pub fn </span>is_null(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.native().fPixelRef.fPtr.is_null()
     }
 
-    <span class="doccomment">/// Returns `true` if `width()` or `height()` are zero, or if [`PixelRef`] is `None`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `true`, [`Bitmap`] has no effect when drawn or drawn into.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draws_nothing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">is_null</span>()
+    <span class="doccomment">/// Returns `true` if `width()` or `height()` are zero, or if [`PixelRef`] is `None`.
+    ///
+    /// If `true`, [`Bitmap`] has no effect when drawn or drawn into.
+    </span><span class="kw">pub fn </span>draws_nothing(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.is_empty() || <span class="self">self</span>.is_null()
     }
 
-    <span class="doccomment">/// Returns row bytes, the interval from one pixel row to the next. Row bytes is at least as</span>
-    <span class="doccomment">/// large as: `width()` * `info().bytes_per_pixel()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns zero if `color_type()` is [`ColorType::Unknown`], or if row bytes supplied to</span>
-    <span class="doccomment">/// `set_info()` is not large enough to hold a row of pixels.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">row_bytes</span>()
+    <span class="doccomment">/// Returns row bytes, the interval from one pixel row to the next. Row bytes is at least as
+    /// large as: `width()` * `info().bytes_per_pixel()`.
+    ///
+    /// Returns zero if `color_type()` is [`ColorType::Unknown`], or if row bytes supplied to
+    /// `set_info()` is not large enough to hold a row of pixels.
+    </span><span class="kw">pub fn </span>row_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.pixmap().row_bytes()
     }
 
-    <span class="doccomment">/// Sets [`AlphaType`], if `alpha_type` is compatible with [`ColorType`]. Returns `true` unless</span>
-    <span class="doccomment">/// `alpha_type` is [`AlphaType::Unknown`] and current [`AlphaType`] is not [`AlphaType::Unknown`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `true` if [`ColorType`] is [`ColorType::Unknown`]. `alpha_type` is ignored, and</span>
-    <span class="doccomment">/// [`AlphaType`] remains [`AlphaType::Unknown`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `true` if [`ColorType`] is [`ColorType::RGB565`] or [`ColorType::Gray8`].</span>
-    <span class="doccomment">/// `alpha_type` is ignored, and [`AlphaType`] remains [`AlphaType::Opaque`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`ColorType`] is [`ColorType::ARGB4444`], [`ColorType::RGBA8888`],</span>
-    <span class="doccomment">/// [`ColorType::BGRA8888`], or [`ColorType::RGBAF16`]: returns `true` unless `alpha_type` is</span>
-    <span class="doccomment">/// [`AlphaType::Unknown`] and [`AlphaType`] is not [`AlphaType::Unknown`]. If [`AlphaType`] is</span>
-    <span class="doccomment">/// [`AlphaType::Unknown`], `alpha_type` is ignored.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`ColorType`] is [`ColorType::Alpha8`], returns `true` unless `alpha_type` is</span>
-    <span class="doccomment">/// [`AlphaType::Unknown`] and [`AlphaType`] is not [`AlphaType::Unknown`]. If [`AlphaType`] is</span>
-    <span class="doccomment">/// kUnknown_SkAlphaType, `alpha_type` is ignored. If `alpha_type` is [`AlphaType::Unpremul`],</span>
-    <span class="doccomment">/// it is treated as [`AlphaType::Premul`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This changes [`AlphaType`] in [`PixelRef`]; all bitmaps sharing [`PixelRef`] are affected.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alpha_type</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">alpha_type</span>: <span class="ident">AlphaType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setAlphaType</span>(<span class="ident">alpha_type</span>) }
+    <span class="doccomment">/// Sets [`AlphaType`], if `alpha_type` is compatible with [`ColorType`]. Returns `true` unless
+    /// `alpha_type` is [`AlphaType::Unknown`] and current [`AlphaType`] is not [`AlphaType::Unknown`].
+    ///
+    /// Returns `true` if [`ColorType`] is [`ColorType::Unknown`]. `alpha_type` is ignored, and
+    /// [`AlphaType`] remains [`AlphaType::Unknown`].
+    ///
+    /// Returns `true` if [`ColorType`] is [`ColorType::RGB565`] or [`ColorType::Gray8`].
+    /// `alpha_type` is ignored, and [`AlphaType`] remains [`AlphaType::Opaque`].
+    ///
+    /// If [`ColorType`] is [`ColorType::ARGB4444`], [`ColorType::RGBA8888`],
+    /// [`ColorType::BGRA8888`], or [`ColorType::RGBAF16`]: returns `true` unless `alpha_type` is
+    /// [`AlphaType::Unknown`] and [`AlphaType`] is not [`AlphaType::Unknown`]. If [`AlphaType`] is
+    /// [`AlphaType::Unknown`], `alpha_type` is ignored.
+    ///
+    /// If [`ColorType`] is [`ColorType::Alpha8`], returns `true` unless `alpha_type` is
+    /// [`AlphaType::Unknown`] and [`AlphaType`] is not [`AlphaType::Unknown`]. If [`AlphaType`] is
+    /// kUnknown_SkAlphaType, `alpha_type` is ignored. If `alpha_type` is [`AlphaType::Unpremul`],
+    /// it is treated as [`AlphaType::Premul`].
+    ///
+    /// This changes [`AlphaType`] in [`PixelRef`]; all bitmaps sharing [`PixelRef`] are affected.
+    </span><span class="kw">pub fn </span>set_alpha_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>, alpha_type: AlphaType) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setAlphaType(alpha_type) }
     }
 
-    <span class="doccomment">/// Returns pixel address, the base address corresponding to the pixel origin.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">writable_addr</span>() }
+    <span class="doccomment">/// Returns pixel address, the base address corresponding to the pixel origin.
+    </span><span class="kw">pub fn </span>pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::c_void {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.pixmap().writable_addr() }
     }
 
-    <span class="doccomment">/// Returns minimum memory required for pixel storage.  </span>
-    <span class="doccomment">/// Does not include unused memory on last row when `row_bytes_as_pixels()` exceeds `width()`.  </span>
-    <span class="doccomment">/// Returns [`usize::MAX`] if result does not fit in `usize`.  </span>
-    <span class="doccomment">/// Returns zero if `height()` or `width()` is 0.  </span>
-    <span class="doccomment">/// Returns `height()` times `row_bytes()` if `color_type()` is [`ColorType::Unknown`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_byte_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">compute_byte_size</span>()
+    <span class="doccomment">/// Returns minimum memory required for pixel storage.  
+    /// Does not include unused memory on last row when `row_bytes_as_pixels()` exceeds `width()`.  
+    /// Returns [`usize::MAX`] if result does not fit in `usize`.  
+    /// Returns zero if `height()` or `width()` is 0.  
+    /// Returns `height()` times `row_bytes()` if `color_type()` is [`ColorType::Unknown`].
+    </span><span class="kw">pub fn </span>compute_byte_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.pixmap().compute_byte_size()
     }
 
-    <span class="doccomment">/// Returns `true` if pixels can not change.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Most immutable [`Bitmap`] checks trigger an assert only on debug builds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_immutable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isImmutable</span>() }
+    <span class="doccomment">/// Returns `true` if pixels can not change.
+    ///
+    /// Most immutable [`Bitmap`] checks trigger an assert only on debug builds.
+    </span><span class="kw">pub fn </span>is_immutable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isImmutable() }
     }
 
-    <span class="doccomment">/// Sets internal flag to mark [`Bitmap`] as immutable. Once set, pixels can not change. Any</span>
-    <span class="doccomment">/// other bitmap sharing the same [`PixelRef`] are also marked as immutable.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Once [`PixelRef`] is marked immutable, the setting cannot be cleared.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Writing to immutable [`Bitmap`] pixels triggers an assert on debug builds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_immutable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setImmutable</span>() }
+    <span class="doccomment">/// Sets internal flag to mark [`Bitmap`] as immutable. Once set, pixels can not change. Any
+    /// other bitmap sharing the same [`PixelRef`] are also marked as immutable.
+    ///
+    /// Once [`PixelRef`] is marked immutable, the setting cannot be cleared.
+    ///
+    /// Writing to immutable [`Bitmap`] pixels triggers an assert on debug builds.
+    </span><span class="kw">pub fn </span>set_immutable(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setImmutable() }
     }
 
-    <span class="doccomment">/// Returns `true` if [`AlphaType`] is set to hint that all pixels are opaque; their alpha value</span>
-    <span class="doccomment">/// is implicitly or explicitly `1.0`. If `true`, and all pixels are not opaque, Skia may draw</span>
-    <span class="doccomment">/// incorrectly.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Does not check if [ColorType] allows alpha, or if any pixel value has transparency.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">is_opaque</span>()
+    <span class="doccomment">/// Returns `true` if [`AlphaType`] is set to hint that all pixels are opaque; their alpha value
+    /// is implicitly or explicitly `1.0`. If `true`, and all pixels are not opaque, Skia may draw
+    /// incorrectly.
+    ///
+    /// Does not check if [ColorType] allows alpha, or if any pixel value has transparency.
+    </span><span class="kw">pub fn </span>is_opaque(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.pixmap().is_opaque()
     }
 
-    <span class="doccomment">/// Resets to its initial state; all fields are set to zero, as if [`Bitmap`] had</span>
-    <span class="doccomment">/// been initialized by [`Bitmap::new()`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Sets width, height, row bytes to zero; pixel address to `None`; [`ColorType`] to</span>
-    <span class="doccomment">/// [`ColorType::Unknown`]; and [`AlphaType`] to [`AlphaType::Unknown`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`PixelRef`] is allocated, its reference count is decreased by one, releasing its memory</span>
-    <span class="doccomment">/// if [`Bitmap`] is the sole owner.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() }
+    <span class="doccomment">/// Resets to its initial state; all fields are set to zero, as if [`Bitmap`] had
+    /// been initialized by [`Bitmap::new()`].
+    ///
+    /// Sets width, height, row bytes to zero; pixel address to `None`; [`ColorType`] to
+    /// [`ColorType::Unknown`]; and [`AlphaType`] to [`AlphaType::Unknown`].
+    ///
+    /// If [`PixelRef`] is allocated, its reference count is decreased by one, releasing its memory
+    /// if [`Bitmap`] is the sole owner.
+    </span><span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().reset() }
     }
 
-    <span class="doccomment">/// Returns `true `if all pixels are opaque. [`ColorType`] determines how pixels are encoded, and</span>
-    <span class="doccomment">/// whether pixel describes alpha. Returns `true` for [`ColorType`] without alpha in each pixel;</span>
-    <span class="doccomment">/// for other [`ColorType`], returns `true` if all pixels have alpha values equivalent to 1.0 or</span>
-    <span class="doccomment">/// greater.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` for [`ColorType::Unknown`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_is_opaque</span>(<span class="ident">bm</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_ComputeIsOpaque</span>(<span class="ident">bm</span>.<span class="ident">native</span>()) }
+    <span class="doccomment">/// Returns `true `if all pixels are opaque. [`ColorType`] determines how pixels are encoded, and
+    /// whether pixel describes alpha. Returns `true` for [`ColorType`] without alpha in each pixel;
+    /// for other [`ColorType`], returns `true` if all pixels have alpha values equivalent to 1.0 or
+    /// greater.
+    ///
+    /// Returns `false` for [`ColorType::Unknown`].
+    </span><span class="kw">pub fn </span>compute_is_opaque(bm: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkBitmap_ComputeIsOpaque(bm.native()) }
     }
 
-    <span class="doccomment">/// Returns `IRect { 0, 0, width(), height() }`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">bounds</span>()
+    <span class="doccomment">/// Returns `IRect { 0, 0, width(), height() }`.
+    </span><span class="kw">pub fn </span>bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IRect {
+        <span class="self">self</span>.info().bounds()
     }
 
-    <span class="doccomment">/// Returns `ISize { width(), height() }`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">dimensions</span>()
+    <span class="doccomment">/// Returns `ISize { width(), height() }`.
+    </span><span class="kw">pub fn </span>dimensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ISize {
+        <span class="self">self</span>.info().dimensions()
     }
 
-    <span class="doccomment">/// Returns the bounds of this bitmap, offset by its [`PixelRef`] origin.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
-        <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pixel_ref_origin</span>();
-        <span class="ident">IRect::from_xywh</span>(<span class="ident">origin</span>.<span class="ident">x</span>, <span class="ident">origin</span>.<span class="ident">y</span>, <span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
+    <span class="doccomment">/// Returns the bounds of this bitmap, offset by its [`PixelRef`] origin.
+    </span><span class="kw">pub fn </span>get_subset(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IRect {
+        <span class="kw">let </span>origin = <span class="self">self</span>.pixel_ref_origin();
+        IRect::from_xywh(origin.x, origin.y, <span class="self">self</span>.width(), <span class="self">self</span>.height())
     }
 
-    <span class="doccomment">/// Sets width, height, [`AlphaType`], [ColorType], [`ColorSpace`], and optional `row_bytes`.</span>
-    <span class="doccomment">/// Frees pixels, and returns `true` if successful.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `row_bytes` must equal or exceed `image_info.min_row_bytes()`. If `image_info.color_space()`</span>
-    <span class="doccomment">/// is [`ColorType::Unknown`], `row_bytes` is ignored and treated as zero; for all other</span>
-    <span class="doccomment">/// [`ColorSpace`] values, `row_bytes` of zero is treated as `image_info.min_row_bytes()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Calls `reset()` and returns `false` if:</span>
-    <span class="doccomment">/// - rowBytes exceeds 31 bits</span>
-    <span class="doccomment">/// - `image_info.width()` is negative</span>
-    <span class="doccomment">/// - `image_info.height()` is negative</span>
-    <span class="doccomment">/// - `row_bytes` is positive and less than `image_info.width()` times</span>
-    <span class="doccomment">///   `image_info.bytes_per_pixel()`</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_info</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setInfo</span>(<span class="ident">image_info</span>.<span class="ident">native</span>(), <span class="ident">row_bytes</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>))
+    <span class="doccomment">/// Sets width, height, [`AlphaType`], [ColorType], [`ColorSpace`], and optional `row_bytes`.
+    /// Frees pixels, and returns `true` if successful.
+    ///
+    /// `row_bytes` must equal or exceed `image_info.min_row_bytes()`. If `image_info.color_space()`
+    /// is [`ColorType::Unknown`], `row_bytes` is ignored and treated as zero; for all other
+    /// [`ColorSpace`] values, `row_bytes` of zero is treated as `image_info.min_row_bytes()`.
+    ///
+    /// Calls `reset()` and returns `false` if:
+    /// - rowBytes exceeds 31 bits
+    /// - `image_info.width()` is negative
+    /// - `image_info.height()` is negative
+    /// - `row_bytes` is positive and less than `image_info.width()` times
+    ///   `image_info.bytes_per_pixel()`
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>set_info(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        image_info: <span class="kw-2">&amp;</span>ImageInfo,
+        row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+    ) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setInfo(image_info.native(), row_bytes.into().unwrap_or(<span class="number">0</span>))
         }
     }
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
-    <span class="doccomment">/// Memory is zeroed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not</span>
-    <span class="doccomment">/// be allocated, or memory could not optionally be zeroed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
-    <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
-    <span class="doccomment">/// actual behavior depends on the platform implementation of `calloc()`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_flags</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">tryAllocPixelsFlags</span>(
-                <span class="ident">image_info</span>.<span class="ident">native</span>(),
-                <span class="ident">sb::SkBitmap_AllocFlags_kZeroPixels_AllocFlag</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.
+    /// Memory is zeroed.
+    ///
+    /// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not
+    /// be allocated, or memory could not optionally be zeroed.
+    ///
+    /// On most platforms, allocating pixel memory may succeed even though there is not sufficient
+    /// memory to hold pixels; allocation does not take place until the pixels are written to. The
+    /// actual behavior depends on the platform implementation of `calloc()`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>try_alloc_pixels_flags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, image_info: <span class="kw-2">&amp;</span>ImageInfo) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().tryAllocPixelsFlags(
+                image_info.native(),
+                sb::SkBitmap_AllocFlags_kZeroPixels_AllocFlag <span class="kw">as _</span>,
             )
         }
     }
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
-    <span class="doccomment">/// Memory is zeroed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not be</span>
-    <span class="doccomment">/// allocated, or memory could not optionally be zeroed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
-    <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
-    <span class="doccomment">/// actual behavior depends on the platform implementation of `calloc()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels_flags</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>) {
-        <span class="self">self</span>.<span class="ident">try_alloc_pixels_flags</span>(<span class="ident">image_info</span>)
-            .<span class="ident">into_option</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels_flags failed&quot;</span>);
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.
+    /// Memory is zeroed.
+    ///
+    /// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not be
+    /// allocated, or memory could not optionally be zeroed.
+    ///
+    /// On most platforms, allocating pixel memory may succeed even though there is not sufficient
+    /// memory to hold pixels; allocation does not take place until the pixels are written to. The
+    /// actual behavior depends on the platform implementation of `calloc()`.
+    </span><span class="kw">pub fn </span>alloc_pixels_flags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, image_info: <span class="kw-2">&amp;</span>ImageInfo) {
+        <span class="self">self</span>.try_alloc_pixels_flags(image_info)
+            .into_option()
+            .expect(<span class="string">&quot;Bitmap::alloc_pixels_flags failed&quot;</span>);
     }
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
-    <span class="doccomment">/// `row_bytes` must equal or exceed `info.width()` times `info.bytes_per_pixel()`, or equal</span>
-    <span class="doccomment">/// `None`. Pass in `None` for `row_bytes` to compute the minimum valid value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not be</span>
-    <span class="doccomment">/// allocated.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
-    <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
-    <span class="doccomment">/// actual behavior depends on the platform implementation of `malloc()`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels_info</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">row_bytes</span>
-            .<span class="ident">into</span>()
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">image_info</span>.<span class="ident">min_row_bytes</span>());
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">tryAllocPixels</span>(<span class="ident">image_info</span>.<span class="ident">native</span>(), <span class="ident">row_bytes</span>)
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.
+    /// `row_bytes` must equal or exceed `info.width()` times `info.bytes_per_pixel()`, or equal
+    /// `None`. Pass in `None` for `row_bytes` to compute the minimum valid value.
+    ///
+    /// Returns `false` and calls `reset()` if [`ImageInfo`] could not be set, or memory could not be
+    /// allocated.
+    ///
+    /// On most platforms, allocating pixel memory may succeed even though there is not sufficient
+    /// memory to hold pixels; allocation does not take place until the pixels are written to. The
+    /// actual behavior depends on the platform implementation of `malloc()`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>try_alloc_pixels_info(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        image_info: <span class="kw-2">&amp;</span>ImageInfo,
+        row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+    ) -&gt; bool {
+        <span class="kw">let </span>row_bytes = row_bytes
+            .into()
+            .unwrap_or_else(|| image_info.min_row_bytes());
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .tryAllocPixels(image_info.native(), row_bytes)
         }
     }
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.</span>
-    <span class="doccomment">/// `row_bytes` must equal or exceed `info.width()` times `info.bytes_per_pixel()`, or equal</span>
-    <span class="doccomment">/// `None`. Pass in `None` for `row_bytes` to compute the minimum valid value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Aborts execution if SkImageInfo could not be set, or memory could</span>
-    <span class="doccomment">/// be allocated.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On most platforms, allocating pixel memory may succeed even though there is not sufficient</span>
-    <span class="doccomment">/// memory to hold pixels; allocation does not take place until the pixels are written to. The</span>
-    <span class="doccomment">/// actual behavior depends on the platform implementation of `malloc()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels_info</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">image_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">row_bytes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.
+    /// `row_bytes` must equal or exceed `info.width()` times `info.bytes_per_pixel()`, or equal
+    /// `None`. Pass in `None` for `row_bytes` to compute the minimum valid value.
+    ///
+    /// Aborts execution if SkImageInfo could not be set, or memory could
+    /// be allocated.
+    ///
+    /// On most platforms, allocating pixel memory may succeed even though there is not sufficient
+    /// memory to hold pixels; allocation does not take place until the pixels are written to. The
+    /// actual behavior depends on the platform implementation of `malloc()`.
+    </span><span class="kw">pub fn </span>alloc_pixels_info(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        image_info: <span class="kw-2">&amp;</span>ImageInfo,
+        row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
     ) {
-        <span class="self">self</span>.<span class="ident">try_alloc_pixels_info</span>(<span class="ident">image_info</span>, <span class="ident">row_bytes</span>.<span class="ident">into</span>())
-            .<span class="ident">into_option</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels_info failed&quot;</span>);
+        <span class="self">self</span>.try_alloc_pixels_info(image_info, row_bytes.into())
+            .into_option()
+            .expect(<span class="string">&quot;Bitmap::alloc_pixels_info failed&quot;</span>);
     }
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If</span>
-    <span class="doccomment">/// `is_opaque` is `true`, sets [`ImageInfo`] to [`AlphaType::Opaque`]; otherwise, sets to</span>
-    <span class="doccomment">/// [`AlphaType::Premul`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Calls `reset()` and returns `false` if width exceeds 29 bits or is negative, or height is</span>
-    <span class="doccomment">/// negative.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` if allocation fails.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Use to create [`Bitmap`] that matches [`crate::PMColor`], the native pixel arrangement on</span>
-    <span class="doccomment">/// the platform. [`Bitmap`] drawn to output device skips converting its pixel format.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_n32_pixels</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
-        <span class="ident">is_opaque</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkBitmap_tryAllocN32Pixels</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">width</span>,
-                <span class="ident">height</span>,
-                <span class="ident">is_opaque</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>),
+    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If
+    /// `is_opaque` is `true`, sets [`ImageInfo`] to [`AlphaType::Opaque`]; otherwise, sets to
+    /// [`AlphaType::Premul`].
+    ///
+    /// Calls `reset()` and returns `false` if width exceeds 29 bits or is negative, or height is
+    /// negative.
+    ///
+    /// Returns `false` if allocation fails.
+    ///
+    /// Use to create [`Bitmap`] that matches [`crate::PMColor`], the native pixel arrangement on
+    /// the platform. [`Bitmap`] drawn to output device skips converting its pixel format.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>try_alloc_n32_pixels(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (width, height): (i32, i32),
+        is_opaque: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
+    ) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            sb::C_SkBitmap_tryAllocN32Pixels(
+                <span class="self">self</span>.native_mut(),
+                width,
+                height,
+                is_opaque.into().unwrap_or(<span class="bool-val">false</span>),
             )
         }
     }
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If</span>
-    <span class="doccomment">/// `is_opaque` is `true`, sets [`ImageInfo`] to [`AlphaType::Opaque`]; otherwise, sets to</span>
-    <span class="doccomment">/// [`AlphaType::Premul`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Aborts if width exceeds 29 bits or is negative, or height is negative, or allocation fails.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Use to create [`Bitmap`] that matches [`crate::PMColor`], the native pixel arrangement on</span>
-    <span class="doccomment">/// the platform. [`Bitmap`] drawn to output device skips converting its pixel format.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_n32_pixels</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        (<span class="ident">width</span>, <span class="ident">height</span>): (<span class="ident">i32</span>, <span class="ident">i32</span>),
-        <span class="ident">is_opaque</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If
+    /// `is_opaque` is `true`, sets [`ImageInfo`] to [`AlphaType::Opaque`]; otherwise, sets to
+    /// [`AlphaType::Premul`].
+    ///
+    /// Aborts if width exceeds 29 bits or is negative, or height is negative, or allocation fails.
+    ///
+    /// Use to create [`Bitmap`] that matches [`crate::PMColor`], the native pixel arrangement on
+    /// the platform. [`Bitmap`] drawn to output device skips converting its pixel format.
+    </span><span class="kw">pub fn </span>alloc_n32_pixels(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        (width, height): (i32, i32),
+        is_opaque: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
     ) {
-        <span class="self">self</span>.<span class="ident">try_alloc_n32_pixels</span>((<span class="ident">width</span>, <span class="ident">height</span>), <span class="ident">is_opaque</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>))
-            .<span class="ident">into_option</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_n32_pixels_failed&quot;</span>)
+        <span class="self">self</span>.try_alloc_n32_pixels((width, height), is_opaque.into().unwrap_or(<span class="bool-val">false</span>))
+            .into_option()
+            .expect(<span class="string">&quot;Bitmap::alloc_n32_pixels_failed&quot;</span>)
     }
 
-    <span class="comment">// TODO: wrap installPixels with releaseProc.</span>
+    <span class="comment">// TODO: wrap installPixels with releaseProc.
 
-    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()`, and creates [`PixelRef`]</span>
-    <span class="doccomment">/// containing `pixels` and `row_bytes`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`ImageInfo`] could not be set, or `row_bytes` is less than `info.min_row_bytes(): calls</span>
-    <span class="doccomment">/// `reset()`, and returns `false`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Otherwise, if pixels equals `ptr::null_mut()`: sets [`ImageInfo`], returns `true`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Caller must ensure that pixels are valid for the lifetime of [`Bitmap`] and [`PixelRef`].</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_pixels</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">pixels</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-        <span class="ident">row_bytes</span>: <span class="ident">usize</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native_mut</span>()
-            .<span class="ident">installPixels</span>(<span class="ident">info</span>.<span class="ident">native</span>(), <span class="ident">pixels</span>, <span class="ident">row_bytes</span>, <span class="prelude-val">None</span>, <span class="ident">ptr::null_mut</span>())
+    </span><span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()`, and creates [`PixelRef`]
+    /// containing `pixels` and `row_bytes`.
+    ///
+    /// If [`ImageInfo`] could not be set, or `row_bytes` is less than `info.min_row_bytes(): calls
+    /// `reset()`, and returns `false`.
+    ///
+    /// Otherwise, if pixels equals `ptr::null_mut()`: sets [`ImageInfo`], returns `true`.
+    ///
+    /// Caller must ensure that pixels are valid for the lifetime of [`Bitmap`] and [`PixelRef`].
+    </span><span class="attribute">#[allow(clippy::missing_safety_doc)]
+    </span><span class="kw">pub unsafe fn </span>install_pixels(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        info: <span class="kw-2">&amp;</span>ImageInfo,
+        pixels: <span class="kw-2">*mut </span>ffi::c_void,
+        row_bytes: usize,
+    ) -&gt; bool {
+        <span class="self">self</span>.native_mut()
+            .installPixels(info.native(), pixels, row_bytes, <span class="prelude-val">None</span>, ptr::null_mut())
     }
 
-    <span class="comment">// TODO: wrap installPixels with SkPixmap&amp;</span>
+    <span class="comment">// TODO: wrap installPixels with SkPixmap&amp;
 
-    <span class="comment">// TODO: setPixels()?</span>
+    // TODO: setPixels()?
 
-    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [`PixelRef`]. The</span>
-    <span class="doccomment">/// allocation size is determined by [`ImageInfo`] width, height, and [`ColorType`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `false` if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_alloc_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_tryAllocPixels</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+    </span><span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [`PixelRef`]. The
+    /// allocation size is determined by [`ImageInfo`] width, height, and [`ColorType`].
+    ///
+    /// Returns `false` if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>try_alloc_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkBitmap_tryAllocPixels(<span class="self">self</span>.native_mut()) }
     }
 
-    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [`PixelRef`]. The</span>
-    <span class="doccomment">/// allocation size is determined by [`ImageInfo`] width, height, and [`ColorType`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Aborts if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_pixels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">try_alloc_pixels</span>()
-            .<span class="ident">into_option</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Bitmap::alloc_pixels failed&quot;</span>)
+    <span class="doccomment">/// Allocates pixel memory with HeapAllocator, and replaces existing [`PixelRef`]. The
+    /// allocation size is determined by [`ImageInfo`] width, height, and [`ColorType`].
+    ///
+    /// Aborts if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.
+    </span><span class="kw">pub fn </span>alloc_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.try_alloc_pixels()
+            .into_option()
+            .expect(<span class="string">&quot;Bitmap::alloc_pixels failed&quot;</span>)
     }
 
-    <span class="comment">// TODO: allocPixels(Allocator*)</span>
+    <span class="comment">// TODO: allocPixels(Allocator*)
 
-    <span class="comment">// TODO: find a way to return pixel ref without increasing the ref count here?</span>
+    // TODO: find a way to return pixel ref without increasing the ref count here?
 
-    <span class="doccomment">/// Returns [`PixelRef`], which contains: pixel base address; its dimensions; and `row_bytes()`,</span>
-    <span class="doccomment">/// the interval from one row to the next. Does not change [`PixelRef`] reference count.</span>
-    <span class="doccomment">/// [`PixelRef`] may be shared by multiple bitmaps.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`PixelRef`] has not been set, returns `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span> {
-        <span class="ident">PixelRef::from_unshared_ptr</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixelRef</span>.<span class="ident">fPtr</span>)
+    </span><span class="doccomment">/// Returns [`PixelRef`], which contains: pixel base address; its dimensions; and `row_bytes()`,
+    /// the interval from one row to the next. Does not change [`PixelRef`] reference count.
+    /// [`PixelRef`] may be shared by multiple bitmaps.
+    ///
+    /// If [`PixelRef`] has not been set, returns `None`.
+    </span><span class="kw">pub fn </span>pixel_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixelRef&gt; {
+        PixelRef::from_unshared_ptr(<span class="self">self</span>.native().fPixelRef.fPtr)
     }
 
-    <span class="doccomment">/// Returns origin of pixels within [`PixelRef`]. [`Bitmap`] bounds is always contained</span>
-    <span class="doccomment">/// by [`PixelRef`] bounds, which may be the same size or larger. Multiple [`Bitmap`]</span>
-    <span class="doccomment">/// can share the same [`PixelRef`], where each [`Bitmap`] has different bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The returned origin added to [`Bitmap`] dimensions equals or is smaller than the</span>
-    <span class="doccomment">/// [`PixelRef`] dimensions.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `(0, 0)` if [`PixelRef`] is `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_ref_origin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IPoint</span> {
-        <span class="ident">IPoint::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_pixelRefOrigin</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="doccomment">/// Returns origin of pixels within [`PixelRef`]. [`Bitmap`] bounds is always contained
+    /// by [`PixelRef`] bounds, which may be the same size or larger. Multiple [`Bitmap`]
+    /// can share the same [`PixelRef`], where each [`Bitmap`] has different bounds.
+    ///
+    /// The returned origin added to [`Bitmap`] dimensions equals or is smaller than the
+    /// [`PixelRef`] dimensions.
+    ///
+    /// Returns `(0, 0)` if [`PixelRef`] is `None`.
+    </span><span class="kw">pub fn </span>pixel_ref_origin(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IPoint {
+        IPoint::from_native_c(<span class="kw">unsafe </span>{ sb::C_SkBitmap_pixelRefOrigin(<span class="self">self</span>.native()) })
     }
 
-    <span class="doccomment">/// Replaces `pixel_ref` and origin in [`Bitmap`]. `offset` specifies the offset within the</span>
-    <span class="doccomment">/// [`PixelRef`] pixels for the top-left corner of the bitmap.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Asserts in debug builds if offset is out of range. Pins offset to legal range in release</span>
-    <span class="doccomment">/// builds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The caller is responsible for ensuring that the pixels match the [`ColorType`] and</span>
-    <span class="doccomment">/// [`AlphaType`] in [`ImageInfo`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pixel_ref</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">pixel_ref</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixelRef</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Replaces `pixel_ref` and origin in [`Bitmap`]. `offset` specifies the offset within the
+    /// [`PixelRef`] pixels for the top-left corner of the bitmap.
+    ///
+    /// Asserts in debug builds if offset is out of range. Pins offset to legal range in release
+    /// builds.
+    ///
+    /// The caller is responsible for ensuring that the pixels match the [`ColorType`] and
+    /// [`AlphaType`] in [`ImageInfo`].
+    </span><span class="kw">pub fn </span>set_pixel_ref(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        pixel_ref: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;PixelRef&gt;&gt;,
+        offset: <span class="kw">impl </span>Into&lt;IPoint&gt;,
     ) {
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkBitmap_setPixelRef</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">pixel_ref</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">offset</span>.<span class="ident">x</span>,
-                <span class="ident">offset</span>.<span class="ident">y</span>,
+        <span class="kw">let </span>offset = offset.into();
+        <span class="kw">unsafe </span>{
+            sb::C_SkBitmap_setPixelRef(
+                <span class="self">self</span>.native_mut(),
+                pixel_ref.into().into_ptr_or_null(),
+                offset.x,
+                offset.y,
             )
         }
     }
 
-    <span class="doccomment">/// Returns `true` if [`Bitmap`] can be drawn.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_ready_to_draw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_readyToDraw</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="doccomment">/// Returns `true` if [`Bitmap`] can be drawn.
+    </span><span class="kw">pub fn </span>is_ready_to_draw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkBitmap_readyToDraw(<span class="self">self</span>.native()) }
     }
 
-    <span class="doccomment">/// Returns a unique value corresponding to the pixels in [`PixelRef`].  </span>
-    <span class="doccomment">/// Returns a different value after `notify_pixels_changed()` has been called.  </span>
-    <span class="doccomment">/// Returns zero if [`PixelRef`] is `None`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Determines if pixels have changed since last examined.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getGenerationID</span>() }
+    <span class="doccomment">/// Returns a unique value corresponding to the pixels in [`PixelRef`].  
+    /// Returns a different value after `notify_pixels_changed()` has been called.  
+    /// Returns zero if [`PixelRef`] is `None`.
+    ///
+    /// Determines if pixels have changed since last examined.
+    </span><span class="kw">pub fn </span>generation_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getGenerationID() }
     }
 
-    <span class="doccomment">/// Marks that pixels in [`PixelRef`] have changed. Subsequent calls to `generation_id()` return</span>
-    <span class="doccomment">/// a different value.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">notify_pixels_changed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">notifyPixelsChanged</span>() }
+    <span class="doccomment">/// Marks that pixels in [`PixelRef`] have changed. Subsequent calls to `generation_id()` return
+    /// a different value.
+    </span><span class="kw">pub fn </span>notify_pixels_changed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().notifyPixelsChanged() }
     }
 
-    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [`ColorSpace`]. All pixels</span>
-    <span class="doccomment">/// contained by [`bounds(&amp;self)`] are affected. If the [`color_type(&amp;self)`] is</span>
-    <span class="doccomment">/// [`ColorType::Gray8`] or [`ColorType::RGB565`], then alpha is ignored; RGB is treated as</span>
-    <span class="doccomment">/// opaque. If [`color_type(&amp;self)`] is [`ColorType::Alpha8`], then RGB is ignored.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_color_4f`] will have</span>
-    <span class="doccomment">/// higher color resolution.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">eraseColor1</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>()) }
+    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [`ColorSpace`]. All pixels
+    /// contained by [`bounds(&amp;self)`] are affected. If the [`color_type(&amp;self)`] is
+    /// [`ColorType::Gray8`] or [`ColorType::RGB565`], then alpha is ignored; RGB is treated as
+    /// opaque. If [`color_type(&amp;self)`] is [`ColorType::Alpha8`], then RGB is ignored.
+    ///
+    /// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_color_4f`] will have
+    /// higher color resolution.
+    </span><span class="kw">pub fn </span>erase_color(<span class="kw-2">&amp;</span><span class="self">self</span>, c: <span class="kw">impl </span>Into&lt;Color&gt;) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().eraseColor1(c.into().into_native()) }
     }
 
-    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [`ColorSpace`]. All pixels</span>
-    <span class="doccomment">/// contained by [`bounds(&amp;self)`] are affected. If the [`color_type(&amp;self)`] is</span>
-    <span class="doccomment">/// [`ColorType::Gray8`] or [ColorType::RGB565], then alpha is ignored; RGB is treated as</span>
-    <span class="doccomment">/// opaque. If [`color_type(&amp;self)`] is [`ColorType::Alpha8`], then RGB is ignored.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_color_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>, <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">eraseColor</span>(<span class="ident">c</span>.<span class="ident">as_ref</span>().<span class="ident">into_native</span>(), <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+    <span class="doccomment">/// Replaces pixel values with `c`, interpreted as being in the sRGB [`ColorSpace`]. All pixels
+    /// contained by [`bounds(&amp;self)`] are affected. If the [`color_type(&amp;self)`] is
+    /// [`ColorType::Gray8`] or [ColorType::RGB565], then alpha is ignored; RGB is treated as
+    /// opaque. If [`color_type(&amp;self)`] is [`ColorType::Alpha8`], then RGB is ignored.
+    </span><span class="kw">pub fn </span>erase_color_4f(<span class="kw-2">&amp;</span><span class="self">self</span>, c: <span class="kw">impl </span>AsRef&lt;Color4f&gt;, color_space: <span class="kw">impl </span>Into&lt;ColorSpace&gt;) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .eraseColor(c.as_ref().into_native(), color_space.into().into_ptr())
         }
     }
 
-    <span class="doccomment">/// Replaces pixel values with unpremultiplied color built from `a`, `r`, `g`, and `b`,</span>
-    <span class="doccomment">/// interpreted as being in the sRGB [`ColorSpace`]. All pixels contained by [`bounds(&amp;self)`]</span>
-    <span class="doccomment">/// are affected. If the [`color_type(&amp;self)`] is [`ColorType::Gray8`] or [`ColorType::RGB565`],</span>
-    <span class="doccomment">/// then `a` is ignored; `r`, `g`, and `b` are treated as opaque. If [`color_type(&amp;self)`] is</span>
-    <span class="doccomment">/// [`ColorType::Alpha8`], then `r`, `g`, and `b` are ignored.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_argb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">u8</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_eraseARGB</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">a</span>.<span class="ident">into</span>(), <span class="ident">r</span>.<span class="ident">into</span>(), <span class="ident">g</span>.<span class="ident">into</span>(), <span class="ident">b</span>.<span class="ident">into</span>()) }
+    <span class="doccomment">/// Replaces pixel values with unpremultiplied color built from `a`, `r`, `g`, and `b`,
+    /// interpreted as being in the sRGB [`ColorSpace`]. All pixels contained by [`bounds(&amp;self)`]
+    /// are affected. If the [`color_type(&amp;self)`] is [`ColorType::Gray8`] or [`ColorType::RGB565`],
+    /// then `a` is ignored; `r`, `g`, and `b` are treated as opaque. If [`color_type(&amp;self)`] is
+    /// [`ColorType::Alpha8`], then `r`, `g`, and `b` are ignored.
+    </span><span class="kw">pub fn </span>erase_argb(<span class="kw-2">&amp;</span><span class="self">self</span>, a: u8, r: u8, g: u8, b: u8) {
+        <span class="kw">unsafe </span>{ sb::C_SkBitmap_eraseARGB(<span class="self">self</span>.native(), a.into(), r.into(), g.into(), b.into()) }
     }
 
-    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [`ColorSpace`].</span>
-    <span class="doccomment">/// If area does not intersect `bounds()`, call has no effect.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the `color_type()` is [`ColorType::Gray8`] [`ColorType::RGB565`], then alpha is ignored;</span>
-    <span class="doccomment">/// RGB is treated as opaque. If `color_type()` is [`ColorType::Alpha8`], then RGB is ignored.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_4f`] will have</span>
-    <span class="doccomment">/// higher color resolution.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>, <span class="ident">area</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">erase2</span>(<span class="ident">c</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(), <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [`ColorSpace`].
+    /// If area does not intersect `bounds()`, call has no effect.
+    ///
+    /// If the `color_type()` is [`ColorType::Gray8`] [`ColorType::RGB565`], then alpha is ignored;
+    /// RGB is treated as opaque. If `color_type()` is [`ColorType::Alpha8`], then RGB is ignored.
+    ///
+    /// Input color is ultimately converted to an [`Color4f`], so [`Self::erase_4f`] will have
+    /// higher color resolution.
+    </span><span class="kw">pub fn </span>erase(<span class="kw-2">&amp;</span><span class="self">self</span>, c: <span class="kw">impl </span>Into&lt;Color&gt;, area: <span class="kw">impl </span>AsRef&lt;IRect&gt;) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .erase2(c.into().into_native(), area.as_ref().native())
         }
     }
 
-    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [`ColorSpace`].</span>
-    <span class="doccomment">/// If area does not intersect `bounds()`, call has no effect.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the `color_type()` is [`ColorType::Gray8`] [`ColorType::RGB565`], then alpha is ignored;</span>
-    <span class="doccomment">/// RGB is treated as opaque. If `color_type()` is [`ColorType::Alpha8`], then RGB is ignored.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_4f</span>(
+    <span class="doccomment">/// Replaces pixel values inside area with c. interpreted as being in the sRGB [`ColorSpace`].
+    /// If area does not intersect `bounds()`, call has no effect.
+    ///
+    /// If the `color_type()` is [`ColorType::Gray8`] [`ColorType::RGB565`], then alpha is ignored;
+    /// RGB is treated as opaque. If `color_type()` is [`ColorType::Alpha8`], then RGB is ignored.
+    </span><span class="kw">pub fn </span>erase_4f(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">c</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>,
-        <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">area</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
+        c: <span class="kw">impl </span>AsRef&lt;Color4f&gt;,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
+        area: <span class="kw">impl </span>AsRef&lt;IRect&gt;,
     ) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">erase</span>(
-                <span class="ident">c</span>.<span class="ident">as_ref</span>().<span class="ident">into_native</span>(),
-                <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(),
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().erase(
+                c.as_ref().into_native(),
+                color_space.into().into_ptr_or_null(),
+                area.as_ref().native(),
             )
         }
     }
 
-    <span class="doccomment">/// Returns pixel at `(x, y)` as unpremultiplied color.  </span>
-    <span class="doccomment">/// Returns black with alpha if [`ColorType`] is [`ColorType::Alpha8`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Input is not validated: out of bounds values of `x` or `y` trigger an `assert()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Fails if [`ColorType`] is [`ColorType::Unknown`] or pixel address is `nullptr`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ColorSpace`] in [`ImageInfo`] is ignored. Some color precision may be lost in the</span>
-    <span class="doccomment">/// conversion to unpremultiplied color; original pixel data may have additional precision.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_color</span>(<span class="ident">p</span>)
+    <span class="doccomment">/// Returns pixel at `(x, y)` as unpremultiplied color.  
+    /// Returns black with alpha if [`ColorType`] is [`ColorType::Alpha8`]
+    ///
+    /// Input is not validated: out of bounds values of `x` or `y` trigger an `assert()`.
+    ///
+    /// Fails if [`ColorType`] is [`ColorType::Unknown`] or pixel address is `nullptr`.
+    ///
+    /// [`ColorSpace`] in [`ImageInfo`] is ignored. Some color precision may be lost in the
+    /// conversion to unpremultiplied color; original pixel data may have additional precision.
+    </span><span class="kw">pub fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; Color {
+        <span class="self">self</span>.pixmap().get_color(p)
     }
 
-    <span class="doccomment">/// Returns pixel at `(x, y)` as unpremultiplied color.</span>
-    <span class="doccomment">/// Returns black with alpha if [ColorType] is [ColorType::Alpha8]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Input is not validated: out of bounds values of x or y trigger an `assert()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Fails if [ColorType] is [ColorType::Unknown] or pixel address is `None`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ColorSpace`] in [`ImageInfo`] is ignored. Some color precision may be lost in the</span>
-    <span class="doccomment">/// conversion to unpremultiplied color.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color4f</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_color_4f</span>(<span class="ident">p</span>)
+    <span class="doccomment">/// Returns pixel at `(x, y)` as unpremultiplied color.
+    /// Returns black with alpha if [ColorType] is [ColorType::Alpha8]
+    ///
+    /// Input is not validated: out of bounds values of x or y trigger an `assert()`.
+    ///
+    /// Fails if [ColorType] is [ColorType::Unknown] or pixel address is `None`.
+    ///
+    /// [`ColorSpace`] in [`ImageInfo`] is ignored. Some color precision may be lost in the
+    /// conversion to unpremultiplied color.
+    </span><span class="kw">pub fn </span>get_color_4f(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; Color4f {
+        <span class="self">self</span>.pixmap().get_color_4f(p)
     }
 
-    <span class="doccomment">/// Look up the pixel at `(x,y)` and return its alpha component, normalized to `[0..1]`. This is</span>
-    <span class="doccomment">/// roughly equivalent to `get_color().a()`, but can be more efficient (and more precise if the</span>
-    <span class="doccomment">/// pixels store more than 8 bits per component).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpha_f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">f32</span> {
-        <span class="self">self</span>.<span class="ident">pixmap</span>().<span class="ident">get_alpha_f</span>(<span class="ident">p</span>)
+    <span class="doccomment">/// Look up the pixel at `(x,y)` and return its alpha component, normalized to `[0..1]`. This is
+    /// roughly equivalent to `get_color().a()`, but can be more efficient (and more precise if the
+    /// pixels store more than 8 bits per component).
+    </span><span class="kw">pub fn </span>get_alpha_f(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; f32 {
+        <span class="self">self</span>.pixmap().get_alpha_f(p)
     }
 
-    <span class="doccomment">/// Returns pixel address at `(x, y)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Input is not validated: out of bounds values of `x` or `y`, or [`ColorType::Unknown`],</span>
-    <span class="doccomment">/// trigger an `assert()`. Returns `nullptr` if [`ColorType`] is [`ColorType::Unknown`], or</span>
-    <span class="doccomment">/// [`PixelRef`] is `nullptr`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Performs a lookup of pixel size; for better performance, call one of: `get_addr8()`,</span>
-    <span class="doccomment">/// `get_addr16()`, or `get_addr32()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">ffi::c_void</span> {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getAddr</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) }
+    <span class="doccomment">/// Returns pixel address at `(x, y)`.
+    ///
+    /// Input is not validated: out of bounds values of `x` or `y`, or [`ColorType::Unknown`],
+    /// trigger an `assert()`. Returns `nullptr` if [`ColorType`] is [`ColorType::Unknown`], or
+    /// [`PixelRef`] is `nullptr`.
+    ///
+    /// Performs a lookup of pixel size; for better performance, call one of: `get_addr8()`,
+    /// `get_addr16()`, or `get_addr32()`.
+    </span><span class="kw">pub fn </span>get_addr(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*const </span>ffi::c_void {
+        <span class="kw">let </span>p = p.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getAddr(p.x, p.y) }
     }
 
-    <span class="comment">// TODO: get_addr_32(), get_addr_16(), get_addr_8()</span>
+    <span class="comment">// TODO: get_addr_32(), get_addr_16(), get_addr_8()
 
-    <span class="doccomment">/// Shares [`PixelRef`] with `dst`. Pixels are not copied; [`Bitmap`] and dst point to the same</span>
-    <span class="doccomment">/// pixels; dst [`Self::bounds()`] are set to the intersection of subset and the original</span>
-    <span class="doccomment">/// [`Self::bounds()`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Subset may be larger than [`Self::bounds()`]. Any area outside of [`Self::bounds()`] is</span>
-    <span class="doccomment">/// ignored.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Any contents of dst are discarded.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Return `false` if:</span>
-    <span class="doccomment">/// - dst is `nullptr`</span>
-    <span class="doccomment">/// - [`PixelRef`] is `nullptr`</span>
-    <span class="doccomment">/// - subset does not intersect [`Self::bounds()`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_extractSubset&gt;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">subset</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">extractSubset</span>(<span class="ident">dst</span>.<span class="ident">native_mut</span>(), <span class="ident">subset</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    </span><span class="doccomment">/// Shares [`PixelRef`] with `dst`. Pixels are not copied; [`Bitmap`] and dst point to the same
+    /// pixels; dst [`Self::bounds()`] are set to the intersection of subset and the original
+    /// [`Self::bounds()`].
+    ///
+    /// Subset may be larger than [`Self::bounds()`]. Any area outside of [`Self::bounds()`] is
+    /// ignored.
+    ///
+    /// Any contents of dst are discarded.
+    ///
+    /// Return `false` if:
+    /// - dst is `nullptr`
+    /// - [`PixelRef`] is `nullptr`
+    /// - subset does not intersect [`Self::bounds()`]
+    ///
+    /// example: &lt;https://fiddle.skia.org/c/@Bitmap_extractSubset&gt;
+    </span><span class="kw">pub fn </span>extract_subset(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span><span class="self">Self</span>, subset: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .extractSubset(dst.native_mut(), subset.as_ref().native())
         }
     }
 
-    <span class="doccomment">/// Copies a [`crate::Rect`] of pixels from [`Bitmap`] to `dst_pixels`. Copy starts at `(src_x,</span>
-    <span class="doccomment">/// src_y)`, and does not exceed [`Bitmap`] `(width(), height())`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `dst_info` specifies width, height, [ColorType], [`AlphaType`], and [`ColorSpace`] of</span>
-    <span class="doccomment">/// destination.  </span>
-    <span class="doccomment">/// `dst_row_bytes` specifics the gap from one destination row to the next. Returns `true` if</span>
-    <span class="doccomment">/// pixels are copied. Returns `false` if:</span>
-    <span class="doccomment">/// - `dst_info` has no address</span>
-    <span class="doccomment">/// - `dst_row_bytes` is less than `dst_info.min_row_bytes()`</span>
-    <span class="doccomment">/// - [`PixelRef`] is `nullptr`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pixels are copied only if pixel conversion is possible. If [`Self::color_type()`] is</span>
-    <span class="doccomment">/// [`ColorType::Gray8`], or [`ColorType::Alpha8`]; `dst_info.color_type()` must match. If</span>
-    <span class="doccomment">/// [`Self::color_type()`] is [`ColorType::Gray8`], `dst_info.color_space()` must match. If</span>
-    <span class="doccomment">/// [`Self::alpha_type()`] is [`AlphaType::Opaque`], `dst_info.alpha_type()` must match. If</span>
-    <span class="doccomment">/// [`Self::color_space()`] is `nullptr`, `dst_info.color_space()` must match. Returns `false`</span>
-    <span class="doccomment">/// if pixel conversion is not possible.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `src_x` and `src_y` may be negative to copy only top or left of source. Returns `false` if</span>
-    <span class="doccomment">/// [`Self::width()`] or [`Self::height()`] is zero or negative. Returns `false` if `abs(src_x)`</span>
-    <span class="doccomment">/// &gt;= [`Self::width()`], or if `abs(src_y)` &gt;= [`Self::height()`].</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_pixels</span>(
+    <span class="doccomment">/// Copies a [`crate::Rect`] of pixels from [`Bitmap`] to `dst_pixels`. Copy starts at `(src_x,
+    /// src_y)`, and does not exceed [`Bitmap`] `(width(), height())`.
+    ///
+    /// `dst_info` specifies width, height, [ColorType], [`AlphaType`], and [`ColorSpace`] of
+    /// destination.  
+    /// `dst_row_bytes` specifics the gap from one destination row to the next. Returns `true` if
+    /// pixels are copied. Returns `false` if:
+    /// - `dst_info` has no address
+    /// - `dst_row_bytes` is less than `dst_info.min_row_bytes()`
+    /// - [`PixelRef`] is `nullptr`
+    ///
+    /// Pixels are copied only if pixel conversion is possible. If [`Self::color_type()`] is
+    /// [`ColorType::Gray8`], or [`ColorType::Alpha8`]; `dst_info.color_type()` must match. If
+    /// [`Self::color_type()`] is [`ColorType::Gray8`], `dst_info.color_space()` must match. If
+    /// [`Self::alpha_type()`] is [`AlphaType::Opaque`], `dst_info.alpha_type()` must match. If
+    /// [`Self::color_space()`] is `nullptr`, `dst_info.color_space()` must match. Returns `false`
+    /// if pixel conversion is not possible.
+    ///
+    /// `src_x` and `src_y` may be negative to copy only top or left of source. Returns `false` if
+    /// [`Self::width()`] or [`Self::height()`] is zero or negative. Returns `false` if `abs(src_x)`
+    /// &gt;= [`Self::width()`], or if `abs(src_y)` &gt;= [`Self::height()`].
+    </span><span class="attribute">#[allow(clippy::missing_safety_doc)]
+    </span><span class="kw">pub unsafe fn </span>read_pixels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">dst_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">dst_pixels</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::c_void</span>,
-        <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
-        <span class="ident">src_x</span>: <span class="ident">i32</span>,
-        <span class="ident">src_y</span>: <span class="ident">i32</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>()
-            .<span class="ident">readPixels</span>(<span class="ident">dst_info</span>.<span class="ident">native</span>(), <span class="ident">dst_pixels</span>, <span class="ident">dst_row_bytes</span>, <span class="ident">src_x</span>, <span class="ident">src_y</span>)
+        dst_info: <span class="kw-2">&amp;</span>ImageInfo,
+        dst_pixels: <span class="kw-2">*mut </span>ffi::c_void,
+        dst_row_bytes: usize,
+        src_x: i32,
+        src_y: i32,
+    ) -&gt; bool {
+        <span class="self">self</span>.native()
+            .readPixels(dst_info.native(), dst_pixels, dst_row_bytes, src_x, src_y)
     }
 
-    <span class="comment">// TODO: read_pixels(Pixmap)</span>
-    <span class="comment">// TODO: write_pixels(Pixmap)</span>
+    <span class="comment">// TODO: read_pixels(Pixmap)
+    // TODO: write_pixels(Pixmap)
 
-    <span class="doccomment">/// Sets dst to alpha described by pixels. Returns `false` if `dst` cannot be written to or</span>
-    <span class="doccomment">/// `dst` pixels cannot be allocated.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `paint` is not `None` and contains [`crate::MaskFilter`], [`crate::MaskFilter`] generates</span>
-    <span class="doccomment">/// mask alpha from [`Bitmap`]. Uses `HeapAllocator` to reserve memory for `dst` [`PixelRef`].</span>
-    <span class="doccomment">/// Returns offset to top-left position for `dst` for alignment with [`Bitmap`]; `(0, 0)` unless</span>
-    <span class="doccomment">/// [crate::MaskFilter] generates mask.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_alpha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">IPoint::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkBitmap_extractAlpha</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">dst</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">paint</span>.<span class="ident">native_ptr_or_null</span>(),
-                <span class="ident">offset</span>.<span class="ident">native_mut</span>(),
+    </span><span class="doccomment">/// Sets dst to alpha described by pixels. Returns `false` if `dst` cannot be written to or
+    /// `dst` pixels cannot be allocated.
+    ///
+    /// If `paint` is not `None` and contains [`crate::MaskFilter`], [`crate::MaskFilter`] generates
+    /// mask alpha from [`Bitmap`]. Uses `HeapAllocator` to reserve memory for `dst` [`PixelRef`].
+    /// Returns offset to top-left position for `dst` for alignment with [`Bitmap`]; `(0, 0)` unless
+    /// [crate::MaskFilter] generates mask.
+    </span><span class="kw">pub fn </span>extract_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span><span class="self">Self</span>, paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;IPoint&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>offset = IPoint::default();
+        <span class="kw">unsafe </span>{
+            sb::C_SkBitmap_extractAlpha(
+                <span class="self">self</span>.native(),
+                dst.native_mut(),
+                paint.native_ptr_or_null(),
+                offset.native_mut(),
             )
         }
-        .<span class="ident">if_true_some</span>(<span class="ident">offset</span>)
+        .if_true_some(offset)
     }
 
-    <span class="doccomment">/// Copies [`Bitmap`] pixel address, row bytes, and [`ImageInfo`] to pixmap, if address is</span>
-    <span class="doccomment">/// available, and returns [`Some(Pixmap)`]. If pixel address is not available, return `None`</span>
-    <span class="doccomment">/// and leave pixmap unchanged.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// example: &lt;https://fiddle.skia.org/c/@Bitmap_peekPixels&gt;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Borrows</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap</span> <span class="op">=</span> <span class="ident">Pixmap::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">peekPixels</span>(<span class="ident">pixmap</span>.<span class="ident">native_mut</span>()) }
-            .<span class="ident">if_true_then_some</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">pixmap</span>.<span class="ident">borrows</span>(<span class="self">self</span>))
+    <span class="doccomment">/// Copies [`Bitmap`] pixel address, row bytes, and [`ImageInfo`] to pixmap, if address is
+    /// available, and returns [`Some(Pixmap)`]. If pixel address is not available, return `None`
+    /// and leave pixmap unchanged.
+    ///
+    /// example: &lt;https://fiddle.skia.org/c/@Bitmap_peekPixels&gt;
+    </span><span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Borrows&lt;Pixmap&gt;&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().peekPixels(pixmap.native_mut()) }
+            .if_true_then_some(|| pixmap.borrows(<span class="self">self</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_shader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="kw">pub fn </span>to_shader&lt;<span class="lifetime">&#39;a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">tile_modes</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">TileMode</span>, <span class="ident">TileMode</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">sampling</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span>,
-        <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tile_modes</span> <span class="op">=</span> <span class="ident">tile_modes</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">sampling</span> <span class="op">=</span> <span class="ident">sampling</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">local_matrix</span> <span class="op">=</span> <span class="ident">local_matrix</span>.<span class="ident">into</span>();
-        <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">tmx</span> <span class="op">=</span> <span class="ident">tile_modes</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">tm</span><span class="op">|</span> <span class="ident">tm</span>.<span class="number">0</span>).<span class="ident">unwrap_or_default</span>();
-            <span class="kw">let</span> <span class="ident">tmy</span> <span class="op">=</span> <span class="ident">tile_modes</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">tm</span><span class="op">|</span> <span class="ident">tm</span>.<span class="number">1</span>).<span class="ident">unwrap_or_default</span>();
-            <span class="ident">sb::C_SkBitmap_makeShader</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">tmx</span>,
-                <span class="ident">tmy</span>,
-                <span class="ident">sampling</span>.<span class="ident">native</span>(),
-                <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+        tile_modes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;(TileMode, TileMode)&gt;&gt;,
+        sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;,
+        local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Shader&gt; {
+        <span class="kw">let </span>tile_modes = tile_modes.into();
+        <span class="kw">let </span>sampling = sampling.into();
+        <span class="kw">let </span>local_matrix = local_matrix.into();
+        Shader::from_ptr(<span class="kw">unsafe </span>{
+            <span class="kw">let </span>tmx = tile_modes.map(|tm| tm.<span class="number">0</span>).unwrap_or_default();
+            <span class="kw">let </span>tmy = tile_modes.map(|tm| tm.<span class="number">1</span>).unwrap_or_default();
+            sb::C_SkBitmap_makeShader(
+                <span class="self">self</span>.native(),
+                tmx,
+                tmy,
+                sampling.native(),
+                local_matrix.native_ptr_or_null(),
             )
         })
     }
 
-    <span class="doccomment">/// Returns a new image from the bitmap. If the bitmap is marked immutable, this will</span>
-    <span class="doccomment">/// share the pixel buffer. If not, it will make a copy of the pixels for the image.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Image</span> {
-        <span class="ident">Image::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkBitmap_asImage</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
+    <span class="doccomment">/// Returns a new image from the bitmap. If the bitmap is marked immutable, this will
+    /// share the pixel buffer. If not, it will make a copy of the pixels for the image.
+    </span><span class="kw">pub fn </span>as_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Image {
+        Image::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkBitmap_asImage(<span class="self">self</span>.native()) }).unwrap()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::TileMode</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">encode</span>, <span class="ident">AlphaType</span>, <span class="ident">Bitmap</span>, <span class="ident">Canvas</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">EncodedImageFormat</span>, <span class="ident">ImageInfo</span>,
-        <span class="ident">SamplingOptions</span>,
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">super</span>::TileMode;
+    <span class="kw">use crate</span>::{
+        encode, AlphaType, Bitmap, Canvas, ColorSpace, ColorType, EncodedImageFormat, ImageInfo,
+        SamplingOptions,
     };
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_clone_and_drop</span>() {
-        <span class="kw">let</span> <span class="ident">bm</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::redundant_clone</span>)]</span>
-        <span class="kw">let</span> <span class="ident">_bm2</span> <span class="op">=</span> <span class="ident">bm</span>.<span class="ident">clone</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>create_clone_and_drop() {
+        <span class="kw">let </span>bm = Bitmap::new();
+        <span class="attribute">#[allow(clippy::redundant_clone)]
+        </span><span class="kw">let </span>_bm2 = bm.clone();
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_info</span>() {
-        <span class="kw">let</span> <span class="ident">bm</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="kw">let</span> <span class="ident">_info</span> <span class="op">=</span> <span class="ident">bm</span>.<span class="ident">info</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>get_info() {
+        <span class="kw">let </span>bm = Bitmap::new();
+        <span class="kw">let </span>_info = bm.info();
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">empty_bitmap_shader</span>() {
-        <span class="kw">let</span> <span class="ident">bm</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="kw">let</span> <span class="ident">_shader</span> <span class="op">=</span> <span class="ident">bm</span>.<span class="ident">to_shader</span>(<span class="prelude-val">None</span>, <span class="ident">SamplingOptions::default</span>(), <span class="prelude-val">None</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>empty_bitmap_shader() {
+        <span class="kw">let </span>bm = Bitmap::new();
+        <span class="kw">let </span>_shader = bm.to_shader(<span class="prelude-val">None</span>, SamplingOptions::default(), <span class="prelude-val">None</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">shader_with_tile_mode</span>() {
-        <span class="kw">let</span> <span class="ident">bm</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="kw">let</span> <span class="ident">_shader</span> <span class="op">=</span> <span class="ident">bm</span>.<span class="ident">to_shader</span>(
-            (<span class="ident">TileMode::Decal</span>, <span class="ident">TileMode::Mirror</span>),
-            <span class="ident">SamplingOptions::default</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>shader_with_tile_mode() {
+        <span class="kw">let </span>bm = Bitmap::new();
+        <span class="kw">let </span>_shader = bm.to_shader(
+            (TileMode::Decal, TileMode::Mirror),
+            SamplingOptions::default(),
             <span class="prelude-val">None</span>,
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_get_subset</span>() {
-        <span class="kw">let</span> <span class="ident">bm</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bm</span>.<span class="ident">get_subset</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_get_subset() {
+        <span class="kw">let </span>bm = Bitmap::new();
+        <span class="kw">let _ </span>= bm.get_subset();
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_pixel_ref_origin</span>() {
-        <span class="kw">let</span> <span class="ident">bm</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bm</span>.<span class="ident">pixel_ref_origin</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_pixel_ref_origin() {
+        <span class="kw">let </span>bm = Bitmap::new();
+        <span class="kw">let _ </span>= bm.pixel_ref_origin();
     }
 
-    <span class="doccomment">/// Test for: &lt;https://github.com/rust-skia/rust-skia/issues/669&gt;</span>
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cant_get_a_canvas_for_a_non_drawable_bitmap</span>() {
-        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ImageInfo::new</span>(
+    <span class="doccomment">/// Test for: &lt;https://github.com/rust-skia/rust-skia/issues/669&gt;
+    </span><span class="attribute">#[test]
+    </span><span class="kw">fn </span>cant_get_a_canvas_for_a_non_drawable_bitmap() {
+        <span class="kw">let </span>info = ImageInfo::new(
             (<span class="number">400</span>, <span class="number">400</span>),
-            <span class="ident">ColorType::BGRA8888</span>,
-            <span class="ident">AlphaType::Premul</span>,
-            <span class="ident">ColorSpace::new_srgb</span>(),
+            ColorType::BGRA8888,
+            AlphaType::Premul,
+            ColorSpace::new_srgb(),
         );
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bitmap</span> <span class="op">=</span> <span class="ident">Bitmap::new</span>();
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">bitmap</span>.<span class="ident">set_info</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>, <span class="prelude-val">None</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>bitmap = Bitmap::new();
+        <span class="kw">if </span>!bitmap.set_info(<span class="kw-2">&amp;</span>info, <span class="prelude-val">None</span>) {
             <span class="macro">panic!</span>(<span class="string">&quot;set_info failed&quot;</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::from_bitmap</span>(<span class="kw-2">&amp;</span><span class="ident">bitmap</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert!</span>(<span class="ident">canvas</span>.<span class="ident">is_none</span>());
+        <span class="kw">let </span>canvas = Canvas::from_bitmap(<span class="kw-2">&amp;</span>bitmap, <span class="prelude-val">None</span>);
+        <span class="macro">assert!</span>(canvas.is_none());
 
-        <span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">encode::bitmap</span>(<span class="kw-2">&amp;</span><span class="ident">bitmap</span>, <span class="ident">EncodedImageFormat::PNG</span>, <span class="number">100</span>);
-        <span class="macro">assert!</span>(<span class="ident">encoded</span>.<span class="ident">is_none</span>());
+        <span class="kw">let </span>encoded = encode::bitmap(<span class="kw-2">&amp;</span>bitmap, EncodedImageFormat::PNG, <span class="number">100</span>);
+        <span class="macro">assert!</span>(encoded.is_none());
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

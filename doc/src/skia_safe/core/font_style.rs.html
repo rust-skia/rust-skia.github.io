@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\font_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>font_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/font_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>font_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -171,173 +165,172 @@
 <span id="165">165</span>
 <span id="166">166</span>
 <span id="167">167</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkFontStyle</span>, <span class="ident">SkFontStyle_Weight</span>, <span class="ident">SkFontStyle_Width</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ops::Deref</span>};
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkFontStyle, SkFontStyle_Weight, SkFontStyle_Width};
+<span class="kw">use </span>std::{fmt, ops::Deref};
 
-<span class="doccomment">/// Wrapper type of a font weight.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Use Weight::from() to create a weight from an i32.</span>
-<span class="doccomment">/// Use *weight to pull out the wrapped value of the Weight.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Weight</span>(<span class="ident">i32</span>);
+<span class="doccomment">/// Wrapper type of a font weight.
+///
+/// Use Weight::from() to create a weight from an i32.
+/// Use *weight to pull out the wrapped value of the Weight.
+</span><span class="attribute">#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>Weight(i32);
 
-<span class="macro">native_transmutable!</span>(<span class="ident">i32</span>, <span class="ident">Weight</span>, <span class="ident">weight_layout</span>);
+<span class="macro">native_transmutable!</span>(i32, Weight, weight_layout);
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Weight</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">weight</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Weight</span>(<span class="ident">weight</span>)
+<span class="kw">impl </span>From&lt;i32&gt; <span class="kw">for </span>Weight {
+    <span class="kw">fn </span>from(weight: i32) -&gt; <span class="self">Self </span>{
+        Weight(weight)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Weight</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">i32</span>;
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
+<span class="kw">impl </span>Deref <span class="kw">for </span>Weight {
+    <span class="kw">type </span>Target = i32;
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+}
+
+<span class="attribute">#[allow(non_upper_case_globals)]
+</span><span class="kw">impl </span>Weight {
+    <span class="kw">pub const </span>INVISIBLE: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kInvisible_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>THIN: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kThin_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>EXTRA_LIGHT: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kExtraLight_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>LIGHT: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kLight_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>NORMAL: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kNormal_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>MEDIUM: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kMedium_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>SEMI_BOLD: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kSemiBold_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>BOLD: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kBold_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>EXTRA_BOLD: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kExtraBold_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>BLACK: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kBlack_Weight <span class="kw">as _</span>);
+    <span class="kw">pub const </span>EXTRA_BLACK: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Weight::kExtraBlack_Weight <span class="kw">as _</span>);
+}
+
+<span class="doccomment">/// Wrapper type for the width of a font.
+///
+/// To create a width of a font from an i32, use Width::from().
+/// To access the underlying value of the font weight, dereference *weight.
+</span><span class="attribute">#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>Width(i32);
+
+<span class="macro">native_transmutable!</span>(i32, Width, width_layout);
+
+<span class="kw">impl </span>From&lt;i32&gt; <span class="kw">for </span>Width {
+    <span class="kw">fn </span>from(width: i32) -&gt; <span class="self">Self </span>{
+        Width(width)
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Weight</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INVISIBLE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kInvisible_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">THIN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kThin_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXTRA_LIGHT</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kExtraLight_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIGHT</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kLight_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NORMAL</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kNormal_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MEDIUM</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kMedium_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEMI_BOLD</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kSemiBold_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BOLD</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kBold_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXTRA_BOLD</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kExtraBold_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLACK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kBlack_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXTRA_BLACK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Weight::kExtraBlack_Weight</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">impl </span>Deref <span class="kw">for </span>Width {
+    <span class="kw">type </span>Target = i32;
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
 }
 
-<span class="doccomment">/// Wrapper type for the width of a font.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// To create a width of a font from an i32, use Width::from().</span>
-<span class="doccomment">/// To access the underlying value of the font weight, dereference *weight.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Width</span>(<span class="ident">i32</span>);
+<span class="attribute">#[allow(non_upper_case_globals)]
+</span><span class="kw">impl </span>Width {
+    <span class="kw">pub const </span>ULTRA_CONDENSED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kUltraCondensed_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>EXTRA_CONDENSED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kExtraCondensed_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>CONDENSED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kCondensed_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>SEMI_CONDENSED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kSemiCondensed_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>NORMAL: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kNormal_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>SEMI_EXPANDED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kSemiExpanded_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>EXPANDED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kExpanded_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>EXTRA_EXPANDED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kExtraExpanded_Width <span class="kw">as _</span>);
+    <span class="kw">pub const </span>ULTRA_EXPANDED: <span class="self">Self </span>= <span class="self">Self</span>(SkFontStyle_Width::kUltraExpanded_Width <span class="kw">as _</span>);
+}
 
-<span class="macro">native_transmutable!</span>(<span class="ident">i32</span>, <span class="ident">Width</span>, <span class="ident">width_layout</span>);
+<span class="kw">pub use </span>skia_bindings::SkFontStyle_Slant <span class="kw">as </span>Slant;
+<span class="macro">variant_name!</span>(Slant::Upright, slant_naming);
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Width</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">width</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Width</span>(<span class="ident">width</span>)
+<span class="comment">// TODO: implement Display
+</span><span class="attribute">#[derive(Copy, Clone)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>FontStyle(SkFontStyle);
+
+<span class="macro">native_transmutable!</span>(SkFontStyle, FontStyle, font_style_layout);
+
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>FontStyle {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkFontStyle_Equals(<span class="self">self</span>.native(), rhs.native()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Width</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">i32</span>;
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>FontStyle {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        FontStyle::construct(|fs| <span class="kw">unsafe </span>{ sb::C_SkFontStyle_Construct(fs) })
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Width</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ULTRA_CONDENSED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kUltraCondensed_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXTRA_CONDENSED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kExtraCondensed_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CONDENSED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kCondensed_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEMI_CONDENSED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kSemiCondensed_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NORMAL</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kNormal_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEMI_EXPANDED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kSemiExpanded_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXPANDED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kExpanded_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXTRA_EXPANDED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kExtraExpanded_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ULTRA_EXPANDED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span>(<span class="ident">SkFontStyle_Width::kUltraExpanded_Width</span> <span class="kw">as</span> <span class="kw">_</span>);
-}
-
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkFontStyle_Slant</span> <span class="kw">as</span> <span class="ident">Slant</span>;
-<span class="macro">variant_name!</span>(<span class="ident">Slant::Upright</span>, <span class="ident">slant_naming</span>);
-
-<span class="comment">// TODO: implement Display</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FontStyle</span>(<span class="ident">SkFontStyle</span>);
-
-<span class="macro">native_transmutable!</span>(<span class="ident">SkFontStyle</span>, <span class="ident">FontStyle</span>, <span class="ident">font_style_layout</span>);
-
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">FontStyle</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFontStyle_Equals</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">rhs</span>.<span class="ident">native</span>()) }
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>FontStyle {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;FontStyle&quot;</span>)
+            .field(<span class="string">&quot;weight&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.weight())
+            .field(<span class="string">&quot;width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.width())
+            .field(<span class="string">&quot;slant&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.slant())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FontStyle</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">FontStyle::construct</span>(<span class="op">|</span><span class="ident">fs</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFontStyle_Construct</span>(<span class="ident">fs</span>) })
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FontStyle</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;FontStyle&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;weight&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">weight</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">width</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;slant&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">slant</span>())
-            .<span class="ident">finish</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">FontStyle</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">weight</span>: <span class="ident">Weight</span>, <span class="ident">width</span>: <span class="ident">Width</span>, <span class="ident">slant</span>: <span class="ident">Slant</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">fs</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkFontStyle_Construct2</span>(<span class="ident">fs</span>, <span class="ident">weight</span>.<span class="ident">into_native</span>(), <span class="ident">width</span>.<span class="ident">into_native</span>(), <span class="ident">slant</span>)
+<span class="kw">impl </span>FontStyle {
+    <span class="kw">pub fn </span>new(weight: Weight, width: Width, slant: Slant) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::construct(|fs| <span class="kw">unsafe </span>{
+            sb::C_SkFontStyle_Construct2(fs, weight.into_native(), width.into_native(), slant)
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">weight</span>(<span class="self">self</span>) -&gt; <span class="ident">Weight</span> {
-        <span class="ident">Weight::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkFontStyle_weight</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>weight(<span class="self">self</span>) -&gt; Weight {
+        Weight::from_native_c(<span class="kw">unsafe </span>{ sb::C_SkFontStyle_weight(<span class="self">self</span>.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="self">self</span>) -&gt; <span class="ident">Width</span> {
-        <span class="ident">Width::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkFontStyle_width</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>width(<span class="self">self</span>) -&gt; Width {
+        Width::from_native_c(<span class="kw">unsafe </span>{ sb::C_SkFontStyle_width(<span class="self">self</span>.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">slant</span>(<span class="self">self</span>) -&gt; <span class="ident">Slant</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkFontStyle_slant</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>slant(<span class="self">self</span>) -&gt; Slant {
+        <span class="kw">unsafe </span>{ sb::C_SkFontStyle_slant(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">normal</span>() -&gt; <span class="ident">FontStyle</span> {
-        <span class="kw-2">*</span><span class="ident">font_style_static::NORMAL</span>
+    <span class="kw">pub fn </span>normal() -&gt; FontStyle {
+        <span class="kw-2">*</span>font_style_static::NORMAL
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bold</span>() -&gt; <span class="ident">FontStyle</span> {
-        <span class="kw-2">*</span><span class="ident">font_style_static::BOLD</span>
+    <span class="kw">pub fn </span>bold() -&gt; FontStyle {
+        <span class="kw-2">*</span>font_style_static::BOLD
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">italic</span>() -&gt; <span class="ident">FontStyle</span> {
-        <span class="kw-2">*</span><span class="ident">font_style_static::ITALIC</span>
+    <span class="kw">pub fn </span>italic() -&gt; FontStyle {
+        <span class="kw-2">*</span>font_style_static::ITALIC
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bold_italic</span>() -&gt; <span class="ident">FontStyle</span> {
-        <span class="kw-2">*</span><span class="ident">font_style_static::BOLD_ITALIC</span>
-    }
-}
-
-<span class="kw">mod</span> <span class="ident">font_style_static</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FontStyle</span>, <span class="ident">Slant</span>, <span class="ident">Weight</span>, <span class="ident">Width</span>};
-
-    <span class="macro">lazy_static!</span> {
-        <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">NORMAL</span>: <span class="ident">FontStyle</span> <span class="op">=</span>
-            <span class="ident">FontStyle::new</span>(<span class="ident">Weight::NORMAL</span>, <span class="ident">Width::NORMAL</span>, <span class="ident">Slant::Upright</span>);
-        <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">BOLD</span>: <span class="ident">FontStyle</span> <span class="op">=</span>
-            <span class="ident">FontStyle::new</span>(<span class="ident">Weight::BOLD</span>, <span class="ident">Width::NORMAL</span>, <span class="ident">Slant::Upright</span>);
-        <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ITALIC</span>: <span class="ident">FontStyle</span> <span class="op">=</span>
-            <span class="ident">FontStyle::new</span>(<span class="ident">Weight::NORMAL</span>, <span class="ident">Width::NORMAL</span>, <span class="ident">Slant::Italic</span>);
-        <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">BOLD_ITALIC</span>: <span class="ident">FontStyle</span> <span class="op">=</span>
-            <span class="ident">FontStyle::new</span>(<span class="ident">Weight::BOLD</span>, <span class="ident">Width::NORMAL</span>, <span class="ident">Slant::Italic</span>);
+    <span class="kw">pub fn </span>bold_italic() -&gt; FontStyle {
+        <span class="kw-2">*</span>font_style_static::BOLD_ITALIC
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_equality</span>() {
-    <span class="kw">let</span> <span class="ident">style</span>: <span class="ident">FontStyle</span> <span class="op">=</span> <span class="ident">Default::default</span>();
-    <span class="kw">let</span> <span class="ident">style2</span>: <span class="ident">FontStyle</span> <span class="op">=</span> <span class="ident">Default::default</span>();
-    <span class="macro">assert!</span>(<span class="ident">style</span> <span class="op">==</span> <span class="ident">style2</span>);
+<span class="kw">mod </span>font_style_static {
+    <span class="kw">use super</span>::{FontStyle, Slant, Weight, Width};
+
+    <span class="macro">lazy_static! </span>{
+        <span class="kw">pub static </span><span class="kw-2">ref </span>NORMAL: FontStyle =
+            FontStyle::new(Weight::NORMAL, Width::NORMAL, Slant::Upright);
+        <span class="kw">pub static </span><span class="kw-2">ref </span>BOLD: FontStyle =
+            FontStyle::new(Weight::BOLD, Width::NORMAL, Slant::Upright);
+        <span class="kw">pub static </span><span class="kw-2">ref </span>ITALIC: FontStyle =
+            FontStyle::new(Weight::NORMAL, Width::NORMAL, Slant::Italic);
+        <span class="kw">pub static </span><span class="kw-2">ref </span>BOLD_ITALIC: FontStyle =
+            FontStyle::new(Weight::BOLD, Width::NORMAL, Slant::Italic);
+    }
+}
+
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_equality() {
+    <span class="kw">let </span>style: FontStyle = Default::default();
+    <span class="kw">let </span>style2: FontStyle = Default::default();
+    <span class="macro">assert!</span>(style == style2);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

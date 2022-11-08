@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\utils\camera.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>camera.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/utils/camera.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>camera.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -188,190 +182,189 @@
 <span id="182">182</span>
 <span id="183">183</span>
 <span id="184">184</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Canvas</span>, <span class="ident">Matrix</span>, <span class="ident">M44</span>, <span class="ident">V3</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">Sk3DView</span>, <span class="ident">SkCamera3D</span>, <span class="ident">SkPatch3D</span>};
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+</pre><pre class="rust"><code><span class="attribute">#![allow(deprecated)]
+</span><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Canvas, Matrix, M44, V3};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, Sk3DView, SkCamera3D, SkPatch3D};
+<span class="kw">use </span>std::fmt;
 
-<span class="attribute">#[<span class="ident">deprecated</span>(
-    <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>,
-    <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Skia now has support for a 4x matrix (core::M44) in core::Canvas.&quot;</span>
-)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Patch3D</span> {
-    <span class="kw">pub</span> <span class="ident">u</span>: <span class="ident">V3</span>,
-    <span class="kw">pub</span> <span class="ident">v</span>: <span class="ident">V3</span>,
-    <span class="kw">pub</span> <span class="ident">origin</span>: <span class="ident">V3</span>,
+<span class="attribute">#[deprecated(
+    since = <span class="string">&quot;0.30.0&quot;</span>,
+    note = <span class="string">&quot;Skia now has support for a 4x matrix (core::M44) in core::Canvas.&quot;
+</span>)]
+#[derive(Clone, PartialEq, Debug)]
+#[repr(C)]
+</span><span class="kw">pub struct </span>Patch3D {
+    <span class="kw">pub </span>u: V3,
+    <span class="kw">pub </span>v: V3,
+    <span class="kw">pub </span>origin: V3,
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkPatch3D</span>, <span class="ident">Patch3D</span>, <span class="ident">patch_3d_layout</span>);
+<span class="macro">native_transmutable!</span>(SkPatch3D, Patch3D, patch_3d_layout);
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Patch3D</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">Patch3D::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkPatch3D::new</span>() })
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Patch3D</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() }
-        <span class="self">self</span>
-    }
-
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">m</span>: <span class="kw-2">&amp;</span><span class="ident">M44</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">Patch3D::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">transform</span>(<span class="ident">m</span>.<span class="ident">native</span>(), <span class="ident">dst</span>.<span class="ident">native_mut</span>()) }
-        <span class="ident">dst</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dot_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">V3</span><span class="op">&gt;</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dotWith</span>(<span class="ident">v</span>.<span class="ident">x</span>, <span class="ident">v</span>.<span class="ident">y</span>, <span class="ident">v</span>.<span class="ident">z</span>) }
+<span class="kw">impl </span>Default <span class="kw">for </span>Patch3D {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        Patch3D::from_native_c(<span class="kw">unsafe </span>{ SkPatch3D::new() })
     }
 }
 
-<span class="attribute">#[<span class="ident">deprecated</span>(
-    <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>,
-    <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Skia now has support for a 4x matrix (core::M44) in core::Canvas.&quot;</span>
-)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Camera3D</span> {
-    <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">V3</span>,
-    <span class="kw">pub</span> <span class="ident">axis</span>: <span class="ident">V3</span>,
-    <span class="kw">pub</span> <span class="ident">zenith</span>: <span class="ident">V3</span>,
-    <span class="kw">pub</span> <span class="ident">observer</span>: <span class="ident">V3</span>,
-    <span class="ident">orientation</span>: <span class="ident">Matrix</span>,
-    <span class="ident">need_to_update</span>: <span class="ident">bool</span>,
-}
+<span class="kw">impl </span>Patch3D {
+    <span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().reset() }
+        <span class="self">self
+    </span>}
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkCamera3D</span>, <span class="ident">Camera3D</span>, <span class="ident">camera_3d_layout</span>);
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>transform(<span class="kw-2">&amp;</span><span class="self">self</span>, m: <span class="kw-2">&amp;</span>M44) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>dst = Patch3D::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().transform(m.native(), dst.native_mut()) }
+        dst
+    }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Camera3D</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">Camera3D::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkCamera3D::new</span>() })
+    <span class="kw">pub fn </span>dot_with(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="kw">impl </span>Into&lt;V3&gt;) -&gt; scalar {
+        <span class="kw">let </span>v = v.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().dotWith(v.x, v.y, v.z) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Camera3D</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() }
-        <span class="self">self</span>
-    }
+<span class="attribute">#[deprecated(
+    since = <span class="string">&quot;0.30.0&quot;</span>,
+    note = <span class="string">&quot;Skia now has support for a 4x matrix (core::M44) in core::Canvas.&quot;
+</span>)]
+#[derive(Clone, PartialEq, Debug)]
+#[repr(C)]
+</span><span class="kw">pub struct </span>Camera3D {
+    <span class="kw">pub </span>location: V3,
+    <span class="kw">pub </span>axis: V3,
+    <span class="kw">pub </span>zenith: V3,
+    <span class="kw">pub </span>observer: V3,
+    orientation: Matrix,
+    need_to_update: bool,
+}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">update</span>() }
-        <span class="self">self</span>
-    }
+<span class="macro">native_transmutable!</span>(SkCamera3D, Camera3D, camera_3d_layout);
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">patch_to_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">quilt</span>: <span class="kw-2">&amp;</span><span class="ident">Patch3D</span>) -&gt; <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">matrix</span> <span class="op">=</span> <span class="ident">Matrix::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">patchToMatrix</span>(<span class="ident">quilt</span>.<span class="ident">native</span>(), <span class="ident">matrix</span>.<span class="ident">native_mut</span>())
+<span class="kw">impl </span>Default <span class="kw">for </span>Camera3D {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        Camera3D::from_native_c(<span class="kw">unsafe </span>{ SkCamera3D::new() })
+    }
+}
+
+<span class="kw">impl </span>Camera3D {
+    <span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().reset() }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().update() }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>patch_to_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, quilt: <span class="kw-2">&amp;</span>Patch3D) -&gt; Matrix {
+        <span class="kw">let </span><span class="kw-2">mut </span>matrix = Matrix::default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .patchToMatrix(quilt.native(), matrix.native_mut())
         }
-        <span class="ident">matrix</span>
+        matrix
     }
 }
 
-<span class="comment">// Note: original name is Sk3DView not SkView3D</span>
-<span class="comment">// Also note that the implementation uses interior pointers,</span>
-<span class="comment">// so we let Skia do the allocation.</span>
+<span class="comment">// Note: original name is Sk3DView not SkView3D
+// Also note that the implementation uses interior pointers,
+// so we let Skia do the allocation.
 
-<span class="attribute">#[<span class="ident">deprecated</span>(
-    <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.30.0&quot;</span>,
-    <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Skia now has support for a 4x matrix (core::M44) in core::Canvas.&quot;</span>
-)]</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">View3D</span> <span class="op">=</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">Sk3DView</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">View3D</span>);
+</span><span class="attribute">#[deprecated(
+    since = <span class="string">&quot;0.30.0&quot;</span>,
+    note = <span class="string">&quot;Skia now has support for a 4x matrix (core::M44) in core::Canvas.&quot;
+</span>)]
+</span><span class="kw">pub type </span>View3D = RefHandle&lt;Sk3DView&gt;;
+<span class="macro">unsafe_send_sync!</span>(View3D);
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">View3D</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>View3D {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">Sk3DView</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_Sk3DView_delete</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>Sk3DView {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_Sk3DView_delete(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">View3D</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;View3D&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>View3D {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;View3D&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RefHandle</span><span class="op">&lt;</span><span class="ident">Sk3DView</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">View3D::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_Sk3DView_new</span>() }).<span class="ident">unwrap</span>()
+<span class="kw">impl </span>RefHandle&lt;Sk3DView&gt; {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        View3D::from_ptr(<span class="kw">unsafe </span>{ sb::C_Sk3DView_new() }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">save</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">save</span>() }
-        <span class="self">self</span>
+    <span class="kw">pub fn </span>save(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().save() }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>restore(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().restore() }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;V3&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>d = d.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().translate(d.x, d.y, d.z) }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>rotate_x(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deg: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().rotateX(deg) }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>rotate_y(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deg: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().rotateY(deg) }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>rotate_z(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deg: scalar) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().rotateZ(deg) }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Matrix {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getMatrix(m.native_mut()) }
+        m
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">restore</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">restore</span>() }
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>apply_to_canvas(<span class="kw-2">&amp;</span><span class="self">self</span>, canvas: <span class="kw-2">&amp;mut </span>Canvas) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().applyToCanvas(canvas.native_mut()) }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">V3</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">translate</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">d</span>.<span class="ident">z</span>) }
-        <span class="self">self</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_x</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">deg</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rotateX</span>(<span class="ident">deg</span>) }
-        <span class="self">self</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_y</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">deg</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rotateY</span>(<span class="ident">deg</span>) }
-        <span class="self">self</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_z</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">deg</span>: <span class="ident">scalar</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rotateZ</span>(<span class="ident">deg</span>) }
-        <span class="self">self</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Matrix</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Matrix::default</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getMatrix</span>(<span class="ident">m</span>.<span class="ident">native_mut</span>()) }
-        <span class="ident">m</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply_to_canvas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">canvas</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Canvas</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">applyToCanvas</span>(<span class="ident">canvas</span>.<span class="ident">native_mut</span>()) }
-        <span class="self">self</span>
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dot_with_normal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">V3</span><span class="op">&gt;</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">dotWithNormal</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">d</span>.<span class="ident">z</span>) }
+    <span class="kw">pub fn </span>dot_with_normal(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;V3&gt;) -&gt; scalar {
+        <span class="kw">let </span>d = d.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().dotWithNormal(d.x, d.y, d.z) }
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_canvas_passing_syntax</span>() {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::new_null_canvas</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Surface</span>;
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_canvas_passing_syntax() {
+    <span class="kw">use </span><span class="kw">crate</span>::utils::new_null_canvas;
+    <span class="kw">use </span><span class="kw">crate</span>::Surface;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">null_canvas</span> <span class="op">=</span> <span class="ident">new_null_canvas</span>();
-    <span class="kw">let</span> <span class="ident">view</span> <span class="op">=</span> <span class="ident">View3D::default</span>();
-    <span class="comment">// as mutable reference</span>
-    <span class="ident">view</span>.<span class="ident">apply_to_canvas</span>(<span class="kw-2">&amp;mut</span> <span class="ident">null_canvas</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>null_canvas = new_null_canvas();
+    <span class="kw">let </span>view = View3D::default();
+    <span class="comment">// as mutable reference
+    </span>view.apply_to_canvas(<span class="kw-2">&amp;mut </span>null_canvas);
 
-    <span class="comment">// and one with a mutable reference to a shared Canvas:</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">Surface::new_raster_n32_premul</span>((<span class="number">100</span>, <span class="number">100</span>)).<span class="ident">unwrap</span>();
-    <span class="ident">view</span>.<span class="ident">apply_to_canvas</span>(<span class="ident">surface</span>.<span class="ident">canvas</span>());
+    <span class="comment">// and one with a mutable reference to a shared Canvas:
+    </span><span class="kw">let </span><span class="kw-2">mut </span>surface = Surface::new_raster_n32_premul((<span class="number">100</span>, <span class="number">100</span>)).unwrap();
+    view.apply_to_canvas(surface.canvas());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\rsxform.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rsxform.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/rsxform.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rsxform.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -80,82 +74,81 @@
 <span id="74">74</span>
 <span id="75">75</span>
 <span id="76">76</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Point</span>, <span class="ident">Size</span>, <span class="ident">Vector</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings::SkRSXform</span>;
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Point, Size, Vector};
+<span class="kw">use </span>skia_bindings::SkRSXform;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RSXform</span> {
-    <span class="kw">pub</span> <span class="ident">scos</span>: <span class="ident">scalar</span>,
-    <span class="kw">pub</span> <span class="ident">ssin</span>: <span class="ident">scalar</span>,
-    <span class="comment">// don&#39;t use Vector here to keep this struct Skia-like.</span>
-    <span class="kw">pub</span> <span class="ident">tx</span>: <span class="ident">scalar</span>,
-    <span class="kw">pub</span> <span class="ident">ty</span>: <span class="ident">scalar</span>,
+<span class="attribute">#[derive(Copy, Clone, PartialEq, Debug)]
+#[repr(C)]
+</span><span class="kw">pub struct </span>RSXform {
+    <span class="kw">pub </span>scos: scalar,
+    <span class="kw">pub </span>ssin: scalar,
+    <span class="comment">// don&#39;t use Vector here to keep this struct Skia-like.
+    </span><span class="kw">pub </span>tx: scalar,
+    <span class="kw">pub </span>ty: scalar,
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkRSXform</span>, <span class="ident">RSXform</span>, <span class="ident">rsxform_layout</span>);
+<span class="macro">native_transmutable!</span>(SkRSXform, RSXform, rsxform_layout);
 
-<span class="kw">impl</span> <span class="ident">RSXform</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">scos</span>: <span class="ident">scalar</span>, <span class="ident">ssin</span>: <span class="ident">scalar</span>, <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">into</span>();
-        <span class="self">Self</span> {
-            <span class="ident">scos</span>,
-            <span class="ident">ssin</span>,
-            <span class="ident">tx</span>: <span class="ident">t</span>.<span class="ident">x</span>,
-            <span class="ident">ty</span>: <span class="ident">t</span>.<span class="ident">y</span>,
+<span class="kw">impl </span>RSXform {
+    <span class="kw">pub fn </span>new(scos: scalar, ssin: scalar, t: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>t = t.into();
+        <span class="self">Self </span>{
+            scos,
+            ssin,
+            tx: t.x,
+            ty: t.y,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_radians</span>(
-        <span class="ident">scale</span>: <span class="ident">scalar</span>,
-        <span class="ident">radians</span>: <span class="ident">scalar</span>,
-        <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>,
-        <span class="ident">a</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">into</span>();
+    <span class="kw">pub fn </span>from_radians(
+        scale: scalar,
+        radians: scalar,
+        t: <span class="kw">impl </span>Into&lt;Vector&gt;,
+        a: <span class="kw">impl </span>Into&lt;Point&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>t = t.into();
+        <span class="kw">let </span>a = a.into();
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">radians</span>.<span class="ident">sin</span>() <span class="op">*</span> <span class="ident">scale</span>;
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">radians</span>.<span class="ident">cos</span>() <span class="op">*</span> <span class="ident">scale</span>;
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">c</span>, <span class="ident">s</span>, (<span class="ident">t</span>.<span class="ident">x</span> <span class="op">+</span> <span class="op">-</span><span class="ident">c</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">s</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">y</span>, <span class="ident">t</span>.<span class="ident">y</span> <span class="op">+</span> <span class="op">-</span><span class="ident">s</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">c</span> <span class="op">*</span> <span class="ident">a</span>.<span class="ident">y</span>))
+        <span class="kw">let </span>s = radians.sin() * scale;
+        <span class="kw">let </span>c = radians.cos() * scale;
+        <span class="self">Self</span>::new(c, s, (t.x + -c * a.x + s * a.y, t.y + -s * a.x - c * a.y))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect_stays_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">scos</span> <span class="op">==</span> <span class="number">0.0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">ssin</span> <span class="op">==</span> <span class="number">0.0</span>
+    <span class="kw">pub fn </span>rect_stays_rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.scos == <span class="number">0.0 </span>|| <span class="self">self</span>.ssin == <span class="number">0.0
+    </span>}
+
+    <span class="kw">pub fn </span>set_identity(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.set(<span class="number">1.0</span>, <span class="number">0.0</span>, Vector::default())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_identity</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="ident">Vector::default</span>())
+    <span class="kw">pub fn </span>set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, scos: scalar, ssin: scalar, t: <span class="kw">impl </span>Into&lt;Vector&gt;) {
+        <span class="kw">let </span>t = t.into();
+        <span class="self">self</span>.scos = scos;
+        <span class="self">self</span>.ssin = ssin;
+        <span class="self">self</span>.tx = t.x;
+        <span class="self">self</span>.ty = t.y;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">scos</span>: <span class="ident">scalar</span>, <span class="ident">ssin</span>: <span class="ident">scalar</span>, <span class="ident">t</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">scos</span> <span class="op">=</span> <span class="ident">scos</span>;
-        <span class="self">self</span>.<span class="ident">ssin</span> <span class="op">=</span> <span class="ident">ssin</span>;
-        <span class="self">self</span>.<span class="ident">tx</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">x</span>;
-        <span class="self">self</span>.<span class="ident">ty</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">y</span>;
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_quad</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) -&gt; [<span class="ident">Point</span>; <span class="number">4</span>] {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">quad</span>: [<span class="ident">Point</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">toQuad</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>, <span class="ident">quad</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>())
+    <span class="kw">pub fn </span>to_quad(<span class="self">self</span>, size: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; [Point; <span class="number">4</span>] {
+        <span class="kw">let </span>size = size.into();
+        <span class="kw">let </span><span class="kw-2">mut </span>quad: [Point; <span class="number">4</span>] = Default::default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .toQuad(size.width, size.height, quad.native_mut().as_mut_ptr())
         }
-        <span class="ident">quad</span>
+        quad
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_tri_strip</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span>) -&gt; [<span class="ident">Point</span>; <span class="number">4</span>] {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">strip</span>: [<span class="ident">Point</span>; <span class="number">4</span>] <span class="op">=</span> <span class="ident">Default::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">toTriStrip</span>(<span class="ident">size</span>.<span class="ident">width</span>, <span class="ident">size</span>.<span class="ident">height</span>, <span class="ident">strip</span>.<span class="ident">native_mut</span>().<span class="ident">as_mut_ptr</span>())
+    <span class="kw">pub fn </span>to_tri_strip(<span class="self">self</span>, size: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; [Point; <span class="number">4</span>] {
+        <span class="kw">let </span>size = size.into();
+        <span class="kw">let </span><span class="kw-2">mut </span>strip: [Point; <span class="number">4</span>] = Default::default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .toTriStrip(size.width, size.height, strip.native_mut().as_mut_ptr())
         }
-        <span class="ident">strip</span>
+        strip
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

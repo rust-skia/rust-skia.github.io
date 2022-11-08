@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\utils\shadow_utils.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shadow_utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/utils/shadow_utils.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shadow_utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -105,107 +99,110 @@
 <span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Canvas</span>, <span class="ident">Color</span>, <span class="ident">Matrix</span>, <span class="ident">Path</span>, <span class="ident">Point3</span>, <span class="ident">Rect</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkShadowUtils</span>};
+<span id="102">102</span>
+<span id="103">103</span>
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Canvas, Color, Matrix, Path, Point3, Rect};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkShadowUtils};
 
-<span class="macro">bitflags!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ShadowFlags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">TRANSPARENT_OCCLUDER</span> <span class="op">=</span> <span class="ident">sb::SkShadowFlags_kTransparentOccluder_ShadowFlag</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">GEOMETRIC_ONLY</span> <span class="op">=</span> <span class="ident">sb::SkShadowFlags_kGeometricOnly_ShadowFlag</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">ALL</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::TRANSPARENT_OCCLUDER</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::GEOMETRIC_ONLY</span>.<span class="ident">bits</span>;
+<span class="macro">bitflags! </span>{
+    <span class="kw">pub struct </span>ShadowFlags: u32 {
+        <span class="attribute">#[allow(clippy::unnecessary_cast)]
+        </span><span class="kw">const </span>TRANSPARENT_OCCLUDER = sb::SkShadowFlags_kTransparentOccluder_ShadowFlag <span class="kw">as </span>u32;
+        <span class="attribute">#[allow(clippy::unnecessary_cast)]
+        </span><span class="kw">const </span>GEOMETRIC_ONLY = sb::SkShadowFlags_kGeometricOnly_ShadowFlag <span class="kw">as </span>u32;
+        <span class="kw">const </span>ALL = <span class="self">Self</span>::TRANSPARENT_OCCLUDER.bits | <span class="self">Self</span>::GEOMETRIC_ONLY.bits;
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_shadow</span>(
-    <span class="ident">canvas</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Canvas</span>,
-    <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
-    <span class="ident">z_plane_params</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
-    <span class="ident">light_pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
-    <span class="ident">light_radius</span>: <span class="ident">scalar</span>,
-    <span class="ident">ambient_color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
-    <span class="ident">spot_color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
-    <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ShadowFlags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::too_many_arguments)]
+</span><span class="kw">pub fn </span>draw_shadow(
+    canvas: <span class="kw-2">&amp;mut </span>Canvas,
+    path: <span class="kw-2">&amp;</span>Path,
+    z_plane_params: <span class="kw">impl </span>Into&lt;Point3&gt;,
+    light_pos: <span class="kw">impl </span>Into&lt;Point3&gt;,
+    light_radius: scalar,
+    ambient_color: <span class="kw">impl </span>Into&lt;Color&gt;,
+    spot_color: <span class="kw">impl </span>Into&lt;Color&gt;,
+    flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ShadowFlags&gt;&gt;,
 ) {
-    <span class="kw">unsafe</span> {
-        <span class="ident">SkShadowUtils::DrawShadow</span>(
-            <span class="ident">canvas</span>.<span class="ident">native_mut</span>(),
-            <span class="ident">path</span>.<span class="ident">native</span>(),
-            <span class="ident">z_plane_params</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
-            <span class="ident">light_pos</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
-            <span class="ident">light_radius</span>,
-            <span class="ident">ambient_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-            <span class="ident">spot_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-            <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_else</span>(<span class="ident">ShadowFlags::empty</span>).<span class="ident">bits</span>(),
+    <span class="kw">unsafe </span>{
+        SkShadowUtils::DrawShadow(
+            canvas.native_mut(),
+            path.native(),
+            z_plane_params.into().native(),
+            light_pos.into().native(),
+            light_radius,
+            ambient_color.into().into_native(),
+            spot_color.into().into_native(),
+            flags.into().unwrap_or_else(ShadowFlags::empty).bits(),
         )
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_bounds</span>(
-    <span class="ident">ctm</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>,
-    <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
-    <span class="ident">z_plane_params</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
-    <span class="ident">light_pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
-    <span class="ident">light_radius</span>: <span class="ident">scalar</span>,
-    <span class="ident">flags</span>: <span class="ident">u32</span>,
-) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::Rect::default</span>();
-    <span class="kw">unsafe</span> {
-        <span class="ident">SkShadowUtils::GetLocalBounds</span>(
-            <span class="ident">ctm</span>.<span class="ident">native</span>(),
-            <span class="ident">path</span>.<span class="ident">native</span>(),
-            <span class="ident">z_plane_params</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
-            <span class="ident">light_pos</span>.<span class="ident">into</span>().<span class="ident">native</span>(),
-            <span class="ident">light_radius</span>,
-            <span class="ident">flags</span>,
-            <span class="ident">r</span>.<span class="ident">native_mut</span>(),
+<span class="kw">pub fn </span>local_bounds(
+    ctm: <span class="kw-2">&amp;</span>Matrix,
+    path: <span class="kw-2">&amp;</span>Path,
+    z_plane_params: <span class="kw">impl </span>Into&lt;Point3&gt;,
+    light_pos: <span class="kw">impl </span>Into&lt;Point3&gt;,
+    light_radius: scalar,
+    flags: u32,
+) -&gt; <span class="prelude-ty">Option</span>&lt;Rect&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="kw">crate</span>::Rect::default();
+    <span class="kw">unsafe </span>{
+        SkShadowUtils::GetLocalBounds(
+            ctm.native(),
+            path.native(),
+            z_plane_params.into().native(),
+            light_pos.into().native(),
+            light_radius,
+            flags,
+            r.native_mut(),
         )
     }
-    .<span class="ident">if_true_some</span>(<span class="ident">r</span>)
+    .if_true_some(r)
 }
 
-<span class="kw">impl</span> <span class="ident">Canvas</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_shadow</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
-        <span class="ident">z_plane_params</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
-        <span class="ident">light_pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point3</span><span class="op">&gt;</span>,
-        <span class="ident">light_radius</span>: <span class="ident">scalar</span>,
-        <span class="ident">ambient_color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
-        <span class="ident">spot_color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
-        <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ShadowFlags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="ident">draw_shadow</span>(
+<span class="kw">impl </span>Canvas {
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">pub fn </span>draw_shadow(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        path: <span class="kw-2">&amp;</span>Path,
+        z_plane_params: <span class="kw">impl </span>Into&lt;Point3&gt;,
+        light_pos: <span class="kw">impl </span>Into&lt;Point3&gt;,
+        light_radius: scalar,
+        ambient_color: <span class="kw">impl </span>Into&lt;Color&gt;,
+        spot_color: <span class="kw">impl </span>Into&lt;Color&gt;,
+        flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ShadowFlags&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        draw_shadow(
             <span class="self">self</span>,
-            <span class="ident">path</span>,
-            <span class="ident">z_plane_params</span>,
-            <span class="ident">light_pos</span>,
-            <span class="ident">light_radius</span>,
-            <span class="ident">ambient_color</span>,
-            <span class="ident">spot_color</span>,
-            <span class="ident">flags</span>,
+            path,
+            z_plane_params,
+            light_pos,
+            light_radius,
+            ambient_color,
+            spot_color,
+            flags,
         );
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_tonal_colors</span>(
-    <span class="ident">ambient_color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
-    <span class="ident">spot_color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
-) -&gt; (<span class="ident">Color</span>, <span class="ident">Color</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out_ambient_color</span> <span class="op">=</span> <span class="ident">Color::default</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out_spot_color</span> <span class="op">=</span> <span class="ident">Color::default</span>();
-    <span class="kw">unsafe</span> {
-        <span class="ident">SkShadowUtils::ComputeTonalColors</span>(
-            <span class="ident">ambient_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-            <span class="ident">spot_color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>(),
-            <span class="ident">out_ambient_color</span>.<span class="ident">native_mut</span>(),
-            <span class="ident">out_spot_color</span>.<span class="ident">native_mut</span>(),
+<span class="kw">pub fn </span>compute_tonal_colors(
+    ambient_color: <span class="kw">impl </span>Into&lt;Color&gt;,
+    spot_color: <span class="kw">impl </span>Into&lt;Color&gt;,
+) -&gt; (Color, Color) {
+    <span class="kw">let </span><span class="kw-2">mut </span>out_ambient_color = Color::default();
+    <span class="kw">let </span><span class="kw-2">mut </span>out_spot_color = Color::default();
+    <span class="kw">unsafe </span>{
+        SkShadowUtils::ComputeTonalColors(
+            ambient_color.into().into_native(),
+            spot_color.into().into_native(),
+            out_ambient_color.native_mut(),
+            out_spot_color.native_mut(),
         )
     }
-    (<span class="ident">out_ambient_color</span>, <span class="ident">out_spot_color</span>)
+    (out_ambient_color, out_spot_color)
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

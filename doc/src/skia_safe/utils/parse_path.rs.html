@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\utils\parse_path.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parse_path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/utils/parse_path.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parse_path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -44,46 +38,45 @@
 <span id="38">38</span>
 <span id="39">39</span>
 <span id="40">40</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">interop</span>,
-    <span class="ident">prelude</span>::{<span class="ident">IfBoolSome</span>, <span class="ident">NativeAccess</span>},
-    <span class="ident">Path</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    interop,
+    prelude::{IfBoolSome, NativeAccess},
+    Path,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
-<span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
+<span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
+<span class="kw">use </span>std::ffi::CString;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_svg</span>(<span class="ident">svg</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">svg</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
-    <span class="kw">unsafe</span> { <span class="ident">sb::SkParsePath_FromSVGString</span>(<span class="ident">str</span>.<span class="ident">as_ptr</span>(), <span class="ident">path</span>.<span class="ident">native_mut</span>()) }.<span class="ident">if_true_some</span>(<span class="ident">path</span>)
+<span class="kw">pub fn </span>from_svg(svg: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Path&gt; {
+    <span class="kw">let </span>str = CString::new(svg.as_ref()).unwrap();
+    <span class="kw">let </span><span class="kw-2">mut </span>path = Path::default();
+    <span class="kw">unsafe </span>{ sb::SkParsePath_FromSVGString(str.as_ptr(), path.native_mut()) }.if_true_some(path)
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkParsePath_PathEncoding</span> <span class="kw">as</span> <span class="ident">PathEncoding</span>;
-<span class="macro">variant_name!</span>(<span class="ident">PathEncoding::Absolute</span>, <span class="ident">path_encoding_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkParsePath_PathEncoding <span class="kw">as </span>PathEncoding;
+<span class="macro">variant_name!</span>(PathEncoding::Absolute, path_encoding_naming);
 
-<span class="kw">impl</span> <span class="ident">Path</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_svg</span>(<span class="ident">svg</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span> {
-        <span class="ident">from_svg</span>(<span class="ident">svg</span>)
+<span class="kw">impl </span>Path {
+    <span class="kw">pub fn </span>from_svg(svg: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Path&gt; {
+        from_svg(svg)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="ident">to_svg</span>(<span class="self">self</span>)
+    <span class="kw">pub fn </span>to_svg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        to_svg(<span class="self">self</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg_with_encoding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">encoding</span>: <span class="ident">PathEncoding</span>) -&gt; <span class="ident">String</span> {
-        <span class="ident">to_svg_with_encoding</span>(<span class="self">self</span>, <span class="ident">encoding</span>)
+    <span class="kw">pub fn </span>to_svg_with_encoding(<span class="kw-2">&amp;</span><span class="self">self</span>, encoding: PathEncoding) -&gt; String {
+        to_svg_with_encoding(<span class="self">self</span>, encoding)
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">String</span> {
-    <span class="ident">to_svg_with_encoding</span>(<span class="ident">path</span>, <span class="ident">PathEncoding::Absolute</span>)
+<span class="kw">pub fn </span>to_svg(path: <span class="kw-2">&amp;</span>Path) -&gt; String {
+    to_svg_with_encoding(path, PathEncoding::Absolute)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_svg_with_encoding</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">encoding</span>: <span class="ident">PathEncoding</span>) -&gt; <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">svg</span> <span class="op">=</span> <span class="ident">interop::String::default</span>();
-    <span class="kw">unsafe</span> { <span class="ident">sb::SkParsePath_ToSVGString</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">svg</span>.<span class="ident">native_mut</span>(), <span class="ident">encoding</span>) };
-    <span class="ident">svg</span>.<span class="ident">as_str</span>().<span class="ident">into</span>()
+<span class="kw">pub fn </span>to_svg_with_encoding(path: <span class="kw-2">&amp;</span>Path, encoding: PathEncoding) -&gt; String {
+    <span class="kw">let </span><span class="kw-2">mut </span>svg = interop::String::default();
+    <span class="kw">unsafe </span>{ sb::SkParsePath_ToSVGString(path.native(), svg.native_mut(), encoding) };
+    svg.as_str().into()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

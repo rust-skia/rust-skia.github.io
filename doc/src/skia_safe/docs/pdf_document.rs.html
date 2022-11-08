@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\docs\pdf_document.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pdf_document.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/docs/pdf_document.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pdf_document.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -296,298 +290,297 @@
 <span id="290">290</span>
 <span id="291">291</span>
 <span id="292">292</span>
-</pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pdf</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">interop</span>::{<span class="ident">AsStr</span>, <span class="ident">DynamicMemoryWStream</span>, <span class="ident">SetStr</span>},
-        <span class="ident">prelude</span>::<span class="kw-2">*</span>,
-        <span class="ident">scalar</span>, <span class="ident">DateTime</span>, <span class="ident">Document</span>,
+</pre><pre class="rust"><code><span class="kw">pub mod </span>pdf {
+    <span class="kw">use crate</span>::{
+        interop::{AsStr, DynamicMemoryWStream, SetStr},
+        prelude::<span class="kw-2">*</span>,
+        scalar, DateTime, Document,
     };
-    <span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-        <span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkPDF_AttributeList</span>, <span class="ident">SkPDF_Metadata</span>, <span class="ident">SkPDF_StructureElementNode</span>,
+    <span class="kw">use </span>skia_bindings::{
+        <span class="self">self </span><span class="kw">as </span>sb, SkPDF_AttributeList, SkPDF_Metadata, SkPDF_StructureElementNode,
     };
-    <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::CString</span>, <span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>};
+    <span class="kw">use </span>std::{ffi::CString, fmt, mem, ptr};
 
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AttributeList</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPDF_AttributeList</span><span class="op">&gt;</span>;
-    <span class="macro">unsafe_send_sync!</span>(<span class="ident">AttributeList</span>);
+    <span class="kw">pub type </span>AttributeList = Handle&lt;SkPDF_AttributeList&gt;;
+    <span class="macro">unsafe_send_sync!</span>(AttributeList);
 
-    <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPDF_AttributeList</span> {
-        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-            <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPDF_AttributeList_destruct</span>(<span class="self">self</span>) }
+    <span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkPDF_AttributeList {
+        <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+            <span class="kw">unsafe </span>{ sb::C_SkPDF_AttributeList_destruct(<span class="self">self</span>) }
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AttributeList</span> {
-        <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-            <span class="ident">AttributeList::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkPDF_AttributeList::new</span>() })
+    <span class="kw">impl </span>Default <span class="kw">for </span>AttributeList {
+        <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+            AttributeList::from_native_c(<span class="kw">unsafe </span>{ SkPDF_AttributeList::new() })
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">AttributeList</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-            <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;AttributeList&quot;</span>).<span class="ident">finish</span>()
+    <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>AttributeList {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+            f.debug_struct(<span class="string">&quot;AttributeList&quot;</span>).finish()
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">AttributeList</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_int</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="ident">owner</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">value</span>: <span class="ident">i32</span>,
-        ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="kw">let</span> <span class="ident">owner</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">owner</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">native_mut</span>()
-                    .<span class="ident">appendInt</span>(<span class="ident">owner</span>.<span class="ident">as_ptr</span>(), <span class="ident">name</span>.<span class="ident">as_ptr</span>(), <span class="ident">value</span>)
+    <span class="kw">impl </span>AttributeList {
+        <span class="kw">pub fn </span>append_int(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+            owner: <span class="kw">impl </span>AsRef&lt;str&gt;,
+            name: <span class="kw">impl </span>AsRef&lt;str&gt;,
+            value: i32,
+        ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="kw">let </span>owner = CString::new(owner.as_ref()).unwrap();
+            <span class="kw">let </span>name = CString::new(name.as_ref()).unwrap();
+            <span class="kw">unsafe </span>{
+                <span class="self">self</span>.native_mut()
+                    .appendInt(owner.as_ptr(), name.as_ptr(), value)
             }
-            <span class="self">self</span>
-        }
+            <span class="self">self
+        </span>}
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_float</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="ident">owner</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">value</span>: <span class="ident">f32</span>,
-        ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="kw">let</span> <span class="ident">owner</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">owner</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">native_mut</span>()
-                    .<span class="ident">appendFloat</span>(<span class="ident">owner</span>.<span class="ident">as_ptr</span>(), <span class="ident">name</span>.<span class="ident">as_ptr</span>(), <span class="ident">value</span>)
+        <span class="kw">pub fn </span>append_float(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+            owner: <span class="kw">impl </span>AsRef&lt;str&gt;,
+            name: <span class="kw">impl </span>AsRef&lt;str&gt;,
+            value: f32,
+        ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="kw">let </span>owner = CString::new(owner.as_ref()).unwrap();
+            <span class="kw">let </span>name = CString::new(name.as_ref()).unwrap();
+            <span class="kw">unsafe </span>{
+                <span class="self">self</span>.native_mut()
+                    .appendFloat(owner.as_ptr(), name.as_ptr(), value)
             }
-            <span class="self">self</span>
-        }
+            <span class="self">self
+        </span>}
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_float_array</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="ident">owner</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">value</span>: <span class="kw-2">&amp;</span>[<span class="ident">f32</span>],
-        ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="kw">let</span> <span class="ident">owner</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">owner</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">unsafe</span> {
-                <span class="ident">sb::C_SkPDF_AttributeList_appendFloatArray</span>(
-                    <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                    <span class="ident">owner</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">name</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">value</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">value</span>.<span class="ident">len</span>(),
+        <span class="kw">pub fn </span>append_float_array(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+            owner: <span class="kw">impl </span>AsRef&lt;str&gt;,
+            name: <span class="kw">impl </span>AsRef&lt;str&gt;,
+            value: <span class="kw-2">&amp;</span>[f32],
+        ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="kw">let </span>owner = CString::new(owner.as_ref()).unwrap();
+            <span class="kw">let </span>name = CString::new(name.as_ref()).unwrap();
+            <span class="kw">unsafe </span>{
+                sb::C_SkPDF_AttributeList_appendFloatArray(
+                    <span class="self">self</span>.native_mut(),
+                    owner.as_ptr(),
+                    name.as_ptr(),
+                    value.as_ptr(),
+                    value.len(),
                 )
             }
-            <span class="self">self</span>
+            <span class="self">self
+        </span>}
+    }
+
+    <span class="attribute">#[repr(transparent)]
+    </span><span class="kw">pub struct </span>StructureElementNode(ptr::NonNull&lt;SkPDF_StructureElementNode&gt;);
+
+    <span class="kw">impl </span>NativeAccess&lt;SkPDF_StructureElementNode&gt; <span class="kw">for </span>StructureElementNode {
+        <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkPDF_StructureElementNode {
+            <span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.as_ref() }
+        }
+        <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkPDF_StructureElementNode {
+            <span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.as_mut() }
         }
     }
 
-    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StructureElementNode</span>(<span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">SkPDF_StructureElementNode</span><span class="op">&gt;</span>);
-
-    <span class="kw">impl</span> <span class="ident">NativeAccess</span><span class="op">&lt;</span><span class="ident">SkPDF_StructureElementNode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StructureElementNode</span> {
-        <span class="kw">fn</span> <span class="ident">native</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkPDF_StructureElementNode</span> {
-            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>() }
-        }
-        <span class="kw">fn</span> <span class="ident">native_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">SkPDF_StructureElementNode</span> {
-            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_mut</span>() }
+    <span class="kw">impl </span>Drop <span class="kw">for </span>StructureElementNode {
+        <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+            <span class="kw">unsafe </span>{ sb::C_SkPDF_StructureElementNode_delete(<span class="self">self</span>.native_mut()) }
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">StructureElementNode</span> {
-        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-            <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPDF_StructureElementNode_delete</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">impl </span>Default <span class="kw">for </span>StructureElementNode {
+        <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+            <span class="self">Self</span>::new(<span class="string">&quot;&quot;</span>)
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">StructureElementNode</span> {
-        <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-            <span class="ident"><span class="self">Self</span>::new</span>(<span class="string">&quot;&quot;</span>)
+    <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>StructureElementNode {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+            f.debug_struct(<span class="string">&quot;StructureElementNode&quot;</span>)
+                .field(<span class="string">&quot;type_string&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.type_string())
+                .field(<span class="string">&quot;child_vector&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.child_vector())
+                .field(<span class="string">&quot;node_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.node_id())
+                .field(<span class="string">&quot;attributes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.attributes())
+                .field(<span class="string">&quot;alt&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.alt())
+                .field(<span class="string">&quot;lang&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.lang())
+                .finish()
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">StructureElementNode</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-            <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;StructureElementNode&quot;</span>)
-                .<span class="ident">field</span>(<span class="string">&quot;type_string&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">type_string</span>())
-                .<span class="ident">field</span>(<span class="string">&quot;child_vector&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">child_vector</span>())
-                .<span class="ident">field</span>(<span class="string">&quot;node_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">node_id</span>())
-                .<span class="ident">field</span>(<span class="string">&quot;attributes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">attributes</span>())
-                .<span class="ident">field</span>(<span class="string">&quot;alt&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">alt</span>())
-                .<span class="ident">field</span>(<span class="string">&quot;lang&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">lang</span>())
-                .<span class="ident">finish</span>()
-        }
-    }
-
-    <span class="kw">impl</span> <span class="ident">StructureElementNode</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">type_string</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">node</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::default</span>();
-            <span class="ident">node</span>.<span class="ident">set_type_string</span>(<span class="ident">type_string</span>);
-            <span class="ident">node</span>
+    <span class="kw">impl </span>StructureElementNode {
+        <span class="kw">pub fn </span>new(type_string: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="self">Self </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">Self</span>::default();
+            node.set_type_string(type_string);
+            node
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_type_string</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">type_string</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fTypeString</span>.<span class="ident">set_str</span>(<span class="ident">type_string</span>);
-            <span class="self">self</span>
+        <span class="kw">pub fn </span>set_type_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, type_string: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="self">self</span>.native_mut().fTypeString.set_str(type_string);
+            <span class="self">self
+        </span>}
+
+        <span class="kw">pub fn </span>type_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+            <span class="self">self</span>.native().fTypeString.as_str()
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">type_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fTypeString</span>.<span class="ident">as_str</span>()
-        }
-
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_child_vector</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="kw-2">mut</span> <span class="ident">child_vector</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">StructureElementNode</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="comment">// strategy is to move them out by setting them to nullptr (drop() will handle a nullptr on the rust side)</span>
-            <span class="kw">unsafe</span> {
-                <span class="ident">sb::C_SkPDF_StructureElementNode_setChildVector</span>(
-                    <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                    <span class="ident">child_vector</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                    <span class="ident">child_vector</span>.<span class="ident">len</span>(),
+        <span class="kw">pub fn </span>set_child_vector(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+            <span class="kw-2">mut </span>child_vector: Vec&lt;StructureElementNode&gt;,
+        ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="comment">// strategy is to move them out by setting them to nullptr (drop() will handle a nullptr on the rust side)
+            </span><span class="kw">unsafe </span>{
+                sb::C_SkPDF_StructureElementNode_setChildVector(
+                    <span class="self">self</span>.native_mut(),
+                    child_vector.as_mut_ptr() <span class="kw">as _</span>,
+                    child_vector.len(),
                 )
             }
-            <span class="self">self</span>
-        }
+            <span class="self">self
+        </span>}
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_child</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="ident">StructureElementNode</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="kw">unsafe</span> {
-                <span class="ident">sb::C_SkPDF_StructElementNode_appendChild</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">node</span>.<span class="number">0</span>.<span class="ident">as_ptr</span>());
+        <span class="kw">pub fn </span>append_child(<span class="kw-2">&amp;mut </span><span class="self">self</span>, node: StructureElementNode) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="kw">unsafe </span>{
+                sb::C_SkPDF_StructElementNode_appendChild(<span class="self">self</span>.native_mut(), node.<span class="number">0</span>.as_ptr());
             }
-            <span class="ident">mem::forget</span>(<span class="ident">node</span>);
-            <span class="self">self</span>
-        }
+            mem::forget(node);
+            <span class="self">self
+        </span>}
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">child_vector</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">StructureElementNode</span>] {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">sb::C_SkPDF_StructureElementNode_getChildVector</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">ptr</span>);
-                <span class="ident">safer::from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">len</span>)
+        <span class="kw">pub fn </span>child_vector(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[StructureElementNode] {
+            <span class="kw">let </span><span class="kw-2">mut </span>ptr = ptr::null_mut();
+            <span class="kw">unsafe </span>{
+                <span class="kw">let </span>len = sb::C_SkPDF_StructureElementNode_getChildVector(<span class="self">self</span>.native(), <span class="kw-2">&amp;mut </span>ptr);
+                safer::from_raw_parts(ptr <span class="kw">as _</span>, len)
             }
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_node_id</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">node_id</span>: <span class="ident">i32</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fNodeId</span> <span class="op">=</span> <span class="ident">node_id</span>;
-            <span class="self">self</span>
+        <span class="kw">pub fn </span>set_node_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, node_id: i32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="self">self</span>.native_mut().fNodeId = node_id;
+            <span class="self">self
+        </span>}
+
+        <span class="kw">pub fn </span>node_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+            <span class="self">self</span>.native().fNodeId
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">node_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fNodeId</span>
+        <span class="kw">pub fn </span>attributes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AttributeList {
+            AttributeList::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fAttributes)
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attributes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">AttributeList</span> {
-            <span class="ident">AttributeList::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fAttributes</span>)
+        <span class="kw">pub fn </span>attributes_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>AttributeList {
+            AttributeList::from_native_ref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>.native_mut().fAttributes)
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attributes_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">AttributeList</span> {
-            <span class="ident">AttributeList::from_native_ref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fAttributes</span>)
+        <span class="kw">pub fn </span>set_alt(<span class="kw-2">&amp;mut </span><span class="self">self</span>, alt: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="self">self</span>.native_mut().fAlt.set_str(alt);
+            <span class="self">self
+        </span>}
+
+        <span class="kw">pub fn </span>alt(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+            <span class="self">self</span>.native().fAlt.as_str()
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_alt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">alt</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fAlt</span>.<span class="ident">set_str</span>(<span class="ident">alt</span>);
-            <span class="self">self</span>
-        }
+        <span class="kw">pub fn </span>set_lang(<span class="kw-2">&amp;mut </span><span class="self">self</span>, lang: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+            <span class="self">self</span>.native_mut().fLang.set_str(lang);
+            <span class="self">self
+        </span>}
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fAlt</span>.<span class="ident">as_str</span>()
-        }
-
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_lang</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">lang</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fLang</span>.<span class="ident">set_str</span>(<span class="ident">lang</span>);
-            <span class="self">self</span>
-        }
-
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lang</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fLang</span>.<span class="ident">as_str</span>()
+        <span class="kw">pub fn </span>lang(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+            <span class="self">self</span>.native().fLang.as_str()
         }
     }
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Metadata</span> {
-        <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">author</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">subject</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">keywords</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">creator</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">producer</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">creation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&gt;</span>,
-        <span class="kw">pub</span> <span class="ident">modified</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&gt;</span>,
-        <span class="kw">pub</span> <span class="ident">raster_dpi</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span>,
-        <span class="kw">pub</span> <span class="ident">pdfa</span>: <span class="ident">bool</span>,
-        <span class="kw">pub</span> <span class="ident">encoding_quality</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
-        <span class="comment">// TODO: this is not supported yet</span>
-        <span class="ident">structure_element_tree_root</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">StructureElementNode</span><span class="op">&gt;</span>,
+    <span class="attribute">#[derive(Default, Debug)]
+    </span><span class="kw">pub struct </span>Metadata {
+        <span class="kw">pub </span>title: String,
+        <span class="kw">pub </span>author: String,
+        <span class="kw">pub </span>subject: String,
+        <span class="kw">pub </span>keywords: String,
+        <span class="kw">pub </span>creator: String,
+        <span class="kw">pub </span>producer: String,
+        <span class="kw">pub </span>creation: <span class="prelude-ty">Option</span>&lt;DateTime&gt;,
+        <span class="kw">pub </span>modified: <span class="prelude-ty">Option</span>&lt;DateTime&gt;,
+        <span class="kw">pub </span>raster_dpi: <span class="prelude-ty">Option</span>&lt;scalar&gt;,
+        <span class="kw">pub </span>pdfa: bool,
+        <span class="kw">pub </span>encoding_quality: <span class="prelude-ty">Option</span>&lt;i32&gt;,
+        <span class="comment">// TODO: this is not supported yet
+        </span>structure_element_tree_root: <span class="prelude-ty">Option</span>&lt;StructureElementNode&gt;,
     }
 
-    <span class="comment">// TODO: SetNodeId</span>
+    <span class="comment">// TODO: SetNodeId
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_document</span>(<span class="ident">metadata</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Metadata</span><span class="op">&gt;</span>) -&gt; <span class="ident">Document</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">md</span> <span class="op">=</span> <span class="ident">InternalMetadata::default</span>();
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">metadata</span>) <span class="op">=</span> <span class="ident">metadata</span> {
-            <span class="kw">let</span> <span class="ident">internal</span> <span class="op">=</span> <span class="ident">md</span>.<span class="ident">native_mut</span>();
-            <span class="ident">internal</span>.<span class="ident">fTitle</span>.<span class="ident">set_str</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">title</span>);
-            <span class="ident">internal</span>.<span class="ident">fAuthor</span>.<span class="ident">set_str</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">author</span>);
-            <span class="ident">internal</span>.<span class="ident">fSubject</span>.<span class="ident">set_str</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">subject</span>);
-            <span class="ident">internal</span>.<span class="ident">fKeywords</span>.<span class="ident">set_str</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">keywords</span>);
-            <span class="ident">internal</span>.<span class="ident">fCreator</span>.<span class="ident">set_str</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">creator</span>);
-            <span class="ident">internal</span>.<span class="ident">fProducer</span>.<span class="ident">set_str</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">producer</span>);
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">creation</span>) <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">creation</span> {
-                <span class="ident">internal</span>.<span class="ident">fCreation</span> <span class="op">=</span> <span class="ident">creation</span>.<span class="ident">into_native</span>();
+    </span><span class="kw">pub fn </span>new_document(metadata: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Metadata&gt;) -&gt; Document {
+        <span class="kw">let </span><span class="kw-2">mut </span>md = InternalMetadata::default();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(metadata) = metadata {
+            <span class="kw">let </span>internal = md.native_mut();
+            internal.fTitle.set_str(<span class="kw-2">&amp;</span>metadata.title);
+            internal.fAuthor.set_str(<span class="kw-2">&amp;</span>metadata.author);
+            internal.fSubject.set_str(<span class="kw-2">&amp;</span>metadata.subject);
+            internal.fKeywords.set_str(<span class="kw-2">&amp;</span>metadata.keywords);
+            internal.fCreator.set_str(<span class="kw-2">&amp;</span>metadata.creator);
+            internal.fProducer.set_str(<span class="kw-2">&amp;</span>metadata.producer);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(creation) = metadata.creation {
+                internal.fCreation = creation.into_native();
             }
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">modified</span>) <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">modified</span> {
-                <span class="ident">internal</span>.<span class="ident">fModified</span> <span class="op">=</span> <span class="ident">modified</span>.<span class="ident">into_native</span>();
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(modified) = metadata.modified {
+                internal.fModified = modified.into_native();
             }
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">raster_dpi</span>) <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">raster_dpi</span> {
-                <span class="ident">internal</span>.<span class="ident">fRasterDPI</span> <span class="op">=</span> <span class="ident">raster_dpi</span>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(raster_dpi) = metadata.raster_dpi {
+                internal.fRasterDPI = raster_dpi;
             }
-            <span class="ident">internal</span>.<span class="ident">fPDFA</span> <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">pdfa</span>;
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">encoding_quality</span>) <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">encoding_quality</span> {
-                <span class="ident">internal</span>.<span class="ident">fEncodingQuality</span> <span class="op">=</span> <span class="ident">encoding_quality</span>
+            internal.fPDFA = metadata.pdfa;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(encoding_quality) = metadata.encoding_quality {
+                internal.fEncodingQuality = encoding_quality
             }
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">_structure_element_tree_root</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">structure_element_tree_root</span> {
-                <span class="comment">// TODO: How can we be sure that the tree root is not being dropped while the document is processed?</span>
-                <span class="macro">unimplemented!</span>(<span class="string">&quot;&quot;</span>);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(_structure_element_tree_root) = <span class="kw-2">&amp;</span>metadata.structure_element_tree_root {
+                <span class="comment">// TODO: How can we be sure that the tree root is not being dropped while the document is processed?
+                </span><span class="macro">unimplemented!</span>(<span class="string">&quot;&quot;</span>);
             }
         }
 
-        <span class="comment">// We enable harfbuzz font sub-setting in PDF documents if textlayout is enabled.</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;textlayout&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;embed-icudtl&quot;</span>))]</span>
-        <span class="ident"><span class="kw">crate</span>::icu::init</span>();
+        <span class="comment">// We enable harfbuzz font sub-setting in PDF documents if textlayout is enabled.
+        </span><span class="attribute">#[cfg(all(feature = <span class="string">&quot;textlayout&quot;</span>, feature = <span class="string">&quot;embed-icudtl&quot;</span>))]
+        </span><span class="kw">crate</span>::icu::init();
 
-        <span class="comment">// we can&#39;t move the memory stream around anymore as soon it&#39;s referred by</span>
-        <span class="comment">// the document.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">memory_stream</span> <span class="op">=</span> <span class="ident">Box::pin</span>(<span class="ident">DynamicMemoryWStream::new</span>());
-        <span class="kw">let</span> <span class="ident">document</span> <span class="op">=</span> <span class="ident">RCHandle::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkPDF_MakeDocument</span>(<span class="ident">memory_stream</span>.<span class="ident">native_mut</span>().<span class="ident">base_mut</span>(), <span class="ident">md</span>.<span class="ident">native</span>())
+        <span class="comment">// we can&#39;t move the memory stream around anymore as soon it&#39;s referred by
+        // the document.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>memory_stream = Box::pin(DynamicMemoryWStream::new());
+        <span class="kw">let </span>document = RCHandle::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkPDF_MakeDocument(memory_stream.native_mut().base_mut(), md.native())
         })
-        .<span class="ident">unwrap</span>();
+        .unwrap();
 
-        <span class="ident">Document::new</span>(<span class="ident">memory_stream</span>, <span class="ident">document</span>)
+        Document::new(memory_stream, document)
     }
 
-    <span class="comment">//</span>
-    <span class="comment">// Helper for constructing the internal metadata struct and setting associated strings.</span>
-    <span class="comment">//</span>
+    <span class="comment">//
+    // Helper for constructing the internal metadata struct and setting associated strings.
+    //
 
-    <span class="kw">type</span> <span class="ident">InternalMetadata</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPDF_Metadata</span><span class="op">&gt;</span>;
+    </span><span class="kw">type </span>InternalMetadata = Handle&lt;SkPDF_Metadata&gt;;
 
-    <span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPDF_Metadata</span> {
-        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-            <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPDF_Metadata_destruct</span>(<span class="self">self</span>) }
+    <span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkPDF_Metadata {
+        <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+            <span class="kw">unsafe </span>{ sb::C_SkPDF_Metadata_destruct(<span class="self">self</span>) }
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPDF_Metadata</span><span class="op">&gt;</span> {
-        <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-            <span class="ident"><span class="self">Self</span>::construct</span>(<span class="op">|</span><span class="ident">pdf_md</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPDF_Metadata_Construct</span>(<span class="ident">pdf_md</span>) })
+    <span class="kw">impl </span>Default <span class="kw">for </span>Handle&lt;SkPDF_Metadata&gt; {
+        <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+            <span class="self">Self</span>::construct(|pdf_md| <span class="kw">unsafe </span>{ sb::C_SkPDF_Metadata_Construct(pdf_md) })
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">create_attribute_list</span>() {
-    <span class="kw">use</span> <span class="ident">pdf::AttributeList</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">_al</span> <span class="op">=</span> <span class="ident">AttributeList::default</span>();
-    <span class="ident">_al</span>.<span class="ident">append_float_array</span>(<span class="string">&quot;Owner&quot;</span>, <span class="string">&quot;Name&quot;</span>, <span class="kw-2">&amp;</span>[<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>]);
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>create_attribute_list() {
+    <span class="kw">use </span>pdf::AttributeList;
+    <span class="kw">let </span><span class="kw-2">mut </span>_al = AttributeList::default();
+    _al.append_float_array(<span class="string">&quot;Owner&quot;</span>, <span class="string">&quot;Name&quot;</span>, <span class="kw-2">&amp;</span>[<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>]);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

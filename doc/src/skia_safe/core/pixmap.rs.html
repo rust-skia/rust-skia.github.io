@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\pixmap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pixmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/pixmap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pixmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -372,374 +366,373 @@
 <span id="366">366</span>
 <span id="367">367</span>
 <span id="368">368</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">AlphaType</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">ColorType</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">ISize</span>, <span class="ident">ImageInfo</span>,
-    <span class="ident">SamplingOptions</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    prelude::<span class="kw-2">*</span>, AlphaType, Color, Color4f, ColorSpace, ColorType, IPoint, IRect, ISize, ImageInfo,
+    SamplingOptions,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkPixmap</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">ffi::c_void</span>, <span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">os::raw</span>, <span class="ident">ptr</span>, <span class="ident">slice</span>};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkPixmap};
+<span class="kw">use </span>std::{convert::TryInto, ffi::c_void, fmt, mem, os::raw, ptr, slice};
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Pixmap</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkPixmap</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">Pixmap</span>);
+<span class="kw">pub type </span>Pixmap = Handle&lt;SkPixmap&gt;;
+<span class="macro">unsafe_send_sync!</span>(Pixmap);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkPixmap</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkPixmap_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkPixmap {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkPixmap_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Pixmap</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="ident">SkPixmap</span> {
-            <span class="ident">fPixels</span>: <span class="ident">ptr::null</span>(),
-            <span class="ident">fRowBytes</span>: <span class="number">0</span>,
-            <span class="ident">fInfo</span>: <span class="ident">construct</span>(<span class="op">|</span><span class="ident">ii</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">sb::C_SkImageInfo_Construct</span>(<span class="ident">ii</span>) }),
+<span class="kw">impl </span>Default <span class="kw">for </span>Pixmap {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_native_c(SkPixmap {
+            fPixels: ptr::null(),
+            fRowBytes: <span class="number">0</span>,
+            fInfo: construct(|ii| <span class="kw">unsafe </span>{ sb::C_SkImageInfo_Construct(ii) }),
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Pixmap</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Pixmap&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;row_bytes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">row_bytes</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;info&quot;</span>, <span class="self">self</span>.<span class="ident">info</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Pixmap {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Pixmap&quot;</span>)
+            .field(<span class="string">&quot;row_bytes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.row_bytes())
+            .field(<span class="string">&quot;info&quot;</span>, <span class="self">self</span>.info())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Pixmap</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span><span class="op">&gt;</span>(
-        <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">pixels</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels</span> [<span class="ident">u8</span>],
-        <span class="ident">row_bytes</span>: <span class="ident">usize</span>,
-    ) -&gt; <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;pixels</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">width</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">width</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">height</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">height</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
+<span class="kw">impl </span>Pixmap {
+    <span class="kw">pub fn </span>new&lt;<span class="lifetime">&#39;pixels</span>&gt;(
+        info: <span class="kw-2">&amp;</span>ImageInfo,
+        pixels: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span>[u8],
+        row_bytes: usize,
+    ) -&gt; Borrows&lt;<span class="lifetime">&#39;pixels</span>, <span class="self">Self</span>&gt; {
+        <span class="kw">let </span>width: usize = info.width().try_into().unwrap();
+        <span class="kw">let </span>height: usize = info.height().try_into().unwrap();
 
-        <span class="macro">assert!</span>(<span class="ident">row_bytes</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">width</span> <span class="op">*</span> <span class="ident">info</span>.<span class="ident">bytes_per_pixel</span>());
-        <span class="macro">assert!</span>(<span class="ident">pixels</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">height</span> <span class="op">*</span> <span class="ident">row_bytes</span>);
+        <span class="macro">assert!</span>(row_bytes &gt;= width * info.bytes_per_pixel());
+        <span class="macro">assert!</span>(pixels.len() &gt;= height * row_bytes);
 
-        <span class="kw">let</span> <span class="ident">pm</span> <span class="op">=</span> <span class="ident">Pixmap::from_native_c</span>(<span class="ident">SkPixmap</span> {
-            <span class="ident">fPixels</span>: <span class="ident">pixels</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">fRowBytes</span>: <span class="ident">row_bytes</span>,
-            <span class="ident">fInfo</span>: <span class="ident">info</span>.<span class="ident">native</span>().<span class="ident">clone</span>(),
+        <span class="kw">let </span>pm = Pixmap::from_native_c(SkPixmap {
+            fPixels: pixels.as_ptr() <span class="kw">as _</span>,
+            fRowBytes: row_bytes,
+            fInfo: info.native().clone(),
         });
-        <span class="ident">pm</span>.<span class="ident">borrows</span>(<span class="ident">pixels</span>)
+        pm.borrows(pixels)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>() }
-        <span class="self">self</span>
-    }
+    <span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().reset() }
+        <span class="self">self
+    </span>}
 
-    <span class="comment">// TODO: Add reset function that borrows pixels?</span>
+    <span class="comment">// TODO: Add reset function that borrows pixels?
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_space</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">color_space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkPixmap_setColorSpace</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">color_space</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>())
+    </span><span class="kw">pub fn </span>set_color_space(<span class="kw-2">&amp;mut </span><span class="self">self</span>, color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            sb::C_SkPixmap_setColorSpace(<span class="self">self</span>.native_mut(), color_space.into().into_ptr_or_null())
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_subset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">area</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Pixmap</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pixmap</span> <span class="op">=</span> <span class="ident">Pixmap::default</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">extractSubset</span>(<span class="ident">pixmap</span>.<span class="ident">native_mut</span>(), <span class="ident">area</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+    <span class="kw">pub fn </span>extract_subset(<span class="kw-2">&amp;</span><span class="self">self</span>, area: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Pixmap&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .extractSubset(pixmap.native_mut(), area.as_ref().native())
         }
-        .<span class="ident">if_true_some</span>(<span class="ident">pixmap</span>)
+        .if_true_some(pixmap)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span> {
-        <span class="ident">ImageInfo::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fInfo</span>)
+    <span class="kw">pub fn </span>info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ImageInfo {
+        ImageInfo::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fInfo)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRowBytes</span>
+    <span class="kw">pub fn </span>row_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.native().fRowBytes
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">c_void</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fPixels</span>
+    <span class="attribute">#[allow(clippy::missing_safety_doc)]
+    </span><span class="kw">pub unsafe fn </span>addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_void {
+        <span class="self">self</span>.native().fPixels
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">width</span>()
+    <span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.info().width()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">height</span>()
+    <span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.info().height()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dimensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ISize</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">dimensions</span>()
+    <span class="kw">pub fn </span>dimensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ISize {
+        <span class="self">self</span>.info().dimensions()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ColorType</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">color_type</span>()
+    <span class="kw">pub fn </span>color_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ColorType {
+        <span class="self">self</span>.info().color_type()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alpha_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">AlphaType</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">alpha_type</span>()
+    <span class="kw">pub fn </span>alpha_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AlphaType {
+        <span class="self">self</span>.info().alpha_type()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span> {
-        <span class="ident">ColorSpace::from_unshared_ptr</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">colorSpace</span>() })
+    <span class="kw">pub fn </span>color_space(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ColorSpace&gt; {
+        ColorSpace::from_unshared_ptr(<span class="kw">unsafe </span>{ <span class="self">self</span>.native().colorSpace() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">alpha_type</span>().<span class="ident">is_opaque</span>()
+    <span class="kw">pub fn </span>is_opaque(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.alpha_type().is_opaque()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IRect</span> {
-        <span class="ident">IRect::from_wh</span>(<span class="self">self</span>.<span class="ident">width</span>(), <span class="self">self</span>.<span class="ident">height</span>())
+    <span class="kw">pub fn </span>bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IRect {
+        IRect::from_wh(<span class="self">self</span>.width(), <span class="self">self</span>.height())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_bytes_as_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">row_bytes</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">shift_per_pixel</span>()
+    <span class="kw">pub fn </span>row_bytes_as_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.row_bytes() &gt;&gt; <span class="self">self</span>.shift_per_pixel()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shift_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">shift_per_pixel</span>()
+    <span class="kw">pub fn </span>shift_per_pixel(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.info().shift_per_pixel()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_byte_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">info</span>().<span class="ident">compute_byte_size</span>(<span class="self">self</span>.<span class="ident">row_bytes</span>())
+    <span class="kw">pub fn </span>compute_byte_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.info().compute_byte_size(<span class="self">self</span>.row_bytes())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeIsOpaque</span>() }
+    <span class="kw">pub fn </span>compute_is_opaque(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().computeIsOpaque() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">assert_pixel_exists</span>(<span class="ident">p</span>);
-        <span class="ident">Color::from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getColor</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) })
+    <span class="kw">pub fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; Color {
+        <span class="kw">let </span>p = p.into();
+        <span class="self">self</span>.assert_pixel_exists(p);
+        Color::from_native_c(<span class="kw">unsafe </span>{ <span class="self">self</span>.native().getColor(p.x, p.y) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_color_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Color4f</span> {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">assert_pixel_exists</span>(<span class="ident">p</span>);
-        <span class="ident">Color4f::from_native_c</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getColor4f</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) })
+    <span class="kw">pub fn </span>get_color_4f(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; Color4f {
+        <span class="kw">let </span>p = p.into();
+        <span class="self">self</span>.assert_pixel_exists(p);
+        Color4f::from_native_c(<span class="kw">unsafe </span>{ <span class="self">self</span>.native().getColor4f(p.x, p.y) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpha_f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">f32</span> {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        <span class="self">self</span>.<span class="ident">assert_pixel_exists</span>(<span class="ident">p</span>);
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getAlphaf</span>(<span class="ident">p</span>.<span class="ident">x</span>, <span class="ident">p</span>.<span class="ident">y</span>) }
+    <span class="kw">pub fn </span>get_alpha_f(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; f32 {
+        <span class="kw">let </span>p = p.into();
+        <span class="self">self</span>.assert_pixel_exists(p);
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getAlphaf(p.x, p.y) }
     }
 
-    <span class="comment">// Helper to test if the pixel does exist physically in memory.</span>
-    <span class="kw">fn</span> <span class="ident">assert_pixel_exists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">addr</span>() }.<span class="ident">is_null</span>());
-        <span class="macro">assert!</span>(<span class="ident">p</span>.<span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">x</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">width</span>());
-        <span class="macro">assert!</span>(<span class="ident">p</span>.<span class="ident">y</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">y</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">height</span>());
+    <span class="comment">// Helper to test if the pixel does exist physically in memory.
+    </span><span class="kw">fn </span>assert_pixel_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) {
+        <span class="kw">let </span>p = p.into();
+        <span class="macro">assert!</span>(!<span class="kw">unsafe </span>{ <span class="self">self</span>.addr() }.is_null());
+        <span class="macro">assert!</span>(p.x &gt;= <span class="number">0 </span>&amp;&amp; p.x &lt; <span class="self">self</span>.width());
+        <span class="macro">assert!</span>(p.y &gt;= <span class="number">0 </span>&amp;&amp; p.y &lt; <span class="self">self</span>.height());
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">addr_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">c_void</span> {
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">into</span>();
-        (<span class="self">self</span>.<span class="ident">addr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">raw::c_char</span>).<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">info</span>().<span class="ident">compute_offset</span>(<span class="ident">p</span>, <span class="self">self</span>.<span class="ident">row_bytes</span>()))
-            <span class="kw">as</span> <span class="kw">_</span>
-    }
+    <span class="attribute">#[allow(clippy::missing_safety_doc)]
+    </span><span class="kw">pub unsafe fn </span>addr_at(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*const </span>c_void {
+        <span class="kw">let </span>p = p.into();
+        (<span class="self">self</span>.addr() <span class="kw">as </span><span class="kw-2">*const </span>raw::c_char).add(<span class="self">self</span>.info().compute_offset(p, <span class="self">self</span>.row_bytes()))
+            <span class="kw">as _
+    </span>}
 
-    <span class="comment">// TODO: addr8(), addr16(), addr32(), addr64(), addrF16(),</span>
-    <span class="comment">//       addr8_at(), addr16_at(), addr32_at(), addr64_at(), addrF16_at()</span>
+    <span class="comment">// TODO: addr8(), addr16(), addr32(), addr64(), addrF16(),
+    //       addr8_at(), addr16_at(), addr32_at(), addr64_at(), addrF16_at()
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">writable_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">c_void</span> {
-        <span class="self">self</span>.<span class="ident">addr</span>() <span class="kw">as</span> <span class="kw">_</span>
-    }
+    </span><span class="attribute">#[allow(clippy::missing_safety_doc)]
+    </span><span class="kw">pub unsafe fn </span>writable_addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_void {
+        <span class="self">self</span>.addr() <span class="kw">as _
+    </span>}
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_safety_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">writable_addr_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">c_void</span> {
-        <span class="self">self</span>.<span class="ident">addr_at</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="kw">_</span>
-    }
+    <span class="attribute">#[allow(clippy::missing_safety_doc)]
+    </span><span class="kw">pub unsafe fn </span>writable_addr_at(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*mut </span>c_void {
+        <span class="self">self</span>.addr_at(p) <span class="kw">as _
+    </span>}
 
-    <span class="comment">// TODO: writable_addr8</span>
-    <span class="comment">// TODO: writable_addr16</span>
-    <span class="comment">// TODO: writable_addr32</span>
-    <span class="comment">// TODO: writable_addr64</span>
-    <span class="comment">// TODO: writable_addrF16</span>
+    <span class="comment">// TODO: writable_addr8
+    // TODO: writable_addr16
+    // TODO: writable_addr32
+    // TODO: writable_addr64
+    // TODO: writable_addrF16
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(
+    </span><span class="kw">pub fn </span>read_pixels&lt;P&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">dst_info</span>: <span class="kw-2">&amp;</span><span class="ident">ImageInfo</span>,
-        <span class="ident">pixels</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">P</span>],
-        <span class="ident">dst_row_bytes</span>: <span class="ident">usize</span>,
-        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">dst_info</span>.<span class="ident">valid_pixels</span>(<span class="ident">dst_row_bytes</span>, <span class="ident">pixels</span>) {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
+        dst_info: <span class="kw-2">&amp;</span>ImageInfo,
+        pixels: <span class="kw-2">&amp;mut </span>[P],
+        dst_row_bytes: usize,
+        src: <span class="kw">impl </span>Into&lt;IPoint&gt;,
+    ) -&gt; bool {
+        <span class="kw">if </span>!dst_info.valid_pixels(dst_row_bytes, pixels) {
+            <span class="kw">return </span><span class="bool-val">false</span>;
         }
 
-        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>src = src.into();
 
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">readPixels</span>(
-                <span class="ident">dst_info</span>.<span class="ident">native</span>(),
-                <span class="ident">pixels</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">dst_row_bytes</span>,
-                <span class="ident">src</span>.<span class="ident">x</span>,
-                <span class="ident">src</span>.<span class="ident">y</span>,
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().readPixels(
+                dst_info.native(),
+                pixels.as_mut_ptr() <span class="kw">as _</span>,
+                dst_row_bytes,
+                src.x,
+                src.y,
             )
         }
     }
 
-    <span class="doccomment">/// Access the underlying pixels as a byte array. This is a rust-skia specific function.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">addr</span>() }.<span class="ident">into_option</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compute_byte_size</span>();
-        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="ident">addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">len</span>) });
+    <span class="doccomment">/// Access the underlying pixels as a byte array. This is a rust-skia specific function.
+    </span><span class="kw">pub fn </span>bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
+        <span class="kw">let </span>addr = <span class="kw">unsafe </span>{ <span class="self">self</span>.addr() }.into_option()<span class="question-mark">?</span>;
+        <span class="kw">let </span>len = <span class="self">self</span>.compute_byte_size();
+        <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ slice::from_raw_parts(addr <span class="kw">as </span><span class="kw-2">*const </span>u8, len) });
     }
 
-    <span class="doccomment">/// Access the underlying pixels. This is a rust-skia specific function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The `Pixel` type must implement the _unsafe_ trait [`Pixel`] and must return `true` in</span>
-    <span class="doccomment">/// [`Pixel::matches_color_type()`] when matched against the [`ColorType`] of this Pixmap&#39;s</span>
-    <span class="doccomment">/// pixels.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Pixel</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">P</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">addr</span>() }.<span class="ident">into_option</span>()<span class="question-mark">?</span>;
+    <span class="doccomment">/// Access the underlying pixels. This is a rust-skia specific function.
+    ///
+    /// The `Pixel` type must implement the _unsafe_ trait [`Pixel`] and must return `true` in
+    /// [`Pixel::matches_color_type()`] when matched against the [`ColorType`] of this Pixmap&#39;s
+    /// pixels.
+    </span><span class="kw">pub fn </span>pixels&lt;P: Pixel&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[P]&gt; {
+        <span class="kw">let </span>addr = <span class="kw">unsafe </span>{ <span class="self">self</span>.addr() }.into_option()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">info</span>();
-        <span class="kw">let</span> <span class="ident">ct</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">color_type</span>();
-        <span class="kw">let</span> <span class="ident">pixel_size</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>();
+        <span class="kw">let </span>info = <span class="self">self</span>.info();
+        <span class="kw">let </span>ct = info.color_type();
+        <span class="kw">let </span>pixel_size = mem::size_of::&lt;P&gt;();
 
-        <span class="kw">if</span> <span class="ident">info</span>.<span class="ident">bytes_per_pixel</span>() <span class="op">==</span> <span class="ident">pixel_size</span> <span class="op">&amp;&amp;</span> <span class="ident">P::matches_color_type</span>(<span class="ident">ct</span>) {
-            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compute_byte_size</span>() <span class="op">/</span> <span class="ident">pixel_size</span>;
-            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="ident">addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">P</span>, <span class="ident">len</span>) });
+        <span class="kw">if </span>info.bytes_per_pixel() == pixel_size &amp;&amp; P::matches_color_type(ct) {
+            <span class="kw">let </span>len = <span class="self">self</span>.compute_byte_size() / pixel_size;
+            <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ slice::from_raw_parts(addr <span class="kw">as </span><span class="kw-2">*const </span>P, len) });
         }
 
-        <span class="prelude-val">None</span>
-    }
+        <span class="prelude-val">None
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_pixels_to_pixmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">row_bytes</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">row_bytes</span>();
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">usize::try_from</span>(<span class="ident">dst</span>.<span class="ident">height</span>()).<span class="ident">unwrap</span>() <span class="op">*</span> <span class="ident">row_bytes</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">writable_addr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">raw::c_char</span>;
-            <span class="self">self</span>.<span class="ident">read_pixels</span>(
-                <span class="ident">dst</span>.<span class="ident">info</span>(),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">addr</span>, <span class="ident">len</span>),
-                <span class="ident">row_bytes</span>,
-                <span class="ident">src</span>,
+    <span class="kw">pub fn </span>read_pixels_to_pixmap(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;</span>Pixmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+        <span class="kw">let </span>row_bytes = dst.row_bytes();
+        <span class="kw">let </span>len = usize::try_from(dst.height()).unwrap() * row_bytes;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>addr = dst.writable_addr() <span class="kw">as </span><span class="kw-2">*mut </span>raw::c_char;
+            <span class="self">self</span>.read_pixels(
+                dst.info(),
+                safer::from_raw_parts_mut(addr, len),
+                row_bytes,
+                src,
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale_pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">Pixmap</span>, <span class="ident">sampling</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">SamplingOptions</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">sampling</span> <span class="op">=</span> <span class="ident">sampling</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">scalePixels</span>(<span class="ident">dst</span>.<span class="ident">native</span>(), <span class="ident">sampling</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>scale_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;</span>Pixmap, sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;) -&gt; bool {
+        <span class="kw">let </span>sampling = sampling.into();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().scalePixels(dst.native(), sampling.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>, <span class="ident">subset</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>.<span class="ident">into</span>().<span class="ident">into_native</span>();
-        <span class="kw">unsafe</span> {
-            <span class="kw">match</span> <span class="ident">subset</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">subset</span>) =&gt; <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">erase</span>(<span class="ident">color</span>, <span class="ident">subset</span>.<span class="ident">native</span>()),
-                <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">erase</span>(<span class="ident">color</span>, <span class="self">self</span>.<span class="ident">bounds</span>().<span class="ident">native</span>()),
+    <span class="kw">pub fn </span>erase(<span class="kw-2">&amp;</span><span class="self">self</span>, color: <span class="kw">impl </span>Into&lt;Color&gt;, subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;) -&gt; bool {
+        <span class="kw">let </span>color = color.into().into_native();
+        <span class="kw">unsafe </span>{
+            <span class="kw">match </span>subset {
+                <span class="prelude-val">Some</span>(subset) =&gt; <span class="self">self</span>.native().erase(color, subset.native()),
+                <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.native().erase(color, <span class="self">self</span>.bounds().native()),
             }
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_4f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>, <span class="ident">subset</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">erase_with_colorspace</span>(<span class="ident">color</span>, <span class="prelude-val">None</span>, <span class="ident">subset</span>)
+    <span class="kw">pub fn </span>erase_4f(<span class="kw-2">&amp;</span><span class="self">self</span>, color: <span class="kw">impl </span>AsRef&lt;Color4f&gt;, subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;) -&gt; bool {
+        <span class="self">self</span>.erase_with_colorspace(color, <span class="prelude-val">None</span>, subset)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">erase_with_colorspace</span>(
+    <span class="kw">pub fn </span>erase_with_colorspace(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>,
-        <span class="ident">cs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span>,
-        <span class="ident">subset</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>.<span class="ident">as_ref</span>();
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">erase1</span>(
-                <span class="ident">color</span>.<span class="ident">native</span>(),
-                <span class="ident">cs</span>.<span class="ident">native_ptr_or_null_mut_force</span>(),
-                <span class="ident">subset</span>.<span class="ident">native_ptr_or_null</span>(),
+        color: <span class="kw">impl </span>AsRef&lt;Color4f&gt;,
+        cs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ColorSpace&gt;,
+        subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;,
+    ) -&gt; bool {
+        <span class="kw">let </span>color = color.as_ref();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native().erase1(
+                color.native(),
+                cs.native_ptr_or_null_mut_force(),
+                subset.native_ptr_or_null(),
             )
         }
     }
 }
 
-<span class="doccomment">/// Implement this trait to use a pixel type in [`Handle&lt;Pixmap&gt;::pixels()`].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Safety</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This trait is unsafe because external [`Pixel`] implementations may lie about their</span>
-<span class="doccomment">/// [`ColorType`] or fail to match the alignment of the pixels stored in [`Handle&lt;Pixmap&gt;`].</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Pixel</span>: <span class="ident">Copy</span> {
-    <span class="doccomment">/// `true` if the type matches the color type&#39;s format.</span>
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span>;
+<span class="doccomment">/// Implement this trait to use a pixel type in [`Handle&lt;Pixmap&gt;::pixels()`].
+///
+/// # Safety
+///
+/// This trait is unsafe because external [`Pixel`] implementations may lie about their
+/// [`ColorType`] or fail to match the alignment of the pixels stored in [`Handle&lt;Pixmap&gt;`].
+</span><span class="kw">pub unsafe trait </span>Pixel: Copy {
+    <span class="doccomment">/// `true` if the type matches the color type&#39;s format.
+    </span><span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool;
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">u8</span> {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">matches!</span>(<span class="ident">ct</span>, <span class="ident">ColorType::Alpha8</span> <span class="op">|</span> <span class="ident">ColorType::Gray8</span>)
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>u8 {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        <span class="macro">matches!</span>(ct, ColorType::Alpha8 | ColorType::Gray8)
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="number">2</span>] {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">matches!</span>(<span class="ident">ct</span>, <span class="ident">ColorType::R8G8UNorm</span> <span class="op">|</span> <span class="ident">ColorType::A16UNorm</span>)
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>[u8; <span class="number">2</span>] {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        <span class="macro">matches!</span>(ct, ColorType::R8G8UNorm | ColorType::A16UNorm)
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> (<span class="ident">u8</span>, <span class="ident">u8</span>) {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">matches!</span>(<span class="ident">ct</span>, <span class="ident">ColorType::R8G8UNorm</span> <span class="op">|</span> <span class="ident">ColorType::A16UNorm</span>)
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>(u8, u8) {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        <span class="macro">matches!</span>(ct, ColorType::R8G8UNorm | ColorType::A16UNorm)
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="number">4</span>] {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>[u8; <span class="number">4</span>] {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
         <span class="macro">matches!</span>(
-            <span class="ident">ct</span>,
-            <span class="ident">ColorType::RGBA8888</span> <span class="op">|</span> <span class="ident">ColorType::RGB888x</span> <span class="op">|</span> <span class="ident">ColorType::BGRA8888</span>
+            ct,
+            ColorType::RGBA8888 | ColorType::RGB888x | ColorType::BGRA8888
         )
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>) {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>(u8, u8, u8, u8) {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
         <span class="macro">matches!</span>(
-            <span class="ident">ct</span>,
-            <span class="ident">ColorType::RGBA8888</span> <span class="op">|</span> <span class="ident">ColorType::RGB888x</span> <span class="op">|</span> <span class="ident">ColorType::BGRA8888</span>
+            ct,
+            ColorType::RGBA8888 | ColorType::RGB888x | ColorType::BGRA8888
         )
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> [<span class="ident">f32</span>; <span class="number">4</span>] {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">matches!</span>(<span class="ident">ct</span>, <span class="ident">ColorType::RGBAF32</span>)
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>[f32; <span class="number">4</span>] {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        <span class="macro">matches!</span>(ct, ColorType::RGBAF32)
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> (<span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>, <span class="ident">f32</span>) {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">matches!</span>(<span class="ident">ct</span>, <span class="ident">ColorType::RGBAF32</span>)
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>(f32, f32, f32, f32) {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        <span class="macro">matches!</span>(ct, ColorType::RGBAF32)
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">u32</span> {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">ct</span> <span class="op">==</span> <span class="ident">ColorType::N32</span>
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>u32 {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        ct == ColorType::N32
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">Color</span> {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">ct</span> <span class="op">==</span> <span class="ident">ColorType::N32</span>
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>Color {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        ct == ColorType::N32
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pixel</span> <span class="kw">for</span> <span class="ident">Color4f</span> {
-    <span class="kw">fn</span> <span class="ident">matches_color_type</span>(<span class="ident">ct</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">ct</span> <span class="op">==</span> <span class="ident">ColorType::RGBAF32</span>
+<span class="kw">unsafe impl </span>Pixel <span class="kw">for </span>Color4f {
+    <span class="kw">fn </span>matches_color_type(ct: ColorType) -&gt; bool {
+        ct == ColorType::RGBAF32
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

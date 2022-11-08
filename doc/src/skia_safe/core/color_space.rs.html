@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\color_space.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>color_space.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/color_space.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>color_space.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -218,220 +212,219 @@
 <span id="212">212</span>
 <span id="213">213</span>
 <span id="214">214</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Data</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkColorSpace</span>, <span class="ident">SkColorSpacePrimaries</span>};
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::Data;
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkColorSpace, SkColorSpacePrimaries};
+<span class="kw">use </span>std::fmt;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ColorSpacePrimaries</span> {
-    <span class="ident">rx</span>: <span class="ident">f32</span>,
-    <span class="ident">ry</span>: <span class="ident">f32</span>,
-    <span class="ident">gx</span>: <span class="ident">f32</span>,
-    <span class="ident">gy</span>: <span class="ident">f32</span>,
-    <span class="ident">bx</span>: <span class="ident">f32</span>,
-    <span class="ident">by</span>: <span class="ident">f32</span>,
-    <span class="ident">wx</span>: <span class="ident">f32</span>,
-    <span class="ident">wy</span>: <span class="ident">f32</span>,
+<span class="attribute">#[derive(Clone, PartialEq, Debug)]
+#[repr(C)]
+</span><span class="kw">pub struct </span>ColorSpacePrimaries {
+    rx: f32,
+    ry: f32,
+    gx: f32,
+    gy: f32,
+    bx: f32,
+    by: f32,
+    wx: f32,
+    wy: f32,
 }
 
 <span class="macro">native_transmutable!</span>(
-    <span class="ident">SkColorSpacePrimaries</span>,
-    <span class="ident">ColorSpacePrimaries</span>,
-    <span class="ident">color_space_primaries_layout</span>
+    SkColorSpacePrimaries,
+    ColorSpacePrimaries,
+    color_space_primaries_layout
 );
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ColorSpaceTransferFn</span> {
-    <span class="kw">pub</span> <span class="ident">g</span>: <span class="ident">f32</span>,
-    <span class="kw">pub</span> <span class="ident">a</span>: <span class="ident">f32</span>,
-    <span class="kw">pub</span> <span class="ident">b</span>: <span class="ident">f32</span>,
-    <span class="kw">pub</span> <span class="ident">c</span>: <span class="ident">f32</span>,
-    <span class="kw">pub</span> <span class="ident">d</span>: <span class="ident">f32</span>,
-    <span class="kw">pub</span> <span class="ident">e</span>: <span class="ident">f32</span>,
-    <span class="kw">pub</span> <span class="ident">f</span>: <span class="ident">f32</span>,
+<span class="attribute">#[derive(Clone, PartialEq, Debug)]
+</span><span class="kw">pub struct </span>ColorSpaceTransferFn {
+    <span class="kw">pub </span>g: f32,
+    <span class="kw">pub </span>a: f32,
+    <span class="kw">pub </span>b: f32,
+    <span class="kw">pub </span>c: f32,
+    <span class="kw">pub </span>d: f32,
+    <span class="kw">pub </span>e: f32,
+    <span class="kw">pub </span>f: f32,
 }
 
-<span class="comment">// TODO: Make the binding generator provide all these constants.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">named_transfer_fn</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ColorSpaceTransferFn</span>;
+<span class="comment">// TODO: Make the binding generator provide all these constants.
+</span><span class="kw">pub mod </span>named_transfer_fn {
+    <span class="kw">use </span><span class="kw">crate</span>::ColorSpaceTransferFn;
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SRGB</span>: <span class="ident">ColorSpaceTransferFn</span> <span class="op">=</span> <span class="ident">ColorSpaceTransferFn</span> {
-        <span class="ident">g</span>: <span class="number">2.4</span>,
-        <span class="ident">a</span>: <span class="number">1.0</span> <span class="op">/</span> <span class="number">1.055</span>,
-        <span class="ident">b</span>: <span class="number">0.055</span> <span class="op">/</span> <span class="number">1.055</span>,
-        <span class="ident">c</span>: <span class="number">1.0</span> <span class="op">/</span> <span class="number">12.92</span>,
-        <span class="ident">d</span>: <span class="number">0.04045</span>,
-        <span class="ident">e</span>: <span class="number">0.0</span>,
-        <span class="ident">f</span>: <span class="number">0.0</span>,
+    <span class="kw">pub const </span>SRGB: ColorSpaceTransferFn = ColorSpaceTransferFn {
+        g: <span class="number">2.4</span>,
+        a: <span class="number">1.0 </span>/ <span class="number">1.055</span>,
+        b: <span class="number">0.055 </span>/ <span class="number">1.055</span>,
+        c: <span class="number">1.0 </span>/ <span class="number">12.92</span>,
+        d: <span class="number">0.04045</span>,
+        e: <span class="number">0.0</span>,
+        f: <span class="number">0.0</span>,
     };
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DOT22</span>: <span class="ident">ColorSpaceTransferFn</span> <span class="op">=</span> <span class="ident">ColorSpaceTransferFn</span> {
-        <span class="ident">g</span>: <span class="number">2.2</span>,
-        <span class="ident">a</span>: <span class="number">1.0</span>,
-        <span class="ident">b</span>: <span class="number">0.0</span>,
-        <span class="ident">c</span>: <span class="number">0.0</span>,
-        <span class="ident">d</span>: <span class="number">0.0</span>,
-        <span class="ident">e</span>: <span class="number">0.0</span>,
-        <span class="ident">f</span>: <span class="number">0.0</span>,
+    <span class="kw">pub const </span>DOT22: ColorSpaceTransferFn = ColorSpaceTransferFn {
+        g: <span class="number">2.2</span>,
+        a: <span class="number">1.0</span>,
+        b: <span class="number">0.0</span>,
+        c: <span class="number">0.0</span>,
+        d: <span class="number">0.0</span>,
+        e: <span class="number">0.0</span>,
+        f: <span class="number">0.0</span>,
     };
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LINEAR</span>: <span class="ident">ColorSpaceTransferFn</span> <span class="op">=</span> <span class="ident">ColorSpaceTransferFn</span> {
-        <span class="ident">g</span>: <span class="number">1.0</span>,
-        <span class="ident">a</span>: <span class="number">1.0</span>,
-        <span class="ident">b</span>: <span class="number">0.0</span>,
-        <span class="ident">c</span>: <span class="number">0.0</span>,
-        <span class="ident">d</span>: <span class="number">0.0</span>,
-        <span class="ident">e</span>: <span class="number">0.0</span>,
-        <span class="ident">f</span>: <span class="number">0.0</span>,
+    <span class="kw">pub const </span>LINEAR: ColorSpaceTransferFn = ColorSpaceTransferFn {
+        g: <span class="number">1.0</span>,
+        a: <span class="number">1.0</span>,
+        b: <span class="number">0.0</span>,
+        c: <span class="number">0.0</span>,
+        d: <span class="number">0.0</span>,
+        e: <span class="number">0.0</span>,
+        f: <span class="number">0.0</span>,
     };
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">REC2020</span>: <span class="ident">ColorSpaceTransferFn</span> <span class="op">=</span> <span class="ident">ColorSpaceTransferFn</span> {
-        <span class="ident">g</span>: <span class="number">2.22222</span>,
-        <span class="ident">a</span>: <span class="number">0.909_672</span>,
-        <span class="ident">b</span>: <span class="number">0.090_327_6</span>,
-        <span class="ident">c</span>: <span class="number">0.222_222</span>,
-        <span class="ident">d</span>: <span class="number">0.081_242_9</span>,
-        <span class="ident">e</span>: <span class="number">0.0</span>,
-        <span class="ident">f</span>: <span class="number">0.0</span>,
+    <span class="kw">pub const </span>REC2020: ColorSpaceTransferFn = ColorSpaceTransferFn {
+        g: <span class="number">2.22222</span>,
+        a: <span class="number">0.909_672</span>,
+        b: <span class="number">0.090_327_6</span>,
+        c: <span class="number">0.222_222</span>,
+        d: <span class="number">0.081_242_9</span>,
+        e: <span class="number">0.0</span>,
+        f: <span class="number">0.0</span>,
     };
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PQ</span>: <span class="ident">ColorSpaceTransferFn</span> <span class="op">=</span> <span class="ident">ColorSpaceTransferFn</span> {
-        <span class="ident">g</span>: <span class="op">-</span><span class="number">2.0</span>,
-        <span class="ident">a</span>: <span class="op">-</span><span class="number">107.0</span> <span class="op">/</span> <span class="number">128.0</span>,
-        <span class="ident">b</span>: <span class="number">1.0</span>,
-        <span class="ident">c</span>: <span class="number">32.0</span> <span class="op">/</span> <span class="number">2523.0</span>,
-        <span class="ident">d</span>: <span class="number">2413.0</span> <span class="op">/</span> <span class="number">128.0</span>,
-        <span class="ident">e</span>: <span class="op">-</span><span class="number">2392.0</span> <span class="op">/</span> <span class="number">128.0</span>,
-        <span class="ident">f</span>: <span class="number">8192.0</span> <span class="op">/</span> <span class="number">1305.0</span>,
+    <span class="kw">pub const </span>PQ: ColorSpaceTransferFn = ColorSpaceTransferFn {
+        g: -<span class="number">2.0</span>,
+        a: -<span class="number">107.0 </span>/ <span class="number">128.0</span>,
+        b: <span class="number">1.0</span>,
+        c: <span class="number">32.0 </span>/ <span class="number">2523.0</span>,
+        d: <span class="number">2413.0 </span>/ <span class="number">128.0</span>,
+        e: -<span class="number">2392.0 </span>/ <span class="number">128.0</span>,
+        f: <span class="number">8192.0 </span>/ <span class="number">1305.0</span>,
     };
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::excessive_precision</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HLG</span>: <span class="ident">ColorSpaceTransferFn</span> <span class="op">=</span> <span class="ident">ColorSpaceTransferFn</span> {
-        <span class="ident">g</span>: <span class="op">-</span><span class="number">3.0</span>,
-        <span class="ident">a</span>: <span class="number">2.0</span>,
-        <span class="ident">b</span>: <span class="number">2.0</span>,
-        <span class="ident">c</span>: <span class="number">1.0</span> <span class="op">/</span> <span class="number">0.178_832_77</span>,
-        <span class="ident">d</span>: <span class="number">0.284_668_92</span>,
-        <span class="ident">e</span>: <span class="number">0.559_910_73</span>,
-        <span class="ident">f</span>: <span class="number">0.0</span>,
+    <span class="attribute">#[allow(clippy::excessive_precision)]
+    </span><span class="kw">pub const </span>HLG: ColorSpaceTransferFn = ColorSpaceTransferFn {
+        g: -<span class="number">3.0</span>,
+        a: <span class="number">2.0</span>,
+        b: <span class="number">2.0</span>,
+        c: <span class="number">1.0 </span>/ <span class="number">0.178_832_77</span>,
+        d: <span class="number">0.284_668_92</span>,
+        e: <span class="number">0.559_910_73</span>,
+        f: <span class="number">0.0</span>,
     };
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ColorSpace</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkColorSpace</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">ColorSpace</span>);
+<span class="kw">pub type </span>ColorSpace = RCHandle&lt;SkColorSpace&gt;;
+<span class="macro">unsafe_send_sync!</span>(ColorSpace);
 
-<span class="kw">impl</span> <span class="ident">NativeRefCounted</span> <span class="kw">for</span> <span class="ident">SkColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_ref</span>(<span class="self">self</span>) };
+<span class="kw">impl </span>NativeRefCounted <span class="kw">for </span>SkColorSpace {
+    <span class="kw">fn </span>_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkColorSpace_ref(<span class="self">self</span>) };
     }
 
-    <span class="kw">fn</span> <span class="ident">_unref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_unref</span>(<span class="self">self</span>) }
+    <span class="kw">fn </span>_unref(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkColorSpace_unref(<span class="self">self</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_unique</span>(<span class="self">self</span>) }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">skia_bindings::SkColorSpace_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
+    <span class="kw">fn </span>unique(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkColorSpace_unique(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ColorSpace&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">impl </span>NativePartialEq <span class="kw">for </span>SkColorSpace {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ skia_bindings::SkColorSpace_Equals(<span class="self">self</span>, rhs) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ColorSpace</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_srgb</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_MakeSRGB</span>() }).<span class="ident">unwrap</span>()
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_srgb_linear</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_MakeSRGBLinear</span>() }).<span class="ident">unwrap</span>()
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_xyzd50_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">XYZD50Hash</span> {
-        <span class="ident">XYZD50Hash</span>(<span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fToXYZD50Hash</span>)
-    }
-
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_linear_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_makeLinearGamma</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
-    }
-
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_srgb_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_makeSRGBGamma</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
-    }
-
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_color_spin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_makeColorSpin</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_srgb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">isSRGB</span>() }
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Data</span> {
-        <span class="ident">Data::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_serialize</span>(<span class="self">self</span>.<span class="ident">native</span>()) }).<span class="ident">unwrap</span>()
-    }
-
-    <span class="comment">// TODO: writeToMemory()?</span>
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize</span>(<span class="ident">data</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">as_bytes</span>();
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkColorSpace_Deserialize</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">bytes</span>.<span class="ident">len</span>()) })
-            .<span class="ident">unwrap</span>()
-    }
-
-    <span class="comment">// TODO: transferFn()</span>
-    <span class="comment">// TODO: invTransferFn()</span>
-    <span class="comment">// TODO: gamutTransformTo()</span>
-    <span class="comment">// TODO: transferFnHash()?</span>
-    <span class="comment">// TODO: hash()?</span>
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">XYZD50Hash</span>(<span class="kw">pub</span> <span class="ident">u32</span>);
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">impl</span> <span class="ident">RefCount</span> <span class="kw">for</span> <span class="ident">SkColorSpace</span> {
-    <span class="kw">fn</span> <span class="ident">ref_cnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">_base</span>.<span class="ident">ref_cnt</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ColorSpace {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;ColorSpace&quot;</span>).finish()
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_and_clone_colorspaces</span>() {
-    <span class="ident">ColorSpace::new_srgb</span>();
-    <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">ColorSpace::new_srgb_linear</span>();
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::redundant_clone</span>)]</span>
-    <span class="kw">let</span> <span class="ident">_r</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">clone</span>();
+<span class="kw">impl </span>ColorSpace {
+    <span class="kw">pub fn </span>new_srgb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_MakeSRGB() }).unwrap()
+    }
+
+    <span class="kw">pub fn </span>new_srgb_linear() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_MakeSRGBLinear() }).unwrap()
+    }
+
+    <span class="kw">pub fn </span>to_xyzd50_hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; XYZD50Hash {
+        XYZD50Hash(<span class="self">self</span>.native().fToXYZD50Hash)
+    }
+
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_linear_gamma(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_makeLinearGamma(<span class="self">self</span>.native()) }).unwrap()
+    }
+
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_srgb_gamma(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_makeSRGBGamma(<span class="self">self</span>.native()) }).unwrap()
+    }
+
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_color_spin(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_makeColorSpin(<span class="self">self</span>.native()) }).unwrap()
+    }
+
+    <span class="kw">pub fn </span>is_srgb(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isSRGB() }
+    }
+
+    <span class="kw">pub fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Data {
+        Data::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_serialize(<span class="self">self</span>.native()) }).unwrap()
+    }
+
+    <span class="comment">// TODO: writeToMemory()?
+
+    </span><span class="kw">pub fn </span>deserialize(data: <span class="kw">impl </span>Into&lt;Data&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>data = data.into();
+        <span class="kw">let </span>bytes = data.as_bytes();
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkColorSpace_Deserialize(bytes.as_ptr() <span class="kw">as _</span>, bytes.len()) })
+            .unwrap()
+    }
+
+    <span class="comment">// TODO: transferFn()
+    // TODO: invTransferFn()
+    // TODO: gamutTransformTo()
+    // TODO: transferFnHash()?
+    // TODO: hash()?
+</span>}
+
+<span class="attribute">#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+</span><span class="kw">pub struct </span>XYZD50Hash(<span class="kw">pub </span>u32);
+
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">impl </span>RefCount <span class="kw">for </span>SkColorSpace {
+    <span class="kw">fn </span>ref_cnt(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>._base.ref_cnt()
+    }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize_and_deserialize</span>() {
-    <span class="comment">// TODO: it seems that the deserializer deduplicates the</span>
-    <span class="comment">// srgb colorspace, so fix this test as soon we can create</span>
-    <span class="comment">// custom colorspaces again.</span>
-    <span class="kw">let</span> <span class="ident">original</span> <span class="op">=</span> <span class="ident">ColorSpace::new_srgb</span>();
-    <span class="macro">assert_eq!</span>(<span class="number">2</span>, <span class="ident">original</span>.<span class="ident">native</span>().<span class="ident">ref_cnt</span>());
-    <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">original</span>.<span class="ident">serialize</span>();
-    <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">serialized</span>.<span class="ident">native</span>().<span class="ident">ref_cnt</span>());
-    <span class="kw">let</span> <span class="ident">deserialized</span> <span class="op">=</span> <span class="ident">ColorSpace::deserialize</span>(<span class="ident">serialized</span>);
-    <span class="macro">assert_eq!</span>(<span class="number">3</span>, <span class="ident">deserialized</span>.<span class="ident">native</span>().<span class="ident">ref_cnt</span>());
+<span class="attribute">#[test]
+</span><span class="kw">pub fn </span>create_and_clone_colorspaces() {
+    ColorSpace::new_srgb();
+    <span class="kw">let </span>x = ColorSpace::new_srgb_linear();
+    <span class="attribute">#[allow(clippy::redundant_clone)]
+    </span><span class="kw">let </span>_r = x.clone();
+}
 
-    <span class="macro">assert!</span>(<span class="ident">original</span> <span class="op">==</span> <span class="ident">deserialized</span>);
+<span class="attribute">#[test]
+</span><span class="kw">pub fn </span>serialize_and_deserialize() {
+    <span class="comment">// TODO: it seems that the deserializer deduplicates the
+    // srgb colorspace, so fix this test as soon we can create
+    // custom colorspaces again.
+    </span><span class="kw">let </span>original = ColorSpace::new_srgb();
+    <span class="macro">assert_eq!</span>(<span class="number">2</span>, original.native().ref_cnt());
+    <span class="kw">let </span>serialized = original.serialize();
+    <span class="macro">assert_eq!</span>(<span class="number">1</span>, serialized.native().ref_cnt());
+    <span class="kw">let </span>deserialized = ColorSpace::deserialize(serialized);
+    <span class="macro">assert_eq!</span>(<span class="number">3</span>, deserialized.native().ref_cnt());
+
+    <span class="macro">assert!</span>(original == deserialized);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

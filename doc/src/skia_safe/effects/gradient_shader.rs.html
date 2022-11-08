@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\effects\gradient_shader.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gradient_shader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/effects/gradient_shader.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gradient_shader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -314,316 +308,315 @@
 <span id="308">308</span>
 <span id="309">309</span>
 <span id="310">310</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">Matrix</span>, <span class="ident">Point</span>, <span class="ident">Shader</span>, <span class="ident">TileMode</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Color, Color4f, ColorSpace, Matrix, Point, Shader, TileMode};
+<span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
-<span class="kw">impl</span> <span class="ident">Shader</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linear_gradient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="ident">points</span>: (<span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>),
-        <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-        <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">linear</span>(<span class="ident">points</span>, <span class="ident">colors</span>, <span class="ident">pos</span>, <span class="ident">mode</span>, <span class="ident">flags</span>, <span class="ident">local_matrix</span>)
+<span class="kw">impl </span>Shader {
+    <span class="kw">pub fn </span>linear_gradient&lt;<span class="lifetime">&#39;a</span>&gt;(
+        points: (<span class="kw">impl </span>Into&lt;Point&gt;, <span class="kw">impl </span>Into&lt;Point&gt;),
+        colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+        pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+        mode: TileMode,
+        flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+        local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        linear(points, colors, pos, mode, flags, local_matrix)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">radial_gradient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="ident">center</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">radius</span>: <span class="ident">scalar</span>,
-        <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-        <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">radial</span>(<span class="ident">center</span>, <span class="ident">radius</span>, <span class="ident">colors</span>, <span class="ident">pos</span>, <span class="ident">mode</span>, <span class="ident">flags</span>, <span class="ident">local_matrix</span>)
+    <span class="kw">pub fn </span>radial_gradient&lt;<span class="lifetime">&#39;a</span>&gt;(
+        center: <span class="kw">impl </span>Into&lt;Point&gt;,
+        radius: scalar,
+        colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+        pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+        mode: TileMode,
+        flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+        local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        radial(center, radius, colors, pos, mode, flags, local_matrix)
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">two_point_conical_gradient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="ident">start</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">start_radius</span>: <span class="ident">scalar</span>,
-        <span class="ident">end</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">end_radius</span>: <span class="ident">scalar</span>,
-        <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-        <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">two_point_conical</span>(
-            <span class="ident">start</span>,
-            <span class="ident">start_radius</span>,
-            <span class="ident">end</span>,
-            <span class="ident">end_radius</span>,
-            <span class="ident">colors</span>,
-            <span class="ident">pos</span>,
-            <span class="ident">mode</span>,
-            <span class="ident">flags</span>,
-            <span class="ident">local_matrix</span>,
+    <span class="attribute">#[allow(clippy::too_many_arguments)]
+    </span><span class="kw">pub fn </span>two_point_conical_gradient&lt;<span class="lifetime">&#39;a</span>&gt;(
+        start: <span class="kw">impl </span>Into&lt;Point&gt;,
+        start_radius: scalar,
+        end: <span class="kw">impl </span>Into&lt;Point&gt;,
+        end_radius: scalar,
+        colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+        pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+        mode: TileMode,
+        flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+        local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        two_point_conical(
+            start,
+            start_radius,
+            end,
+            end_radius,
+            colors,
+            pos,
+            mode,
+            flags,
+            local_matrix,
         )
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sweep_gradient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="ident">center</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-        <span class="ident">angles</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">scalar</span>, <span class="ident">scalar</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">sweep</span>(<span class="ident">center</span>, <span class="ident">colors</span>, <span class="ident">pos</span>, <span class="ident">mode</span>, <span class="ident">angles</span>, <span class="ident">flags</span>, <span class="ident">local_matrix</span>)
+    <span class="kw">pub fn </span>sweep_gradient&lt;<span class="lifetime">&#39;a</span>&gt;(
+        center: <span class="kw">impl </span>Into&lt;Point&gt;,
+        colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+        pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+        mode: TileMode,
+        angles: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;(scalar, scalar)&gt;&gt;,
+        flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+        local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        sweep(center, colors, pos, mode, angles, flags, local_matrix)
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Flags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">INTERPOLATE_COLORS_IN_PREMUL</span> <span class="op">=</span> <span class="ident">sb::SkGradientShader_Flags_kInterpolateColorsInPremul_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="macro">bitflags! </span>{
+    <span class="kw">pub struct </span>Flags: u32 {
+        <span class="kw">const </span>INTERPOLATE_COLORS_IN_PREMUL = sb::SkGradientShader_Flags_kInterpolateColorsInPremul_Flag <span class="kw">as _</span>;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident"><span class="self">self</span>::Flags</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::empty</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span><span class="self">self</span>::Flags {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::empty()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linear</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">points</span>: (<span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>),
-    <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-    <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">points</span> <span class="op">=</span> [<span class="ident">points</span>.<span class="number">0</span>.<span class="ident">into</span>(), <span class="ident">points</span>.<span class="number">1</span>.<span class="ident">into</span>()];
-    <span class="kw">let</span> <span class="ident">colors</span> <span class="op">=</span> <span class="ident">colors</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">into</span>();
-    <span class="macro">assert!</span>(<span class="ident">pos</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> (<span class="ident">pos</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>() <span class="op">==</span> <span class="ident">colors</span>.<span class="ident">len</span>()));
-    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-    <span class="kw">let</span> <span class="ident">local_matrix</span> <span class="op">=</span> <span class="ident">local_matrix</span>.<span class="ident">into</span>();
+<span class="kw">pub fn </span>linear&lt;<span class="lifetime">&#39;a</span>&gt;(
+    points: (<span class="kw">impl </span>Into&lt;Point&gt;, <span class="kw">impl </span>Into&lt;Point&gt;),
+    colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+    pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+    mode: TileMode,
+    flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+    local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+) -&gt; <span class="prelude-ty">Option</span>&lt;Shader&gt; {
+    <span class="kw">let </span>points = [points.<span class="number">0</span>.into(), points.<span class="number">1</span>.into()];
+    <span class="kw">let </span>colors = colors.into();
+    <span class="kw">let </span>pos = pos.into();
+    <span class="macro">assert!</span>(pos.is_none() || (pos.unwrap().len() == colors.len()));
+    <span class="kw">let </span>flags = flags.into().unwrap_or_default();
+    <span class="kw">let </span>local_matrix = local_matrix.into();
 
-    <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">colors</span> {
-            <span class="ident">GradientShaderColors::Colors</span>(<span class="ident">colors</span>) =&gt; <span class="ident">sb::C_SkGradientShader_MakeLinear</span>(
-                <span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">mode</span>,
-                <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+    Shader::from_ptr(<span class="kw">unsafe </span>{
+        <span class="kw">match </span>colors {
+            GradientShaderColors::Colors(colors) =&gt; sb::C_SkGradientShader_MakeLinear(
+                points.native().as_ptr(),
+                colors.native().as_ptr(),
+                pos.as_ptr_or_null(),
+                colors.len().try_into().unwrap(),
+                mode,
+                flags.bits(),
+                local_matrix.native_ptr_or_null(),
             ),
 
-            <span class="ident">GradientShaderColors::ColorsInSpace</span>(<span class="ident">colors</span>, <span class="ident">color_space</span>) =&gt; {
-                <span class="ident">sb::C_SkGradientShader_MakeLinear2</span>(
-                    <span class="ident">points</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                    <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                    <span class="ident">color_space</span>.<span class="ident">into_ptr</span>(),
-                    <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                    <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                    <span class="ident">mode</span>,
-                    <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                    <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+            GradientShaderColors::ColorsInSpace(colors, color_space) =&gt; {
+                sb::C_SkGradientShader_MakeLinear2(
+                    points.native().as_ptr(),
+                    colors.native().as_ptr(),
+                    color_space.into_ptr(),
+                    pos.as_ptr_or_null(),
+                    colors.len().try_into().unwrap(),
+                    mode,
+                    flags.bits(),
+                    local_matrix.native_ptr_or_null(),
                 )
             }
         }
     })
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">radial</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">center</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    <span class="ident">radius</span>: <span class="ident">scalar</span>,
-    <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-    <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">colors</span> <span class="op">=</span> <span class="ident">colors</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">center</span> <span class="op">=</span> <span class="ident">center</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">into</span>();
-    <span class="macro">assert!</span>(<span class="ident">pos</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> (<span class="ident">pos</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>() <span class="op">==</span> <span class="ident">colors</span>.<span class="ident">len</span>()));
-    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-    <span class="kw">let</span> <span class="ident">local_matrix</span> <span class="op">=</span> <span class="ident">local_matrix</span>.<span class="ident">into</span>();
+<span class="kw">pub fn </span>radial&lt;<span class="lifetime">&#39;a</span>&gt;(
+    center: <span class="kw">impl </span>Into&lt;Point&gt;,
+    radius: scalar,
+    colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+    pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+    mode: TileMode,
+    flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+    local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+) -&gt; <span class="prelude-ty">Option</span>&lt;Shader&gt; {
+    <span class="kw">let </span>colors = colors.into();
+    <span class="kw">let </span>center = center.into();
+    <span class="kw">let </span>pos = pos.into();
+    <span class="macro">assert!</span>(pos.is_none() || (pos.unwrap().len() == colors.len()));
+    <span class="kw">let </span>flags = flags.into().unwrap_or_default();
+    <span class="kw">let </span>local_matrix = local_matrix.into();
 
-    <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">colors</span> {
-            <span class="ident">GradientShaderColors::Colors</span>(<span class="ident">colors</span>) =&gt; <span class="ident">sb::C_SkGradientShader_MakeRadial</span>(
-                <span class="ident">center</span>.<span class="ident">native</span>(),
-                <span class="ident">radius</span>,
-                <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">mode</span>,
-                <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+    Shader::from_ptr(<span class="kw">unsafe </span>{
+        <span class="kw">match </span>colors {
+            GradientShaderColors::Colors(colors) =&gt; sb::C_SkGradientShader_MakeRadial(
+                center.native(),
+                radius,
+                colors.native().as_ptr(),
+                pos.as_ptr_or_null(),
+                colors.len().try_into().unwrap(),
+                mode,
+                flags.bits(),
+                local_matrix.native_ptr_or_null(),
             ),
 
-            <span class="ident">GradientShaderColors::ColorsInSpace</span>(<span class="ident">colors</span>, <span class="ident">color_space</span>) =&gt; {
-                <span class="ident">sb::C_SkGradientShader_MakeRadial2</span>(
-                    <span class="ident">center</span>.<span class="ident">native</span>(),
-                    <span class="ident">radius</span>,
-                    <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                    <span class="ident">color_space</span>.<span class="ident">into_ptr</span>(),
-                    <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                    <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                    <span class="ident">mode</span>,
-                    <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                    <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+            GradientShaderColors::ColorsInSpace(colors, color_space) =&gt; {
+                sb::C_SkGradientShader_MakeRadial2(
+                    center.native(),
+                    radius,
+                    colors.native().as_ptr(),
+                    color_space.into_ptr(),
+                    pos.as_ptr_or_null(),
+                    colors.len().try_into().unwrap(),
+                    mode,
+                    flags.bits(),
+                    local_matrix.native_ptr_or_null(),
                 )
             }
         }
     })
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">two_point_conical</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">start</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    <span class="ident">start_radius</span>: <span class="ident">scalar</span>,
-    <span class="ident">end</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    <span class="ident">end_radius</span>: <span class="ident">scalar</span>,
-    <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-    <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">colors</span> <span class="op">=</span> <span class="ident">colors</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">start</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">end</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">into</span>();
-    <span class="macro">assert!</span>(<span class="ident">pos</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> (<span class="ident">pos</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>() <span class="op">==</span> <span class="ident">colors</span>.<span class="ident">len</span>()));
-    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-    <span class="kw">let</span> <span class="ident">local_matrix</span> <span class="op">=</span> <span class="ident">local_matrix</span>.<span class="ident">into</span>();
+<span class="attribute">#[allow(clippy::too_many_arguments)]
+</span><span class="kw">pub fn </span>two_point_conical&lt;<span class="lifetime">&#39;a</span>&gt;(
+    start: <span class="kw">impl </span>Into&lt;Point&gt;,
+    start_radius: scalar,
+    end: <span class="kw">impl </span>Into&lt;Point&gt;,
+    end_radius: scalar,
+    colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+    pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+    mode: TileMode,
+    flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+    local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+) -&gt; <span class="prelude-ty">Option</span>&lt;Shader&gt; {
+    <span class="kw">let </span>colors = colors.into();
+    <span class="kw">let </span>start = start.into();
+    <span class="kw">let </span>end = end.into();
+    <span class="kw">let </span>pos = pos.into();
+    <span class="macro">assert!</span>(pos.is_none() || (pos.unwrap().len() == colors.len()));
+    <span class="kw">let </span>flags = flags.into().unwrap_or_default();
+    <span class="kw">let </span>local_matrix = local_matrix.into();
 
-    <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">colors</span> {
-            <span class="ident">GradientShaderColors::Colors</span>(<span class="ident">colors</span>) =&gt; <span class="ident">sb::C_SkGradientShader_MakeTwoPointConical</span>(
-                <span class="ident">start</span>.<span class="ident">native</span>(),
-                <span class="ident">start_radius</span>,
-                <span class="ident">end</span>.<span class="ident">native</span>(),
-                <span class="ident">end_radius</span>,
-                <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">mode</span>,
-                <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+    Shader::from_ptr(<span class="kw">unsafe </span>{
+        <span class="kw">match </span>colors {
+            GradientShaderColors::Colors(colors) =&gt; sb::C_SkGradientShader_MakeTwoPointConical(
+                start.native(),
+                start_radius,
+                end.native(),
+                end_radius,
+                colors.native().as_ptr(),
+                pos.as_ptr_or_null(),
+                colors.len().try_into().unwrap(),
+                mode,
+                flags.bits(),
+                local_matrix.native_ptr_or_null(),
             ),
 
-            <span class="ident">GradientShaderColors::ColorsInSpace</span>(<span class="ident">colors</span>, <span class="ident">color_space</span>) =&gt; {
-                <span class="ident">sb::C_SkGradientShader_MakeTwoPointConical2</span>(
-                    <span class="ident">start</span>.<span class="ident">native</span>(),
-                    <span class="ident">start_radius</span>,
-                    <span class="ident">end</span>.<span class="ident">native</span>(),
-                    <span class="ident">end_radius</span>,
-                    <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                    <span class="ident">color_space</span>.<span class="ident">into_ptr</span>(),
-                    <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                    <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                    <span class="ident">mode</span>,
-                    <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                    <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+            GradientShaderColors::ColorsInSpace(colors, color_space) =&gt; {
+                sb::C_SkGradientShader_MakeTwoPointConical2(
+                    start.native(),
+                    start_radius,
+                    end.native(),
+                    end_radius,
+                    colors.native().as_ptr(),
+                    color_space.into_ptr(),
+                    pos.as_ptr_or_null(),
+                    colors.len().try_into().unwrap(),
+                    mode,
+                    flags.bits(),
+                    local_matrix.native_ptr_or_null(),
                 )
             }
         }
     })
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sweep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">center</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-    <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">pos</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">mode</span>: <span class="ident">TileMode</span>,
-    <span class="ident">angles</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">scalar</span>, <span class="ident">scalar</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">self</span>::Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">local_matrix</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Matrix</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">center</span> <span class="op">=</span> <span class="ident">center</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">colors</span> <span class="op">=</span> <span class="ident">colors</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">into</span>();
-    <span class="macro">assert!</span>(<span class="ident">pos</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> (<span class="ident">pos</span>.<span class="ident">unwrap</span>().<span class="ident">len</span>() <span class="op">==</span> <span class="ident">colors</span>.<span class="ident">len</span>()));
-    <span class="kw">let</span> <span class="ident">angles</span> <span class="op">=</span> <span class="ident">angles</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-    <span class="kw">let</span> <span class="ident">local_matrix</span> <span class="op">=</span> <span class="ident">local_matrix</span>.<span class="ident">into</span>();
+<span class="kw">pub fn </span>sweep&lt;<span class="lifetime">&#39;a</span>&gt;(
+    center: <span class="kw">impl </span>Into&lt;Point&gt;,
+    colors: <span class="kw">impl </span>Into&lt;GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+    pos: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar]&gt;&gt;,
+    mode: TileMode,
+    angles: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;(scalar, scalar)&gt;&gt;,
+    flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">self</span>::Flags&gt;&gt;,
+    local_matrix: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&gt;&gt;,
+) -&gt; <span class="prelude-ty">Option</span>&lt;Shader&gt; {
+    <span class="kw">let </span>center = center.into();
+    <span class="kw">let </span>colors = colors.into();
+    <span class="kw">let </span>pos = pos.into();
+    <span class="macro">assert!</span>(pos.is_none() || (pos.unwrap().len() == colors.len()));
+    <span class="kw">let </span>angles = angles.into();
+    <span class="kw">let </span>flags = flags.into().unwrap_or_default();
+    <span class="kw">let </span>local_matrix = local_matrix.into();
 
-    <span class="kw">let</span> (<span class="ident">start_angle</span>, <span class="ident">end_angle</span>) <span class="op">=</span> (
-        <span class="ident">angles</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>.<span class="number">0</span>).<span class="ident">unwrap_or</span>(<span class="number">0.0</span>),
-        <span class="ident">angles</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>.<span class="number">1</span>).<span class="ident">unwrap_or</span>(<span class="number">360.0</span>),
+    <span class="kw">let </span>(start_angle, end_angle) = (
+        angles.map(|a| a.<span class="number">0</span>).unwrap_or(<span class="number">0.0</span>),
+        angles.map(|a| a.<span class="number">1</span>).unwrap_or(<span class="number">360.0</span>),
     );
 
-    <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">colors</span> {
-            <span class="ident">GradientShaderColors::Colors</span>(<span class="ident">colors</span>) =&gt; <span class="ident">sb::C_SkGradientShader_MakeSweep</span>(
-                <span class="ident">center</span>.<span class="ident">x</span>,
-                <span class="ident">center</span>.<span class="ident">y</span>,
-                <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">mode</span>,
-                <span class="ident">start_angle</span>,
-                <span class="ident">end_angle</span>,
-                <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+    Shader::from_ptr(<span class="kw">unsafe </span>{
+        <span class="kw">match </span>colors {
+            GradientShaderColors::Colors(colors) =&gt; sb::C_SkGradientShader_MakeSweep(
+                center.x,
+                center.y,
+                colors.native().as_ptr(),
+                pos.as_ptr_or_null(),
+                colors.len().try_into().unwrap(),
+                mode,
+                start_angle,
+                end_angle,
+                flags.bits(),
+                local_matrix.native_ptr_or_null(),
             ),
 
-            <span class="ident">GradientShaderColors::ColorsInSpace</span>(<span class="ident">colors</span>, <span class="ident">color_space</span>) =&gt; {
-                <span class="ident">sb::C_SkGradientShader_MakeSweep2</span>(
-                    <span class="ident">center</span>.<span class="ident">x</span>,
-                    <span class="ident">center</span>.<span class="ident">y</span>,
-                    <span class="ident">colors</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                    <span class="ident">color_space</span>.<span class="ident">into_ptr</span>(),
-                    <span class="ident">pos</span>.<span class="ident">as_ptr_or_null</span>(),
-                    <span class="ident">colors</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                    <span class="ident">mode</span>,
-                    <span class="ident">start_angle</span>,
-                    <span class="ident">end_angle</span>,
-                    <span class="ident">flags</span>.<span class="ident">bits</span>(),
-                    <span class="ident">local_matrix</span>.<span class="ident">native_ptr_or_null</span>(),
+            GradientShaderColors::ColorsInSpace(colors, color_space) =&gt; {
+                sb::C_SkGradientShader_MakeSweep2(
+                    center.x,
+                    center.y,
+                    colors.native().as_ptr(),
+                    color_space.into_ptr(),
+                    pos.as_ptr_or_null(),
+                    colors.len().try_into().unwrap(),
+                    mode,
+                    start_angle,
+                    end_angle,
+                    flags.bits(),
+                    local_matrix.native_ptr_or_null(),
                 )
             }
         }
     })
 }
 
-<span class="doccomment">/// Type that represents either a slice of [`Color`], or a slice of [`Color4f`] and a color space.</span>
-<span class="doccomment">/// Whenever this type is expected, it&#39;s either possible to directly pass a `&amp;[Color]` , or</span>
-<span class="doccomment">/// a tuple of type `(&amp;[Color4f], &amp;ColorSpace)`.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">Colors</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color</span>]),
-    <span class="ident">ColorsInSpace</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color4f</span>], <span class="ident">ColorSpace</span>),
+<span class="doccomment">/// Type that represents either a slice of [`Color`], or a slice of [`Color4f`] and a color space.
+/// Whenever this type is expected, it&#39;s either possible to directly pass a `&amp;[Color]` , or
+/// a tuple of type `(&amp;[Color4f], &amp;ColorSpace)`.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub enum </span>GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt; {
+    Colors(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color]),
+    ColorsInSpace(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color4f], ColorSpace),
 }
 
-<span class="kw">impl</span> <span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">GradientShaderColors::Colors</span>(<span class="ident">colors</span>) =&gt; <span class="ident">colors</span>.<span class="ident">len</span>(),
-            <span class="ident">GradientShaderColors::ColorsInSpace</span>(<span class="ident">colors</span>, <span class="kw">_</span>) =&gt; <span class="ident">colors</span>.<span class="ident">len</span>(),
+<span class="kw">impl </span>GradientShaderColors&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">match </span><span class="self">self </span>{
+            GradientShaderColors::Colors(colors) =&gt; colors.len(),
+            GradientShaderColors::ColorsInSpace(colors, <span class="kw">_</span>) =&gt; colors.len(),
         }
     }
 
-    <span class="comment">// to keep clippy happy.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span>
+    <span class="comment">// to keep clippy happy.
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.len() == <span class="number">0
+    </span>}
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color]&gt; <span class="kw">for </span>GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>from(colors: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color]) -&gt; <span class="self">Self </span>{
+        GradientShaderColors::&lt;<span class="lifetime">&#39;a</span>&gt;::Colors(colors)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">colors</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color</span>]) -&gt; <span class="self">Self</span> {
-        <span class="ident">GradientShaderColors</span>::<span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="ident">::Colors</span>(<span class="ident">colors</span>)
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color4f</span>], <span class="ident">ColorSpace</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GradientShaderColors</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">c</span>: (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color4f</span>], <span class="ident">ColorSpace</span>)) -&gt; <span class="self">Self</span> {
-        <span class="ident">GradientShaderColors</span>::<span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="ident">::ColorsInSpace</span>(<span class="ident">c</span>.<span class="number">0</span>, <span class="ident">c</span>.<span class="number">1</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color4f], ColorSpace)&gt; <span class="kw">for </span>GradientShaderColors&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>from(c: (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color4f], ColorSpace)) -&gt; <span class="self">Self </span>{
+        GradientShaderColors::&lt;<span class="lifetime">&#39;a</span>&gt;::ColorsInSpace(c.<span class="number">0</span>, c.<span class="number">1</span>)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\stroke_rec.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stroke_rec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/stroke_rec.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stroke_rec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -181,183 +175,182 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">paint</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Paint</span>, <span class="ident">Path</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkStrokeRec</span>};
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{paint, prelude::<span class="kw-2">*</span>, scalar, Paint, Path};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkStrokeRec};
+<span class="kw">use </span>std::fmt;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkStrokeRec_InitStyle</span> <span class="kw">as</span> <span class="ident">InitStyle</span>;
-<span class="macro">variant_name!</span>(<span class="ident">InitStyle::Hairline</span>, <span class="ident">init_style_naming</span>);
+<span class="kw">pub use </span>sb::SkStrokeRec_InitStyle <span class="kw">as </span>InitStyle;
+<span class="macro">variant_name!</span>(InitStyle::Hairline, init_style_naming);
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sb::SkStrokeRec_Style</span> <span class="kw">as</span> <span class="ident">Style</span>;
-<span class="macro">variant_name!</span>(<span class="ident">Style::Stroke</span>, <span class="ident">style_naming</span>);
+<span class="kw">pub use </span>sb::SkStrokeRec_Style <span class="kw">as </span>Style;
+<span class="macro">variant_name!</span>(Style::Stroke, style_naming);
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">StrokeRec</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkStrokeRec</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">StrokeRec</span>);
+<span class="kw">pub type </span>StrokeRec = Handle&lt;SkStrokeRec&gt;;
+<span class="macro">unsafe_send_sync!</span>(StrokeRec);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkStrokeRec</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStrokeRec_destruct</span>(<span class="self">self</span>) };
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkStrokeRec {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkStrokeRec_destruct(<span class="self">self</span>) };
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkStrokeRec</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">copy</span> <span class="op">=</span> <span class="ident">StrokeRec::new_hairline</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStrokeRec_copy</span>(<span class="self">self</span>, <span class="ident">copy</span>.<span class="ident">native_mut</span>()) }
-        <span class="kw-2">*</span><span class="ident">copy</span>.<span class="ident">native</span>()
+<span class="kw">impl </span>NativeClone <span class="kw">for </span>SkStrokeRec {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>copy = StrokeRec::new_hairline();
+        <span class="kw">unsafe </span>{ sb::C_SkStrokeRec_copy(<span class="self">self</span>, copy.native_mut()) }
+        <span class="kw-2">*</span>copy.native()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">StrokeRec</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;StrokeRec&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">style</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">width</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;miter&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">miter</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;cap&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cap</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;join&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">join</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;res_scale&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">res_scale</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>StrokeRec {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;StrokeRec&quot;</span>)
+            .field(<span class="string">&quot;style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.style())
+            .field(<span class="string">&quot;width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.width())
+            .field(<span class="string">&quot;miter&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.miter())
+            .field(<span class="string">&quot;cap&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.cap())
+            .field(<span class="string">&quot;join&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.join())
+            .field(<span class="string">&quot;res_scale&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.res_scale())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">StrokeRec</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">init_style</span>: <span class="ident">InitStyle</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkStrokeRec::new</span>(<span class="ident">init_style</span>) })
+<span class="kw">impl </span>StrokeRec {
+    <span class="kw">pub fn </span>new(init_style: InitStyle) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{ SkStrokeRec::new(init_style) })
     }
 
-    <span class="comment">// for convenience</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_hairline</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">InitStyle::Hairline</span>)
+    <span class="comment">// for convenience
+    </span><span class="kw">pub fn </span>new_hairline() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(InitStyle::Hairline)
     }
 
-    <span class="comment">// for convenience</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_fill</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">InitStyle::Fill</span>)
+    <span class="comment">// for convenience
+    </span><span class="kw">pub fn </span>new_fill() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(InitStyle::Fill)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_paint</span>(
-        <span class="ident">paint</span>: <span class="kw-2">&amp;</span><span class="ident">Paint</span>,
-        <span class="ident">style</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">paint::Style</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">res_scale</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">res_scale</span> <span class="op">=</span> <span class="ident">res_scale</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">1.0</span>);
-        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="kw">match</span> <span class="ident">style</span>.<span class="ident">into</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">style</span>) =&gt; <span class="ident">SkStrokeRec::new1</span>(<span class="ident">paint</span>.<span class="ident">native</span>(), <span class="ident">style</span>, <span class="ident">res_scale</span>),
-                <span class="prelude-val">None</span> =&gt; <span class="ident">SkStrokeRec::new2</span>(<span class="ident">paint</span>.<span class="ident">native</span>(), <span class="ident">res_scale</span>),
+    <span class="kw">pub fn </span>from_paint(
+        paint: <span class="kw-2">&amp;</span>Paint,
+        style: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;paint::Style&gt;&gt;,
+        res_scale: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;scalar&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>res_scale = res_scale.into().unwrap_or(<span class="number">1.0</span>);
+        <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{
+            <span class="kw">match </span>style.into() {
+                <span class="prelude-val">Some</span>(style) =&gt; SkStrokeRec::new1(paint.native(), style, res_scale),
+                <span class="prelude-val">None </span>=&gt; SkStrokeRec::new2(paint.native(), res_scale),
             }
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Style</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getStyle</span>() }
+    <span class="kw">pub fn </span>style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Style {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getStyle() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fWidth</span>
+    <span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fWidth
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">miter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fMiterLimit</span>
+    <span class="kw">pub fn </span>miter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fMiterLimit
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">paint::Cap</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStrokeRec_getCap</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>cap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; paint::Cap {
+        <span class="kw">unsafe </span>{ sb::C_SkStrokeRec_getCap(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">paint::Join</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStrokeRec_getJoin</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>join(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; paint::Join {
+        <span class="kw">unsafe </span>{ sb::C_SkStrokeRec_getJoin(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_hairline_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">style</span>() <span class="op">==</span> <span class="ident">Style::Hairline</span>
+    <span class="kw">pub fn </span>is_hairline_style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.style() == Style::Hairline
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_fill_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">style</span>() <span class="op">==</span> <span class="ident">Style::Fill</span>
+    <span class="kw">pub fn </span>is_fill_style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.style() == Style::Fill
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_fill_style</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setFillStyle</span>() }
-        <span class="self">self</span>
+    <span class="kw">pub fn </span>set_fill_style(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setFillStyle() }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>set_hairline_style(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setHairlineStyle() }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>set_stroke_style(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        width: scalar,
+        stroke_and_fill: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>stroke_and_fill = stroke_and_fill.into().unwrap_or(<span class="bool-val">false</span>);
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setStrokeStyle(width, stroke_and_fill) }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>set_stroke_params(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        cap: paint::Cap,
+        join: paint::Join,
+        miter_limit: scalar,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>native = <span class="self">self</span>.native_mut();
+        native.set_fCap(cap <span class="kw">as _</span>);
+        native.set_fJoin(join <span class="kw">as _</span>);
+        native.fMiterLimit = miter_limit;
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>res_scale(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fResScale
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hairline_style</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setHairlineStyle</span>() }
-        <span class="self">self</span>
+    <span class="kw">pub fn </span>set_res_scale(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rs: scalar) {
+        <span class="macro">debug_assert!</span>(rs &gt; <span class="number">0.0 </span>&amp;&amp; rs.is_finite());
+        <span class="self">self</span>.native_mut().fResScale = rs;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_stroke_style</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">width</span>: <span class="ident">scalar</span>,
-        <span class="ident">stroke_and_fill</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">stroke_and_fill</span> <span class="op">=</span> <span class="ident">stroke_and_fill</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>);
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setStrokeStyle</span>(<span class="ident">width</span>, <span class="ident">stroke_and_fill</span>) }
-        <span class="self">self</span>
+    <span class="kw">pub fn </span>need_to_apply(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">let </span>style = <span class="self">self</span>.style();
+        style == Style::Stroke || style == Style::StrokeAndFill
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_stroke_params</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">cap</span>: <span class="ident">paint::Cap</span>,
-        <span class="ident">join</span>: <span class="ident">paint::Join</span>,
-        <span class="ident">miter_limit</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">native</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>();
-        <span class="ident">native</span>.<span class="ident">set_fCap</span>(<span class="ident">cap</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="ident">native</span>.<span class="ident">set_fJoin</span>(<span class="ident">join</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="ident">native</span>.<span class="ident">fMiterLimit</span> <span class="op">=</span> <span class="ident">miter_limit</span>;
-        <span class="self">self</span>
+    <span class="kw">pub fn </span>apply_to_path(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>Path, src: <span class="kw-2">&amp;</span>Path) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().applyToPath(dst.native_mut(), src.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">res_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fResScale</span>
+    <span class="kw">pub fn </span>apply_to_path_inplace(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;mut </span>Path) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().applyToPath(path.native_mut(), path.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_res_scale</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rs</span>: <span class="ident">scalar</span>) {
-        <span class="macro">debug_assert!</span>(<span class="ident">rs</span> <span class="op">&gt;</span> <span class="number">0.0</span> <span class="op">&amp;&amp;</span> <span class="ident">rs</span>.<span class="ident">is_finite</span>());
-        <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">fResScale</span> <span class="op">=</span> <span class="ident">rs</span>;
+    <span class="kw">pub fn </span>apply_to_paint(<span class="kw-2">&amp;</span><span class="self">self</span>, paint: <span class="kw-2">&amp;mut </span>Paint) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().applyToPaint(paint.native_mut()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">need_to_apply</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">style</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">style</span>();
-        <span class="ident">style</span> <span class="op">==</span> <span class="ident">Style::Stroke</span> <span class="op">|</span><span class="op">|</span> <span class="ident">style</span> <span class="op">==</span> <span class="ident">Style::StrokeAndFill</span>
+    <span class="kw">pub fn </span>inflation_radius(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getInflationRadius() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply_to_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Path</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">applyToPath</span>(<span class="ident">dst</span>.<span class="ident">native_mut</span>(), <span class="ident">src</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>inflation_radius_from_paint_and_style(paint: <span class="kw-2">&amp;</span>Paint, style: paint::Style) -&gt; scalar {
+        <span class="kw">unsafe </span>{ SkStrokeRec::GetInflationRadius(paint.native(), style) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply_to_path_inplace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Path</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">applyToPath</span>(<span class="ident">path</span>.<span class="ident">native_mut</span>(), <span class="ident">path</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>inflation_radius_from_params(
+        join: paint::Join,
+        miter_limit: scalar,
+        cap: paint::Cap,
+        stroke_width: scalar,
+    ) -&gt; scalar {
+        <span class="kw">unsafe </span>{ SkStrokeRec::GetInflationRadius1(join, miter_limit, cap, stroke_width) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply_to_paint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">paint</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Paint</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">applyToPaint</span>(<span class="ident">paint</span>.<span class="ident">native_mut</span>()) }
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inflation_radius</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getInflationRadius</span>() }
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inflation_radius_from_paint_and_style</span>(<span class="ident">paint</span>: <span class="kw-2">&amp;</span><span class="ident">Paint</span>, <span class="ident">style</span>: <span class="ident">paint::Style</span>) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkStrokeRec::GetInflationRadius</span>(<span class="ident">paint</span>.<span class="ident">native</span>(), <span class="ident">style</span>) }
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inflation_radius_from_params</span>(
-        <span class="ident">join</span>: <span class="ident">paint::Join</span>,
-        <span class="ident">miter_limit</span>: <span class="ident">scalar</span>,
-        <span class="ident">cap</span>: <span class="ident">paint::Cap</span>,
-        <span class="ident">stroke_width</span>: <span class="ident">scalar</span>,
-    ) -&gt; <span class="ident">scalar</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkStrokeRec::GetInflationRadius1</span>(<span class="ident">join</span>, <span class="ident">miter_limit</span>, <span class="ident">cap</span>, <span class="ident">stroke_width</span>) }
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_equal_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">StrokeRec</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkStrokeRec_hasEqualEffect</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">other</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>has_equal_effect(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>StrokeRec) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkStrokeRec_hasEqualEffect(<span class="self">self</span>.native(), other.native()) }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\effects\op_path_effect.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>op_path_effect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/effects/op_path_effect.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>op_path_effect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -76,78 +70,77 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
-</pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">merge_path_effect</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">PathEffect</span>, <span class="ident">PathOp</span>};
-    <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
+</pre><pre class="rust"><code><span class="kw">pub mod </span>merge_path_effect {
+    <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, PathEffect, PathOp};
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
-    <span class="kw">impl</span> <span class="ident">PathEffect</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">merge</span>(
-            <span class="ident">one</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>,
-            <span class="ident">two</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>,
-            <span class="ident">op</span>: <span class="ident">PathOp</span>,
-        ) -&gt; <span class="ident">PathEffect</span> {
-            <span class="ident">new</span>(<span class="ident">one</span>, <span class="ident">two</span>, <span class="ident">op</span>)
+    <span class="kw">impl </span>PathEffect {
+        <span class="kw">pub fn </span>merge(
+            one: <span class="kw">impl </span>Into&lt;PathEffect&gt;,
+            two: <span class="kw">impl </span>Into&lt;PathEffect&gt;,
+            op: PathOp,
+        ) -&gt; PathEffect {
+            new(one, two, op)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">one</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>, <span class="ident">two</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span>, <span class="ident">op</span>: <span class="ident">PathOp</span>) -&gt; <span class="ident">PathEffect</span> {
-        <span class="ident">PathEffect::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkMergePathEffect_Make</span>(<span class="ident">one</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">two</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(), <span class="ident">op</span>)
+    <span class="kw">pub fn </span>new(one: <span class="kw">impl </span>Into&lt;PathEffect&gt;, two: <span class="kw">impl </span>Into&lt;PathEffect&gt;, op: PathOp) -&gt; PathEffect {
+        PathEffect::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkMergePathEffect_Make(one.into().into_ptr(), two.into().into_ptr(), op)
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">matrix_path_effect</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Matrix</span>, <span class="ident">PathEffect</span>, <span class="ident">Vector</span>};
-    <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
+<span class="kw">pub mod </span>matrix_path_effect {
+    <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Matrix, PathEffect, Vector};
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
-    <span class="kw">impl</span> <span class="ident">PathEffect</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix_translate</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-            <span class="ident">new_translate</span>(<span class="ident">d</span>)
+    <span class="kw">impl </span>PathEffect {
+        <span class="kw">pub fn </span>matrix_translate(d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;PathEffect&gt; {
+            new_translate(d)
         }
 
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matrix</span>(<span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-            <span class="ident">new</span>(<span class="ident">matrix</span>)
+        <span class="kw">pub fn </span>matrix(matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="prelude-ty">Option</span>&lt;PathEffect&gt; {
+            new(matrix)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_translate</span>(<span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vector</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="ident">PathEffect::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrixPathEffect_MakeTranslate</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>) })
+    <span class="kw">pub fn </span>new_translate(d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;PathEffect&gt; {
+        <span class="kw">let </span>d = d.into();
+        PathEffect::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkMatrixPathEffect_MakeTranslate(d.x, d.y) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-        <span class="ident">PathEffect::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkMatrixPathEffect_Make</span>(<span class="ident">matrix</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>new(matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="prelude-ty">Option</span>&lt;PathEffect&gt; {
+        PathEffect::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkMatrixPathEffect_Make(matrix.native()) })
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">stroke_path_effect</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">paint</span>, <span class="ident">scalar</span>, <span class="ident">PathEffect</span>};
-    <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
+<span class="kw">pub mod </span>stroke_path_effect {
+    <span class="kw">use crate</span>::{paint, scalar, PathEffect};
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
-    <span class="kw">impl</span> <span class="ident">PathEffect</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stroke</span>(
-            <span class="ident">width</span>: <span class="ident">scalar</span>,
-            <span class="ident">join</span>: <span class="ident">paint::Join</span>,
-            <span class="ident">cap</span>: <span class="ident">paint::Cap</span>,
-            <span class="ident">miter</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-            <span class="ident">new</span>(<span class="ident">width</span>, <span class="ident">join</span>, <span class="ident">cap</span>, <span class="ident">miter</span>)
+    <span class="kw">impl </span>PathEffect {
+        <span class="kw">pub fn </span>stroke(
+            width: scalar,
+            join: paint::Join,
+            cap: paint::Cap,
+            miter: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;scalar&gt;&gt;,
+        ) -&gt; <span class="prelude-ty">Option</span>&lt;PathEffect&gt; {
+            new(width, join, cap, miter)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">width</span>: <span class="ident">scalar</span>,
-        <span class="ident">join</span>: <span class="ident">paint::Join</span>,
-        <span class="ident">cap</span>: <span class="ident">paint::Cap</span>,
-        <span class="ident">miter</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathEffect</span><span class="op">&gt;</span> {
-        <span class="ident">PathEffect::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkStrokePathEffect_Make</span>(<span class="ident">width</span>, <span class="ident">join</span>, <span class="ident">cap</span>, <span class="ident">miter</span>.<span class="ident">into</span>().<span class="ident">unwrap_or</span>(<span class="number">4.0</span>))
+    <span class="kw">pub fn </span>new(
+        width: scalar,
+        join: paint::Join,
+        cap: paint::Cap,
+        miter: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;scalar&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;PathEffect&gt; {
+        PathEffect::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkStrokePathEffect_Make(width, join, cap, miter.into().unwrap_or(<span class="number">4.0</span>))
         })
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

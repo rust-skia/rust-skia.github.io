@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\modules\paragraph\font_collection.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>font_collection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/font_collection.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>font_collection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -259,248 +253,248 @@
 <span id="253">253</span>
 <span id="254">254</span>
 <span id="255">255</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">interop</span>::{<span class="self">self</span>, <span class="ident">FromStrs</span>, <span class="ident">VecSink</span>},
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>,
-    <span class="ident">textlayout::ParagraphCache</span>,
-    <span class="ident">FontMgr</span>, <span class="ident">FontStyle</span>, <span class="ident">Typeface</span>, <span class="ident">Unichar</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    interop::{<span class="self">self</span>, FromStrs, VecSink},
+    prelude::<span class="kw-2">*</span>,
+    textlayout::ParagraphCache,
+    FontMgr, FontStyle, Typeface, Unichar,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">skia_textlayout_FontCollection</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, skia_textlayout_FontCollection};
+<span class="kw">use </span>std::{ffi, fmt, ptr};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::FontArguments</span>;
+<span class="kw">use </span><span class="kw">super</span>::FontArguments;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FontCollection</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">skia_textlayout_FontCollection</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>FontCollection = RCHandle&lt;skia_textlayout_FontCollection&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeRefCountedBase</span> <span class="kw">for</span> <span class="ident">skia_textlayout_FontCollection</span> {
-    <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">sb::SkRefCntBase</span>;
+<span class="kw">impl </span>NativeRefCountedBase <span class="kw">for </span>skia_textlayout_FontCollection {
+    <span class="kw">type </span>Base = sb::SkRefCntBase;
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FontCollection</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;FontCollection&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;font_managers_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_managers_count</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;fallback_manager&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fallback_manager</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;font_fallback_enabled&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">font_fallback_enabled</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;paragraph_cache&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">paragraph_cache</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>FontCollection {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;FontCollection&quot;</span>)
+            .field(<span class="string">&quot;font_managers_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_managers_count())
+            .field(<span class="string">&quot;fallback_manager&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.fallback_manager())
+            .field(<span class="string">&quot;font_fallback_enabled&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_fallback_enabled())
+            .field(<span class="string">&quot;paragraph_cache&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.paragraph_cache())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FontCollection</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_FontCollection_new</span>() }).<span class="ident">unwrap</span>()
+<span class="kw">impl </span>FontCollection {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_FontCollection_new() }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_managers_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getFontManagersCount</span>() }
+    <span class="kw">pub fn </span>font_managers_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getFontManagersCount() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_asset_font_manager</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">font_manager</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_FontCollection_setAssetFontManager</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">font_manager</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>set_asset_font_manager(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font_manager: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            sb::C_FontCollection_setAssetFontManager(
+                <span class="self">self</span>.native_mut(),
+                font_manager.into().into_ptr_or_null(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dynamic_font_manager</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">font_manager</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_FontCollection_setDynamicFontManager</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">font_manager</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>set_dynamic_font_manager(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font_manager: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            sb::C_FontCollection_setDynamicFontManager(
+                <span class="self">self</span>.native_mut(),
+                font_manager.into().into_ptr_or_null(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_test_font_manager</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">font_manager</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_FontCollection_setTestFontManager</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">font_manager</span>.<span class="ident">into</span>().<span class="ident">into_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>set_test_font_manager(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font_manager: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            sb::C_FontCollection_setTestFontManager(
+                <span class="self">self</span>.native_mut(),
+                font_manager.into().into_ptr_or_null(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_default_font_manager</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font_manager</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">default_family_name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub fn </span>set_default_font_manager&lt;<span class="lifetime">&#39;a</span>&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font_manager: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;,
+        default_family_name: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;&gt;,
     ) {
-        <span class="kw">let</span> <span class="ident">font_manager</span> <span class="op">=</span> <span class="ident">font_manager</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="kw">match</span> <span class="ident">default_family_name</span>.<span class="ident">into</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">name</span>) =&gt; {
-                    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">ffi::CString::new</span>(<span class="ident">name</span>).<span class="ident">unwrap</span>();
-                    <span class="ident">sb::C_FontCollection_setDefaultFontManager2</span>(
-                        <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                        <span class="ident">font_manager</span>.<span class="ident">into_ptr_or_null</span>(),
-                        <span class="ident">name</span>.<span class="ident">as_ptr</span>(),
+        <span class="kw">let </span>font_manager = font_manager.into();
+        <span class="kw">unsafe </span>{
+            <span class="kw">match </span>default_family_name.into() {
+                <span class="prelude-val">Some</span>(name) =&gt; {
+                    <span class="kw">let </span>name = ffi::CString::new(name).unwrap();
+                    sb::C_FontCollection_setDefaultFontManager2(
+                        <span class="self">self</span>.native_mut(),
+                        font_manager.into_ptr_or_null(),
+                        name.as_ptr(),
                     )
                 }
-                <span class="prelude-val">None</span> =&gt; <span class="ident">sb::C_FontCollection_setDefaultFontManager</span>(
-                    <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                    <span class="ident">font_manager</span>.<span class="ident">into_ptr_or_null</span>(),
+                <span class="prelude-val">None </span>=&gt; sb::C_FontCollection_setDefaultFontManager(
+                    <span class="self">self</span>.native_mut(),
+                    font_manager.into_ptr_or_null(),
                 ),
             }
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_default_font_manager_and_family_names</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font_manager</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">family_names</span>: <span class="kw-2">&amp;</span>[<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>],
+    <span class="kw">pub fn </span>set_default_font_manager_and_family_names(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font_manager: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;,
+        family_names: <span class="kw-2">&amp;</span>[<span class="kw">impl </span>AsRef&lt;str&gt;],
     ) {
-        <span class="kw">let</span> <span class="ident">font_manager</span> <span class="op">=</span> <span class="ident">font_manager</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">interop::Strings::from_strs</span>(<span class="ident">family_names</span>);
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_FontCollection_setDefaultFontManager3</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">font_manager</span>.<span class="ident">into_ptr_or_null</span>(),
-                <span class="ident">family_names</span>.<span class="ident">native</span>(),
+        <span class="kw">let </span>font_manager = font_manager.into();
+        <span class="kw">let </span>family_names = interop::Strings::from_strs(family_names);
+        <span class="kw">unsafe </span>{
+            sb::C_FontCollection_setDefaultFontManager3(
+                <span class="self">self</span>.native_mut(),
+                font_manager.into_ptr_or_null(),
+                family_names.native(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fallback_manager</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontMgr</span><span class="op">&gt;</span> {
-        <span class="ident">FontMgr::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_FontCollection_getFallbackManager</span>(<span class="self">self</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>fallback_manager(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;FontMgr&gt; {
+        FontMgr::from_ptr(<span class="kw">unsafe </span>{ sb::C_FontCollection_getFallbackManager(<span class="self">self</span>.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_typefaces</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">family_names</span>: <span class="kw-2">&amp;</span>[<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>],
-        <span class="ident">font_style</span>: <span class="ident">FontStyle</span>,
-    ) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">find_typefaces_with_font_arguments</span>(<span class="ident">family_names</span>, <span class="ident">font_style</span>, <span class="prelude-val">None</span>)
+    <span class="kw">pub fn </span>find_typefaces(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        family_names: <span class="kw-2">&amp;</span>[<span class="kw">impl </span>AsRef&lt;str&gt;],
+        font_style: FontStyle,
+    ) -&gt; Vec&lt;Typeface&gt; {
+        <span class="self">self</span>.find_typefaces_with_font_arguments(family_names, font_style, <span class="prelude-val">None</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_typefaces_with_font_arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;fa</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">family_names</span>: <span class="kw-2">&amp;</span>[<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>],
-        <span class="ident">font_style</span>: <span class="ident">FontStyle</span>,
-        <span class="ident">font_args</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;fa</span> <span class="ident">FontArguments</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">family_names</span> <span class="op">=</span> <span class="ident">interop::Strings::from_strs</span>(<span class="ident">family_names</span>);
+    <span class="kw">pub fn </span>find_typefaces_with_font_arguments&lt;<span class="lifetime">&#39;fa</span>&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        family_names: <span class="kw-2">&amp;</span>[<span class="kw">impl </span>AsRef&lt;str&gt;],
+        font_style: FontStyle,
+        font_args: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;fa </span>FontArguments&gt;&gt;,
+    ) -&gt; Vec&lt;Typeface&gt; {
+        <span class="kw">let </span>family_names = interop::Strings::from_strs(family_names);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">typefaces</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set_typefaces</span> <span class="op">=</span> <span class="op">|</span><span class="ident">tfs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">sb::sk_sp</span><span class="op">&lt;</span><span class="ident">sb::SkTypeface</span><span class="op">&gt;</span>]<span class="op">|</span> {
-            <span class="ident">typefaces</span> <span class="op">=</span> <span class="ident">tfs</span>
-                .<span class="ident">iter_mut</span>()
-                .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">sp</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">sp</span>.<span class="ident">fPtr</span>;
-                    <span class="ident">sp</span>.<span class="ident">fPtr</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-                    <span class="ident">Typeface::from_ptr</span>(<span class="ident">ptr</span>)
+        <span class="kw">let </span><span class="kw-2">mut </span>typefaces: Vec&lt;Typeface&gt; = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>set_typefaces = |tfs: <span class="kw-2">&amp;mut </span>[sb::sk_sp&lt;sb::SkTypeface&gt;]| {
+            typefaces = tfs
+                .iter_mut()
+                .filter_map(|sp| {
+                    <span class="kw">let </span>ptr = sp.fPtr;
+                    sp.fPtr = ptr::null_mut();
+                    Typeface::from_ptr(ptr)
                 })
-                .<span class="ident">collect</span>()
+                .collect()
         };
 
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_FontCollection_findTypefaces</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">family_names</span>.<span class="ident">native</span>(),
-                <span class="ident">font_style</span>.<span class="ident">into_native</span>(),
-                <span class="ident">font_args</span>.<span class="ident">into</span>().<span class="ident">native_ptr_or_null</span>(),
-                <span class="ident">VecSink::new_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">set_typefaces</span>).<span class="ident">native_mut</span>(),
+        <span class="kw">unsafe </span>{
+            sb::C_FontCollection_findTypefaces(
+                <span class="self">self</span>.native_mut(),
+                family_names.native(),
+                font_style.into_native(),
+                font_args.into().native_ptr_or_null(),
+                VecSink::new_mut(<span class="kw-2">&amp;mut </span>set_typefaces).native_mut(),
             )
         };
-        <span class="ident">typefaces</span>
+        typefaces
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_fallback_char</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">unicode</span>: <span class="ident">Unichar</span>,
-        <span class="ident">font_style</span>: <span class="ident">FontStyle</span>,
-        <span class="ident">locale</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">locale</span> <span class="op">=</span> <span class="ident">interop::String::from_str</span>(<span class="ident">locale</span>.<span class="ident">as_ref</span>());
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_FontCollection_defaultFallback</span>(
-                <span class="self">self</span>.<span class="ident">native_mut</span>(),
-                <span class="ident">unicode</span>,
-                <span class="ident">font_style</span>.<span class="ident">into_native</span>(),
-                <span class="ident">locale</span>.<span class="ident">native</span>(),
+    <span class="kw">pub fn </span>default_fallback_char(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        unicode: Unichar,
+        font_style: FontStyle,
+        locale: <span class="kw">impl </span>AsRef&lt;str&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        <span class="kw">let </span>locale = interop::String::from_str(locale.as_ref());
+        Typeface::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_FontCollection_defaultFallback(
+                <span class="self">self</span>.native_mut(),
+                unicode,
+                font_style.into_native(),
+                locale.native(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_fallback</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_FontCollection_defaultFallback2</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
+    <span class="kw">pub fn </span>default_fallback(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        Typeface::from_ptr(<span class="kw">unsafe </span>{ sb::C_FontCollection_defaultFallback2(<span class="self">self</span>.native_mut()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disable_font_fallback</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">disableFontFallback</span>() }
+    <span class="kw">pub fn </span>disable_font_fallback(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().disableFontFallback() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_font_fallback</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">enableFontFallback</span>() }
+    <span class="kw">pub fn </span>enable_font_fallback(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().enableFontFallback() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">font_fallback_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_FontCollection_fontFallbackEnabled</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>font_fallback_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_FontCollection_fontFallbackEnabled(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">paragraph_cache</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ParagraphCache</span> {
-        <span class="ident">ParagraphCache::from_native_ref</span>(<span class="kw">unsafe</span> {
-            <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">sb::C_FontCollection_paragraphCache</span>(<span class="self">self</span>.<span class="ident">native_mut_force</span>())
+    <span class="kw">pub fn </span>paragraph_cache(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ParagraphCache {
+        ParagraphCache::from_native_ref(<span class="kw">unsafe </span>{
+            <span class="kw-2">&amp;*</span>sb::C_FontCollection_paragraphCache(<span class="self">self</span>.native_mut_force())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">paragraph_cache_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">ParagraphCache</span> {
-        <span class="ident">ParagraphCache::from_native_ref_mut</span>(<span class="kw">unsafe</span> {
-            <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">sb::C_FontCollection_paragraphCache</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+    <span class="kw">pub fn </span>paragraph_cache_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>ParagraphCache {
+        ParagraphCache::from_native_ref_mut(<span class="kw">unsafe </span>{
+            <span class="kw-2">&amp;mut *</span>sb::C_FontCollection_paragraphCache(<span class="self">self</span>.native_mut())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_caches</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">clearCaches</span>() }
+    <span class="kw">pub fn </span>clear_caches(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().clearCaches() }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::textlayout::FontCollection</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">FontMgr</span>, <span class="ident">FontStyle</span>};
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::textlayout::FontCollection;
+    <span class="kw">use crate</span>::{FontMgr, FontStyle};
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ref_counts</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fc</span> <span class="op">=</span> <span class="ident">FontCollection::new</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">fc</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="number">1</span>);
+    <span class="attribute">#[test]
+    #[serial_test::serial]
+    </span><span class="kw">fn </span>ref_counts() {
+        <span class="kw">let </span><span class="kw-2">mut </span>fc = FontCollection::new();
+        <span class="macro">assert_eq!</span>(fc.native().ref_counted_base()._ref_cnt(), <span class="number">1</span>);
 
-        <span class="kw">let</span> <span class="ident">fm</span> <span class="op">=</span> <span class="ident">FontMgr::new</span>();
-        <span class="kw">let</span> <span class="ident">fm_base</span> <span class="op">=</span> <span class="ident">fm</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>();
+        <span class="kw">let </span>fm = FontMgr::new();
+        <span class="kw">let </span>fm_base = fm.native().ref_counted_base()._ref_cnt();
 
-        <span class="ident">fc</span>.<span class="ident">set_default_font_manager</span>(<span class="ident">fm</span>.<span class="ident">clone</span>(), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">fm</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="ident">fm_base</span> <span class="op">+</span> <span class="number">1</span>);
+        fc.set_default_font_manager(fm.clone(), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(fm.native().ref_counted_base()._ref_cnt(), fm_base + <span class="number">1</span>);
 
-        <span class="kw">let</span> <span class="ident">cloned_fc</span> <span class="op">=</span> <span class="ident">fc</span>.<span class="ident">clone</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">fm</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="ident">fm_base</span> <span class="op">+</span> <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">fc</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="number">2</span>);
-        <span class="ident">drop</span>(<span class="ident">cloned_fc</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">fc</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">fm</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="ident">fm_base</span> <span class="op">+</span> <span class="number">1</span>);
+        <span class="kw">let </span>cloned_fc = fc.clone();
+        <span class="macro">assert_eq!</span>(fm.native().ref_counted_base()._ref_cnt(), fm_base + <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(fc.native().ref_counted_base()._ref_cnt(), <span class="number">2</span>);
+        drop(cloned_fc);
+        <span class="macro">assert_eq!</span>(fc.native().ref_counted_base()._ref_cnt(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(fm.native().ref_counted_base()._ref_cnt(), fm_base + <span class="number">1</span>);
 
         {
-            <span class="kw">let</span> <span class="ident">fmc</span> <span class="op">=</span> <span class="ident">fc</span>.<span class="ident">fallback_manager</span>().<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">fmc</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="ident">fm_base</span> <span class="op">+</span> <span class="number">2</span>);
-            <span class="ident">drop</span>(<span class="ident">fmc</span>);
+            <span class="kw">let </span>fmc = fc.fallback_manager().unwrap();
+            <span class="macro">assert_eq!</span>(fmc.native().ref_counted_base()._ref_cnt(), fm_base + <span class="number">2</span>);
+            drop(fmc);
         }
 
-        <span class="ident">fc</span>.<span class="ident">set_default_font_manager</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">fm</span>.<span class="ident">native</span>().<span class="ident">ref_counted_base</span>().<span class="ident">_ref_cnt</span>(), <span class="ident">fm_base</span>);
-        <span class="ident">drop</span>(<span class="ident">fm</span>);
-        <span class="ident">drop</span>(<span class="ident">fc</span>);
+        fc.set_default_font_manager(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(fm.native().ref_counted_base()._ref_cnt(), fm_base);
+        drop(fm);
+        drop(fc);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">serial_test::serial</span>]</span>
-    <span class="kw">fn</span> <span class="ident">find_typefaces</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fc</span> <span class="op">=</span> <span class="ident">FontCollection::new</span>();
-        <span class="ident">fc</span>.<span class="ident">set_default_font_manager</span>(<span class="ident">FontMgr::new</span>(), <span class="prelude-val">None</span>);
+    <span class="attribute">#[test]
+    #[serial_test::serial]
+    </span><span class="kw">fn </span>find_typefaces() {
+        <span class="kw">let </span><span class="kw-2">mut </span>fc = FontCollection::new();
+        fc.set_default_font_manager(FontMgr::new(), <span class="prelude-val">None</span>);
         <span class="macro">println!</span>(<span class="string">&quot;find typeface:&quot;</span>);
-        <span class="kw">for</span> <span class="ident">typeface</span> <span class="kw">in</span> <span class="ident">fc</span>.<span class="ident">find_typefaces</span>(
+        <span class="kw">for </span>typeface <span class="kw">in </span>fc.find_typefaces(
             <span class="kw-2">&amp;</span>[
                 <span class="string">&quot;Arial&quot;</span>,
                 <span class="string">&quot;Tahoma&quot;</span>,
@@ -508,12 +502,11 @@
                 <span class="string">&quot;JetBrains Mono&quot;</span>,
                 <span class="string">&quot;Not Existing&quot;</span>,
             ],
-            <span class="ident">FontStyle::default</span>(),
+            FontStyle::default(),
         ) {
-            <span class="macro">println!</span>(<span class="string">&quot;typeface: {}&quot;</span>, <span class="ident">typeface</span>.<span class="ident">family_name</span>());
+            <span class="macro">println!</span>(<span class="string">&quot;typeface: {}&quot;</span>, typeface.family_name());
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

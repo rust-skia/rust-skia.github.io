@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["SurfaceInfo",""]],"type":[["BackendContext",""],["Handle",""],["PixelFormat",""],["StorageMode",""],["TextureInfo",""],["TextureUsage",""]]};

@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\svg\canvas.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>canvas.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/svg/canvas.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>canvas.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -118,120 +112,119 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">interop::DynamicMemoryWStream</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Data</span>, <span class="ident">Rect</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkCanvas</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">fmt</span>,
-    <span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>},
-    <span class="ident">pin::Pin</span>,
-    <span class="ident">ptr</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{interop::DynamicMemoryWStream, prelude::<span class="kw-2">*</span>, Data, Rect};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkCanvas};
+<span class="kw">use </span>std::{
+    fmt,
+    ops::{Deref, DerefMut},
+    pin::Pin,
+    ptr,
 };
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Canvas</span> {
-    <span class="ident">canvas</span>: <span class="kw-2">*mut</span> <span class="ident">SkCanvas</span>,
-    <span class="ident">stream</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">DynamicMemoryWStream</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="kw">pub struct </span>Canvas {
+    canvas: <span class="kw-2">*mut </span>SkCanvas,
+    stream: Pin&lt;Box&lt;DynamicMemoryWStream&gt;&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkCanvas_delete</span>(<span class="self">self</span>.<span class="ident">canvas</span>);
+<span class="kw">impl </span>Drop <span class="kw">for </span>Canvas {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            sb::C_SkCanvas_delete(<span class="self">self</span>.canvas);
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::Canvas</span>;
+<span class="kw">impl </span>Deref <span class="kw">for </span>Canvas {
+    <span class="kw">type </span>Target = <span class="kw">crate</span>::Canvas;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="ident"><span class="kw">crate</span>::Canvas::borrow_from_native</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">canvas</span> })
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="kw">crate</span>::Canvas::borrow_from_native(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><span class="self">self</span>.canvas })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="ident"><span class="kw">crate</span>::Canvas::borrow_from_native_mut</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">canvas</span> })
+<span class="kw">impl </span>DerefMut <span class="kw">for </span>Canvas {
+    <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
+        <span class="kw">crate</span>::Canvas::borrow_from_native_mut(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span><span class="self">self</span>.canvas })
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Flags</span> : <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">CONVERT_TEXT_TO_PATHS</span> <span class="op">=</span> <span class="ident">sb::SkSVGCanvas_kConvertTextToPaths_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">NO_PRETTY_XML</span> <span class="op">=</span> <span class="ident">sb::SkSVGCanvas_kNoPrettyXML_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">RELATIVE_PATH_ENCODING</span> <span class="op">=</span> <span class="ident">sb::SkSVGCanvas_kRelativePathEncoding_Flag</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[derive(Default)]
+    </span><span class="kw">pub struct </span>Flags : u32 {
+        <span class="kw">const </span>CONVERT_TEXT_TO_PATHS = sb::SkSVGCanvas_kConvertTextToPaths_Flag <span class="kw">as _</span>;
+        <span class="kw">const </span>NO_PRETTY_XML = sb::SkSVGCanvas_kNoPrettyXML_Flag <span class="kw">as _</span>;
+        <span class="kw">const </span>RELATIVE_PATH_ENCODING = sb::SkSVGCanvas_kRelativePathEncoding_Flag <span class="kw">as _</span>;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Canvas</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Canvas&quot;</span>)
-            .<span class="ident">field</span>(
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Canvas {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Canvas&quot;</span>)
+            .field(
                 <span class="string">&quot;canvas&quot;</span>,
-                <span class="ident"><span class="kw">crate</span>::Canvas::borrow_from_native</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">canvas</span> }),
+                <span class="kw">crate</span>::Canvas::borrow_from_native(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><span class="self">self</span>.canvas }),
             )
-            .<span class="ident">field</span>(<span class="string">&quot;stream&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">stream</span>)
-            .<span class="ident">finish</span>()
+            .field(<span class="string">&quot;stream&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.stream)
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Canvas</span> {
-    <span class="doccomment">/// Creates a new SVG canvas.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bounds</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">flags</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Flags</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">Canvas</span> {
-        <span class="kw">let</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="ident">bounds</span>.<span class="ident">as_ref</span>();
-        <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">Box::pin</span>(<span class="ident">DynamicMemoryWStream::new</span>());
-        <span class="kw">let</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkSVGCanvas_Make</span>(
-                <span class="ident">bounds</span>.<span class="ident">native</span>(),
-                <span class="kw-2">&amp;mut</span> <span class="ident">stream</span>.<span class="ident">native_mut</span>().<span class="ident">_base</span>,
-                <span class="ident">flags</span>.<span class="ident">bits</span>(),
+<span class="kw">impl </span>Canvas {
+    <span class="doccomment">/// Creates a new SVG canvas.
+    </span><span class="kw">pub fn </span>new(bounds: <span class="kw">impl </span>AsRef&lt;Rect&gt;, flags: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Flags&gt;&gt;) -&gt; Canvas {
+        <span class="kw">let </span>bounds = bounds.as_ref();
+        <span class="kw">let </span>flags = flags.into().unwrap_or_default();
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = Box::pin(DynamicMemoryWStream::new());
+        <span class="kw">let </span>canvas = <span class="kw">unsafe </span>{
+            sb::C_SkSVGCanvas_Make(
+                bounds.native(),
+                <span class="kw-2">&amp;mut </span>stream.native_mut()._base,
+                flags.bits(),
             )
         };
-        <span class="ident">Canvas</span> { <span class="ident">canvas</span>, <span class="ident">stream</span> }
+        Canvas { canvas, stream }
     }
 
-    <span class="doccomment">/// Ends the Canvas drawing and returns the resulting SVG.</span>
-    <span class="doccomment">/// TODO: rename to into_svg() or into_svg_data()?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Data</span> {
-        <span class="comment">// note: flushing canvas + XMLStreamWriter does not seem to work,</span>
-        <span class="comment">// we have to delete the canvas and destruct the stream writer</span>
-        <span class="comment">// to get all data out _and_ keep the referential integrity.</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkCanvas_delete</span>(<span class="self">self</span>.<span class="ident">canvas</span>);
+    <span class="doccomment">/// Ends the Canvas drawing and returns the resulting SVG.
+    /// TODO: rename to into_svg() or into_svg_data()?
+    </span><span class="kw">pub fn </span>end(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; Data {
+        <span class="comment">// note: flushing canvas + XMLStreamWriter does not seem to work,
+        // we have to delete the canvas and destruct the stream writer
+        // to get all data out _and_ keep the referential integrity.
+        </span><span class="kw">unsafe </span>{
+            sb::C_SkCanvas_delete(<span class="self">self</span>.canvas);
         }
-        <span class="self">self</span>.<span class="ident">canvas</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="self">self</span>.<span class="ident">stream</span>.<span class="ident">detach_as_data</span>()
+        <span class="self">self</span>.canvas = ptr::null_mut();
+        <span class="self">self</span>.stream.detach_as_data()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Canvas</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Rect</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">super</span>::Canvas;
+    <span class="kw">use </span><span class="kw">crate</span>::Rect;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_svg</span>() {
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Paint</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_svg() {
+        <span class="kw">use </span><span class="kw">crate</span>::Paint;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::new</span>(<span class="kw-2">&amp;</span><span class="ident">Rect::from_size</span>((<span class="number">20</span>, <span class="number">20</span>)), <span class="prelude-val">None</span>);
-        <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
-        <span class="ident">canvas</span>.<span class="ident">draw_circle</span>((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span><span class="ident">paint</span>);
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">canvas</span>.<span class="ident">end</span>();
-        <span class="kw">let</span> <span class="ident">contents</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="ident">data</span>.<span class="ident">as_bytes</span>());
-        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">contents</span>);
-        <span class="macro">assert!</span>(<span class="ident">contents</span>.<span class="ident">contains</span>(<span class="string">r#&quot;&lt;ellipse cx=&quot;10&quot; cy=&quot;10&quot; rx=&quot;10&quot; ry=&quot;10&quot;/&gt;&quot;#</span>));
-        <span class="macro">assert!</span>(<span class="ident">contents</span>.<span class="ident">contains</span>(<span class="string">r#&quot;&lt;/svg&gt;&quot;#</span>));
+        <span class="kw">let </span><span class="kw-2">mut </span>canvas = Canvas::new(Rect::from_size((<span class="number">20</span>, <span class="number">20</span>)), <span class="prelude-val">None</span>);
+        <span class="kw">let </span>paint = Paint::default();
+        canvas.draw_circle((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span>paint);
+        <span class="kw">let </span>data = canvas.end();
+        <span class="kw">let </span>contents = String::from_utf8_lossy(data.as_bytes());
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span>contents);
+        <span class="macro">assert!</span>(contents.contains(<span class="string">r#&quot;&lt;ellipse cx=&quot;10&quot; cy=&quot;10&quot; rx=&quot;10&quot; ry=&quot;10&quot;/&gt;&quot;#</span>));
+        <span class="macro">assert!</span>(contents.contains(<span class="string">r#&quot;&lt;/svg&gt;&quot;#</span>));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_svg_without_ending</span>() {
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Paint</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">Canvas::new</span>(<span class="kw-2">&amp;</span><span class="ident">Rect::from_size</span>((<span class="number">20</span>, <span class="number">20</span>)), <span class="prelude-val">None</span>);
-        <span class="kw">let</span> <span class="ident">paint</span> <span class="op">=</span> <span class="ident">Paint::default</span>();
-        <span class="ident">canvas</span>.<span class="ident">draw_circle</span>((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span><span class="ident">paint</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_svg_without_ending() {
+        <span class="kw">use </span><span class="kw">crate</span>::Paint;
+        <span class="kw">let </span><span class="kw-2">mut </span>canvas = Canvas::new(Rect::from_size((<span class="number">20</span>, <span class="number">20</span>)), <span class="prelude-val">None</span>);
+        <span class="kw">let </span>paint = Paint::default();
+        canvas.draw_circle((<span class="number">10</span>, <span class="number">10</span>), <span class="number">10.0</span>, <span class="kw-2">&amp;</span>paint);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

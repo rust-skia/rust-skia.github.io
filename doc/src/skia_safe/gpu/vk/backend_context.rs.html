@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\gpu\vk\backend_context.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>backend_context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/gpu/vk/backend_context.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>backend_context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -211,213 +205,212 @@
 <span id="205">205</span>
 <span id="206">206</span>
 <span id="207">207</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Device</span>, <span class="ident">GetProc</span>, <span class="ident">GetProcOf</span>, <span class="ident">Instance</span>, <span class="ident">PhysicalDevice</span>, <span class="ident">Queue</span>, <span class="ident">Version</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">gpu</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
-<span class="kw">use</span> <span class="ident">ffi::CString</span>;
-<span class="kw">use</span> <span class="ident">raw::c_char</span>;
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">GrVkExtensionFlags</span>, <span class="ident">GrVkFeatureFlags</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell::RefCell</span>, <span class="ident">ffi</span>, <span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">ops::Deref</span>, <span class="ident">os::raw</span>, <span class="ident">ptr</span>};
+</pre><pre class="rust"><code><span class="kw">use super</span>::{Device, GetProc, GetProcOf, Instance, PhysicalDevice, Queue, Version};
+<span class="kw">use crate</span>::{gpu, prelude::<span class="kw-2">*</span>};
+<span class="kw">use </span>ffi::CString;
+<span class="kw">use </span>raw::c_char;
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, GrVkExtensionFlags, GrVkFeatureFlags};
+<span class="kw">use </span>std::{cell::RefCell, ffi, fmt, mem, ops::Deref, os::raw, ptr};
 
-<span class="macro">bitflags!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExtensionFlags</span> : <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">EXT_DEBUG_REPORT</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kEXT_debug_report_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">NV_GLSL_SHADER</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kNV_glsl_shader_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">KHR_SURFACE</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kKHR_surface_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">KHR_SWAPCHAIN</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kKHR_swapchain_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">KHR_WIN32_SURFACE</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kKHR_win32_surface_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">KHR_ANDROID_SURFACE</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kKHR_android_surface_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">KHR_XCB_SURFACE</span> <span class="op">=</span> <span class="ident">sb::GrVkExtensionFlags_kKHR_xcb_surface_GrVkExtensionFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="macro">bitflags! </span>{
+    <span class="kw">pub struct </span>ExtensionFlags : u32 {
+        <span class="kw">const </span>EXT_DEBUG_REPORT = sb::GrVkExtensionFlags_kEXT_debug_report_GrVkExtensionFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>NV_GLSL_SHADER = sb::GrVkExtensionFlags_kNV_glsl_shader_GrVkExtensionFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>KHR_SURFACE = sb::GrVkExtensionFlags_kKHR_surface_GrVkExtensionFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>KHR_SWAPCHAIN = sb::GrVkExtensionFlags_kKHR_swapchain_GrVkExtensionFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>KHR_WIN32_SURFACE = sb::GrVkExtensionFlags_kKHR_win32_surface_GrVkExtensionFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>KHR_ANDROID_SURFACE = sb::GrVkExtensionFlags_kKHR_android_surface_GrVkExtensionFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>KHR_XCB_SURFACE = sb::GrVkExtensionFlags_kKHR_xcb_surface_GrVkExtensionFlag <span class="kw">as _</span>;
     }
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">GrVkExtensionFlags</span>, <span class="ident">ExtensionFlags</span>, <span class="ident">extension_flags_layout</span>);
+<span class="macro">native_transmutable!</span>(GrVkExtensionFlags, ExtensionFlags, extension_flags_layout);
 
-<span class="macro">bitflags!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FeatureFlags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">GEOMETRY_SHADER</span> <span class="op">=</span> <span class="ident">sb::GrVkFeatureFlags_kGeometryShader_GrVkFeatureFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">DUAL_SRC_BLEND</span> <span class="op">=</span> <span class="ident">sb::GrVkFeatureFlags_kDualSrcBlend_GrVkFeatureFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">const</span> <span class="ident">SAMPLE_RATE_SHADING</span> <span class="op">=</span> <span class="ident">sb::GrVkFeatureFlags_kSampleRateShading_GrVkFeatureFlag</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="macro">bitflags! </span>{
+    <span class="kw">pub struct </span>FeatureFlags: u32 {
+        <span class="kw">const </span>GEOMETRY_SHADER = sb::GrVkFeatureFlags_kGeometryShader_GrVkFeatureFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>DUAL_SRC_BLEND = sb::GrVkFeatureFlags_kDualSrcBlend_GrVkFeatureFlag <span class="kw">as _</span>;
+        <span class="kw">const </span>SAMPLE_RATE_SHADING = sb::GrVkFeatureFlags_kSampleRateShading_GrVkFeatureFlag <span class="kw">as _</span>;
     }
 }
 
-<span class="macro">native_transmutable!</span>(<span class="ident">GrVkFeatureFlags</span>, <span class="ident">FeatureFlags</span>, <span class="ident">feature_flags_layout</span>);
+<span class="macro">native_transmutable!</span>(GrVkFeatureFlags, FeatureFlags, feature_flags_layout);
 
-<span class="comment">// Note: the GrBackendContext&#39;s layout generated by bindgen does not match in size,</span>
-<span class="comment">// so we do need to use a pointer here for now.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">native</span>: <span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">ffi::c_void</span><span class="op">&gt;</span>,
-    <span class="ident">get_proc</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">dyn</span> <span class="ident">GetProc</span>,
+<span class="comment">// Note: the GrBackendContext&#39;s layout generated by bindgen does not match in size,
+// so we do need to use a pointer here for now.
+</span><span class="kw">pub struct </span>BackendContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) native: ptr::NonNull&lt;ffi::c_void&gt;,
+    get_proc: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>GetProc,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_GrVkBackendContext_Delete</span>(<span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_ptr</span>()) }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Drop <span class="kw">for </span>BackendContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_GrVkBackendContext_Delete(<span class="self">self</span>.native.as_ptr()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BackendContext&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;native&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>)
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>BackendContext&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;BackendContext&quot;</span>)
+            .field(<span class="string">&quot;native&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.native)
+            .finish()
     }
 }
 
-<span class="comment">// TODO: add some accessor functions to the public fields.</span>
-<span class="comment">// TODO: may support Clone (note the original structure holds a smartpointer!)</span>
-<span class="comment">// TODO: think about making this safe in respect to the lifetime of the handles</span>
-<span class="comment">//       it refers to.</span>
-<span class="kw">impl</span> <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">/// `instance`, `physical_device`, `device`, and `queue` must outlive the `BackendContext`</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">instance</span>: <span class="ident">Instance</span>,
-        <span class="ident">physical_device</span>: <span class="ident">PhysicalDevice</span>,
-        <span class="ident">device</span>: <span class="ident">Device</span>,
-        (<span class="ident">queue</span>, <span class="ident">queue_index</span>): (<span class="ident">Queue</span>, <span class="ident">usize</span>),
-        <span class="ident">get_proc</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">GetProc</span>,
-    ) -&gt; <span class="ident">BackendContext</span> {
-        <span class="ident"><span class="self">Self</span>::new_with_extensions</span>(
-            <span class="ident">instance</span>,
-            <span class="ident">physical_device</span>,
-            <span class="ident">device</span>,
-            (<span class="ident">queue</span>, <span class="ident">queue_index</span>),
-            <span class="ident">get_proc</span>,
+<span class="comment">// TODO: add some accessor functions to the public fields.
+// TODO: may support Clone (note the original structure holds a smartpointer!)
+// TODO: think about making this safe in respect to the lifetime of the handles
+//       it refers to.
+</span><span class="kw">impl </span>BackendContext&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="doccomment">/// # Safety
+    /// `instance`, `physical_device`, `device`, and `queue` must outlive the `BackendContext`
+    /// returned.
+    </span><span class="kw">pub unsafe fn </span>new(
+        instance: Instance,
+        physical_device: PhysicalDevice,
+        device: Device,
+        (queue, queue_index): (Queue, usize),
+        get_proc: <span class="kw-2">&amp;</span><span class="kw">impl </span>GetProc,
+    ) -&gt; BackendContext {
+        <span class="self">Self</span>::new_with_extensions(
+            instance,
+            physical_device,
+            device,
+            (queue, queue_index),
+            get_proc,
             <span class="kw-2">&amp;</span>[],
             <span class="kw-2">&amp;</span>[],
         )
     }
 
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">/// `instance`, `physical_device`, `device`, and `queue` must outlive the `BackendContext`</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_with_extensions</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="ident">instance</span>: <span class="ident">Instance</span>,
-        <span class="ident">physical_device</span>: <span class="ident">PhysicalDevice</span>,
-        <span class="ident">device</span>: <span class="ident">Device</span>,
-        (<span class="ident">queue</span>, <span class="ident">queue_index</span>): (<span class="ident">Queue</span>, <span class="ident">usize</span>),
-        <span class="ident">get_proc</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">GetProc</span>,
-        <span class="ident">instance_extensions</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
-        <span class="ident">device_extensions</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
-    ) -&gt; <span class="ident">BackendContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="comment">// pin the extensions string in memory and provide pointers to the NewWithExtension function,</span>
-        <span class="comment">// but there is no need to retain them, because because the implementations copies these strings, too.</span>
-        <span class="kw">let</span> <span class="ident">instance_extensions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">instance_extensions</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">str</span><span class="op">|</span> <span class="ident">CString::new</span>(<span class="kw-2">*</span><span class="ident">str</span>).<span class="ident">unwrap</span>())
-            .<span class="ident">collect</span>();
-        <span class="kw">let</span> <span class="ident">instance_extensions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">c_char</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">instance_extensions</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">cs</span><span class="op">|</span> <span class="ident">cs</span>.<span class="ident">as_ptr</span>()).<span class="ident">collect</span>();
-        <span class="kw">let</span> <span class="ident">device_extensions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">device_extensions</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">str</span><span class="op">|</span> <span class="ident">CString::new</span>(<span class="kw-2">*</span><span class="ident">str</span>).<span class="ident">unwrap</span>())
-            .<span class="ident">collect</span>();
-        <span class="kw">let</span> <span class="ident">device_extensions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">c_char</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">device_extensions</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">cs</span><span class="op">|</span> <span class="ident">cs</span>.<span class="ident">as_ptr</span>()).<span class="ident">collect</span>();
+    <span class="doccomment">/// # Safety
+    /// `instance`, `physical_device`, `device`, and `queue` must outlive the `BackendContext`
+    /// returned.
+    </span><span class="kw">pub unsafe fn </span>new_with_extensions&lt;<span class="lifetime">&#39;a</span>&gt;(
+        instance: Instance,
+        physical_device: PhysicalDevice,
+        device: Device,
+        (queue, queue_index): (Queue, usize),
+        get_proc: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">impl </span>GetProc,
+        instance_extensions: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str],
+        device_extensions: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str],
+    ) -&gt; BackendContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="comment">// pin the extensions string in memory and provide pointers to the NewWithExtension function,
+        // but there is no need to retain them, because because the implementations copies these strings, too.
+        </span><span class="kw">let </span>instance_extensions: Vec&lt;CString&gt; = instance_extensions
+            .iter()
+            .map(|str| CString::new(<span class="kw-2">*</span>str).unwrap())
+            .collect();
+        <span class="kw">let </span>instance_extensions: Vec&lt;<span class="kw-2">*const </span>c_char&gt; =
+            instance_extensions.iter().map(|cs| cs.as_ptr()).collect();
+        <span class="kw">let </span>device_extensions: Vec&lt;CString&gt; = device_extensions
+            .iter()
+            .map(|str| CString::new(<span class="kw-2">*</span>str).unwrap())
+            .collect();
+        <span class="kw">let </span>device_extensions: Vec&lt;<span class="kw-2">*const </span>c_char&gt; =
+            device_extensions.iter().map(|cs| cs.as_ptr()).collect();
 
-        <span class="kw">let</span> <span class="ident">resolver</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::begin_resolving_proc</span>(<span class="ident">get_proc</span>);
-        <span class="kw">let</span> <span class="ident">native</span> <span class="op">=</span> <span class="ident">sb::C_GrVkBackendContext_New</span>(
-            <span class="ident">instance</span> <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">physical_device</span> <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">device</span> <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">queue</span> <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">queue_index</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">global_get_proc</span>),
-            <span class="ident">instance_extensions</span>.<span class="ident">as_ptr</span>(),
-            <span class="ident">instance_extensions</span>.<span class="ident">len</span>(),
-            <span class="ident">device_extensions</span>.<span class="ident">as_ptr</span>(),
-            <span class="ident">device_extensions</span>.<span class="ident">len</span>(),
+        <span class="kw">let </span>resolver = <span class="self">Self</span>::begin_resolving_proc(get_proc);
+        <span class="kw">let </span>native = sb::C_GrVkBackendContext_New(
+            instance <span class="kw">as _</span>,
+            physical_device <span class="kw">as _</span>,
+            device <span class="kw">as _</span>,
+            queue <span class="kw">as _</span>,
+            queue_index.try_into().unwrap(),
+            <span class="prelude-val">Some</span>(global_get_proc),
+            instance_extensions.as_ptr(),
+            instance_extensions.len(),
+            device_extensions.as_ptr(),
+            device_extensions.len(),
         );
-        <span class="ident">drop</span>(<span class="ident">resolver</span>);
-        <span class="ident">BackendContext</span> {
-            <span class="ident">native</span>: <span class="ident">ptr::NonNull::new</span>(<span class="ident">native</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">get_proc</span>,
+        drop(resolver);
+        BackendContext {
+            native: ptr::NonNull::new(native).unwrap(),
+            get_proc,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_protected_context</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">protected_context</span>: <span class="ident">gpu::Protected</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrVkBackendContext_setProtectedContext</span>(
-                <span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">protected_context</span>,
+    <span class="kw">pub fn </span>set_protected_context(<span class="kw-2">&amp;mut </span><span class="self">self</span>, protected_context: gpu::Protected) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            sb::C_GrVkBackendContext_setProtectedContext(
+                <span class="self">self</span>.native.as_ptr() <span class="kw">as _</span>,
+                protected_context,
             )
         }
-        <span class="self">self</span>
-    }
+        <span class="self">self
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_api_version</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">version</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Version</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrVkBackendContext_setMaxAPIVersion</span>(
-                <span class="self">self</span>.<span class="ident">native</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="kw-2">*</span><span class="ident">version</span>.<span class="ident">into</span>().<span class="ident">deref</span>(),
+    <span class="kw">pub fn </span>set_max_api_version(<span class="kw-2">&amp;mut </span><span class="self">self</span>, version: <span class="kw">impl </span>Into&lt;Version&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            sb::C_GrVkBackendContext_setMaxAPIVersion(
+                <span class="self">self</span>.native.as_ptr() <span class="kw">as _</span>,
+                <span class="kw-2">*</span>version.into().deref(),
             )
         }
-        <span class="self">self</span>
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>begin_resolving(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Drop {
+        <span class="self">Self</span>::begin_resolving_proc(<span class="self">self</span>.get_proc)
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">begin_resolving</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Drop</span> {
-        <span class="ident"><span class="self">Self</span>::begin_resolving_proc</span>(<span class="self">self</span>.<span class="ident">get_proc</span>)
-    }
+    <span class="comment">// The idea here is to set up a thread local variable with the GetProc function trait
+    // and reroute queries to global_get_proc as long the caller does not invoke the Drop
+    // impl trait that is returned.
+    // This is an attempt to support Rust Closures / Functions that resolve function pointers instead
+    // of relying on a global extern &quot;C&quot; function.
+    // TODO: This is a mess, highly unsafe, and needs to be simplified / rewritten
+    //       by someone who understands Rust better.
+    </span><span class="kw">unsafe fn </span>begin_resolving_proc(get_proc_trait_object: <span class="kw-2">&amp;</span><span class="kw">dyn </span>GetProc) -&gt; <span class="kw">impl </span>Drop {
+        THREAD_LOCAL_GET_PROC
+            .with(|get_proc| <span class="kw-2">*</span>get_proc.borrow_mut() = <span class="prelude-val">Some</span>(mem::transmute(get_proc_trait_object)));
 
-    <span class="comment">// The idea here is to set up a thread local variable with the GetProc function trait</span>
-    <span class="comment">// and reroute queries to global_get_proc as long the caller does not invoke the Drop</span>
-    <span class="comment">// impl trait that is returned.</span>
-    <span class="comment">// This is an attempt to support Rust Closures / Functions that resolve function pointers instead</span>
-    <span class="comment">// of relying on a global extern &quot;C&quot; function.</span>
-    <span class="comment">// TODO: This is a mess, highly unsafe, and needs to be simplified / rewritten</span>
-    <span class="comment">//       by someone who understands Rust better.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">begin_resolving_proc</span>(<span class="ident">get_proc_trait_object</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">GetProc</span>) -&gt; <span class="kw">impl</span> <span class="ident">Drop</span> {
-        <span class="ident">THREAD_LOCAL_GET_PROC</span>
-            .<span class="ident">with</span>(<span class="op">|</span><span class="ident">get_proc</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">get_proc</span>.<span class="ident">borrow_mut</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">mem::transmute</span>(<span class="ident">get_proc_trait_object</span>)));
-
-        <span class="ident">EndResolving</span> {}
-    }
-}
-
-<span class="kw">struct</span> <span class="ident">EndResolving</span> {}
-
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">EndResolving</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="ident">THREAD_LOCAL_GET_PROC</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">get_proc</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">get_proc</span>.<span class="ident">borrow_mut</span>() <span class="op">=</span> <span class="prelude-val">None</span>)
+        EndResolving {}
     }
 }
 
-<span class="macro">thread_local!</span> {
-    <span class="kw">static</span> <span class="ident">THREAD_LOCAL_GET_PROC</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TraitObject</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RefCell::new</span>(<span class="prelude-val">None</span>);
+<span class="kw">struct </span>EndResolving {}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>EndResolving {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        THREAD_LOCAL_GET_PROC.with(|get_proc| <span class="kw-2">*</span>get_proc.borrow_mut() = <span class="prelude-val">None</span>)
+    }
 }
 
-<span class="comment">// https://doc.rust-lang.org/1.19.0/std/raw/struct.TraitObject.html</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="comment">// Copy &amp; Clone are required for the *get_proc.borrow() below. And std::raw::TraitObject</span>
-<span class="comment">// can not be used, because it&#39;s unstable (last checked 1.36).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TraitObject</span> {
-    <span class="kw">pub</span> <span class="ident">data</span>: <span class="kw-2">*mut</span> (),
-    <span class="kw">pub</span> <span class="ident">vtable</span>: <span class="kw-2">*mut</span> (),
+<span class="macro">thread_local! </span>{
+    <span class="kw">static </span>THREAD_LOCAL_GET_PROC: RefCell&lt;<span class="prelude-ty">Option</span>&lt;TraitObject&gt;&gt; = RefCell::new(<span class="prelude-val">None</span>);
 }
 
-<span class="comment">// The global resolvement function passed to Skia.</span>
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">global_get_proc</span>(
-    <span class="ident">name</span>: <span class="kw-2">*const</span> <span class="ident">raw::c_char</span>,
-    <span class="ident">instance</span>: <span class="ident">Instance</span>,
-    <span class="ident">device</span>: <span class="ident">Device</span>,
-) -&gt; <span class="kw-2">*const</span> <span class="ident">raw::c_void</span> {
-    <span class="ident">THREAD_LOCAL_GET_PROC</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">get_proc</span><span class="op">|</span> {
-        <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">get_proc</span>.<span class="ident">borrow</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">get_proc</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">get_proc_trait_object</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">GetProc</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">get_proc</span>);
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">device</span>.<span class="ident">is_null</span>() {
-                    <span class="ident">get_proc_trait_object</span>(<span class="ident">GetProcOf::Device</span>(<span class="ident">device</span>, <span class="ident">name</span>))
-                } <span class="kw">else</span> {
-                    <span class="comment">// note: instance may be null here!</span>
-                    <span class="ident">get_proc_trait_object</span>(<span class="ident">GetProcOf::Instance</span>(<span class="ident">instance</span>, <span class="ident">name</span>))
+<span class="comment">// https://doc.rust-lang.org/1.19.0/std/raw/struct.TraitObject.html
+</span><span class="attribute">#[repr(C)]
+</span><span class="comment">// Copy &amp; Clone are required for the *get_proc.borrow() below. And std::raw::TraitObject
+// can not be used, because it&#39;s unstable (last checked 1.36).
+</span><span class="attribute">#[derive(Copy, Clone)]
+</span><span class="kw">struct </span>TraitObject {
+    <span class="kw">pub </span>data: <span class="kw-2">*mut </span>(),
+    <span class="kw">pub </span>vtable: <span class="kw-2">*mut </span>(),
+}
+
+<span class="comment">// The global resolvement function passed to Skia.
+</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>global_get_proc(
+    name: <span class="kw-2">*const </span>raw::c_char,
+    instance: Instance,
+    device: Device,
+) -&gt; <span class="kw-2">*const </span>raw::c_void {
+    THREAD_LOCAL_GET_PROC.with(|get_proc| {
+        <span class="kw">match </span><span class="kw-2">*</span>get_proc.borrow() {
+            <span class="prelude-val">Some</span>(get_proc) =&gt; {
+                <span class="kw">let </span>get_proc_trait_object: <span class="kw-2">&amp;</span><span class="kw">dyn </span>GetProc = mem::transmute(get_proc);
+                <span class="kw">if </span>!device.is_null() {
+                    get_proc_trait_object(GetProcOf::Device(device, name))
+                } <span class="kw">else </span>{
+                    <span class="comment">// note: instance may be null here!
+                    </span>get_proc_trait_object(GetProcOf::Instance(instance, name))
                 }
             }
-            <span class="prelude-val">None</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Vulkan GetProc called outside of a thread local resolvement context.&quot;</span>),
+            <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Vulkan GetProc called outside of a thread local resolvement context.&quot;</span>),
         }
     })
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

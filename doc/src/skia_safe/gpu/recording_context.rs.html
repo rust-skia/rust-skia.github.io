@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\gpu\recording_context.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>recording_context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/gpu/recording_context.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>recording_context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -121,123 +115,122 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::fmt;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">gpu</span>::{<span class="ident">BackendAPI</span>, <span class="ident">BackendFormat</span>, <span class="ident">DirectContext</span>, <span class="ident">Renderable</span>},
-    <span class="ident">image</span>,
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>,
-    <span class="ident">ColorType</span>,
+<span class="kw">use crate</span>::{
+    gpu::{BackendAPI, BackendFormat, DirectContext, Renderable},
+    image,
+    prelude::<span class="kw-2">*</span>,
+    ColorType,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">GrRecordingContext</span>, <span class="ident">SkRefCntBase</span>};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, GrRecordingContext, SkRefCntBase};
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">RecordingContext</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">GrRecordingContext</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>RecordingContext = RCHandle&lt;GrRecordingContext&gt;;
 
-<span class="kw">impl</span> <span class="ident">NativeRefCountedBase</span> <span class="kw">for</span> <span class="ident">GrRecordingContext</span> {
-    <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">SkRefCntBase</span>;
+<span class="kw">impl </span>NativeRefCountedBase <span class="kw">for </span>GrRecordingContext {
+    <span class="kw">type </span>Base = SkRefCntBase;
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RecordingContext</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">direct_context</span>: <span class="ident">DirectContext</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">std::mem::transmute</span>(<span class="ident">direct_context</span>) }
+<span class="kw">impl </span>From&lt;DirectContext&gt; <span class="kw">for </span>RecordingContext {
+    <span class="kw">fn </span>from(direct_context: DirectContext) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ std::mem::transmute(direct_context) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">RecordingContext</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RecordingContext&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;backend&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">backend</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;max_texture_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">max_texture_size</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;max_render_target_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">max_render_target_size</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>RecordingContext {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;RecordingContext&quot;</span>)
+            .field(<span class="string">&quot;backend&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.backend())
+            .field(<span class="string">&quot;max_texture_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_texture_size())
+            .field(<span class="string">&quot;max_render_target_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_render_target_size())
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RecordingContext</span> {
-    <span class="comment">// From GrContext_Base</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_direct_context</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirectContext</span><span class="op">&gt;</span> {
-        <span class="ident">DirectContext::from_unshared_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrRecordingContext_asDirectContext</span>(<span class="self">self</span>.<span class="ident">native_mut</span>())
+<span class="kw">impl </span>RecordingContext {
+    <span class="comment">// From GrContext_Base
+    </span><span class="kw">pub fn </span>as_direct_context(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;DirectContext&gt; {
+        DirectContext::from_unshared_ptr(<span class="kw">unsafe </span>{
+            sb::C_GrRecordingContext_asDirectContext(<span class="self">self</span>.native_mut())
         })
     }
 
-    <span class="comment">// From GrContext_Base</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BackendAPI</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_GrRecordingContext_backend</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="comment">// From GrContext_Base
+    </span><span class="kw">pub fn </span>backend(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BackendAPI {
+        <span class="kw">unsafe </span>{ sb::C_GrRecordingContext_backend(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_backend_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ct</span>: <span class="ident">ColorType</span>, <span class="ident">renderable</span>: <span class="ident">Renderable</span>) -&gt; <span class="ident">BackendFormat</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat::new_invalid</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrRecordingContext_defaultBackendFormat</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">ct</span>.<span class="ident">into_native</span>(),
-                <span class="ident">renderable</span>,
-                <span class="ident">format</span>.<span class="ident">native_mut</span>(),
+    <span class="kw">pub fn </span>default_backend_format(<span class="kw-2">&amp;</span><span class="self">self</span>, ct: ColorType, renderable: Renderable) -&gt; BackendFormat {
+        <span class="kw">let </span><span class="kw-2">mut </span>format = BackendFormat::new_invalid();
+        <span class="kw">unsafe </span>{
+            sb::C_GrRecordingContext_defaultBackendFormat(
+                <span class="self">self</span>.native(),
+                ct.into_native(),
+                renderable,
+                format.native_mut(),
             )
         };
-        <span class="ident">format</span>
+        format
     }
 
-    <span class="comment">// From GrContext_Base</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compressed_backend_format</span>(
+    <span class="comment">// From GrContext_Base
+    </span><span class="kw">pub fn </span>compressed_backend_format(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">compression_type</span>: <span class="ident">image::CompressionType</span>,
-    ) -&gt; <span class="ident">BackendFormat</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">BackendFormat::new_invalid</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrRecordingContext_compressedBackendFormat</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">compression_type</span>,
-                <span class="ident">format</span>.<span class="ident">native_mut</span>(),
+        compression_type: image::CompressionType,
+    ) -&gt; BackendFormat {
+        <span class="kw">let </span><span class="kw-2">mut </span>format = BackendFormat::new_invalid();
+        <span class="kw">unsafe </span>{
+            sb::C_GrRecordingContext_compressedBackendFormat(
+                <span class="self">self</span>.native(),
+                compression_type,
+                format.native_mut(),
             )
         }
-        <span class="ident">format</span>
+        format
     }
 
-    <span class="comment">// TODO: GrContext_Base::threadSafeProxy</span>
+    <span class="comment">// TODO: GrContext_Base::threadSafeProxy
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abandoned</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_GrRecordingContext_abandoned</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+    </span><span class="kw">pub fn </span>abandoned(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_GrRecordingContext_abandoned(<span class="self">self</span>.native_mut()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type_supported_as_surface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrRecordingContext_colorTypeSupportedAsSurface</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>color_type_supported_as_surface(<span class="kw-2">&amp;</span><span class="self">self</span>, color_type: ColorType) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            sb::C_GrRecordingContext_colorTypeSupportedAsSurface(
+                <span class="self">self</span>.native(),
+                color_type.into_native(),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_texture_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">maxTextureSize</span>() }
+    <span class="kw">pub fn </span>max_texture_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().maxTextureSize() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_render_target_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">maxRenderTargetSize</span>() }
+    <span class="kw">pub fn </span>max_render_target_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().maxRenderTargetSize() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_type_supported_as_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native</span>()
-                .<span class="ident">colorTypeSupportedAsImage</span>(<span class="ident">color_type</span>.<span class="ident">into_native</span>())
+    <span class="kw">pub fn </span>color_type_supported_as_image(<span class="kw-2">&amp;</span><span class="self">self</span>, color_type: ColorType) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native()
+                .colorTypeSupportedAsImage(color_type.into_native())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_surface_sample_count_for_color_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_type</span>: <span class="ident">ColorType</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_GrRecordingContext_maxSurfaceSampleCountForColorType</span>(
-                <span class="self">self</span>.<span class="ident">native</span>(),
-                <span class="ident">color_type</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>max_surface_sample_count_for_color_type(<span class="kw-2">&amp;</span><span class="self">self</span>, color_type: ColorType) -&gt; usize {
+        <span class="kw">unsafe </span>{
+            sb::C_GrRecordingContext_maxSurfaceSampleCountForColorType(
+                <span class="self">self</span>.native(),
+                color_type.into_native(),
             )
         }
-        .<span class="ident">try_into</span>()
-        .<span class="ident">unwrap</span>()
+        .try_into()
+        .unwrap()
     }
 
-    <span class="comment">// TODO: Wrap Arenas (if used).</span>
-}
+    <span class="comment">// TODO: Wrap Arenas (if used).
+</span>}
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

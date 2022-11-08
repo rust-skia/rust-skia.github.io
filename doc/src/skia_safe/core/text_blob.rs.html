@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\text_blob.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_blob.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/text_blob.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_blob.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -413,415 +407,414 @@
 <span id="407">407</span>
 <span id="408">408</span>
 <span id="409">409</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Font</span>, <span class="ident">GlyphId</span>, <span class="ident">Paint</span>, <span class="ident">Point</span>, <span class="ident">RSXform</span>, <span class="ident">Rect</span>, <span class="ident">TextEncoding</span>, <span class="ident">Typeface</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    prelude::<span class="kw-2">*</span>, scalar, Font, GlyphId, Paint, Point, RSXform, Rect, TextEncoding, Typeface,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-    <span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkTextBlob</span>, <span class="ident">SkTextBlobBuilder</span>, <span class="ident">SkTextBlob_Iter</span>, <span class="ident">SkTextBlob_Iter_Run</span>, <span class="ident">SkTypeface</span>,
+<span class="kw">use </span>skia_bindings::{
+    <span class="self">self </span><span class="kw">as </span>sb, SkTextBlob, SkTextBlobBuilder, SkTextBlob_Iter, SkTextBlob_Iter_Run, SkTypeface,
 };
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>, <span class="ident">slice</span>};
+<span class="kw">use </span>std::{convert::TryInto, fmt, ptr, slice};
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextBlob</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkTextBlob</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">TextBlob</span>);
+<span class="kw">pub type </span>TextBlob = RCHandle&lt;SkTextBlob&gt;;
+<span class="macro">unsafe_send_sync!</span>(TextBlob);
 
-<span class="kw">impl</span> <span class="ident">NativeRefCounted</span> <span class="kw">for</span> <span class="ident">SkTextBlob</span> {
-    <span class="kw">fn</span> <span class="ident">_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlob_ref</span>(<span class="self">self</span>) };
+<span class="kw">impl </span>NativeRefCounted <span class="kw">for </span>SkTextBlob {
+    <span class="kw">fn </span>_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkTextBlob_ref(<span class="self">self</span>) };
     }
 
-    <span class="kw">fn</span> <span class="ident">_unref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlob_unref</span>(<span class="self">self</span>) }
+    <span class="kw">fn </span>_unref(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkTextBlob_unref(<span class="self">self</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlob_unique</span>(<span class="self">self</span>) }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextBlob</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextBlob&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;unique_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">unique_id</span>())
-            .<span class="ident">finish</span>()
+    <span class="kw">fn </span>unique(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkTextBlob_unique(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TextBlob</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_str</span>(<span class="ident">str</span>, <span class="ident">font</span>)
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>TextBlob {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;TextBlob&quot;</span>)
+            .field(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
+            .field(<span class="string">&quot;unique_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.unique_id())
+            .finish()
+    }
+}
+
+<span class="kw">impl </span>TextBlob {
+    <span class="kw">pub fn </span>new(str: <span class="kw">impl </span>AsRef&lt;str&gt;, font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="self">Self</span>::from_str(str, font)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Rect</span> {
-        <span class="ident">Rect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBounds</span>)
+    <span class="kw">pub fn </span>bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Rect {
+        Rect::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fBounds)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unique_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fUniqueID</span>
+    <span class="kw">pub fn </span>unique_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.native().fUniqueID
     }
 
-    <span class="comment">// TODO: consider to provide an inplace variant.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_intercepts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bounds</span>: [<span class="ident">scalar</span>; <span class="number">2</span>], <span class="ident">paint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Paint</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">scalar</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getIntercepts</span>(
-                <span class="ident">bounds</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">ptr::null_mut</span>(),
-                <span class="ident">paint</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="comment">// TODO: consider to provide an inplace variant.
+    </span><span class="kw">pub fn </span>get_intercepts(<span class="kw-2">&amp;</span><span class="self">self</span>, bounds: [scalar; <span class="number">2</span>], paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;) -&gt; Vec&lt;scalar&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>count = <span class="self">self</span>.native().getIntercepts(
+                bounds.as_ptr(),
+                ptr::null_mut(),
+                paint.native_ptr_or_null(),
             );
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">intervals</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Default::default</span>(); <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()];
-            <span class="kw">let</span> <span class="ident">count_2</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getIntercepts</span>(
-                <span class="ident">bounds</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">intervals</span>.<span class="ident">as_mut_ptr</span>(),
-                <span class="ident">paint</span>.<span class="ident">native_ptr_or_null</span>(),
+            <span class="kw">let </span><span class="kw-2">mut </span>intervals = <span class="macro">vec!</span>[Default::default(); count.try_into().unwrap()];
+            <span class="kw">let </span>count_2 = <span class="self">self</span>.native().getIntercepts(
+                bounds.as_ptr(),
+                intervals.as_mut_ptr(),
+                paint.native_ptr_or_null(),
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="ident">count_2</span>);
-            <span class="ident">intervals</span>
+            <span class="macro">assert_eq!</span>(count, count_2);
+            intervals
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">str</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::from_text</span>(<span class="ident">str</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(), <span class="ident">TextEncoding::UTF8</span>, <span class="ident">font</span>)
+    <span class="kw">pub fn </span>from_str(str: <span class="kw">impl </span>AsRef&lt;str&gt;, font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        <span class="self">Self</span>::from_text(str.as_ref().as_bytes(), TextEncoding::UTF8, font)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_text</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">encoding</span>: <span class="ident">TextEncoding</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTextBlob_MakeFromText</span>(
-                <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">text</span>.<span class="ident">len</span>(),
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">encoding</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>from_text(text: <span class="kw-2">&amp;</span>[u8], encoding: TextEncoding, font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        TextBlob::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTextBlob_MakeFromText(
+                text.as_ptr() <span class="kw">as _</span>,
+                text.len(),
+                font.native(),
+                encoding.into_native(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_pos_text_h</span>(
-        <span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">x_pos</span>: <span class="kw-2">&amp;</span>[<span class="ident">scalar</span>],
-        <span class="ident">const_y</span>: <span class="ident">scalar</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">encoding</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextEncoding</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">encoding</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="comment">// TODO: avoid that verification somehow.</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">x_pos</span>.<span class="ident">len</span>(), <span class="ident">font</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>));
-        <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTextBlob_MakeFromPosTextH</span>(
-                <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">text</span>.<span class="ident">len</span>(),
-                <span class="ident">x_pos</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">const_y</span>,
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">encoding</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>from_pos_text_h(
+        text: <span class="kw-2">&amp;</span>[u8],
+        x_pos: <span class="kw-2">&amp;</span>[scalar],
+        const_y: scalar,
+        font: <span class="kw-2">&amp;</span>Font,
+        encoding: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;TextEncoding&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        <span class="kw">let </span>encoding = encoding.into().unwrap_or_default();
+        <span class="comment">// TODO: avoid that verification somehow.
+        </span><span class="macro">assert_eq!</span>(x_pos.len(), font.count_text(text, encoding));
+        TextBlob::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTextBlob_MakeFromPosTextH(
+                text.as_ptr() <span class="kw">as _</span>,
+                text.len(),
+                x_pos.as_ptr(),
+                const_y,
+                font.native(),
+                encoding.into_native(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_pos_text</span>(
-        <span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">pos</span>: <span class="kw-2">&amp;</span>[<span class="ident">Point</span>],
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">encoding</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextEncoding</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">encoding</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="comment">// TODO: avoid that verification somehow.</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">len</span>(), <span class="ident">font</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>));
-        <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTextBlob_MakeFromPosText</span>(
-                <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">text</span>.<span class="ident">len</span>(),
-                <span class="ident">pos</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">encoding</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>from_pos_text(
+        text: <span class="kw-2">&amp;</span>[u8],
+        pos: <span class="kw-2">&amp;</span>[Point],
+        font: <span class="kw-2">&amp;</span>Font,
+        encoding: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;TextEncoding&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        <span class="kw">let </span>encoding = encoding.into().unwrap_or_default();
+        <span class="comment">// TODO: avoid that verification somehow.
+        </span><span class="macro">assert_eq!</span>(pos.len(), font.count_text(text, encoding));
+        TextBlob::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTextBlob_MakeFromPosText(
+                text.as_ptr() <span class="kw">as _</span>,
+                text.len(),
+                pos.native().as_ptr(),
+                font.native(),
+                encoding.into_native(),
             )
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_rsxform</span>(
-        <span class="ident">text</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">xform</span>: <span class="kw-2">&amp;</span>[<span class="ident">RSXform</span>],
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">encoding</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextEncoding</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">encoding</span>.<span class="ident">into</span>().<span class="ident">unwrap_or_default</span>();
-        <span class="comment">// TODO: avoid that verification somehow.</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">xform</span>.<span class="ident">len</span>(), <span class="ident">font</span>.<span class="ident">count_text</span>(<span class="ident">text</span>, <span class="ident">encoding</span>));
-        <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkTextBlob_MakeFromRSXform</span>(
-                <span class="ident">text</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">text</span>.<span class="ident">len</span>(),
-                <span class="ident">xform</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">encoding</span>.<span class="ident">into_native</span>(),
+    <span class="kw">pub fn </span>from_rsxform(
+        text: <span class="kw-2">&amp;</span>[u8],
+        xform: <span class="kw-2">&amp;</span>[RSXform],
+        font: <span class="kw-2">&amp;</span>Font,
+        encoding: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;TextEncoding&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        <span class="kw">let </span>encoding = encoding.into().unwrap_or_default();
+        <span class="comment">// TODO: avoid that verification somehow.
+        </span><span class="macro">assert_eq!</span>(xform.len(), font.count_text(text, encoding));
+        TextBlob::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkTextBlob_MakeFromRSXform(
+                text.as_ptr() <span class="kw">as _</span>,
+                text.len(),
+                xform.native().as_ptr(),
+                font.native(),
+                encoding.into_native(),
             )
         })
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextBlobBuilder</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkTextBlobBuilder</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">TextBlobBuilder</span>);
+<span class="kw">pub type </span>TextBlobBuilder = Handle&lt;SkTextBlobBuilder&gt;;
+<span class="macro">unsafe_send_sync!</span>(TextBlobBuilder);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkTextBlobBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlobBuilder_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkTextBlobBuilder {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkTextBlobBuilder_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextBlobBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextBlobBuilder&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>TextBlobBuilder {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;TextBlobBuilder&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TextBlobBuilder</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkTextBlobBuilder::new</span>() })
+<span class="kw">impl </span>TextBlobBuilder {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{ SkTextBlobBuilder::new() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextBlob</span><span class="op">&gt;</span> {
-        <span class="ident">TextBlob::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlobBuilder_make</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) })
+    <span class="kw">pub fn </span>make(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        TextBlob::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTextBlobBuilder_make(<span class="self">self</span>.native_mut()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>] {
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRun</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">offset</span>.<span class="ident">x</span>,
-                <span class="ident">offset</span>.<span class="ident">y</span>,
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        offset: <span class="kw">impl </span>Into&lt;Point&gt;,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span>[GlyphId] {
+        <span class="kw">let </span>offset = offset.into();
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRun(
+                font.native(),
+                count.try_into().unwrap(),
+                offset.x,
+                offset.y,
+                bounds.native_ptr_or_null(),
             );
-            <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>)
+            safer::from_raw_parts_mut(buffer.glyphs, count)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_pos_h</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">y</span>: <span class="ident">scalar</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">scalar</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunPosH</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">y</span>,
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run_pos_h(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        y: scalar,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[scalar]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRunPosH(
+                font.native(),
+                count.try_into().unwrap(),
+                y,
+                bounds.native_ptr_or_null(),
             );
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">pos</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.pos, count),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_pos</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">Point</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunPos</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run_pos(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[Point]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRunPos(
+                font.native(),
+                count.try_into().unwrap(),
+                bounds.native_ptr_or_null(),
             );
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">Point</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.pos <span class="kw">as </span><span class="kw-2">*mut </span>Point, count),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_rsxform</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">RSXform</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>
-                .<span class="ident">native_mut</span>()
-                .<span class="ident">allocRunRSXform</span>(<span class="ident">font</span>.<span class="ident">native</span>(), <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
+    <span class="kw">pub fn </span>alloc_run_rsxform(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[RSXform]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self
+                </span>.native_mut()
+                .allocRunRSXform(font.native(), count.try_into().unwrap());
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">RSXform</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.pos <span class="kw">as </span><span class="kw-2">*mut </span>RSXform, count),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_text</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">offset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>,
-        <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u32</span>]) {
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">into</span>();
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunText</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">offset</span>.<span class="ident">x</span>,
-                <span class="ident">offset</span>.<span class="ident">y</span>,
-                <span class="ident">text_byte_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run_text(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        offset: <span class="kw">impl </span>Into&lt;Point&gt;,
+        text_byte_count: usize,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[u8], <span class="kw-2">&amp;mut </span>[u32]) {
+        <span class="kw">let </span>offset = offset.into();
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRunText(
+                font.native(),
+                count.try_into().unwrap(),
+                offset.x,
+                offset.y,
+                text_byte_count.try_into().unwrap(),
+                bounds.native_ptr_or_null(),
             );
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">utf8text</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">text_byte_count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">clusters</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.utf8text <span class="kw">as </span><span class="kw-2">*mut </span>u8, text_byte_count),
+                safer::from_raw_parts_mut(buffer.clusters, count),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_text_pos_h</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">y</span>: <span class="ident">scalar</span>,
-        <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">scalar</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u32</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunTextPosH</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">y</span>,
-                <span class="ident">text_byte_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run_text_pos_h(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        y: scalar,
+        text_byte_count: usize,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[scalar], <span class="kw-2">&amp;mut </span>[u8], <span class="kw-2">&amp;mut </span>[u32]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRunTextPosH(
+                font.native(),
+                count.try_into().unwrap(),
+                y,
+                text_byte_count.try_into().unwrap(),
+                bounds.native_ptr_or_null(),
             );
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">pos</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">utf8text</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">text_byte_count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">clusters</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.pos, count),
+                safer::from_raw_parts_mut(buffer.utf8text <span class="kw">as </span><span class="kw-2">*mut </span>u8, text_byte_count),
+                safer::from_raw_parts_mut(buffer.clusters, count),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_text_pos</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">Point</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u32</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunTextPos</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">text_byte_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run_text_pos(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        text_byte_count: usize,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[Point], <span class="kw-2">&amp;mut </span>[u8], <span class="kw-2">&amp;mut </span>[u32]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRunTextPos(
+                font.native(),
+                count.try_into().unwrap(),
+                text_byte_count.try_into().unwrap(),
+                bounds.native_ptr_or_null(),
             );
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">Point</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">utf8text</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">text_byte_count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">clusters</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.pos <span class="kw">as </span><span class="kw-2">*mut </span>Point, count),
+                safer::from_raw_parts_mut(buffer.utf8text <span class="kw">as </span><span class="kw-2">*mut </span>u8, text_byte_count),
+                safer::from_raw_parts_mut(buffer.clusters, count),
             )
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_run_text_rsxform</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>,
-        <span class="ident">count</span>: <span class="ident">usize</span>,
-        <span class="ident">text_byte_count</span>: <span class="ident">usize</span>,
-        <span class="ident">bounds</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Rect</span><span class="op">&gt;</span>,
-    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">GlyphId</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">RSXform</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">u32</span>]) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">allocRunTextPos</span>(
-                <span class="ident">font</span>.<span class="ident">native</span>(),
-                <span class="ident">count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">text_byte_count</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">bounds</span>.<span class="ident">native_ptr_or_null</span>(),
+    <span class="kw">pub fn </span>alloc_run_text_rsxform(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        font: <span class="kw-2">&amp;</span>Font,
+        count: usize,
+        text_byte_count: usize,
+        bounds: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Rect&gt;,
+    ) -&gt; (<span class="kw-2">&amp;mut </span>[GlyphId], <span class="kw-2">&amp;mut </span>[RSXform], <span class="kw-2">&amp;mut </span>[u8], <span class="kw-2">&amp;mut </span>[u32]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;*</span><span class="self">self</span>.native_mut().allocRunTextPos(
+                font.native(),
+                count.try_into().unwrap(),
+                text_byte_count.try_into().unwrap(),
+                bounds.native_ptr_or_null(),
             );
             (
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">glyphs</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">RSXform</span>, <span class="ident">count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">utf8text</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">text_byte_count</span>),
-                <span class="ident">safer::from_raw_parts_mut</span>(<span class="ident">buffer</span>.<span class="ident">clusters</span>, <span class="ident">count</span>),
+                safer::from_raw_parts_mut(buffer.glyphs, count),
+                safer::from_raw_parts_mut(buffer.pos <span class="kw">as </span><span class="kw-2">*mut </span>RSXform, count),
+                safer::from_raw_parts_mut(buffer.utf8text <span class="kw">as </span><span class="kw-2">*mut </span>u8, text_byte_count),
+                safer::from_raw_parts_mut(buffer.clusters, count),
             )
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TextBlobIter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkTextBlob_Iter</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>TextBlobIter&lt;<span class="lifetime">&#39;a</span>&gt; = Borrows&lt;<span class="lifetime">&#39;a</span>, Handle&lt;SkTextBlob_Iter&gt;&gt;;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">typeface</span>: <span class="kw-2">*mut</span> <span class="ident">SkTypeface</span>,
-    <span class="kw">pub</span> <span class="ident">glyph_indices</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u16</span>],
+<span class="kw">pub struct </span>TextBlobRun&lt;<span class="lifetime">&#39;a</span>&gt; {
+    typeface: <span class="kw-2">*mut </span>SkTypeface,
+    <span class="kw">pub </span>glyph_indices: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u16],
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextBlobRun&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;typeface&quot;</span>, <span class="self">self</span>.<span class="ident">typeface</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;glyph_indices&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">glyph_indices</span>)
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>TextBlobRun&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;TextBlobRun&quot;</span>)
+            .field(<span class="string">&quot;typeface&quot;</span>, <span class="self">self</span>.typeface())
+            .field(<span class="string">&quot;glyph_indices&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.glyph_indices)
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">typeface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Typeface</span><span class="op">&gt;</span> {
-        <span class="ident">Typeface::from_unshared_ptr_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">typeface</span>)
+<span class="kw">impl </span>TextBlobRun&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">pub fn </span>typeface(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;Typeface&gt; {
+        Typeface::from_unshared_ptr_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.typeface)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkTextBlob_Iter</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">text_blob</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TextBlob</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Handle::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkTextBlob_Iter::new</span>(<span class="ident">text_blob</span>.<span class="ident">native</span>()) })
-            .<span class="ident">borrows</span>(<span class="ident">text_blob</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Borrows&lt;<span class="lifetime">&#39;a</span>, Handle&lt;SkTextBlob_Iter&gt;&gt; {
+    <span class="kw">pub fn </span>new(text_blob: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TextBlob) -&gt; <span class="self">Self </span>{
+        Handle::from_native_c(<span class="kw">unsafe </span>{ SkTextBlob_Iter::new(text_blob.native()) })
+            .borrows(text_blob)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkTextBlob_Iter</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkTextBlob_Iter_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkTextBlob_Iter {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkTextBlob_Iter_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Borrows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkTextBlob_Iter</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">TextBlobRun</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">run</span> <span class="op">=</span> <span class="ident">SkTextBlob_Iter_Run</span> {
-            <span class="ident">fTypeface</span>: <span class="ident">ptr::null_mut</span>(),
-            <span class="ident">fGlyphCount</span>: <span class="number">0</span>,
-            <span class="ident">fGlyphIndices</span>: <span class="ident">ptr::null_mut</span>(),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>Borrows&lt;<span class="lifetime">&#39;a</span>, Handle&lt;SkTextBlob_Iter&gt;&gt; {
+    <span class="kw">type </span>Item = TextBlobRun&lt;<span class="lifetime">&#39;a</span>&gt;;
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>run = SkTextBlob_Iter_Run {
+            fTypeface: ptr::null_mut(),
+            fGlyphCount: <span class="number">0</span>,
+            fGlyphIndices: ptr::null_mut(),
         };
-        <span class="kw">unsafe</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="ident">run</span>) {
-                <span class="kw">let</span> <span class="ident">indices</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">run</span>.<span class="ident">fGlyphIndices</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> <span class="ident">run</span>.<span class="ident">fGlyphCount</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                    <span class="ident">slice::from_raw_parts</span>(<span class="ident">run</span>.<span class="ident">fGlyphIndices</span>, <span class="ident">run</span>.<span class="ident">fGlyphCount</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
-                } <span class="kw">else</span> {
+        <span class="kw">unsafe </span>{
+            <span class="kw">if </span><span class="self">self</span>.native_mut().next(<span class="kw-2">&amp;mut </span>run) {
+                <span class="kw">let </span>indices = <span class="kw">if </span>!run.fGlyphIndices.is_null() &amp;&amp; run.fGlyphCount != <span class="number">0 </span>{
+                    slice::from_raw_parts(run.fGlyphIndices, run.fGlyphCount.try_into().unwrap())
+                } <span class="kw">else </span>{
                     <span class="kw-2">&amp;</span>[]
                 };
 
-                <span class="prelude-val">Some</span>(<span class="ident">TextBlobRun</span> {
-                    <span class="ident">typeface</span>: <span class="ident">run</span>.<span class="ident">fTypeface</span>,
-                    <span class="ident">glyph_indices</span>: <span class="ident">indices</span>,
+                <span class="prelude-val">Some</span>(TextBlobRun {
+                    typeface: run.fTypeface,
+                    glyph_indices: indices,
                 })
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
-            }
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_point_size_equals_size_of_two_scalars_used_in_alloc_run_pos</span>() {
-    <span class="kw">use</span> <span class="ident">std::mem</span>;
-    <span class="macro">assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>(), <span class="ident">mem::size_of</span>::<span class="op">&lt;</span>[<span class="ident">scalar</span>; <span class="number">2</span>]<span class="op">&gt;</span>())
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_point_size_equals_size_of_two_scalars_used_in_alloc_run_pos() {
+    <span class="kw">use </span>std::mem;
+    <span class="macro">assert_eq!</span>(mem::size_of::&lt;Point&gt;(), mem::size_of::&lt;[scalar; <span class="number">2</span>]&gt;())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

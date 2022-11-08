@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\shader.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/shader.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -148,150 +142,149 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">gradient_shader</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">scalar</span>, <span class="ident">Color</span>, <span class="ident">ColorFilter</span>, <span class="ident">Image</span>, <span class="ident">Matrix</span>, <span class="ident">NativeFlattenable</span>,
-    <span class="ident">Point</span>, <span class="ident">TileMode</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+    gradient_shader, prelude::<span class="kw-2">*</span>, scalar, Color, ColorFilter, Image, Matrix, NativeFlattenable,
+    Point, TileMode,
 };
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkFlattenable</span>, <span class="ident">SkRefCntBase</span>, <span class="ident">SkShader</span>};
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkFlattenable, SkRefCntBase, SkShader};
+<span class="kw">use </span>std::fmt;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkShader_GradientType</span> <span class="kw">as</span> <span class="ident">GradientTypeInternal</span>;
-<span class="macro">variant_name!</span>(<span class="ident">GradientTypeInternal::Linear</span>, <span class="ident">gradient_type_internal_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkShader_GradientType <span class="kw">as </span>GradientTypeInternal;
+<span class="macro">variant_name!</span>(GradientTypeInternal::Linear, gradient_type_internal_naming);
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">GradientType</span> {
-    <span class="ident">Color</span>,
-    <span class="ident">Linear</span>(<span class="ident">Point</span>, <span class="ident">Point</span>),
-    <span class="ident">Radial</span>(<span class="ident">Point</span>, <span class="ident">scalar</span>),
-    <span class="ident">Conical</span>([(<span class="ident">Point</span>, <span class="ident">scalar</span>); <span class="number">2</span>]),
-    <span class="ident">Sweep</span>(<span class="ident">Point</span>),
+<span class="attribute">#[derive(Copy, Clone, PartialEq, Debug)]
+</span><span class="kw">pub enum </span>GradientType {
+    Color,
+    Linear(Point, Point),
+    Radial(Point, scalar),
+    Conical([(Point, scalar); <span class="number">2</span>]),
+    Sweep(Point),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GradientInfo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="ident">colors</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Color</span>],
-    <span class="kw">pub</span> <span class="ident">color_offsets</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">scalar</span>],
-    <span class="kw">pub</span> <span class="ident">tile_mode</span>: <span class="ident">TileMode</span>,
-    <span class="kw">pub</span> <span class="ident">gradient_flags</span>: <span class="ident">gradient_shader::Flags</span>,
+<span class="attribute">#[derive(Clone, PartialEq, Debug)]
+</span><span class="kw">pub struct </span>GradientInfo&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub </span>colors: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color],
+    <span class="kw">pub </span>color_offsets: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[scalar],
+    <span class="kw">pub </span>tile_mode: TileMode,
+    <span class="kw">pub </span>gradient_flags: gradient_shader::Flags,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">GradientInfo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">colors</span>.<span class="ident">len</span>()
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GradientInfo&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>color_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.colors.len()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Shader</span> <span class="op">=</span> <span class="ident">RCHandle</span><span class="op">&lt;</span><span class="ident">SkShader</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">Shader</span>);
+<span class="kw">pub type </span>Shader = RCHandle&lt;SkShader&gt;;
+<span class="macro">unsafe_send_sync!</span>(Shader);
 
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkRefCntBase</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkShader</span> {}
-<span class="kw">impl</span> <span class="ident">NativeBase</span><span class="op">&lt;</span><span class="ident">SkFlattenable</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SkShader</span> {}
+<span class="kw">impl </span>NativeBase&lt;SkRefCntBase&gt; <span class="kw">for </span>SkShader {}
+<span class="kw">impl </span>NativeBase&lt;SkFlattenable&gt; <span class="kw">for </span>SkShader {}
 
-<span class="kw">impl</span> <span class="ident">NativeRefCountedBase</span> <span class="kw">for</span> <span class="ident">SkShader</span> {
-    <span class="kw">type</span> <span class="ident">Base</span> <span class="op">=</span> <span class="ident">SkRefCntBase</span>;
-    <span class="kw">fn</span> <span class="ident">ref_counted_base</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Base</span> {
-        <span class="self">self</span>.<span class="ident">base</span>()
+<span class="kw">impl </span>NativeRefCountedBase <span class="kw">for </span>SkShader {
+    <span class="kw">type </span>Base = SkRefCntBase;
+    <span class="kw">fn </span>ref_counted_base(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Base {
+        <span class="self">self</span>.base()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeFlattenable</span> <span class="kw">for</span> <span class="ident">SkShader</span> {
-    <span class="kw">fn</span> <span class="ident">native_flattenable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SkFlattenable</span> {
-        <span class="self">self</span>.<span class="ident">base</span>()
+<span class="kw">impl </span>NativeFlattenable <span class="kw">for </span>SkShader {
+    <span class="kw">fn </span>native_flattenable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkFlattenable {
+        <span class="self">self</span>.base()
     }
 
-    <span class="kw">fn</span> <span class="ident">native_deserialize</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="kw-2">*mut</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShader_Deserialize</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">data</span>.<span class="ident">len</span>()) }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Shader</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">shaders::empty</span>()
+    <span class="kw">fn </span>native_deserialize(data: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ sb::C_SkShader_Deserialize(data.as_ptr() <span class="kw">as _</span>, data.len()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Shader</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Shader&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;is_opaque&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_opaque</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;image&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">image</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>Shader {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        shaders::empty()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Shader</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_opaque</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShader_isOpaque</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Shader {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Shader&quot;</span>)
+            .field(<span class="string">&quot;is_opaque&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_opaque())
+            .field(<span class="string">&quot;image&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.image())
+            .finish()
+    }
+}
+
+<span class="kw">impl </span>Shader {
+    <span class="kw">pub fn </span>is_opaque(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkShader_isOpaque(<span class="self">self</span>.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Image</span>, <span class="ident">Matrix</span>, (<span class="ident">TileMode</span>, <span class="ident">TileMode</span>))<span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">matrix</span> <span class="op">=</span> <span class="ident">Matrix::default</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tile_mode</span> <span class="op">=</span> [<span class="ident">TileMode::default</span>(); <span class="number">2</span>];
-            <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">Image::from_unshared_ptr</span>(
-                <span class="self">self</span>.<span class="ident">native</span>()
-                    .<span class="ident">isAImage</span>(<span class="ident">matrix</span>.<span class="ident">native_mut</span>(), <span class="ident">tile_mode</span>.<span class="ident">as_mut_ptr</span>()),
+    <span class="kw">pub fn </span>image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(Image, Matrix, (TileMode, TileMode))&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>matrix = Matrix::default();
+            <span class="kw">let </span><span class="kw-2">mut </span>tile_mode = [TileMode::default(); <span class="number">2</span>];
+            <span class="kw">let </span>image = Image::from_unshared_ptr(
+                <span class="self">self</span>.native()
+                    .isAImage(matrix.native_mut(), tile_mode.as_mut_ptr()),
             );
-            <span class="ident">image</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">i</span>, <span class="ident">matrix</span>, (<span class="ident">tile_mode</span>[<span class="number">0</span>], <span class="ident">tile_mode</span>[<span class="number">1</span>])))
+            image.map(|i| (i, matrix, (tile_mode[<span class="number">0</span>], tile_mode[<span class="number">1</span>])))
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_a_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkShader_isAImage</span>(<span class="self">self</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>is_a_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkShader_isAImage(<span class="self">self</span>.native()) }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_local_matrix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">matrix</span>: <span class="kw-2">&amp;</span><span class="ident">Matrix</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShader_makeWithLocalMatrix</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">matrix</span>.<span class="ident">native</span>())
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_local_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShader_makeWithLocalMatrix(<span class="self">self</span>.native(), matrix.native())
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_color_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">color_filter</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorFilter</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShader_makeWithColorFilter</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">color_filter</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_color_filter(<span class="kw-2">&amp;</span><span class="self">self</span>, color_filter: <span class="kw">impl </span>Into&lt;ColorFilter&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShader_makeWithColorFilter(<span class="self">self</span>.native(), color_filter.into().into_ptr())
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">shaders</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Blender</span>, <span class="ident">Color</span>, <span class="ident">Color4f</span>, <span class="ident">ColorSpace</span>, <span class="ident">Shader</span>};
-    <span class="kw">use</span> <span class="ident">skia_bindings</span> <span class="kw">as</span> <span class="ident">sb</span>;
+<span class="kw">pub mod </span>shaders {
+    <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Blender, Color, Color4f, ColorSpace, Shader};
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="ident">Shader</span> {
-        <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaders_Empty</span>() }).<span class="ident">unwrap</span>()
+    <span class="kw">pub fn </span>empty() -&gt; Shader {
+        Shader::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaders_Empty() }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color</span>(<span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>) -&gt; <span class="ident">Shader</span> {
-        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>.<span class="ident">into</span>();
-        <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> { <span class="ident">sb::C_SkShaders_Color</span>(<span class="ident">color</span>.<span class="ident">into_native</span>()) }).<span class="ident">unwrap</span>()
+    <span class="kw">pub fn </span>color(color: <span class="kw">impl </span>Into&lt;Color&gt;) -&gt; Shader {
+        <span class="kw">let </span>color = color.into();
+        Shader::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaders_Color(color.into_native()) }).unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">color_in_space</span>(<span class="ident">color</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Color4f</span><span class="op">&gt;</span>, <span class="ident">space</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ColorSpace</span><span class="op">&gt;</span>) -&gt; <span class="ident">Shader</span> {
-        <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaders_Color2</span>(<span class="ident">color</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">space</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>())
+    <span class="kw">pub fn </span>color_in_space(color: <span class="kw">impl </span>AsRef&lt;Color4f&gt;, space: <span class="kw">impl </span>Into&lt;ColorSpace&gt;) -&gt; Shader {
+        Shader::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaders_Color2(color.as_ref().native(), space.into().into_ptr())
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend</span>(
-        <span class="ident">blender</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Blender</span><span class="op">&gt;</span>,
-        <span class="ident">dst</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>,
-        <span class="ident">src</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Shader</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Shader</span> {
-        <span class="ident">Shader::from_ptr</span>(<span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkShaders_Blend</span>(
-                <span class="ident">blender</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
-                <span class="ident">dst</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
-                <span class="ident">src</span>.<span class="ident">into</span>().<span class="ident">into_ptr</span>(),
+    <span class="kw">pub fn </span>blend(
+        blender: <span class="kw">impl </span>Into&lt;Blender&gt;,
+        dst: <span class="kw">impl </span>Into&lt;Shader&gt;,
+        src: <span class="kw">impl </span>Into&lt;Shader&gt;,
+    ) -&gt; Shader {
+        Shader::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShaders_Blend(
+                blender.into().into_ptr(),
+                dst.into().into_ptr(),
+                src.into().into_ptr(),
             )
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

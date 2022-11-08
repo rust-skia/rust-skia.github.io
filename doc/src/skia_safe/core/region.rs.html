@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe\src\core\region.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>region.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/region.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>region.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../skia_safe/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -521,523 +515,522 @@
 <span id="515">515</span>
 <span id="516">516</span>
 <span id="517">517</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Contains</span>, <span class="ident">IPoint</span>, <span class="ident">IRect</span>, <span class="ident">IVector</span>, <span class="ident">Path</span>, <span class="ident">QuickReject</span>};
-<span class="kw">use</span> <span class="ident">skia_bindings</span>::{
-    <span class="self">self</span> <span class="kw">as</span> <span class="ident">sb</span>, <span class="ident">SkRegion</span>, <span class="ident">SkRegion_Cliperator</span>, <span class="ident">SkRegion_Iterator</span>, <span class="ident">SkRegion_RunHead</span>,
-    <span class="ident">SkRegion_Spanerator</span>,
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Contains, IPoint, IRect, IVector, Path, QuickReject};
+<span class="kw">use </span>skia_bindings::{
+    <span class="self">self </span><span class="kw">as </span>sb, SkRegion, SkRegion_Cliperator, SkRegion_Iterator, SkRegion_RunHead,
+    SkRegion_Spanerator,
 };
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">iter</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>};
+<span class="kw">use </span>std::{fmt, iter, marker::PhantomData, mem, ptr};
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Region</span> <span class="op">=</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span>;
-<span class="macro">unsafe_send_sync!</span>(<span class="ident">Region</span>);
+<span class="kw">pub type </span>Region = Handle&lt;SkRegion&gt;;
+<span class="macro">unsafe_send_sync!</span>(Region);
 
-<span class="kw">impl</span> <span class="ident">NativeDrop</span> <span class="kw">for</span> <span class="ident">SkRegion</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_destruct</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkRegion {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkRegion_destruct(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativeClone</span> <span class="kw">for</span> <span class="ident">SkRegion</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="ident">SkRegion::new1</span>(<span class="self">self</span>) }
+<span class="kw">impl </span>NativeClone <span class="kw">for </span>SkRegion {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ SkRegion::new1(<span class="self">self</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NativePartialEq</span> <span class="kw">for</span> <span class="ident">SkRegion</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_Equals</span>(<span class="self">self</span>, <span class="ident">rhs</span>) }
+<span class="kw">impl </span>NativePartialEq <span class="kw">for </span>SkRegion {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkRegion_Equals(<span class="self">self</span>, rhs) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Region&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;is_empty&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_empty</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;is_rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_rect</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;is_complex&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_complex</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bounds</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Region {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Region&quot;</span>)
+            .field(<span class="string">&quot;is_empty&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_empty())
+            .field(<span class="string">&quot;is_rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_rect())
+            .field(<span class="string">&quot;is_complex&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_complex())
+            .field(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
+            .finish()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">skia_bindings::SkRegion_Op</span> <span class="kw">as</span> <span class="ident">RegionOp</span>;
-<span class="macro">variant_name!</span>(<span class="ident">RegionOp::ReverseDifference</span>, <span class="ident">region_op_naming</span>);
+<span class="kw">pub use </span>skia_bindings::SkRegion_Op <span class="kw">as </span>RegionOp;
+<span class="macro">variant_name!</span>(RegionOp::ReverseDifference, region_op_naming);
 
-<span class="kw">impl</span> <span class="ident">Region</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Region</span> {
-        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkRegion::new</span>() })
+<span class="kw">impl </span>Region {
+    <span class="kw">pub fn </span>new() -&gt; Region {
+        <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{ SkRegion::new() })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_rect</span>(<span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">Region</span> {
-        <span class="ident"><span class="self">Self</span>::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkRegion::new2</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>from_rect(rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; Region {
+        <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{ SkRegion::new2(rect.as_ref().native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_set</span>(<span class="self">self</span>.<span class="ident">native_mut</span>(), <span class="ident">src</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, src: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="kw">unsafe </span>{ sb::C_SkRegion_set(<span class="self">self</span>.native_mut(), src.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Region</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">swap</span>(<span class="ident">other</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">pub fn </span>swap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;mut </span>Region) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().swap(other.native_mut()) }
     }
 
-    <span class="kw">const</span> <span class="ident">EMPTY_RUN_HEAD_PTR</span>: <span class="kw-2">*mut</span> <span class="ident">SkRegion_RunHead</span> <span class="op">=</span> <span class="op">-</span><span class="number">1</span> <span class="kw">as</span> <span class="kw">_</span>;
-    <span class="kw">const</span> <span class="ident">RECT_RUN_HEAD_PTR</span>: <span class="kw-2">*mut</span> <span class="ident">SkRegion_RunHead</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+    <span class="kw">const </span>EMPTY_RUN_HEAD_PTR: <span class="kw-2">*mut </span>SkRegion_RunHead = -<span class="number">1 </span><span class="kw">as _</span>;
+    <span class="kw">const </span>RECT_RUN_HEAD_PTR: <span class="kw-2">*mut </span>SkRegion_RunHead = ptr::null_mut();
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRunHead</span> <span class="op">==</span> <span class="ident"><span class="self">Self</span>::EMPTY_RUN_HEAD_PTR</span>
+    <span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.native().fRunHead == <span class="self">Self</span>::EMPTY_RUN_HEAD_PTR
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRunHead</span> <span class="op">==</span> <span class="ident"><span class="self">Self</span>::RECT_RUN_HEAD_PTR</span>
+    <span class="kw">pub fn </span>is_rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.native().fRunHead == <span class="self">Self</span>::RECT_RUN_HEAD_PTR
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_complex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="op">!</span><span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_rect</span>()
+    <span class="kw">pub fn </span>is_complex(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        !<span class="self">self</span>.is_empty() &amp;&amp; !<span class="self">self</span>.is_rect()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
-        <span class="ident">IRect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fBounds</span>)
+    <span class="kw">pub fn </span>bounds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>IRect {
+        IRect::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fBounds)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compute_region_complexity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">computeRegionComplexity</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>() }
+    <span class="kw">pub fn </span>compute_region_complexity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().computeRegionComplexity().try_into().unwrap() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_boundary_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Path</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">getBoundaryPath</span>(<span class="ident">path</span>.<span class="ident">native_mut</span>()) }
+    <span class="kw">pub fn </span>get_boundary_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;mut </span>Path) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getBoundaryPath(path.native_mut()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_empty</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setEmpty</span>() }
+    <span class="kw">pub fn </span>set_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setEmpty() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rect</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRect</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>set_rect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setRect(rect.as_ref().native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rects</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rects</span>: <span class="kw-2">&amp;</span>[<span class="ident">IRect</span>]) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">setRects</span>(<span class="ident">rects</span>.<span class="ident">native</span>().<span class="ident">as_ptr</span>(), <span class="ident">rects</span>.<span class="ident">len</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
+    <span class="kw">pub fn </span>set_rects(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rects: <span class="kw-2">&amp;</span>[IRect]) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .setRects(rects.native().as_ptr(), rects.len().try_into().unwrap())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_region</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setRegion</span>(<span class="ident">region</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>set_region(<span class="kw-2">&amp;mut </span><span class="self">self</span>, region: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setRegion(region.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_path</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">clip</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">setPath</span>(<span class="ident">path</span>.<span class="ident">native</span>(), <span class="ident">clip</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>set_path(<span class="kw-2">&amp;mut </span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path, clip: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setPath(path.native(), clip.native()) }
     }
 
-    <span class="comment">// there is also a trait for intersects() below.</span>
+    <span class="comment">// there is also a trait for intersects() below.
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">intersects</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
+    </span><span class="kw">pub fn </span>intersects_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().intersects(rect.as_ref().native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersects_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">intersects1</span>(<span class="ident">other</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>intersects_region(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().intersects1(other.native()) }
     }
 
-    <span class="comment">// contains() trait below.</span>
+    <span class="comment">// contains() trait below.
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_point</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains</span>(<span class="ident">point</span>.<span class="ident">x</span>, <span class="ident">point</span>.<span class="ident">y</span>) }
+    </span><span class="kw">pub fn </span>contains_point(<span class="kw-2">&amp;</span><span class="self">self</span>, point: IPoint) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().contains(point.x, point.y) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains1</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>contains_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().contains1(rect.as_ref().native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">contains2</span>(<span class="ident">other</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>contains_region(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().contains2(other.native()) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">as_ref</span>();
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_quickContains</span>(<span class="self">self</span>.<span class="ident">native</span>(), <span class="ident">r</span>.<span class="ident">native</span>()) }
+    <span class="kw">pub fn </span>quick_contains(<span class="kw-2">&amp;</span><span class="self">self</span>, r: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; bool {
+        <span class="kw">let </span>r = r.as_ref();
+        <span class="kw">unsafe </span>{ sb::C_SkRegion_quickContains(<span class="self">self</span>.native(), r.native()) }
     }
 
-    <span class="comment">// see also the quick_reject() trait below.</span>
+    <span class="comment">// see also the quick_reject() trait below.
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">rect</span>.<span class="ident">as_ref</span>();
-        <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">rect</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">IRect::intersects</span>(<span class="self">self</span>.<span class="ident">bounds</span>(), <span class="ident">rect</span>)
+    </span><span class="kw">pub fn </span>quick_reject_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; bool {
+        <span class="kw">let </span>rect = rect.as_ref();
+        <span class="self">self</span>.is_empty() || rect.is_empty() || !IRect::intersects(<span class="self">self</span>.bounds(), rect)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">quick_reject_region</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rgn</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">rgn</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">IRect::intersects</span>(<span class="self">self</span>.<span class="ident">bounds</span>(), <span class="ident">rgn</span>.<span class="ident">bounds</span>())
+    <span class="kw">pub fn </span>quick_reject_region(<span class="kw-2">&amp;</span><span class="self">self</span>, rgn: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="self">self</span>.is_empty() || rgn.is_empty() || !IRect::intersects(<span class="self">self</span>.bounds(), rgn.bounds())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">translate</span>(<span class="ident">d</span>.<span class="ident">x</span>, <span class="ident">d</span>.<span class="ident">y</span>, <span class="ident">self_ptr</span>) }
+    <span class="kw">pub fn </span>translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;IVector&gt;) {
+        <span class="kw">let </span>d = d.into();
+        <span class="kw">let </span>self_ptr = <span class="self">self</span>.native_mut() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().translate(d.x, d.y, self_ptr) }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translated</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">d</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">IVector</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
-        <span class="ident">r</span>.<span class="ident">translate</span>(<span class="ident">d</span>);
-        <span class="ident">r</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>translated(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;IVector&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">self</span>.clone();
+        r.translate(d);
+        r
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_rect</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>;
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">op1</span>(<span class="ident">self_ptr</span>, <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">op</span>) }
+    <span class="kw">pub fn </span>op_rect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;, op: RegionOp) -&gt; bool {
+        <span class="kw">let </span>self_ptr = <span class="self">self</span>.native_mut() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>;
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().op1(self_ptr, rect.as_ref().native(), op) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_region</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">self_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native_mut</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>;
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">op2</span>(<span class="ident">self_ptr</span>, <span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">op</span>) }
+    <span class="kw">pub fn </span>op_region(<span class="kw-2">&amp;mut </span><span class="self">self</span>, region: <span class="kw-2">&amp;</span>Region, op: RegionOp) -&gt; bool {
+        <span class="kw">let </span>self_ptr = <span class="self">self</span>.native_mut() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>;
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().op2(self_ptr, region.native(), op) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_rect_region</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
-        <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>,
-        <span class="ident">op</span>: <span class="ident">RegionOp</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">op</span>(<span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">op</span>)
+    <span class="kw">pub fn </span>op_rect_region(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;,
+        region: <span class="kw-2">&amp;</span>Region,
+        op: RegionOp,
+    ) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .op(rect.as_ref().native(), region.native(), op)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_region_rect</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>,
-        <span class="ident">rect</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>,
-        <span class="ident">op</span>: <span class="ident">RegionOp</span>,
-    ) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">op1</span>(<span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">rect</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>(), <span class="ident">op</span>)
+    <span class="kw">pub fn </span>op_region_rect(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        region: <span class="kw-2">&amp;</span>Region,
+        rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;,
+        op: RegionOp,
+    ) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .op1(region.native(), rect.as_ref().native(), op)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_to_memory</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">writeToMemory</span>(<span class="ident">ptr::null_mut</span>());
-            <span class="ident">buf</span>.<span class="ident">resize</span>(<span class="ident">size</span>, <span class="number">0</span>);
-            <span class="kw">let</span> <span class="ident">written</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">writeToMemory</span>(<span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>);
-            <span class="macro">debug_assert!</span>(<span class="ident">written</span> <span class="op">==</span> <span class="ident">size</span>);
+    <span class="kw">pub fn </span>write_to_memory(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>Vec&lt;u8&gt;) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>size = <span class="self">self</span>.native().writeToMemory(ptr::null_mut());
+            buf.resize(size, <span class="number">0</span>);
+            <span class="kw">let </span>written = <span class="self">self</span>.native().writeToMemory(buf.as_mut_ptr() <span class="kw">as _</span>);
+            <span class="macro">debug_assert!</span>(written == size);
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_from_memory</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">readFromMemory</span>(<span class="ident">buf</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">buf</span>.<span class="ident">len</span>())
+    <span class="kw">pub fn </span>read_from_memory(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; usize {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .readFromMemory(buf.as_ptr() <span class="kw">as _</span>, buf.len())
         }
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// combine overloads (static)</span>
-<span class="comment">//</span>
+<span class="comment">//
+// combine overloads (static)
+//
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span>;
+</span><span class="kw">pub trait </span>Combine&lt;A, B&gt;: Sized {
+    <span class="kw">fn </span>combine(a: <span class="kw-2">&amp;</span>A, op: RegionOp, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">difference</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Difference</span>, <span class="ident">b</span>)
+    <span class="kw">fn </span>difference(a: <span class="kw-2">&amp;</span>A, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::combine(a, RegionOp::Difference, b)
     }
 
-    <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Intersect</span>, <span class="ident">b</span>)
+    <span class="kw">fn </span>intersect(a: <span class="kw-2">&amp;</span>A, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::combine(a, RegionOp::Intersect, b)
     }
 
-    <span class="kw">fn</span> <span class="ident">xor</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::XOR</span>, <span class="ident">b</span>)
+    <span class="kw">fn </span>xor(a: <span class="kw-2">&amp;</span>A, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::combine(a, RegionOp::XOR, b)
     }
 
-    <span class="kw">fn</span> <span class="ident">union</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Union</span>, <span class="ident">b</span>)
+    <span class="kw">fn </span>union(a: <span class="kw-2">&amp;</span>A, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::combine(a, RegionOp::Union, b)
     }
 
-    <span class="kw">fn</span> <span class="ident">reverse_difference</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::ReverseDifference</span>, <span class="ident">b</span>)
+    <span class="kw">fn </span>reverse_difference(a: <span class="kw-2">&amp;</span>A, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::combine(a, RegionOp::ReverseDifference, b)
     }
 
-    <span class="kw">fn</span> <span class="ident">replace</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::combine</span>(<span class="ident">a</span>, <span class="ident">RegionOp::Replace</span>, <span class="ident">b</span>)
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">IRect</span>, <span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Region::new</span>();
-        <span class="ident">r</span>.<span class="ident">op_rect_region</span>(<span class="ident">rect</span>, <span class="ident">region</span>, <span class="ident">op</span>);
-        <span class="ident">r</span>
+    <span class="kw">fn </span>replace(a: <span class="kw-2">&amp;</span>A, b: <span class="kw-2">&amp;</span>B) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::combine(a, RegionOp::Replace, b)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">Region</span>, <span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Region::new</span>();
-        <span class="ident">r</span>.<span class="ident">op_region_rect</span>(<span class="ident">region</span>, <span class="ident">rect</span>, <span class="ident">op</span>);
-        <span class="ident">r</span>
+<span class="kw">impl </span>Combine&lt;IRect, Region&gt; <span class="kw">for </span>Handle&lt;SkRegion&gt; {
+    <span class="kw">fn </span>combine(rect: <span class="kw-2">&amp;</span>IRect, op: RegionOp, region: <span class="kw-2">&amp;</span>Region) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>r = Region::new();
+        r.op_rect_region(rect, region, op);
+        r
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Combine</span><span class="op">&lt;</span><span class="ident">Region</span>, <span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Handle</span><span class="op">&lt;</span><span class="ident">SkRegion</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">combine</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>, <span class="ident">op</span>: <span class="ident">RegionOp</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">clone</span>();
-        <span class="ident">a</span>.<span class="ident">op_region</span>(<span class="ident">b</span>, <span class="ident">op</span>);
-        <span class="ident">a</span>
+<span class="kw">impl </span>Combine&lt;Region, IRect&gt; <span class="kw">for </span>Handle&lt;SkRegion&gt; {
+    <span class="kw">fn </span>combine(region: <span class="kw-2">&amp;</span>Region, op: RegionOp, rect: <span class="kw-2">&amp;</span>IRect) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>r = Region::new();
+        r.op_region_rect(region, rect, op);
+        r
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// intersects overloads</span>
-<span class="comment">//</span>
-
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>;
-}
-
-<span class="kw">impl</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">intersects_rect</span>(<span class="ident">rect</span>)
+<span class="kw">impl </span>Combine&lt;Region, Region&gt; <span class="kw">for </span>Handle&lt;SkRegion&gt; {
+    <span class="kw">fn </span>combine(a: <span class="kw-2">&amp;</span>Region, op: RegionOp, b: <span class="kw-2">&amp;</span>Region) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>a = a.clone();
+        a.op_region(b, op);
+        a
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Intersects</span><span class="op">&lt;</span><span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">intersects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">intersects_region</span>(<span class="ident">other</span>)
+<span class="comment">//
+// intersects overloads
+//
+
+</span><span class="kw">pub trait </span>Intersects&lt;T&gt; {
+    <span class="kw">fn </span>intersects(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>T) -&gt; bool;
+}
+
+<span class="kw">impl </span>Intersects&lt;IRect&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>intersects(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;</span>IRect) -&gt; bool {
+        <span class="self">self</span>.intersects_rect(rect)
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// contains overloads</span>
-<span class="comment">//</span>
-
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">IPoint</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">point</span>: <span class="ident">IPoint</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">contains_point</span>(<span class="ident">point</span>)
+<span class="kw">impl </span>Intersects&lt;Region&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>intersects(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="self">self</span>.intersects_region(other)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">contains_rect</span>(<span class="ident">rect</span>)
+<span class="comment">//
+// contains overloads
+//
+
+</span><span class="kw">impl </span>Contains&lt;IPoint&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, point: IPoint) -&gt; bool {
+        <span class="self">self</span>.contains_point(point)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">contains_region</span>(<span class="ident">other</span>)
+<span class="kw">impl </span>Contains&lt;<span class="kw-2">&amp;</span>IRect&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;</span>IRect) -&gt; bool {
+        <span class="self">self</span>.contains_rect(rect)
     }
 }
 
-<span class="comment">//</span>
-<span class="comment">// quick_reject overloads</span>
-<span class="comment">//</span>
-
-<span class="kw">impl</span> <span class="ident">QuickReject</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="kw-2">&amp;</span><span class="ident">IRect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">quick_reject_rect</span>(<span class="ident">rect</span>)
+<span class="kw">impl </span>Contains&lt;<span class="kw-2">&amp;</span>Region&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="self">self</span>.contains_region(other)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">QuickReject</span><span class="op">&lt;</span><span class="ident">Region</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Region</span> {
-    <span class="kw">fn</span> <span class="ident">quick_reject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">quick_reject_region</span>(<span class="ident">other</span>)
+<span class="comment">//
+// quick_reject overloads
+//
+
+</span><span class="kw">impl </span>QuickReject&lt;IRect&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>quick_reject(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;</span>IRect) -&gt; bool {
+        <span class="self">self</span>.quick_reject_rect(rect)
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">SkRegion_Iterator</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span><span class="op">&gt;</span>);
-
-<span class="macro">native_transmutable!</span>(<span class="ident">SkRegion_Iterator</span>, <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">iterator_layout</span>);
-
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Iterator&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;is_done&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_done</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;rect&quot;</span>, <span class="self">self</span>.<span class="ident">rect</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>QuickReject&lt;Region&gt; <span class="kw">for </span>Region {
+    <span class="kw">fn </span>quick_reject(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Region) -&gt; bool {
+        <span class="self">self</span>.quick_reject_region(other)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_empty</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">Iterator::construct</span>(<span class="op">|</span><span class="ident">iterator</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">sb::C_SkRegion_Iterator_Construct</span>(<span class="ident">iterator</span>);
+<span class="attribute">#[derive(Clone)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>Iterator&lt;<span class="lifetime">&#39;a</span>&gt;(SkRegion_Iterator, PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Region&gt;);
+
+<span class="macro">native_transmutable!</span>(SkRegion_Iterator, Iterator&lt;<span class="lifetime">&#39;_</span>&gt;, iterator_layout);
+
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Iterator&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Iterator&quot;</span>)
+            .field(<span class="string">&quot;is_done&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_done())
+            .field(<span class="string">&quot;rect&quot;</span>, <span class="self">self</span>.rect())
+            .finish()
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>new_empty() -&gt; <span class="self">Self </span>{
+        Iterator::construct(|iterator| <span class="kw">unsafe </span>{
+            sb::C_SkRegion_Iterator_Construct(iterator);
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>) -&gt; <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="ident">Iterator::from_native_c</span>(<span class="kw">unsafe</span> { <span class="ident">SkRegion_Iterator::new</span>(<span class="ident">region</span>.<span class="ident">native</span>()) })
+    <span class="kw">pub fn </span>new(region: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Region) -&gt; Iterator&lt;<span class="lifetime">&#39;a</span>&gt; {
+        Iterator::from_native_c(<span class="kw">unsafe </span>{ SkRegion_Iterator::new(region.native()) })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rewind</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">rewind</span>() }
+    <span class="kw">pub fn </span>rewind(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().rewind() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="ident">Region</span>) -&gt; <span class="ident">Iterator</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">reset</span>(<span class="ident">region</span>.<span class="ident">native</span>());
-            <span class="ident">mem::transmute</span>(<span class="self">self</span>)
+    <span class="kw">pub fn </span>reset(<span class="kw-2">mut </span><span class="self">self</span>, region: <span class="kw-2">&amp;</span>Region) -&gt; Iterator {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().reset(region.native());
+            mem::transmute(<span class="self">self</span>)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDone</span>
+    <span class="kw">pub fn </span>is_done(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.native().fDone
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">next</span>();
+    <span class="kw">pub fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut().next();
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
-        <span class="ident">IRect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRect</span>)
+    <span class="kw">pub fn </span>rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>IRect {
+        IRect::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fRect)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rgn</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Region</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">sb::C_SkRegion_Iterator_rgn</span>(<span class="self">self</span>.<span class="ident">native</span>()).<span class="ident">into_option</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Some</span>(<span class="ident">transmute_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">r</span>))
+    <span class="kw">pub fn </span>rgn(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Region&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>r = sb::C_SkRegion_Iterator_rgn(<span class="self">self</span>.native()).into_option()<span class="question-mark">?</span>;
+            <span class="prelude-val">Some</span>(transmute_ref(<span class="kw-2">&amp;*</span>r))
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">iter::Iterator</span> <span class="kw">for</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">IRect</span>;
+<span class="kw">impl </span>iter::Iterator <span class="kw">for </span>Iterator&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">type </span>Item = IRect;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_done</span>() {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">if </span><span class="self">self</span>.is_done() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">rect</span>();
-        <span class="ident">Iterator::next</span>(<span class="self">self</span>);
-        <span class="prelude-val">Some</span>(<span class="ident">r</span>)
+        <span class="kw">let </span>r = <span class="kw-2">*</span><span class="self">self</span>.rect();
+        Iterator::next(<span class="self">self</span>);
+        <span class="prelude-val">Some</span>(r)
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_iterator</span>() {
-    <span class="kw">let</span> <span class="ident">r1</span> <span class="op">=</span> <span class="ident">IRect::new</span>(<span class="number">10</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>);
-    <span class="kw">let</span> <span class="ident">r2</span> <span class="op">=</span> <span class="ident">IRect::new</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">120</span>, <span class="number">140</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Region::new</span>();
-    <span class="ident">r</span>.<span class="ident">set_rects</span>(<span class="kw-2">&amp;</span>[<span class="ident">r1</span>, <span class="ident">r2</span>]);
-    <span class="kw">let</span> <span class="ident">rects</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Iterator::new</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>).<span class="ident">collect</span>();
-    <span class="macro">assert_eq!</span>(<span class="ident">rects</span>.<span class="ident">len</span>(), <span class="number">2</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">rects</span>[<span class="number">0</span>], <span class="ident">r1</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">rects</span>[<span class="number">1</span>], <span class="ident">r2</span>);
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_iterator() {
+    <span class="kw">let </span>r1 = IRect::new(<span class="number">10</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>);
+    <span class="kw">let </span>r2 = IRect::new(<span class="number">100</span>, <span class="number">100</span>, <span class="number">120</span>, <span class="number">140</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>r = Region::new();
+    r.set_rects(<span class="kw-2">&amp;</span>[r1, r2]);
+    <span class="kw">let </span>rects: Vec&lt;IRect&gt; = Iterator::new(<span class="kw-2">&amp;</span>r).collect();
+    <span class="macro">assert_eq!</span>(rects.len(), <span class="number">2</span>);
+    <span class="macro">assert_eq!</span>(rects[<span class="number">0</span>], r1);
+    <span class="macro">assert_eq!</span>(rects[<span class="number">1</span>], r2);
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">SkRegion_Cliperator</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span><span class="op">&gt;</span>);
+<span class="attribute">#[derive(Clone)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>Cliperator&lt;<span class="lifetime">&#39;a</span>&gt;(SkRegion_Cliperator, PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Region&gt;);
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkRegion_Cliperator</span>, <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">cliperator_layout</span>);
+<span class="macro">native_transmutable!</span>(SkRegion_Cliperator, Cliperator&lt;<span class="lifetime">&#39;_</span>&gt;, cliperator_layout);
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_Cliperator_destruct</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+<span class="kw">impl </span>Drop <span class="kw">for </span>Cliperator&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkRegion_Cliperator_destruct(<span class="self">self</span>.native_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Cliperator&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;is_done&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_done</span>())
-            .<span class="ident">field</span>(<span class="string">&quot;rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rect</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Cliperator&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Cliperator&quot;</span>)
+            .field(<span class="string">&quot;is_done&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_done())
+            .field(<span class="string">&quot;rect&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.rect())
+            .finish()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>, <span class="ident">clip</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">IRect</span><span class="op">&gt;</span>) -&gt; <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="ident">Cliperator::from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="ident">SkRegion_Cliperator::new</span>(<span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">clip</span>.<span class="ident">as_ref</span>().<span class="ident">native</span>())
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Cliperator&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>new(region: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Region, clip: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; Cliperator&lt;<span class="lifetime">&#39;a</span>&gt; {
+        Cliperator::from_native_c(<span class="kw">unsafe </span>{
+            SkRegion_Cliperator::new(region.native(), clip.as_ref().native())
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fDone</span>
+    <span class="kw">pub fn </span>is_done(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.native().fDone
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">native_mut</span>().<span class="ident">next</span>() }
+    <span class="kw">pub fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().next() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">IRect</span> {
-        <span class="ident">IRect::from_native_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">native</span>().<span class="ident">fRect</span>)
+    <span class="kw">pub fn </span>rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>IRect {
+        IRect::from_native_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.native().fRect)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">iter::Iterator</span> <span class="kw">for</span> <span class="ident">Cliperator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">IRect</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_done</span>() {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; iter::Iterator <span class="kw">for </span>Cliperator&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Item = IRect;
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">if </span><span class="self">self</span>.is_done() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">rect</span>();
-        <span class="self">self</span>.<span class="ident">next</span>();
-        <span class="prelude-val">Some</span>(<span class="ident">rect</span>)
+        <span class="kw">let </span>rect = <span class="kw-2">*</span><span class="self">self</span>.rect();
+        <span class="self">self</span>.next();
+        <span class="prelude-val">Some</span>(rect)
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">SkRegion_Spanerator</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span><span class="op">&gt;</span>);
+<span class="attribute">#[derive(Clone)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>Spanerator&lt;<span class="lifetime">&#39;a</span>&gt;(SkRegion_Spanerator, PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Region&gt;);
 
-<span class="macro">native_transmutable!</span>(<span class="ident">SkRegion_Spanerator</span>, <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">spanerator_layout</span>);
+<span class="macro">native_transmutable!</span>(SkRegion_Spanerator, Spanerator&lt;<span class="lifetime">&#39;_</span>&gt;, spanerator_layout);
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">sb::C_SkRegion_Spanerator_destruct</span>(<span class="self">self</span>.<span class="ident">native_mut</span>()) }
+<span class="kw">impl </span>Drop <span class="kw">for </span>Spanerator&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ sb::C_SkRegion_Spanerator_destruct(<span class="self">self</span>.native_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Spanerator&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Spanerator&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;Spanerator&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">region</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Region</span>, <span class="ident">y</span>: <span class="ident">i32</span>, <span class="ident">left</span>: <span class="ident">i32</span>, <span class="ident">right</span>: <span class="ident">i32</span>) -&gt; <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="ident">Spanerator::from_native_c</span>(<span class="kw">unsafe</span> {
-            <span class="ident">SkRegion_Spanerator::new</span>(<span class="ident">region</span>.<span class="ident">native</span>(), <span class="ident">y</span>, <span class="ident">left</span>, <span class="ident">right</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Spanerator&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>new(region: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Region, y: i32, left: i32, right: i32) -&gt; Spanerator&lt;<span class="lifetime">&#39;a</span>&gt; {
+        Spanerator::from_native_c(<span class="kw">unsafe </span>{
+            SkRegion_Spanerator::new(region.native(), y, left, right)
         })
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">iter::Iterator</span> <span class="kw">for</span> <span class="ident">Spanerator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">i32</span>, <span class="ident">i32</span>);
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; iter::Iterator <span class="kw">for </span>Spanerator&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Item = (i32, i32);
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">left</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">right</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="self">self</span>.<span class="ident">native_mut</span>()
-                .<span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="ident">left</span>, <span class="kw-2">&amp;mut</span> <span class="ident">right</span>)
-                .<span class="ident">if_true_some</span>((<span class="ident">left</span>, <span class="ident">right</span>))
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>left = <span class="number">0</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>right = <span class="number">0</span>;
+            <span class="self">self</span>.native_mut()
+                .next(<span class="kw-2">&amp;mut </span>left, <span class="kw-2">&amp;mut </span>right)
+                .if_true_some((left, right))
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">new_clone_drop</span>() {
-    <span class="kw">let</span> <span class="ident">region</span> <span class="op">=</span> <span class="ident">Region::new</span>();
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::redundant_clone</span>)]</span>
-    <span class="kw">let</span> <span class="ident">_cloned</span> <span class="op">=</span> <span class="ident">region</span>.<span class="ident">clone</span>();
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>new_clone_drop() {
+    <span class="kw">let </span>region = Region::new();
+    <span class="attribute">#[allow(clippy::redundant_clone)]
+    </span><span class="kw">let </span>_cloned = region.clone();
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">can_compare</span>() {
-    <span class="kw">let</span> <span class="ident">r1</span> <span class="op">=</span> <span class="ident">Region::new</span>();
-    <span class="kw">let</span> <span class="ident">r2</span> <span class="op">=</span> <span class="ident">r1</span>.<span class="ident">clone</span>();
-    <span class="macro">assert!</span>(<span class="ident">r1</span> <span class="op">==</span> <span class="ident">r2</span>);
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>can_compare() {
+    <span class="kw">let </span>r1 = Region::new();
+    <span class="kw">let </span>r2 = r1.clone();
+    <span class="macro">assert!</span>(r1 == r2);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="skia_safe" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
