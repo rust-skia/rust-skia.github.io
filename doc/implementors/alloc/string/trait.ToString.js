@@ -1,3 +1,3 @@
 (function() {var implementors = {
-"skia_safe":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.65.0/alloc/string/trait.ToString.html\" title=\"trait alloc::string::ToString\">ToString</a> for <a class=\"struct\" href=\"skia_safe/struct.Handle.html\" title=\"struct skia_safe::Handle\">Handle</a>&lt;SkString&gt;"]]
+"skia_safe":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.68.0/alloc/string/trait.ToString.html\" title=\"trait alloc::string::ToString\">ToString</a> for <a class=\"struct\" href=\"skia_safe/struct.Handle.html\" title=\"struct skia_safe::Handle\">Handle</a>&lt;SkString&gt;"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

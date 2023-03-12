@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["fill_path_with_paint","Returns the filled equivalent of the stroked path."]]};
