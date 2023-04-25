@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["variation",""]],"struct":[["VariationAxis",""]]};
+window.SIDEBAR_ITEMS = {"mod":["variation"],"struct":["VariationAxis"]};

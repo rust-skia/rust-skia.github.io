@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/image.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1335,30 +1335,51 @@
 <a href="#1335" id="1335">1335</a>
 <a href="#1336" id="1336">1336</a>
 <a href="#1337" id="1337">1337</a>
+<a href="#1338" id="1338">1338</a>
+<a href="#1339" id="1339">1339</a>
+<a href="#1340" id="1340">1340</a>
+<a href="#1341" id="1341">1341</a>
+<a href="#1342" id="1342">1342</a>
+<a href="#1343" id="1343">1343</a>
+<a href="#1344" id="1344">1344</a>
+<a href="#1345" id="1345">1345</a>
+<a href="#1346" id="1346">1346</a>
+<a href="#1347" id="1347">1347</a>
+<a href="#1348" id="1348">1348</a>
+<a href="#1349" id="1349">1349</a>
+<a href="#1350" id="1350">1350</a>
+<a href="#1351" id="1351">1351</a>
+<a href="#1352" id="1352">1352</a>
+<a href="#1353" id="1353">1353</a>
+<a href="#1354" id="1354">1354</a>
+<a href="#1355" id="1355">1355</a>
+<a href="#1356" id="1356">1356</a>
+<a href="#1357" id="1357">1357</a>
+<a href="#1358" id="1358">1358</a>
+<a href="#1359" id="1359">1359</a>
+<a href="#1360" id="1360">1360</a>
+<a href="#1361" id="1361">1361</a>
+<a href="#1362" id="1362">1362</a>
+<a href="#1363" id="1363">1363</a>
+<a href="#1364" id="1364">1364</a>
+<a href="#1365" id="1365">1365</a>
+<a href="#1366" id="1366">1366</a>
+<a href="#1367" id="1367">1367</a>
+<a href="#1368" id="1368">1368</a>
 </pre><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::gpu;
-<span class="kw">use </span><span class="kw">crate</span>::SurfaceProps;
 <span class="kw">use crate</span>::{
     prelude::<span class="kw-2">*</span>, AlphaType, Bitmap, ColorSpace, ColorType, Data, EncodedImageFormat, IPoint, IRect,
     ISize, ImageFilter, ImageGenerator, ImageInfo, Matrix, Paint, Picture, Pixmap, SamplingOptions,
-    Shader, TileMode,
+    Shader, SurfaceProps, TextureCompressionType, TileMode,
 };
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkImage, SkRefCntBase};
 <span class="kw">use </span>std::{fmt, mem, ptr};
 
 <span class="kw">pub use </span><span class="kw">super</span>::CubicResampler;
 
-<span class="doccomment">/// Experimental:
-///   Skia                | GL_COMPRESSED_*     | MTLPixelFormat*      | VK_FORMAT_*_BLOCK
-///  --------------------------------------------------------------------------------------
-///   kETC2_RGB8_UNORM    | ETC1_RGB8           | ETC2_RGB8 (iOS-only) | ETC2_R8G8B8_UNORM
-///                       | RGB8_ETC2           |                      |
-///  --------------------------------------------------------------------------------------
-///   kBC1_RGB8_UNORM     | RGB_S3TC_DXT1_EXT   | N/A                  | BC1_RGB_UNORM
-///  --------------------------------------------------------------------------------------
-///   kBC1_RGBA8_UNORM    | RGBA_S3TC_DXT1_EXT  | BC1_RGBA (macOS-only)| BC1_RGBA_UNORM
-</span><span class="kw">pub use </span>skia_bindings::SkImage_CompressionType <span class="kw">as </span>CompressionType;
-<span class="macro">variant_name!</span>(CompressionType::BC1_RGBA8_UNORM);
+<span class="attr">#[deprecated(since = <span class="string">&quot;0.62.0&quot;</span>, note = <span class="string">&quot;Use TextureCompressionType&quot;</span>)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::TextureCompressionType <span class="kw">as </span>CompressionType;
 
 <span class="kw">pub use </span>skia_bindings::SkImage_BitDepth <span class="kw">as </span>BitDepth;
 <span class="macro">variant_name!</span>(BitDepth::F16);
@@ -1543,7 +1564,7 @@
     </span><span class="kw">pub fn </span>new_raster_from_compressed(
         data: <span class="kw">impl </span>Into&lt;Data&gt;,
         dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
-        ct: CompressionType,
+        ct: TextureCompressionType,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
         <span class="kw">let </span>dimensions = dimensions.into();
         Image::from_ptr(<span class="kw">unsafe </span>{
@@ -1634,7 +1655,7 @@
         context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
         data: Data,
         dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
-        ct: CompressionType,
+        ct: TextureCompressionType,
         mipmapped: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gpu::Mipmapped&gt;&gt;,
         is_protected: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gpu::Protected&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
@@ -1661,7 +1682,7 @@
         _context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
         _data: Data,
         _dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
-        _ct: CompressionType,
+        _ct: TextureCompressionType,
     ) -&gt; ! {
         <span class="macro">panic!</span>(<span class="string">&quot;Removed without replacement.&quot;</span>)
     }
@@ -1676,18 +1697,21 @@
     /// Note: When using a DDL recording context, `texture_release_proc` will be called on the
     /// GPU thread after the DDL is played back on the direct context.
     ///
-    /// - `context`              GPU context
-    /// - `backend_texture`       texture residing on GPU
-    /// - `color_space`           This describes the color space of this image&#39;s contents, as
-    ///                            seen after sampling. In general, if the format of the backend
-    ///                            texture is SRGB, some linear `color_space` should be supplied
-    ///                            (e.g., [`ColorSpace::new_srgb_linear()`]). If the format of the
-    ///                            backend texture is linear, then the `color_space` should include
-    ///                            a description of the transfer function as
-    ///                            well (e.g., [`ColorSpace::new_srgb()`]).
-    /// - `texture_release_proc`   function called when texture can be released
-    /// - `release_context`       state passed to `texture_release_proc`
-    /// Returns: created [`Image`], or `None`
+    /// * `context`               GPU context
+    /// * `backend_texture`       Texture residing on GPU
+    /// * `origin`                Origin of `backend_texture`
+    /// * `color_type`            Color type of the resulting image
+    /// * `alpha_type`            Alpha type of the resulting image
+    /// * `color_space`           This describes the color space of this image&#39;s contents, as
+    ///                           seen after sampling. In general, if the format of the backend
+    ///                           texture is SRGB, some linear `color_space` should be supplied
+    ///                           (e.g., [`ColorSpace::new_srgb_linear()`])). If the format of the
+    ///                           backend texture is linear, then the `color_space` should include
+    ///                           a description of the transfer function as
+    ///                           well (e.g., [`ColorSpace::MakeSRGB`]()).
+    /// * `texture_release_proc`  Function called when texture can be released
+    /// * `release_context`       State passed to `texture_release_proc`
+    /// Returns: Created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
     </span><span class="comment">// TODO: add variant with TextureReleaseProc
     </span><span class="kw">pub fn </span>from_texture(
@@ -2345,6 +2369,46 @@
         }
     }
 
+    <span class="doccomment">/// Encodes [`Image`] pixels, returning result as [`Data`].
+    ///
+    ///  Returns `None` if encoding fails, or if `encoded_image_format` is not supported.
+    ///
+    ///  [`Image`] encoding in a format requires both building with one or more of:
+    ///  SK_ENCODE_JPEG, SK_ENCODE_PNG, SK_ENCODE_WEBP; and platform support
+    ///  for the encoded format.
+    ///
+    ///  If SK_BUILD_FOR_MAC or SK_BUILD_FOR_IOS is defined, `encoded_image_format` can
+    ///  additionally be one of: [`EncodedImageFormat::ICO`], [`EncodedImageFormat::BMP`],
+    ///  [`EncodedImageFormat::GIF`].
+    ///
+    ///  quality is a platform and format specific metric trading off size and encoding
+    ///  error. When used, quality equaling 100 encodes with the least error. quality may
+    ///  be ignored by the encoder.
+    ///
+    ///  * `context` - the [`gpu::DirectContext`] in play, if it exists; can be `None`
+    ///  * `encoded_image_format` - one of: [`EncodedImageFormat::JPEG`], [`EncodedImageFormat::PNG`],
+    ///                             [`EncodedImageFormat::WEBP`]
+    ///  * `quality` - encoder specific metric with 100 equaling best
+    ///  Returns: encoded [`Image`], or `None`
+    ///
+    ///  example: &lt;https://fiddle.skia.org/c/@Image_encodeToData&gt;
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    </span><span class="kw">pub fn </span>encode_to_data_with_context&lt;<span class="lifetime">&#39;a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        context: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>gpu::DirectContext&gt;&gt;,
+        image_format: EncodedImageFormat,
+        quality: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;i32&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Data&gt; {
+        Data::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkImage_encodeToDataWithContext(
+                <span class="self">self</span>.native(),
+                context.into().native_ptr_or_null_mut(),
+                image_format,
+                quality.into().unwrap_or(<span class="number">100</span>),
+            )
+        })
+    }
+
     <span class="doccomment">/// See [`Self::encode_to_data_with_quality`]
     </span><span class="kw">pub fn </span>encode_to_data(<span class="kw-2">&amp;</span><span class="self">self</span>, image_format: EncodedImageFormat) -&gt; <span class="prelude-ty">Option</span>&lt;Data&gt; {
         <span class="self">self</span>.encode_to_data_with_quality(image_format, <span class="number">100</span>)
@@ -2380,9 +2444,7 @@
         Data::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkImage_encodeToData(<span class="self">self</span>.native(), image_format, quality) })
     }
 
-    <span class="comment">// TODO: encodeToData()
-
-    </span><span class="doccomment">/// Returns encoded [`Image`] pixels as [`Data`], if [`Image`] was created from supported
+    <span class="doccomment">/// Returns encoded [`Image`] pixels as [`Data`], if [`Image`] was created from supported
     /// encoded stream format. Platform support for formats vary and may require building
     /// with one or more of: SK_ENCODE_JPEG, SK_ENCODE_PNG, SK_ENCODE_WEBP.
     ///
@@ -2673,4 +2735,4 @@
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

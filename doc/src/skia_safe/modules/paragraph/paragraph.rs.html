@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/paragraph.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>paragraph.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/paragraph.rs`."><title>paragraph.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -218,8 +218,165 @@
 <a href="#218" id="218">218</a>
 <a href="#219" id="219">219</a>
 <a href="#220" id="220">220</a>
-</pre><pre class="rust"><code><span class="kw">use super</span>::{PositionWithAffinity, RectHeightStyle, RectWidthStyle, TextBox};
-<span class="kw">use crate</span>::{interop::VecSink, prelude::<span class="kw-2">*</span>, scalar, textlayout::LineMetrics, Canvas, Point};
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+</pre><pre class="rust"><code><span class="kw">use super</span>::{
+    LineMetrics, PositionWithAffinity, RectHeightStyle, RectWidthStyle, TextBox, TextDirection,
+    TextIndex, TextRange,
+};
+<span class="kw">use crate</span>::{
+    interop::{Sink, VecSink},
+    prelude::<span class="kw-2">*</span>,
+    scalar, Canvas, Font, Point, Rect,
+};
 <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 <span class="kw">use </span>std::{fmt, ops::Range};
 
@@ -290,7 +447,9 @@
         <span class="kw">unsafe </span>{ sb::C_Paragraph_paint(<span class="self">self</span>.native_mut_force(), canvas.native_mut(), p.x, p.y) }
     }
 
-    <span class="kw">pub fn </span>get_rects_for_range(
+    <span class="doccomment">/// Returns a vector of bounding boxes that enclose all text between
+    /// start and end glyph indexes, including start and excluding end
+    </span><span class="kw">pub fn </span>get_rects_for_range(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         range: Range&lt;usize&gt;,
         rect_height_style: RectHeightStyle,
@@ -307,8 +466,8 @@
                 <span class="self">self</span>.native_mut_force(),
                 range.start.try_into().unwrap(),
                 range.end.try_into().unwrap(),
-                rect_height_style,
-                rect_width_style,
+                rect_height_style.into_native(),
+                rect_width_style.into_native(),
                 VecSink::new(<span class="kw-2">&amp;mut </span>set_tb).native_mut(),
             );
         }
@@ -316,7 +475,7 @@
     }
 
     <span class="kw">pub fn </span>get_rects_for_placeholders(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;TextBox&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>result: Vec&lt;TextBox&gt; = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>result = Vec::new();
 
         <span class="kw">let </span><span class="kw-2">mut </span>set_tb = |tbs: <span class="kw-2">&amp;</span>[sb::skia_textlayout_TextBox]| {
             result = tbs.iter().map(TextBox::from_native_ref).cloned().collect();
@@ -331,7 +490,9 @@
         result
     }
 
-    <span class="kw">pub fn </span>get_glyph_position_at_coordinate(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; PositionWithAffinity {
+    <span class="doccomment">/// Returns the index of the glyph that corresponds to the provided coordinate,
+    /// with the top left corner as the origin, and +y direction as down
+    </span><span class="kw">pub fn </span>get_glyph_position_at_coordinate(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; PositionWithAffinity {
         <span class="kw">let </span>p = p.into();
         <span class="kw">let </span><span class="kw-2">mut </span>r = Default::default();
         <span class="kw">unsafe </span>{
@@ -340,7 +501,9 @@
         r
     }
 
-    <span class="kw">pub fn </span>get_word_boundary(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: u32) -&gt; Range&lt;usize&gt; {
+    <span class="doccomment">/// Finds the first and last glyphs that define a word containing
+    /// the glyph at index offset
+    </span><span class="kw">pub fn </span>get_word_boundary(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: u32) -&gt; Range&lt;usize&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>range: [usize; <span class="number">2</span>] = Default::default();
         <span class="kw">unsafe </span>{
             sb::C_Paragraph_getWordBoundary(<span class="self">self</span>.native_mut_force(), offset, range.as_mut_ptr())
@@ -372,23 +535,147 @@
         <span class="kw">unsafe </span>{ sb::C_Paragraph_markDirty(<span class="self">self</span>.native_mut()) }
     }
 
-    <span class="kw">pub fn </span>unresolved_glyphs(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
+    <span class="doccomment">/// This function will return the number of unresolved glyphs or
+    /// `None` if not applicable (has not been shaped yet - valid case)
+    </span><span class="kw">pub fn </span>unresolved_glyphs(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
         <span class="kw">unsafe </span>{ sb::C_Paragraph_unresolvedGlyphs(<span class="self">self</span>.native_mut()) }
             .try_into()
             .ok()
     }
 
     <span class="comment">// TODO: wrap visit()
-</span>}
 
-<span class="attr">#[deprecated(since = <span class="string">&quot;0.41.0&quot;</span>, note = <span class="string">&quot;Use Vec&lt;TextBox&gt;&quot;</span>)]
-</span><span class="kw">pub type </span>TextBoxes = Vec&lt;TextBox&gt;;
+    </span><span class="kw">pub fn </span>get_line_number_at(<span class="kw-2">&amp;</span><span class="self">self</span>, code_unit_index: TextIndex) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
+        <span class="comment">// Returns -1 if `code_unit_index` is out of range.
+        </span><span class="kw">unsafe </span>{ sb::C_Paragraph_getLineNumberAt(<span class="self">self</span>.native(), code_unit_index) }
+            .try_into()
+            .ok()
+    }
 
-<span class="attr">#[deprecated(since = <span class="string">&quot;0.41.0&quot;</span>, note = <span class="string">&quot;Use Vec&lt;LineMetrics&gt;&quot;</span>)]
-</span><span class="kw">pub type </span>LineMetricsVector&lt;<span class="lifetime">&#39;a</span>&gt; = Vec&lt;LineMetrics&lt;<span class="lifetime">&#39;a</span>&gt;&gt;;
+    <span class="kw">pub fn </span>get_line_metrics_at(<span class="kw-2">&amp;</span><span class="self">self</span>, line_number: usize) -&gt; <span class="prelude-ty">Option</span>&lt;LineMetrics&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>set_lm = |lm: <span class="kw-2">&amp;</span>sb::skia_textlayout_LineMetrics| {
+            r = <span class="prelude-val">Some</span>(LineMetrics::from_native_ref(lm));
+        };
+        <span class="kw">unsafe </span>{
+            sb::C_Paragraph_getLineMetricsAt(
+                <span class="self">self</span>.native(),
+                line_number,
+                Sink::new(<span class="kw-2">&amp;mut </span>set_lm).native_mut(),
+            )
+        }
+        r
+    }
+
+    <span class="kw">pub fn </span>get_actual_text_range(<span class="kw-2">&amp;</span><span class="self">self</span>, line_number: usize, include_spaces: bool) -&gt; TextRange {
+        <span class="kw">let </span><span class="kw-2">mut </span>range = [<span class="number">0usize</span>; <span class="number">2</span>];
+        <span class="kw">unsafe </span>{
+            sb::C_Paragraph_getActualTextRange(
+                <span class="self">self</span>.native(),
+                line_number,
+                include_spaces,
+                range.as_mut_ptr(),
+            )
+        }
+        TextRange {
+            start: range[<span class="number">0</span>],
+            end: range[<span class="number">1</span>],
+        }
+    }
+
+    <span class="kw">pub fn </span>get_glyph_cluster_at(<span class="kw-2">&amp;</span><span class="self">self</span>, code_unit_index: TextIndex) -&gt; <span class="prelude-ty">Option</span>&lt;GlyphClusterInfo&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>set_fn = |gci: <span class="kw-2">&amp;</span>sb::skia_textlayout_Paragraph_GlyphClusterInfo| {
+            r = <span class="prelude-val">Some</span>(GlyphClusterInfo::from_native_ref(gci))
+        };
+        <span class="kw">unsafe </span>{
+            sb::C_Paragraph_getGlyphClusterAt(
+                <span class="self">self</span>.native(),
+                code_unit_index,
+                Sink::new(<span class="kw-2">&amp;mut </span>set_fn).native_mut(),
+            )
+        }
+        r
+    }
+
+    <span class="kw">pub fn </span>get_closest_glyph_cluster_at(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Point&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;GlyphClusterInfo&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>set_fn = |gci: <span class="kw-2">&amp;</span>sb::skia_textlayout_Paragraph_GlyphClusterInfo| {
+            r = <span class="prelude-val">Some</span>(GlyphClusterInfo::from_native_ref(gci))
+        };
+        <span class="kw">let </span>d = d.into();
+        <span class="kw">unsafe </span>{
+            sb::C_Paragraph_getClosestGlyphClusterAt(
+                <span class="self">self</span>.native(),
+                d.x,
+                d.y,
+                Sink::new(<span class="kw-2">&amp;mut </span>set_fn).native_mut(),
+            )
+        }
+        r
+    }
+
+    <span class="kw">pub fn </span>get_font_at(<span class="kw-2">&amp;</span><span class="self">self</span>, code_unit_index: TextIndex) -&gt; Font {
+        Font::construct(|f| <span class="kw">unsafe </span>{ sb::C_Paragraph_getFontAt(<span class="self">self</span>.native(), code_unit_index, f) })
+    }
+
+    <span class="kw">pub fn </span>get_fonts(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;FontInfo&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>result = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>set_fn = |fis: <span class="kw-2">&amp;</span>[sb::skia_textlayout_Paragraph_FontInfo]| {
+            result = fis.iter().map(FontInfo::from_native_ref).collect();
+        };
+        <span class="kw">unsafe </span>{ sb::C_Paragraph_getFonts(<span class="self">self</span>.native(), VecSink::new(<span class="kw-2">&amp;mut </span>set_fn).native_mut()) }
+        result
+    }
+}
+
+<span class="attr">#[derive(Clone, PartialEq, Debug)]
+</span><span class="kw">pub struct </span>GlyphClusterInfo {
+    <span class="kw">pub </span>bounds: Rect,
+    <span class="kw">pub </span>text_range: TextRange,
+    <span class="kw">pub </span>position: TextDirection,
+}
+
+<span class="kw">impl </span>GlyphClusterInfo {
+    <span class="kw">fn </span>from_native_ref(native: <span class="kw-2">&amp;</span>sb::skia_textlayout_Paragraph_GlyphClusterInfo) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="self">Self </span>{
+                bounds: <span class="kw-2">*</span>Rect::from_native_ptr(<span class="kw-2">&amp;</span>native.fBounds),
+                text_range: TextRange {
+                    start: native.fClusterTextRange.start,
+                    end: native.fClusterTextRange.end,
+                },
+                position: native.fGlyphClusterPosition,
+            }
+        }
+    }
+}
+
+<span class="attr">#[derive(Clone, PartialEq, Debug)]
+</span><span class="kw">pub struct </span>FontInfo {
+    <span class="kw">pub </span>font: Font,
+    <span class="kw">pub </span>text_range: TextRange,
+}
+
+<span class="kw">impl </span>FontInfo {
+    <span class="kw">pub fn </span>new(font: Font, text_range: TextRange) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ font, text_range }
+    }
+
+    <span class="kw">fn </span>from_native_ref(native: <span class="kw-2">&amp;</span>sb::skia_textlayout_Paragraph_FontInfo) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            font: Font::from_native_ref(<span class="kw-2">&amp;</span>native.fFont).clone(),
+            text_range: TextRange {
+                start: native.fTextRange.start,
+                end: native.fTextRange.end,
+            },
+        }
+    }
+}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">super</span>::Paragraph;
     <span class="kw">use crate</span>::{
         icu,
         textlayout::{FontCollection, ParagraphBuilder, ParagraphStyle, TextStyle},
@@ -398,24 +685,11 @@
     <span class="attr">#[test]
     #[serial_test::serial]
     </span><span class="kw">fn </span>test_line_metrics() {
-        icu::init();
-
-        <span class="kw">let </span><span class="kw-2">mut </span>font_collection = FontCollection::new();
-        font_collection.set_default_font_manager(FontMgr::new(), <span class="prelude-val">None</span>);
-        <span class="kw">let </span>paragraph_style = ParagraphStyle::new();
-        <span class="kw">let </span><span class="kw-2">mut </span>paragraph_builder = ParagraphBuilder::new(<span class="kw-2">&amp;</span>paragraph_style, font_collection);
-        <span class="kw">let </span>ts = TextStyle::new();
-        paragraph_builder.push_style(<span class="kw-2">&amp;</span>ts);
-        paragraph_builder.add_text(LOREM_IPSUM);
-        <span class="kw">let </span><span class="kw-2">mut </span>paragraph = paragraph_builder.build();
-        paragraph.layout(<span class="number">256.0</span>);
-
+        <span class="kw">let </span>paragraph = mk_lorem_ipsum_paragraph();
         <span class="kw">let </span>line_metrics = paragraph.get_line_metrics();
         <span class="kw">for </span>(line, lm) <span class="kw">in </span>line_metrics.iter().enumerate() {
             <span class="macro">println!</span>(<span class="string">&quot;line {}: width: {}&quot;</span>, line + <span class="number">1</span>, lm.width)
         }
-
-        <span class="kw">static </span>LOREM_IPSUM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at leo at nulla tincidunt placerat. Proin eget purus augue. Quisque et est ullamcorper, pellentesque felis nec, pulvinar massa. Aliquam imperdiet, nulla ut dictum euismod, purus dui pulvinar risus, eu suscipit elit neque ac est. Nullam eleifend justo quis placerat ultricies. Vestibulum ut elementum velit. Praesent et dolor sit amet purus bibendum mattis. Aliquam erat volutpat.&quot;</span>;
     }
 
     <span class="doccomment">/// Regression test for &lt;https://github.com/rust-skia/rust-skia/issues/585&gt;
@@ -437,6 +711,32 @@
         <span class="kw">let </span>line_metrics = <span class="kw-2">&amp;</span>paragraph.get_line_metrics()[<span class="number">0</span>];
         line_metrics.get_style_metrics(line_metrics.start_index..line_metrics.end_index);
     }
+
+    <span class="attr">#[test]
+    #[serial_test::serial]
+    </span><span class="kw">fn </span>test_font_infos() {
+        <span class="kw">let </span>paragraph = mk_lorem_ipsum_paragraph();
+        <span class="kw">let </span>infos = paragraph.get_fonts();
+        <span class="macro">assert!</span>(!infos.is_empty())
+    }
+
+    <span class="kw">fn </span>mk_lorem_ipsum_paragraph() -&gt; Paragraph {
+        icu::init();
+
+        <span class="kw">let </span><span class="kw-2">mut </span>font_collection = FontCollection::new();
+        font_collection.set_default_font_manager(FontMgr::new(), <span class="prelude-val">None</span>);
+        <span class="kw">let </span>paragraph_style = ParagraphStyle::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>paragraph_builder = ParagraphBuilder::new(<span class="kw-2">&amp;</span>paragraph_style, font_collection);
+        <span class="kw">let </span>ts = TextStyle::new();
+        paragraph_builder.push_style(<span class="kw-2">&amp;</span>ts);
+        paragraph_builder.add_text(LOREM_IPSUM);
+        <span class="kw">let </span><span class="kw-2">mut </span>paragraph = paragraph_builder.build();
+        paragraph.layout(<span class="number">256.0</span>);
+
+        <span class="kw">return </span>paragraph;
+
+        <span class="kw">static </span>LOREM_IPSUM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at leo at nulla tincidunt placerat. Proin eget purus augue. Quisque et est ullamcorper, pellentesque felis nec, pulvinar massa. Aliquam imperdiet, nulla ut dictum euismod, purus dui pulvinar risus, eu suscipit elit neque ac est. Nullam eleifend justo quis placerat ultricies. Vestibulum ut elementum velit. Praesent et dolor sit amet purus bibendum mattis. Aliquam erat volutpat.&quot;</span>;
+    }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

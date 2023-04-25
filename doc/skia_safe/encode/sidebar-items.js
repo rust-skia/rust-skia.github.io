@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["bitmap",""],["pixmap",""]]};
+window.SIDEBAR_ITEMS = {"fn":["bitmap","pixmap"]};

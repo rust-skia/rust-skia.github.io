@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["fractal_noise",""],["turbulence",""]]};
+window.SIDEBAR_ITEMS = {"fn":["fractal_noise","turbulence"]};

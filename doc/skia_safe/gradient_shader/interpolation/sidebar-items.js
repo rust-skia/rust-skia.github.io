@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"type":[["ColorSpace",""],["HueMethod",""],["InPremul",""]]};
+window.SIDEBAR_ITEMS = {"type":["ColorSpace","HueMethod","InPremul"]};

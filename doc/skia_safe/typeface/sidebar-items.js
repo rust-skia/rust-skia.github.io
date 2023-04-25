@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["SerializeBehavior",""]],"struct":[["LocalizedString",""]],"type":[["FontId",""],["FontTableTag",""],["LocalizedStringsIter",""],["Typeface",""],["TypefaceId",""]]};
+window.SIDEBAR_ITEMS = {"enum":["SerializeBehavior"],"struct":["LocalizedString"],"type":["FactoryId","FontId","FontTableTag","LocalizedStringsIter","Typeface","TypefaceId"]};

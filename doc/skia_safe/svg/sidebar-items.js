@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["canvas",""]]};
+window.SIDEBAR_ITEMS = {"mod":["canvas"]};

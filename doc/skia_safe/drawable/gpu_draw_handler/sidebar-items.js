@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"type":[["GPUDrawHandler",""]]};
+window.SIDEBAR_ITEMS = {"type":["GPUDrawHandler"]};

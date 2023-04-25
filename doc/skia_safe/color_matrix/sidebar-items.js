@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"type":[["ColorMatrix",""]]};
+window.SIDEBAR_ITEMS = {"type":["ColorMatrix"]};

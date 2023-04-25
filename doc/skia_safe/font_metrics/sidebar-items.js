@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Flags",""],["FontMetrics",""]]};
+window.SIDEBAR_ITEMS = {"struct":["Flags","FontMetrics"]};

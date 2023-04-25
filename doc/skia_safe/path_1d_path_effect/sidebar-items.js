@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Style",""]],"fn":[["new",""]]};
+window.SIDEBAR_ITEMS = {"enum":["Style"],"fn":["new"]};

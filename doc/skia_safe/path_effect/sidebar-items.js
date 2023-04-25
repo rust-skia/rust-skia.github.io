@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["DashInfo",""]],"type":[["PathEffect",""]]};
+window.SIDEBAR_ITEMS = {"struct":["DashInfo"],"type":["PathEffect"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"type":[["PictureRecorder",""]]};
+window.SIDEBAR_ITEMS = {"type":["PictureRecorder"]};

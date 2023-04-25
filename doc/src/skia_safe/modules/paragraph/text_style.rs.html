@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/text_style.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>text_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/text_style.rs`."><title>text_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -561,6 +561,62 @@
 <a href="#561" id="561">561</a>
 <a href="#562" id="562">562</a>
 <a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
 </pre><pre class="rust"><code><span class="kw">use super</span>::{FontArguments, FontFamilies, TextBaseline, TextShadow};
 <span class="kw">use crate</span>::{
     interop::{<span class="self">self</span>, AsStr, FromStrs, SetStr},
@@ -573,7 +629,10 @@
 <span class="kw">use </span>std::{fmt, ops::Range};
 
 <span class="macro">bitflags! </span>{
-    <span class="kw">pub struct </span>TextDecoration: u32 {
+    <span class="doccomment">/// Multiple decorations can be applied at once. Ex: Underline and overline is
+    /// (0x1 | 0x2)
+    </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    </span><span class="kw">pub struct </span>TextDecoration: u32 {
         <span class="kw">const </span>NO_DECORATION = sb::skia_textlayout_TextDecoration::kNoDecoration <span class="kw">as _</span>;
         <span class="kw">const </span>UNDERLINE = sb::skia_textlayout_TextDecoration::kUnderline <span class="kw">as _</span>;
         <span class="kw">const </span>OVERLINE = sb::skia_textlayout_TextDecoration::kOverline <span class="kw">as _</span>;
@@ -628,8 +687,42 @@
     decoration_layout
 );
 
-<span class="kw">pub use </span>sb::skia_textlayout_PlaceholderAlignment <span class="kw">as </span>PlaceholderAlignment;
-<span class="macro">variant_name!</span>(PlaceholderAlignment::Baseline);
+<span class="doccomment">/// Where to vertically align the placeholder relative to the surrounding text.
+</span><span class="attr">#[repr(i32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq, Default)]
+</span><span class="kw">pub enum </span>PlaceholderAlignment {
+    <span class="doccomment">/// Match the baseline of the placeholder with the baseline.
+    </span><span class="attr">#[default]
+    </span>Baseline,
+
+    <span class="doccomment">/// Align the bottom edge of the placeholder with the baseline such that the
+    /// placeholder sits on top of the baseline.
+    </span>AboveBaseline,
+
+    <span class="doccomment">/// Align the top edge of the placeholder with the baseline specified in
+    /// such that the placeholder hangs below the baseline.
+    </span>BelowBaseline,
+
+    <span class="doccomment">/// Align the top edge of the placeholder with the top edge of the font.
+    /// When the placeholder is very tall, the extra space will hang from
+    /// the top and extend through the bottom of the line.
+    </span>Top,
+
+    <span class="doccomment">/// Align the bottom edge of the placeholder with the top edge of the font.
+    /// When the placeholder is very tall, the extra space will rise from
+    /// the bottom and extend through the top of the line.
+    </span>Bottom,
+
+    <span class="doccomment">/// Align the middle of the placeholder with the middle of the text. When the
+    /// placeholder is very tall, the extra space will grow equally from
+    /// the top and bottom of the line.
+    </span>Middle,
+}
+<span class="macro">native_transmutable!</span>(
+    sb::skia_textlayout_PlaceholderAlignment,
+    PlaceholderAlignment,
+    placeholder_alignment_layout
+);
 
 <span class="kw">pub type </span>FontFeature = Handle&lt;sb::skia_textlayout_FontFeature&gt;;
 <span class="macro">unsafe_send_sync!</span>(FontFeature);
@@ -678,7 +771,15 @@
     <span class="kw">pub </span>height: scalar,
     <span class="kw">pub </span>alignment: PlaceholderAlignment,
     <span class="kw">pub </span>baseline: TextBaseline,
-    <span class="kw">pub </span>baseline_offset: scalar,
+    <span class="doccomment">/// Distance from the top edge of the rect to the baseline position. This
+    /// baseline will be aligned against the alphabetic baseline of the surrounding
+    /// text.
+    ///
+    /// Positive values drop the baseline lower (positions the rect higher) and
+    /// small or negative values will cause the rect to be positioned underneath
+    /// the line. When baseline == height, the bottom edge of the rect will rest on
+    /// the alphabetic baseline.
+    </span><span class="kw">pub </span>baseline_offset: scalar,
 }
 
 <span class="macro">native_transmutable!</span>(
@@ -810,12 +911,22 @@
         <span class="self">self
     </span>}
 
+    <span class="kw">pub fn </span>clear_foreground_color(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.native_mut().fHasForeground = <span class="bool-val">false</span>;
+        <span class="self">self
+    </span>}
+
     <span class="kw">pub fn </span>background(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Paint {
         Paint::construct(|p| <span class="kw">unsafe </span>{ sb::C_TextStyle_getBackground(<span class="self">self</span>.native(), p) })
     }
 
     <span class="kw">pub fn </span>set_background_color(<span class="kw-2">&amp;mut </span><span class="self">self</span>, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ sb::C_TextStyle_setBackgroundColor(<span class="self">self</span>.native_mut(), paint.native()) };
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>clear_background_color(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.native_mut().fHasBackground = <span class="bool-val">false</span>;
         <span class="self">self
     </span>}
 
@@ -877,7 +988,8 @@
             .map(|ptr| FontArguments::from_native_ref(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>ptr }))
     }
 
-    <span class="kw">pub fn </span>set_font_arguments&lt;<span class="lifetime">&#39;fa</span>&gt;(
+    <span class="doccomment">/// The contents of the [`crate::FontArguments`] will be copied into the [`TextStyle`].
+    </span><span class="kw">pub fn </span>set_font_arguments&lt;<span class="lifetime">&#39;fa</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         arguments: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;fa </span><span class="kw">crate</span>::FontArguments&lt;<span class="lifetime">&#39;fa</span>, <span class="lifetime">&#39;fa</span>&gt;&gt;&gt;,
     ) {
@@ -1125,4 +1237,4 @@
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

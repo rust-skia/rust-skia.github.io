@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["palette",""],["variation_position",""]],"struct":[["FontArguments",""],["Palette",""],["VariationPosition",""]]};
+window.SIDEBAR_ITEMS = {"mod":["palette","variation_position"],"struct":["FontArguments","Palette","VariationPosition"]};
