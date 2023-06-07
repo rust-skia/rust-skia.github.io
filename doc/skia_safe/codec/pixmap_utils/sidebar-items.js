@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["orient","swap_width_height"]};

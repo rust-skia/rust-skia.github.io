@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/pixmap.rs`."><title>pixmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/pixmap.rs`."><title>pixmap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -366,15 +366,58 @@
 <a href="#366" id="366">366</a>
 <a href="#367" id="367">367</a>
 <a href="#368" id="368">368</a>
-</pre><pre class="rust"><code><span class="kw">use crate</span>::{
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     prelude::<span class="kw-2">*</span>, AlphaType, Color, Color4f, ColorSpace, ColorType, IPoint, IRect, ISize, ImageInfo,
     SamplingOptions,
 };
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkPixmap};
-<span class="kw">use </span>std::{convert::TryInto, ffi::c_void, fmt, mem, os::raw, ptr, slice};
+<span class="kw">use </span>std::{ffi::c_void, fmt, marker::PhantomData, mem, os::raw, ptr, slice};
 
-<span class="kw">pub type </span>Pixmap = Handle&lt;SkPixmap&gt;;
-<span class="macro">unsafe_send_sync!</span>(Pixmap);
+<span class="attr">#[repr(transparent)]
+</span><span class="kw">pub struct </span>Pixmap&lt;<span class="lifetime">&#39;a</span>&gt; {
+    inner: Handle&lt;SkPixmap&gt;,
+    pd: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[u8]&gt;,
+}
 
 <span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkPixmap {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
@@ -382,7 +425,7 @@
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>Pixmap {
+<span class="kw">impl </span>Default <span class="kw">for </span>Pixmap&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_native_c(SkPixmap {
             fPixels: ptr::null(),
@@ -392,7 +435,7 @@
     }
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Pixmap {
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Pixmap&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
         f.debug_struct(<span class="string">&quot;Pixmap&quot;</span>)
             .field(<span class="string">&quot;row_bytes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.row_bytes())
@@ -401,24 +444,20 @@
     }
 }
 
-<span class="kw">impl </span>Pixmap {
-    <span class="kw">pub fn </span>new&lt;<span class="lifetime">&#39;pixels</span>&gt;(
-        info: <span class="kw-2">&amp;</span>ImageInfo,
-        pixels: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span>[u8],
-        row_bytes: usize,
-    ) -&gt; Borrows&lt;<span class="lifetime">&#39;pixels</span>, <span class="self">Self</span>&gt; {
-        <span class="kw">let </span>width: usize = info.width().try_into().unwrap();
-        <span class="kw">let </span>height: usize = info.height().try_into().unwrap();
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;pixels</span>&gt; Pixmap&lt;<span class="lifetime">&#39;pixels</span>&gt; {
+    <span class="kw">pub fn </span>new(info: <span class="kw-2">&amp;</span>ImageInfo, pixels: <span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span><span class="kw-2">mut </span>[u8], row_bytes: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if </span>row_bytes &lt; info.min_row_bytes() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
+        <span class="kw">if </span>pixels.len() &lt; info.compute_byte_size(row_bytes) {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
 
-        <span class="macro">assert!</span>(row_bytes &gt;= width * info.bytes_per_pixel());
-        <span class="macro">assert!</span>(pixels.len() &gt;= height * row_bytes);
-
-        <span class="kw">let </span>pm = Pixmap::from_native_c(SkPixmap {
+        <span class="prelude-val">Some</span>(Pixmap::from_native_c(SkPixmap {
             fPixels: pixels.as_ptr() <span class="kw">as _</span>,
             fRowBytes: row_bytes,
             fInfo: info.native().clone(),
-        });
-        pm.borrows(pixels)
+        }))
     }
 
     <span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
@@ -426,7 +465,7 @@
         <span class="self">self
     </span>}
 
-    <span class="comment">// TODO: Add reset function that borrows pixels?
+    <span class="comment">// TODO: reset() function that re-borrows pixels?
 
     </span><span class="kw">pub fn </span>set_color_space(<span class="kw-2">&amp;mut </span><span class="self">self</span>, color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
@@ -435,7 +474,7 @@
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>extract_subset(<span class="kw-2">&amp;</span><span class="self">self</span>, area: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Pixmap&gt; {
+    <span class="kw">pub fn </span>extract_subset(<span class="kw-2">&amp;</span><span class="self">self</span>, area: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::default();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native()
@@ -452,8 +491,7 @@
         <span class="self">self</span>.native().fRowBytes
     }
 
-    <span class="attr">#[allow(clippy::missing_safety_doc)]
-    </span><span class="kw">pub unsafe fn </span>addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_void {
+    <span class="kw">pub fn </span>addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_void {
         <span class="self">self</span>.native().fPixels
     }
 
@@ -526,28 +564,27 @@
     <span class="comment">// Helper to test if the pixel does exist physically in memory.
     </span><span class="kw">fn </span>assert_pixel_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) {
         <span class="kw">let </span>p = p.into();
-        <span class="macro">assert!</span>(!<span class="kw">unsafe </span>{ <span class="self">self</span>.addr() }.is_null());
+        <span class="macro">assert!</span>(!<span class="self">self</span>.addr().is_null());
         <span class="macro">assert!</span>(p.x &gt;= <span class="number">0 </span>&amp;&amp; p.x &lt; <span class="self">self</span>.width());
         <span class="macro">assert!</span>(p.y &gt;= <span class="number">0 </span>&amp;&amp; p.y &lt; <span class="self">self</span>.height());
     }
 
-    <span class="attr">#[allow(clippy::missing_safety_doc)]
-    </span><span class="kw">pub unsafe fn </span>addr_at(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*const </span>c_void {
+    <span class="kw">pub fn </span>addr_at(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*const </span>c_void {
         <span class="kw">let </span>p = p.into();
-        (<span class="self">self</span>.addr() <span class="kw">as </span><span class="kw-2">*const </span>raw::c_char).add(<span class="self">self</span>.info().compute_offset(p, <span class="self">self</span>.row_bytes()))
-            <span class="kw">as _
-    </span>}
+        <span class="kw">unsafe </span>{
+            (<span class="self">self</span>.addr() <span class="kw">as </span><span class="kw-2">*const </span>raw::c_char).add(<span class="self">self</span>.info().compute_offset(p, <span class="self">self</span>.row_bytes()))
+                <span class="kw">as _
+        </span>}
+    }
 
     <span class="comment">// TODO: addr8(), addr16(), addr32(), addr64(), addrF16(),
     //       addr8_at(), addr16_at(), addr32_at(), addr64_at(), addrF16_at()
 
-    </span><span class="attr">#[allow(clippy::missing_safety_doc)]
-    </span><span class="kw">pub unsafe fn </span>writable_addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_void {
+    </span><span class="kw">pub fn </span>writable_addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_void {
         <span class="self">self</span>.addr() <span class="kw">as _
     </span>}
 
-    <span class="attr">#[allow(clippy::missing_safety_doc)]
-    </span><span class="kw">pub unsafe fn </span>writable_addr_at(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*mut </span>c_void {
+    <span class="kw">pub fn </span>writable_addr_at(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; <span class="kw-2">*mut </span>c_void {
         <span class="self">self</span>.addr_at(p) <span class="kw">as _
     </span>}
 
@@ -582,10 +619,16 @@
     }
 
     <span class="doccomment">/// Access the underlying pixels as a byte array. This is a rust-skia specific function.
-    </span><span class="kw">pub fn </span>bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
-        <span class="kw">let </span>addr = <span class="kw">unsafe </span>{ <span class="self">self</span>.addr() }.into_option()<span class="question-mark">?</span>;
+    </span><span class="kw">pub fn </span>bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span>[u8]&gt; {
+        <span class="kw">let </span>addr = <span class="self">self</span>.addr().into_option()<span class="question-mark">?</span>;
         <span class="kw">let </span>len = <span class="self">self</span>.compute_byte_size();
         <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ slice::from_raw_parts(addr <span class="kw">as </span><span class="kw-2">*const </span>u8, len) });
+    }
+
+    <span class="kw">pub fn </span>bytes_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span><span class="kw-2">mut </span>[u8]&gt; {
+        <span class="kw">let </span>addr = <span class="self">self</span>.writable_addr().into_option()<span class="question-mark">?</span>;
+        <span class="kw">let </span>len = <span class="self">self</span>.compute_byte_size();
+        <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ slice::from_raw_parts_mut(addr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>u8, len) });
     }
 
     <span class="doccomment">/// Access the underlying pixels. This is a rust-skia specific function.
@@ -593,8 +636,8 @@
     /// The `Pixel` type must implement the _unsafe_ trait [`Pixel`] and must return `true` in
     /// [`Pixel::matches_color_type()`] when matched against the [`ColorType`] of this Pixmap&#39;s
     /// pixels.
-    </span><span class="kw">pub fn </span>pixels&lt;P: Pixel&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[P]&gt; {
-        <span class="kw">let </span>addr = <span class="kw">unsafe </span>{ <span class="self">self</span>.addr() }.into_option()<span class="question-mark">?</span>;
+    </span><span class="kw">pub fn </span>pixels&lt;P: Pixel&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;pixels </span>[P]&gt; {
+        <span class="kw">let </span>addr = <span class="self">self</span>.addr().into_option()<span class="question-mark">?</span>;
 
         <span class="kw">let </span>info = <span class="self">self</span>.info();
         <span class="kw">let </span>ct = info.color_type();
@@ -608,26 +651,19 @@
         <span class="prelude-val">None
     </span>}
 
-    <span class="kw">pub fn </span>read_pixels_to_pixmap(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;</span>Pixmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
-        <span class="kw">let </span>row_bytes = dst.row_bytes();
-        <span class="kw">let </span>len = usize::try_from(dst.height()).unwrap() * row_bytes;
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>addr = dst.writable_addr() <span class="kw">as </span><span class="kw-2">*mut </span>raw::c_char;
-            <span class="self">self</span>.read_pixels(
-                dst.info(),
-                safer::from_raw_parts_mut(addr, len),
-                row_bytes,
-                src,
-            )
-        }
+    <span class="kw">pub fn </span>read_pixels_to_pixmap(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>Pixmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+        <span class="kw">let </span><span class="prelude-val">Some</span>(dst_bytes) = dst.bytes_mut() <span class="kw">else </span>{
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        };
+        <span class="self">self</span>.read_pixels(dst.info(), dst_bytes, dst.row_bytes(), src)
     }
 
-    <span class="kw">pub fn </span>scale_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;</span>Pixmap, sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;) -&gt; bool {
+    <span class="kw">pub fn </span>scale_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span>Pixmap, sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;) -&gt; bool {
         <span class="kw">let </span>sampling = sampling.into();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native().scalePixels(dst.native(), sampling.native()) }
     }
 
-    <span class="kw">pub fn </span>erase(<span class="kw-2">&amp;</span><span class="self">self</span>, color: <span class="kw">impl </span>Into&lt;Color&gt;, subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;) -&gt; bool {
+    <span class="kw">pub fn </span>erase(<span class="kw-2">&amp;mut </span><span class="self">self</span>, color: <span class="kw">impl </span>Into&lt;Color&gt;, subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;) -&gt; bool {
         <span class="kw">let </span>color = color.into().into_native();
         <span class="kw">unsafe </span>{
             <span class="kw">match </span>subset {
@@ -637,24 +673,38 @@
         }
     }
 
-    <span class="kw">pub fn </span>erase_4f(<span class="kw-2">&amp;</span><span class="self">self</span>, color: <span class="kw">impl </span>AsRef&lt;Color4f&gt;, subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;) -&gt; bool {
-        <span class="self">self</span>.erase_with_colorspace(color, <span class="prelude-val">None</span>, subset)
-    }
-
-    <span class="kw">pub fn </span>erase_with_colorspace(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        color: <span class="kw">impl </span>AsRef&lt;Color4f&gt;,
-        cs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ColorSpace&gt;,
-        subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;,
-    ) -&gt; bool {
+    <span class="kw">pub fn </span>erase_4f(<span class="kw-2">&amp;mut </span><span class="self">self</span>, color: <span class="kw">impl </span>AsRef&lt;Color4f&gt;, subset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>IRect&gt;) -&gt; bool {
         <span class="kw">let </span>color = color.as_ref();
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.native().erase1(
-                color.native(),
-                cs.native_ptr_or_null_mut_force(),
-                subset.native_ptr_or_null(),
-            )
+            <span class="self">self</span>.native()
+                .erase1(color.native(), subset.native_ptr_or_null())
         }
+    }
+
+    <span class="kw">fn </span>from_native_c(pixmap: SkPixmap) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            inner: Handle::from_native_c(pixmap),
+            pd: PhantomData,
+        }
+    }
+
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_native_ref(n: <span class="kw-2">&amp;</span>SkPixmap) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ transmute_ref(n) }
+    }
+
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_native_ptr(np: <span class="kw-2">*const </span>SkPixmap) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
+        <span class="comment">// Should be safe as long `Pixmap` is represented with repr(Transparent).
+        </span>np <span class="kw">as _
+    </span>}
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkPixmap {
+        <span class="self">self</span>.inner.native_mut()
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkPixmap {
+        <span class="self">self</span>.inner.native()
     }
 }
 
@@ -734,5 +784,34 @@
         ct == ColorType::RGBAF32
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>pixmap_mutably_borrows_pixels() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pixels = [<span class="number">0u8</span>; <span class="number">2 </span>* <span class="number">2 </span>* <span class="number">4</span>];
+        <span class="kw">let </span>info = ImageInfo::new(
+            (<span class="number">2</span>, <span class="number">2</span>),
+            ColorType::RGBA8888,
+            AlphaType::Premul,
+            ColorSpace::new_srgb(),
+        );
+        <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::new(<span class="kw-2">&amp;</span>info, <span class="kw-2">&amp;mut </span>pixels, info.min_row_bytes()).unwrap();
+        <span class="comment">// this must fail to compile:
+        // let _pixel = pixels[0];
+        // use `.bytes()`, or `bytes_mut()` instead.
+        </span>pixmap.reset();
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>addr_may_return_null_from_a_default_pixmap() {
+        <span class="kw">let </span>pixmap = Pixmap::default();
+        <span class="macro">assert!</span>(pixmap.addr().is_null());
+        <span class="macro">assert!</span>(pixmap.writable_addr().is_null());
+        <span class="macro">assert!</span>(pixmap.addr_at((<span class="number">10</span>, <span class="number">10</span>)).is_null());
+        <span class="macro">assert!</span>(pixmap.writable_addr_at((<span class="number">10</span>, <span class="number">10</span>)).is_null());
+    }
+}
+</code></pre></div></section></main></body></html>

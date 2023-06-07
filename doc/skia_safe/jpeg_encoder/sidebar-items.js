@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Downsample"],"fn":["encode","encode_image"],"struct":["Options"],"type":["AlphaOption"]};

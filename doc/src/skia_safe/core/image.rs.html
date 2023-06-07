@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1366,7 +1366,138 @@
 <a href="#1366" id="1366">1366</a>
 <a href="#1367" id="1367">1367</a>
 <a href="#1368" id="1368">1368</a>
-</pre><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+<a href="#1369" id="1369">1369</a>
+<a href="#1370" id="1370">1370</a>
+<a href="#1371" id="1371">1371</a>
+<a href="#1372" id="1372">1372</a>
+<a href="#1373" id="1373">1373</a>
+<a href="#1374" id="1374">1374</a>
+<a href="#1375" id="1375">1375</a>
+<a href="#1376" id="1376">1376</a>
+<a href="#1377" id="1377">1377</a>
+<a href="#1378" id="1378">1378</a>
+<a href="#1379" id="1379">1379</a>
+<a href="#1380" id="1380">1380</a>
+<a href="#1381" id="1381">1381</a>
+<a href="#1382" id="1382">1382</a>
+<a href="#1383" id="1383">1383</a>
+<a href="#1384" id="1384">1384</a>
+<a href="#1385" id="1385">1385</a>
+<a href="#1386" id="1386">1386</a>
+<a href="#1387" id="1387">1387</a>
+<a href="#1388" id="1388">1388</a>
+<a href="#1389" id="1389">1389</a>
+<a href="#1390" id="1390">1390</a>
+<a href="#1391" id="1391">1391</a>
+<a href="#1392" id="1392">1392</a>
+<a href="#1393" id="1393">1393</a>
+<a href="#1394" id="1394">1394</a>
+<a href="#1395" id="1395">1395</a>
+<a href="#1396" id="1396">1396</a>
+<a href="#1397" id="1397">1397</a>
+<a href="#1398" id="1398">1398</a>
+<a href="#1399" id="1399">1399</a>
+<a href="#1400" id="1400">1400</a>
+<a href="#1401" id="1401">1401</a>
+<a href="#1402" id="1402">1402</a>
+<a href="#1403" id="1403">1403</a>
+<a href="#1404" id="1404">1404</a>
+<a href="#1405" id="1405">1405</a>
+<a href="#1406" id="1406">1406</a>
+<a href="#1407" id="1407">1407</a>
+<a href="#1408" id="1408">1408</a>
+<a href="#1409" id="1409">1409</a>
+<a href="#1410" id="1410">1410</a>
+<a href="#1411" id="1411">1411</a>
+<a href="#1412" id="1412">1412</a>
+<a href="#1413" id="1413">1413</a>
+<a href="#1414" id="1414">1414</a>
+<a href="#1415" id="1415">1415</a>
+<a href="#1416" id="1416">1416</a>
+<a href="#1417" id="1417">1417</a>
+<a href="#1418" id="1418">1418</a>
+<a href="#1419" id="1419">1419</a>
+<a href="#1420" id="1420">1420</a>
+<a href="#1421" id="1421">1421</a>
+<a href="#1422" id="1422">1422</a>
+<a href="#1423" id="1423">1423</a>
+<a href="#1424" id="1424">1424</a>
+<a href="#1425" id="1425">1425</a>
+<a href="#1426" id="1426">1426</a>
+<a href="#1427" id="1427">1427</a>
+<a href="#1428" id="1428">1428</a>
+<a href="#1429" id="1429">1429</a>
+<a href="#1430" id="1430">1430</a>
+<a href="#1431" id="1431">1431</a>
+<a href="#1432" id="1432">1432</a>
+<a href="#1433" id="1433">1433</a>
+<a href="#1434" id="1434">1434</a>
+<a href="#1435" id="1435">1435</a>
+<a href="#1436" id="1436">1436</a>
+<a href="#1437" id="1437">1437</a>
+<a href="#1438" id="1438">1438</a>
+<a href="#1439" id="1439">1439</a>
+<a href="#1440" id="1440">1440</a>
+<a href="#1441" id="1441">1441</a>
+<a href="#1442" id="1442">1442</a>
+<a href="#1443" id="1443">1443</a>
+<a href="#1444" id="1444">1444</a>
+<a href="#1445" id="1445">1445</a>
+<a href="#1446" id="1446">1446</a>
+<a href="#1447" id="1447">1447</a>
+<a href="#1448" id="1448">1448</a>
+<a href="#1449" id="1449">1449</a>
+<a href="#1450" id="1450">1450</a>
+<a href="#1451" id="1451">1451</a>
+<a href="#1452" id="1452">1452</a>
+<a href="#1453" id="1453">1453</a>
+<a href="#1454" id="1454">1454</a>
+<a href="#1455" id="1455">1455</a>
+<a href="#1456" id="1456">1456</a>
+<a href="#1457" id="1457">1457</a>
+<a href="#1458" id="1458">1458</a>
+<a href="#1459" id="1459">1459</a>
+<a href="#1460" id="1460">1460</a>
+<a href="#1461" id="1461">1461</a>
+<a href="#1462" id="1462">1462</a>
+<a href="#1463" id="1463">1463</a>
+<a href="#1464" id="1464">1464</a>
+<a href="#1465" id="1465">1465</a>
+<a href="#1466" id="1466">1466</a>
+<a href="#1467" id="1467">1467</a>
+<a href="#1468" id="1468">1468</a>
+<a href="#1469" id="1469">1469</a>
+<a href="#1470" id="1470">1470</a>
+<a href="#1471" id="1471">1471</a>
+<a href="#1472" id="1472">1472</a>
+<a href="#1473" id="1473">1473</a>
+<a href="#1474" id="1474">1474</a>
+<a href="#1475" id="1475">1475</a>
+<a href="#1476" id="1476">1476</a>
+<a href="#1477" id="1477">1477</a>
+<a href="#1478" id="1478">1478</a>
+<a href="#1479" id="1479">1479</a>
+<a href="#1480" id="1480">1480</a>
+<a href="#1481" id="1481">1481</a>
+<a href="#1482" id="1482">1482</a>
+<a href="#1483" id="1483">1483</a>
+<a href="#1484" id="1484">1484</a>
+<a href="#1485" id="1485">1485</a>
+<a href="#1486" id="1486">1486</a>
+<a href="#1487" id="1487">1487</a>
+<a href="#1488" id="1488">1488</a>
+<a href="#1489" id="1489">1489</a>
+<a href="#1490" id="1490">1490</a>
+<a href="#1491" id="1491">1491</a>
+<a href="#1492" id="1492">1492</a>
+<a href="#1493" id="1493">1493</a>
+<a href="#1494" id="1494">1494</a>
+<a href="#1495" id="1495">1495</a>
+<a href="#1496" id="1496">1496</a>
+<a href="#1497" id="1497">1497</a>
+<a href="#1498" id="1498">1498</a>
+<a href="#1499" id="1499">1499</a>
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::gpu;
 <span class="kw">use crate</span>::{
     prelude::<span class="kw-2">*</span>, AlphaType, Bitmap, ColorSpace, ColorType, Data, EncodedImageFormat, IPoint, IRect,
@@ -1374,15 +1505,187 @@
     Shader, SurfaceProps, TextureCompressionType, TileMode,
 };
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkImage, SkRefCntBase};
-<span class="kw">use </span>std::{fmt, mem, ptr};
+<span class="kw">use </span>std::{fmt, ptr};
 
 <span class="kw">pub use </span><span class="kw">super</span>::CubicResampler;
 
 <span class="attr">#[deprecated(since = <span class="string">&quot;0.62.0&quot;</span>, note = <span class="string">&quot;Use TextureCompressionType&quot;</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::TextureCompressionType <span class="kw">as </span>CompressionType;
 
-<span class="kw">pub use </span>skia_bindings::SkImage_BitDepth <span class="kw">as </span>BitDepth;
-<span class="macro">variant_name!</span>(BitDepth::F16);
+<span class="attr">#[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;Use images::BitDepth&quot;</span>)]
+</span><span class="kw">pub use </span>images::BitDepth;
+
+<span class="kw">pub mod </span>images {
+    <span class="attr">#[allow(unused)] </span><span class="comment">// doc only
+    </span><span class="kw">use </span><span class="kw">crate</span>::ColorType;
+    <span class="kw">use crate</span>::{
+        prelude::<span class="kw-2">*</span>, AlphaType, Bitmap, ColorSpace, Data, ISize, Image, ImageGenerator, ImageInfo,
+        Matrix, Paint, Picture, SurfaceProps, TextureCompressionType,
+    };
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
+    <span class="kw">use </span>std::{mem, ptr};
+
+    <span class="doccomment">/// Creates a CPU-backed [`Image`] from `bitmap`, sharing or copying `bitmap` pixels. If the bitmap
+    /// is marked immutable, and its pixel memory is shareable, it may be shared
+    /// instead of copied.
+    ///
+    /// [`Image`] is returned if bitmap is valid. Valid [`Bitmap`] parameters include:
+    /// dimensions are greater than zero;
+    /// each dimension fits in 29 bits;
+    /// [`ColorType`] and [`AlphaType`] are valid, and [`ColorType`] is not [`ColorType::Unknown`];
+    /// row bytes are large enough to hold one row of pixels;
+    /// pixel address is not `None`.
+    ///
+    /// * `bitmap` - [`ImageInfo`], row bytes, and pixels
+    /// Returns: created [`Image`], or `None`
+
+    </span><span class="kw">pub fn </span>raster_from_bitmap(bitmap: <span class="kw-2">&amp;</span>Bitmap) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        Image::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkImages_RasterFromBitmap(bitmap.native()) })
+    }
+
+    <span class="doccomment">/// Creates a CPU-backed [`Image`] from compressed data.
+    ///
+    /// This method will decompress the compressed data and create an image wrapping
+    /// it. Any mipmap levels present in the compressed data are discarded.
+    ///
+    /// * `data` - compressed data to store in [`Image`]
+    /// * `dimension` - width and height of full [`Image`]
+    /// * `ty` - type of compression used
+    /// Returns: created [`Image`], or `None`
+    </span><span class="kw">pub fn </span>raster_from_compressed_texture_data(
+        data: <span class="kw">impl </span>Into&lt;Data&gt;,
+        dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
+        ty: TextureCompressionType,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        <span class="kw">let </span>dimensions = dimensions.into();
+        Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkImages_RasterFromCompressedTextureData(
+                data.into().into_ptr(),
+                dimensions.width,
+                dimensions.height,
+                ty,
+            )
+        })
+    }
+
+    <span class="doccomment">/// Return a [`Image`] using the encoded data, but attempts to defer decoding until the
+    /// image is actually used/drawn. This deferral allows the system to cache the result, either on the
+    /// CPU or on the GPU, depending on where the image is drawn. If memory is low, the cache may
+    /// be purged, causing the next draw of the image to have to re-decode.
+    ///
+    /// If `alpha_type` is `None`, the image&#39;s alpha type will be chosen automatically based on the
+    /// image format. Transparent images will default to [`AlphaType::Premul`]. If `alpha_type` contains
+    /// [`AlphaType::Premul`] or [`AlphaType::Unpremul`], that alpha type will be used. Forcing opaque
+    /// (passing [`AlphaType::Opaque`]) is not allowed, and will return `None`.
+    ///
+    /// If the encoded format is not supported, `None` is returned.
+    ///
+    /// * `encoded` - the encoded data
+    /// Returns: created [`Image`], or `None`
+    ///
+    /// example: &lt;https://fiddle.skia.org/c/@Image_DeferredFromEncodedData&gt;
+    </span><span class="kw">pub fn </span>deferred_from_encoded_data(
+        data: <span class="kw">impl </span>Into&lt;Data&gt;,
+        alpha_type: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;AlphaType&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkImages_DeferredFromEncodedData(
+                data.into().into_ptr(),
+                alpha_type
+                    .into()
+                    .map(|at| <span class="kw-2">&amp;</span>at <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>)
+                    .unwrap_or(ptr::null()),
+            )
+        })
+    }
+
+    <span class="doccomment">/// Creates [`Image`] from data returned by `image_generator`. The image data will not be created
+    /// (on either the CPU or GPU) until the image is actually drawn.
+    /// Generated data is owned by [`Image`] and may not be shared or accessed.
+    ///
+    /// [`Image`] is returned if generator data is valid. Valid data parameters vary by type of data
+    /// and platform.
+    ///
+    /// `image_generator` may wrap [`Picture`] data, codec data, or custom data.
+    ///
+    /// * `image_generator` - stock or custom routines to retrieve [`Image`]
+    /// Returns: created [`Image`], or `None`
+    </span><span class="kw">pub fn </span>deferred_from_generator(<span class="kw-2">mut </span>image_generator: ImageGenerator) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        <span class="kw">let </span>image = Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkImages_DeferredFromGenerator(image_generator.native_mut())
+        });
+        mem::forget(image_generator);
+        image
+    }
+
+    <span class="kw">pub use </span>skia_bindings::SkImages_BitDepth <span class="kw">as </span>BitDepth;
+    <span class="macro">variant_name!</span>(BitDepth::F16);
+
+    <span class="doccomment">/// Creates [`Image`] from picture. Returned [`Image`] width and height are set by dimensions.
+    /// [`Image`] draws picture with matrix and paint, set to `bit_depth` and `color_space`.
+    ///
+    /// The Picture data is not turned into an image (CPU or GPU) until it is drawn.
+    ///
+    /// If matrix is `None`, draws with identity [`Matrix`]. If paint is `None`, draws
+    /// with default [`Paint`]. `color_space` may be `None`.
+    ///
+    /// * `picture` - stream of drawing commands
+    /// * `dimensions` - width and height
+    /// * `matrix` - [`Matrix`] to rotate, scale, translate, and so on; may be `None`
+    /// * `paint` - [`Paint`] to apply transparency, filtering, and so on; may be `None`
+    /// * `bit_depth` - 8-bit integer or 16-bit float: per component
+    /// * `color_space` - range of colors; may be `None`
+    /// * `props` - props to use when rasterizing the picture
+    /// Returns: created [`Image`], or `None`
+    </span><span class="kw">pub fn </span>deferred_from_picture(
+        picture: <span class="kw">impl </span>Into&lt;Picture&gt;,
+        dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
+        matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Matrix&gt;,
+        paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
+        bit_depth: BitDepth,
+        color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
+        props: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;SurfaceProps&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkImages_DeferredFromPicture(
+                picture.into().into_ptr(),
+                dimensions.into().native(),
+                matrix.native_ptr_or_null(),
+                paint.native_ptr_or_null(),
+                bit_depth,
+                color_space.into().into_ptr_or_null(),
+                props.into().unwrap_or_default().native(),
+            )
+        })
+    }
+
+    <span class="comment">// TODO: RasterFromPixmapCopy
+    // TODO: RasterFromPixmap
+
+    </span><span class="doccomment">/// Creates CPU-backed [`Image`] from pixel data described by info.
+    /// The pixels data will *not* be copied.
+    ///
+    /// [`Image`] is returned if [`ImageInfo`] is valid. Valid [`ImageInfo`] parameters include:
+    /// dimensions are greater than zero;
+    /// each dimension fits in 29 bits;
+    /// [`ColorType`] and [`AlphaType`] are valid, and [`ColorType`] is not [`ColorType::Unknown`];
+    /// `row_bytes` are large enough to hold one row of pixels;
+    /// pixels is not `None`, and contains enough data for [`Image`].
+    ///
+    /// * `info` - contains width, height, [`AlphaType`], [`ColorType`], [`ColorSpace`]
+    /// * `pixels` - address or pixel storage
+    /// * `row_bytes` - size of pixel row or larger
+    /// Returns: [`Image`] sharing pixels, or `None`
+    </span><span class="kw">pub fn </span>raster_from_data(
+        info: <span class="kw-2">&amp;</span>ImageInfo,
+        pixels: <span class="kw">impl </span>Into&lt;Data&gt;,
+        row_bytes: usize,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        Image::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkImages_RasterFromData(info.native(), pixels.into().into_ptr(), row_bytes)
+        })
+    }
+}
 
 <span class="doccomment">/// CachingHint selects whether Skia may internally cache [`Bitmap`] generated by
 /// decoding [`Image`], or by copying [`Image`] from GPU to CPU. The default behavior
@@ -1440,9 +1743,7 @@
 }
 
 <span class="kw">impl </span>Image {
-    <span class="comment">// TODO: MakeRasterCopy()
-
-    </span><span class="doccomment">/// Creates [`Image`] from [`ImageInfo`], sharing pixels.
+    <span class="doccomment">/// Creates [`Image`] from [`ImageInfo`], sharing pixels.
     ///
     /// [`Image`] is returned if [`ImageInfo`] is valid. Valid [`ImageInfo`] parameters include:
     /// dimensions are greater than zero;
@@ -1455,19 +1756,16 @@
     /// - `pixels`     address or pixel storage
     /// - `rowBytes`   size of pixel row or larger
     /// Returns: [`Image`] sharing pixels, or `None`
+    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use images::raster_from_data()&quot;</span>)]
     </span><span class="kw">pub fn </span>from_raster_data(
         info: <span class="kw-2">&amp;</span>ImageInfo,
         pixels: <span class="kw">impl </span>Into&lt;Data&gt;,
         row_bytes: usize,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeRasterData(info.native(), pixels.into().into_ptr(), row_bytes)
-        })
+        images::raster_from_data(info, pixels, row_bytes)
     }
 
-    <span class="comment">// TODO: MakeFromRaster()
-
-    </span><span class="doccomment">/// Creates [`Image`] from bitmap, sharing or copying bitmap pixels. If the bitmap
+    <span class="doccomment">/// Creates [`Image`] from bitmap, sharing or copying bitmap pixels. If the bitmap
     /// is marked immutable, and its pixel memory is shareable, it may be shared
     /// instead of copied.
     ///
@@ -1482,8 +1780,9 @@
     /// Returns: created [`Image`], or `None`
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Image_MakeFromBitmap&gt;
+    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use images::raster_from_bitmap()&quot;</span>)]
     </span><span class="kw">pub fn </span>from_bitmap(bitmap: <span class="kw-2">&amp;</span>Bitmap) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkImage_MakeFromBitmap(bitmap.native()) })
+        images::raster_from_bitmap(bitmap)
     }
 
     <span class="doccomment">/// Creates [`Image`] from data returned by `image_generator`. Generated data is owned by [`Image`] and
@@ -1496,19 +1795,14 @@
     ///
     /// - `image_generator`   stock or custom routines to retrieve [`Image`]
     /// Returns: created [`Image`], or `None`
-    </span><span class="kw">pub fn </span>from_generator(<span class="kw-2">mut </span>image_generator: ImageGenerator) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        <span class="kw">let </span>image = Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromGenerator(image_generator.native_mut())
-        });
-        mem::forget(image_generator);
-        image
+    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use images::deferred_from_generator()&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_generator(image_generator: ImageGenerator) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
+        images::deferred_from_generator(image_generator)
     }
 
     <span class="doccomment">/// See [`Self::from_encoded_with_alpha_type()`]
     </span><span class="kw">pub fn </span>from_encoded(data: <span class="kw">impl </span>Into&lt;Data&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromEncoded(data.into().into_ptr(), ptr::null())
-        })
+        images::deferred_from_encoded_data(data, <span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Return an image backed by the encoded data, but attempt to defer decoding until the image
@@ -1535,15 +1829,7 @@
         data: <span class="kw">impl </span>Into&lt;Data&gt;,
         alpha_type: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;AlphaType&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromEncoded(
-                data.into().into_ptr(),
-                alpha_type
-                    .into()
-                    .map(|at| <span class="kw-2">&amp;</span>at <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>)
-                    .unwrap_or(ptr::null()),
-            )
-        })
+        images::deferred_from_encoded_data(data, alpha_type)
     }
 
     <span class="attr">#[deprecated(since = <span class="string">&quot;0.35.0&quot;</span>, note = <span class="string">&quot;Removed without replacement&quot;</span>)]
@@ -1559,25 +1845,22 @@
     /// - `data`      compressed data to store in [`Image`]
     /// - `width`     width of full [`Image`]
     /// - `height`    height of full [`Image`]
-    /// - `type`      type of compression used
+    /// - `ty`        type of compression used
     /// Returns: created [`Image`], or `None`
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;use images::raster_from_compressed_texture_data()&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>new_raster_from_compressed(
         data: <span class="kw">impl </span>Into&lt;Data&gt;,
         dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
-        ct: TextureCompressionType,
+        ty: TextureCompressionType,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        <span class="kw">let </span>dimensions = dimensions.into();
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeRasterFromCompressed(
-                data.into().into_ptr(),
-                dimensions.width,
-                dimensions.height,
-                ct,
-            )
-        })
+        images::raster_from_compressed_texture_data(data, dimensions, ty)
     }
 
     <span class="doccomment">/// See [`Self::from_picture_with_props()`]
+    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use images::deferred_from_picture()&quot;</span>)]
     </span><span class="kw">pub fn </span>from_picture(
         picture: <span class="kw">impl </span>Into&lt;Picture&gt;,
         dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
@@ -1586,14 +1869,14 @@
         bit_depth: BitDepth,
         color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        <span class="self">Self</span>::from_picture_with_props(
+        images::deferred_from_picture(
             picture,
             dimensions,
             matrix,
             paint,
             bit_depth,
             color_space,
-            SurfaceProps::default(),
+            <span class="prelude-val">None</span>,
         )
     }
 
@@ -1611,6 +1894,7 @@
     /// - `color_space`  range of colors; may be `None`
     /// - `props`        props to use when rasterizing the picture
     /// Returns: created [`Image`], or `None`
+    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use images::deferred_from_picture()&quot;</span>)]
     </span><span class="kw">pub fn </span>from_picture_with_props(
         picture: <span class="kw">impl </span>Into&lt;Picture&gt;,
         dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
@@ -1620,17 +1904,15 @@
         color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
         props: SurfaceProps,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromPicture(
-                picture.into().into_ptr(),
-                dimensions.into().native(),
-                matrix.native_ptr_or_null(),
-                paint.native_ptr_or_null(),
-                bit_depth,
-                color_space.into().into_ptr_or_null(),
-                props.native(),
-            )
-        })
+        images::deferred_from_picture(
+            picture,
+            dimensions,
+            matrix,
+            paint,
+            bit_depth,
+            color_space,
+            <span class="prelude-val">Some</span>(props),
+        )
     }
 
     <span class="doccomment">/// Creates a GPU-backed [`Image`] from compressed data.
@@ -1646,34 +1928,31 @@
     /// - `data`         compressed data to store in [`Image`]
     /// - `width`        width of full [`Image`]
     /// - `height`       height of full [`Image`]
-    /// - `type`         type of compression used
+    /// - `ty`           type of compression used
     /// - `mipmapped`    does &#39;data&#39; contain data for all the mipmap levels?
     /// - `is_protected`  do the contents of &#39;data&#39; require DRM protection (on Vulkan)?
     /// Returns: created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;use gpu::images::texture_from_compressed_texture_data()&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>new_texture_from_compressed(
         context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
         data: Data,
         dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;,
-        ct: TextureCompressionType,
+        ty: TextureCompressionType,
         mipmapped: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gpu::Mipmapped&gt;&gt;,
         is_protected: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gpu::Protected&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        <span class="kw">let </span>dimensions = dimensions.into();
-        <span class="kw">let </span>mipmapped = mipmapped.into().unwrap_or(gpu::Mipmapped::No);
-        <span class="kw">let </span>is_protected = is_protected.into().unwrap_or(gpu::Protected::No);
-
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeTextureFromCompressed(
-                context.native_mut(),
-                data.into_ptr(),
-                dimensions.width,
-                dimensions.height,
-                ct,
-                mipmapped,
-                is_protected,
-            )
-        })
+        gpu::images::texture_from_compressed_texture_data(
+            context,
+            data,
+            dimensions,
+            ty,
+            mipmapped,
+            is_protected,
+        )
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
@@ -1713,7 +1992,6 @@
     /// * `release_context`       State passed to `texture_release_proc`
     /// Returns: Created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
-    </span><span class="comment">// TODO: add variant with TextureReleaseProc
     </span><span class="kw">pub fn </span>from_texture(
         context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
         backend_texture: <span class="kw-2">&amp;</span>gpu::BackendTexture,
@@ -1722,21 +2000,17 @@
         alpha_type: AlphaType,
         color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromTexture(
-                context.native_mut(),
-                backend_texture.native(),
-                origin,
-                color_type.into_native(),
-                alpha_type,
-                color_space.into().into_ptr_or_null(),
-            )
-        })
+        gpu::images::borrow_texture_from(
+            context,
+            backend_texture,
+            origin,
+            color_type,
+            alpha_type,
+            color_space,
+        )
     }
 
-    <span class="comment">// TODO: MakeFromCompressedTexture
-
-    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.27.0&quot;</span>, note = <span class="string">&quot;renamed, use new_cross_context_from_pixmap&quot;</span>)]
+    <span class="attr">#[deprecated(since = <span class="string">&quot;0.27.0&quot;</span>, note = <span class="string">&quot;renamed, use new_cross_context_from_pixmap&quot;</span>)]
     #[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
     </span><span class="kw">pub fn </span>from_pixmap_cross_context(
         context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
@@ -1744,7 +2018,12 @@
         build_mips: bool,
         limit_to_max_texture_size: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        <span class="self">Self</span>::new_cross_context_from_pixmap(context, pixmap, build_mips, limit_to_max_texture_size)
+        gpu::images::cross_context_texture_from_pixmap(
+            context,
+            pixmap,
+            build_mips,
+            limit_to_max_texture_size,
+        )
     }
 
     <span class="doccomment">/// Creates [`Image`] from pixmap. [`Image`] is uploaded to GPU back-end using context.
@@ -1770,20 +2049,22 @@
     /// - `limit_to_max_texture_size`   downscale image to GPU maximum texture size, if necessary
     /// Returns: created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;use gpu::images::cross_context_texture_from_pixmap()&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>new_cross_context_from_pixmap(
         context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
         pixmap: <span class="kw-2">&amp;</span>Pixmap,
         build_mips: bool,
         limit_to_max_texture_size: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeCrossContextFromPixmap(
-                context.native_mut(),
-                pixmap.native(),
-                build_mips,
-                limit_to_max_texture_size.into().unwrap_or(<span class="bool-val">false</span>),
-            )
-        })
+        gpu::images::cross_context_texture_from_pixmap(
+            context,
+            pixmap,
+            build_mips,
+            limit_to_max_texture_size,
+        )
     }
 
     <span class="doccomment">/// Creates [`Image`] from `backend_texture` associated with context. `backend_texture` and
@@ -1800,6 +2081,7 @@
     /// - `color_space`       range of colors; may be `None`
     /// Returns: created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use gpu::images::adopt_texture_from()&quot;</span>)]
     </span><span class="kw">pub fn </span>from_adopted_texture(
         context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
         backend_texture: <span class="kw-2">&amp;</span>gpu::BackendTexture,
@@ -1808,16 +2090,14 @@
         alpha_type: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;AlphaType&gt;&gt;,
         color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromAdoptedTexture(
-                context.native_mut(),
-                backend_texture.native(),
-                texture_origin,
-                color_type.into_native(),
-                alpha_type.into().unwrap_or(AlphaType::Premul),
-                color_space.into().into_ptr_or_null(),
-            )
-        })
+        gpu::images::adopt_texture_from(
+            context,
+            backend_texture,
+            texture_origin,
+            color_type,
+            alpha_type,
+            color_space,
+        )
     }
 
     <span class="doccomment">/// Creates an [`Image`] from `YUV[A]` planar textures. This requires that the textures stay valid
@@ -1834,18 +2114,16 @@
     /// - `release_context`      state passed to `texture_release_proc`
     /// Returns: created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;use gpu::images::texture_from_yuva_textures()&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>from_yuva_textures(
         context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
         yuva_textures: <span class="kw-2">&amp;</span>gpu::YUVABackendTextures,
         image_color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromYUVATextures(
-                context.native_mut(),
-                yuva_textures.native(),
-                image_color_space.into().into_ptr_or_null(),
-            )
-        })
+        gpu::images::texture_from_yuva_textures(context, yuva_textures, image_color_space)
     }
 
     <span class="doccomment">/// Creates [`Image`] from [`crate::YUVAPixmaps`].
@@ -1871,6 +2149,10 @@
     /// - `image_color_space`         range of colors of the resulting image; may be `None`
     /// Returns: created [`Image`], or `None`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;use gpu::images::texture_from_yuva_pixmaps()&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>from_yuva_pixmaps(
         context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext,
         yuva_pixmaps: <span class="kw-2">&amp;</span><span class="kw">crate</span>::YUVAPixmaps,
@@ -1878,15 +2160,13 @@
         limit_to_max_texture_size: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
         image_color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_MakeFromYUVAPixmaps(
-                context.native_mut(),
-                yuva_pixmaps.native(),
-                build_mips.into().unwrap_or(gpu::Mipmapped::No),
-                limit_to_max_texture_size.into().unwrap_or(<span class="bool-val">false</span>),
-                image_color_space.into().into_ptr_or_null(),
-            )
-        })
+        gpu::images::texture_from_yuva_pixmaps(
+            context,
+            yuva_pixmaps,
+            build_mips,
+            limit_to_max_texture_size,
+            image_color_space,
+        )
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
@@ -1901,10 +2181,7 @@
         <span class="macro">panic!</span>(<span class="string">&quot;Removed without replacement&quot;</span>)
     }
 
-    <span class="comment">// TODO: MakePromiseTexture
-    // TODO: MakePromiseYUVATexture
-
-    </span><span class="doccomment">/// Returns a [`ImageInfo`] describing the width, height, color type, alpha type, and color space
+    <span class="doccomment">/// Returns a [`ImageInfo`] describing the width, height, color type, alpha type, and color space
     /// of the [`Image`].
     ///
     /// Returns: image info of [`Image`].
@@ -2068,10 +2345,9 @@
     /// Returns: `true` if [`Image`] has direct access to pixels
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Image_peekPixels&gt;
-    </span><span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Borrows&lt;Pixmap&gt;&gt; {
+    </span><span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixmap&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::default();
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().peekPixels(pixmap.native_mut()) }
-            .if_true_then_some(|| pixmap.borrows(<span class="self">self</span>))
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().peekPixels(pixmap.native_mut()) }.if_true_some(pixmap)
     }
 
     <span class="doccomment">/// Returns `true` if the contents of [`Image`] was created on or uploaded to GPU memory,
@@ -2081,14 +2357,13 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Image_isTextureBacked&gt;
     </span><span class="kw">pub fn </span>is_texture_backed(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isTextureBacked() }
+        <span class="kw">unsafe </span>{ sb::C_SkImage_isTextureBacked(<span class="self">self</span>.native()) }
     }
 
     <span class="doccomment">/// Returns an approximation of the amount of texture memory used by the image. Returns
     /// zero if the image is not texture backed or if the texture has an external format.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
     </span><span class="kw">pub fn </span>texture_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().textureSize() }
+        <span class="kw">unsafe </span>{ sb::C_SkImage_textureSize(<span class="self">self</span>.native()) }
     }
 
     <span class="doccomment">/// Returns `true` if [`Image`] can be drawn on either raster surface or GPU surface.
@@ -2105,22 +2380,18 @@
     /// example: &lt;https://fiddle.skia.org/c/@Image_isValid&gt;
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
     </span><span class="kw">pub fn </span>is_valid(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;mut </span>gpu::RecordingContext) -&gt; bool {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isValid(context.native_mut()) }
+        <span class="kw">unsafe </span>{ sb::C_SkImage_isValid(<span class="self">self</span>.native(), context.native_mut()) }
     }
 
     <span class="doccomment">/// See [`Self::flush_with_info()`]
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use gpu::DirectContext::flush()&quot;</span>)]
     </span><span class="kw">pub fn </span>flush&lt;<span class="lifetime">&#39;a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
         flush_info: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>gpu::FlushInfo&gt;&gt;,
     ) -&gt; gpu::SemaphoresSubmitted {
-        <span class="kw">let </span>flush_info_default = gpu::FlushInfo::default();
-        <span class="kw">let </span>flush_info = flush_info.into().unwrap_or(<span class="kw-2">&amp;</span>flush_info_default);
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.native()
-                .flush(context.native_mut(), flush_info.native())
-        }
+        context.flush(flush_info)
     }
 
     <span class="doccomment">/// Flushes any pending uses of texture-backed images in the GPU backend. If the image is not
@@ -2134,20 +2405,21 @@
     /// - `context`   the context on which to flush pending usages of the image.
     /// - `info`      flush options
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
-    #[deprecated(since = <span class="string">&quot;0.46.0&quot;</span>, note = <span class="string">&quot;use flush()&quot;</span>)]
+    #[deprecated(since = <span class="string">&quot;0.46.0&quot;</span>, note = <span class="string">&quot;use gpu::DirectContext::flush()&quot;</span>)]
     </span><span class="kw">pub fn </span>flush_with_info(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;mut </span>gpu::DirectContext,
         flush_info: <span class="kw-2">&amp;</span>gpu::FlushInfo,
     ) -&gt; gpu::SemaphoresSubmitted {
-        <span class="self">self</span>.flush(context, flush_info)
+        context.flush(flush_info)
     }
 
     <span class="doccomment">/// Version of `flush()` that uses a default [`gpu::FlushInfo`]. Also submits the flushed work to the
     /// GPU.
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;use gpu::DirectContext::flush_and_submit()&quot;</span>)]
     </span><span class="kw">pub fn </span>flush_and_submit(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;mut </span>gpu::DirectContext) {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().flushAndSubmit(context.native_mut()) }
+        context.flush_and_submit();
     }
 
     <span class="doccomment">/// Retrieves the back-end texture. If [`Image`] has no back-end texture, `None`is returned.
@@ -2159,20 +2431,15 @@
     /// - `flush_pending_gr_context_io`   flag to flush outstanding requests
     /// Returns: back-end API texture handle; invalid on failure
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+    #[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;use gpu::images::get_backend_texture_from_image()&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>backend_texture(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         flush_pending_gr_context_io: bool,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;(gpu::BackendTexture, gpu::SurfaceOrigin)&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>origin = gpu::SurfaceOrigin::TopLeft;
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>backend_texture = sb::C_SkImage_getBackendTexture(
-                <span class="self">self</span>.native(),
-                flush_pending_gr_context_io,
-                <span class="kw-2">&amp;mut </span>origin,
-            );
-            gpu::BackendTexture::from_native_if_valid(backend_texture)
-        }
-        .map(|texture| (texture, origin))
+        gpu::images::get_backend_texture_from_image(<span class="self">self</span>, flush_pending_gr_context_io)
     }
 
     <span class="doccomment">/// Copies [`crate::Rect`] of pixels from [`Image`] to `dst_pixels`. Copy starts at offset (`src_x`, `src_y`),
@@ -2393,25 +2660,23 @@
     ///
     ///  example: &lt;https://fiddle.skia.org/c/@Image_encodeToData&gt;
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
-    </span><span class="kw">pub fn </span>encode_to_data_with_context&lt;<span class="lifetime">&#39;a</span>&gt;(
+    #[deprecated(since = <span class="string">&quot;0.63.0&quot;</span>, note = <span class="string">&quot;Use encode&quot;</span>)]
+    </span><span class="kw">pub fn </span>encode_to_data_with_context(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        context: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>gpu::DirectContext&gt;&gt;,
+        context: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gpu::DirectContext&gt;&gt;,
         image_format: EncodedImageFormat,
-        quality: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;i32&gt;&gt;,
+        quality: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Data&gt; {
-        Data::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_encodeToDataWithContext(
-                <span class="self">self</span>.native(),
-                context.into().native_ptr_or_null_mut(),
-                image_format,
-                quality.into().unwrap_or(<span class="number">100</span>),
-            )
-        })
+        <span class="self">self</span>.encode(context, image_format, quality)
     }
 
     <span class="doccomment">/// See [`Self::encode_to_data_with_quality`]
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;Support for encoding GPU backed images without a context was removed, use `encode_to_data_with_context` instead&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>encode_to_data(<span class="kw-2">&amp;</span><span class="self">self</span>, image_format: EncodedImageFormat) -&gt; <span class="prelude-ty">Option</span>&lt;Data&gt; {
-        <span class="self">self</span>.encode_to_data_with_quality(image_format, <span class="number">100</span>)
+        <span class="self">self</span>.encode(<span class="prelude-val">None</span>, image_format, <span class="number">100</span>)
     }
 
     <span class="doccomment">/// Encodes [`Image`] pixels, returning result as [`Data`].
@@ -2436,12 +2701,16 @@
     /// Returns: encoded [`Image`], or `None`
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Image_encodeToData&gt;
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">&quot;0.63.0&quot;</span>,
+        note = <span class="string">&quot;Support for encoding GPU backed images without a context was removed, use `encode_to_data_with_context` instead&quot;
+    </span>)]
     </span><span class="kw">pub fn </span>encode_to_data_with_quality(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         image_format: EncodedImageFormat,
-        quality: i32,
+        quality: u32,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Data&gt; {
-        Data::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkImage_encodeToData(<span class="self">self</span>.native(), image_format, quality) })
+        <span class="self">self</span>.encode(<span class="prelude-val">None</span>, image_format, quality)
     }
 
     <span class="doccomment">/// Returns encoded [`Image`] pixels as [`Data`], if [`Image`] was created from supported
@@ -2542,14 +2811,7 @@
         mipmapped: gpu::Mipmapped,
         budgeted: gpu::Budgeted,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;Image&gt; {
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_makeTextureImage(
-                <span class="self">self</span>.native(),
-                direct_context.native_mut(),
-                mipmapped,
-                budgeted.into_native(),
-            )
-        })
+        gpu::images::texture_from_image(direct_context, <span class="self">self</span>, mipmapped, budgeted)
     }
 
     <span class="attr">#[deprecated(since = <span class="string">&quot;0.54.0&quot;</span>, note = <span class="string">&quot;use to_non_texture_image()&quot;</span>)]
@@ -2734,5 +2996,4 @@
         })
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>
