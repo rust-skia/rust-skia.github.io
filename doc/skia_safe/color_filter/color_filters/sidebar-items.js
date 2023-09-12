@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["blend","blend_with_color_space","compose","hsla_matrix","hsla_matrix_of_color_matrix","lerp","lighting","linear_to_srgb_gamma","matrix","matrix_row_major","srgb_to_linear_gamma","table","table_argb"]};
+window.SIDEBAR_ITEMS = {"fn":["blend","blend_with_color_space","compose","hsla_matrix","hsla_matrix_of_color_matrix","lerp","lighting","linear_to_srgb_gamma","matrix","matrix_row_major","srgb_to_linear_gamma","table","table_argb","table_from_color_table"]};

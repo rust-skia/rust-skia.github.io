@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/rect.rs`."><title>rect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0 (8ede3aae2 2023-07-12)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/rect.rs`."><title>rect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -841,10 +841,15 @@
 <a href="#841" id="841">841</a>
 <a href="#842" id="842">842</a>
 <a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     prelude::<span class="kw-2">*</span>,
     private::safe32::{sk32, sk64},
-    scalar, Contains, IPoint, ISize, IVector, Point, Size, Vector,
+    Contains, IPoint, ISize, IVector, Point, Size, Vector,
 };
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkIRect, SkRect};
 <span class="kw">use </span>std::{
@@ -1082,7 +1087,8 @@
         <span class="self">self</span>.left &lt;= r.left &amp;&amp; <span class="self">self</span>.top &lt;= r.top &amp;&amp; <span class="self">self</span>.right &gt;= r.right &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom
     }
 
-    <span class="kw">pub fn </span>intersect(a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>intersect(a: <span class="kw-2">&amp;</span><span class="self">Self</span>, b: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">Self</span>::default();
         <span class="kw">unsafe </span>{ r.native_mut().intersect(a.native(), b.native()) }.if_true_some(r)
     }
@@ -1176,13 +1182,13 @@
 #[derive(Copy, Clone, PartialEq, Default, Debug)]
 </span><span class="kw">pub struct </span>Rect {
     <span class="doccomment">/// The x coordinate of the rectangle&#39;s left edge.
-    </span><span class="kw">pub </span>left: scalar,
+    </span><span class="kw">pub </span>left: f32,
     <span class="doccomment">/// The y coordinate of the rectangle&#39;s top edge.
-    </span><span class="kw">pub </span>top: scalar,
+    </span><span class="kw">pub </span>top: f32,
     <span class="doccomment">/// The x coordinate of the rectangle&#39;s right edge.
-    </span><span class="kw">pub </span>right: scalar,
+    </span><span class="kw">pub </span>right: f32,
     <span class="doccomment">/// The y coordinate of the rectangle&#39;s bottom edge.
-    </span><span class="kw">pub </span>bottom: scalar,
+    </span><span class="kw">pub </span>bottom: f32,
 }
 
 <span class="macro">native_transmutable!</span>(SkRect, Rect, rect_layout);
@@ -1194,7 +1200,8 @@
 }
 
 <span class="kw">impl </span>Rect {
-    <span class="kw">pub fn </span>new(left: scalar, top: scalar, right: scalar, bottom: scalar) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>new(left: f32, top: f32, right: f32, bottom: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             left,
             top,
@@ -1207,38 +1214,50 @@
         <span class="self">Self</span>::new(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
     }
 
-    <span class="kw">pub fn </span>from_wh(w: scalar, h: scalar) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_wh(w: f32, h: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(<span class="number">0.0</span>, <span class="number">0.0</span>, w, h)
     }
 
-    <span class="kw">pub fn </span>from_iwh(w: i32, h: i32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_wh(w <span class="kw">as </span>scalar, h <span class="kw">as </span>scalar)
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_iwh(w: i32, h: i32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_wh(w <span class="kw">as </span>f32, h <span class="kw">as </span>f32)
     }
 
-    <span class="kw">pub fn </span>from_size(size: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_size(size: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; <span class="self">Self </span>{
         (Point::default(), size.into()).into()
     }
 
-    <span class="kw">pub fn </span>from_xywh(x: scalar, y: scalar, w: scalar, h: scalar) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_ltrb(l: f32, t: f32, b: f32, r: f32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(l, t, b, r)
+    }
+
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_xywh(x: f32, y: f32, w: f32, h: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(x, y, x + w, y + h)
     }
 
-    <span class="kw">pub fn </span>from_point_and_size(p: <span class="kw">impl </span>Into&lt;Point&gt;, sz: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_point_and_size(p: <span class="kw">impl </span>Into&lt;Point&gt;, sz: <span class="kw">impl </span>Into&lt;Size&gt;) -&gt; <span class="self">Self </span>{
         (p.into(), sz.into()).into()
     }
 
-    <span class="kw">pub fn </span>from_isize(isize: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_isize(isize: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>isize = isize.into();
         <span class="self">Self</span>::from_iwh(isize.width, isize.height)
     }
 
-    <span class="kw">pub fn </span>from_irect(irect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>from_irect(irect: <span class="kw">impl </span>AsRef&lt;IRect&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>irect = irect.as_ref();
         <span class="self">Self</span>::new(
-            irect.left <span class="kw">as </span>scalar,
-            irect.top <span class="kw">as </span>scalar,
-            irect.right <span class="kw">as </span>scalar,
-            irect.bottom <span class="kw">as </span>scalar,
+            irect.left <span class="kw">as </span>f32,
+            irect.top <span class="kw">as </span>f32,
+            irect.right <span class="kw">as </span>f32,
+            irect.bottom <span class="kw">as </span>f32,
         )
     }
 
@@ -1267,27 +1286,27 @@
         </span>!accum.is_nan()
     }
 
-    <span class="kw">pub const fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub const fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.left
     }
 
-    <span class="kw">pub const fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub const fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.top
     }
 
-    <span class="kw">pub const fn </span>left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub const fn </span>left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.left
     }
 
-    <span class="kw">pub const fn </span>top(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub const fn </span>top(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.top
     }
 
-    <span class="kw">pub const fn </span>right(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub const fn </span>right(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.right
     }
 
-    <span class="kw">pub const fn </span>bottom(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub const fn </span>bottom(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.bottom
     }
 
@@ -1295,20 +1314,20 @@
         (<span class="self">self</span>.width(), <span class="self">self</span>.height()).into()
     }
 
-    <span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.native().fRight - <span class="self">self</span>.native().fLeft
     }
 
-    <span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="self">self</span>.native().fBottom - <span class="self">self</span>.native().fTop
     }
 
-    <span class="kw">pub fn </span>center_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub fn </span>center_x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="comment">// don&#39;t use (fLeft + fBottom) * 0.5 as that might overflow before the 0.5
         </span><span class="self">self</span>.left * <span class="number">0.5 </span>+ <span class="self">self</span>.right * <span class="number">0.5
     </span>}
 
-    <span class="kw">pub fn </span>center_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; scalar {
+    <span class="kw">pub fn </span>center_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="comment">// don&#39;t use (fTop + fBottom) * 0.5 as that might overflow before the 0.5
         </span><span class="self">self</span>.top * <span class="number">0.5 </span>+ <span class="self">self</span>.bottom * <span class="number">0.5
     </span>}
@@ -1332,7 +1351,7 @@
         <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_irect(irect)
     }
 
-    <span class="kw">pub fn </span>set_ltrb(<span class="kw-2">&amp;mut </span><span class="self">self</span>, left: scalar, top: scalar, right: scalar, bottom: scalar) {
+    <span class="kw">pub fn </span>set_ltrb(<span class="kw-2">&amp;mut </span><span class="self">self</span>, left: f32, top: f32, right: f32, bottom: f32) {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::new(left, top, right, bottom)
     }
 
@@ -1374,11 +1393,11 @@
         .if_true_some(r)
     }
 
-    <span class="kw">pub fn </span>set_xywh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, x: scalar, y: scalar, width: scalar, height: scalar) {
+    <span class="kw">pub fn </span>set_xywh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, x: f32, y: f32, width: f32, height: f32) {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_xywh(x, y, width, height)
     }
 
-    <span class="kw">pub fn </span>set_wh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, w: scalar, h: scalar) {
+    <span class="kw">pub fn </span>set_wh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, w: f32, h: f32) {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="self">Self</span>::from_wh(w, h)
     }
 
@@ -1472,16 +1491,7 @@
     }
 
     <span class="attr">#[allow(clippy::too_many_arguments)]
-    </span><span class="kw">fn </span>intersects_(
-        al: scalar,
-        at: scalar,
-        ar: scalar,
-        ab: scalar,
-        bl: scalar,
-        bt: scalar,
-        br: scalar,
-        bb: scalar,
-    ) -&gt; bool {
+    </span><span class="kw">fn </span>intersects_(al: f32, at: f32, ar: f32, ab: f32, bl: f32, bt: f32, br: f32, bb: f32) -&gt; bool {
         <span class="kw">let </span>l = al.max(bl);
         <span class="kw">let </span>r = ar.min(br);
         <span class="kw">let </span>t = at.max(bt);
@@ -1556,7 +1566,7 @@
         )
     }
 
-    <span class="kw">pub fn </span>as_scalars(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[scalar; <span class="number">4</span>] {
+    <span class="kw">pub fn </span>as_scalars(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[f32; <span class="number">4</span>] {
         <span class="kw">unsafe </span>{ transmute_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.left) }
     }
 
@@ -1610,10 +1620,10 @@
         <span class="comment">// TODO: can we eliminate the this-&gt;isEmpty check?
         </span>!r.is_empty()
             &amp;&amp; !<span class="self">self</span>.is_empty()
-            &amp;&amp; <span class="self">self</span>.left &lt;= r.left <span class="kw">as </span>scalar
-            &amp;&amp; <span class="self">self</span>.top &lt;= r.top <span class="kw">as </span>scalar
-            &amp;&amp; <span class="self">self</span>.right &gt;= r.right <span class="kw">as </span>scalar
-            &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom <span class="kw">as </span>scalar
+            &amp;&amp; <span class="self">self</span>.left &lt;= r.left <span class="kw">as </span>f32
+            &amp;&amp; <span class="self">self</span>.top &lt;= r.top <span class="kw">as </span>f32
+            &amp;&amp; <span class="self">self</span>.right &gt;= r.right <span class="kw">as </span>f32
+            &amp;&amp; <span class="self">self</span>.bottom &gt;= r.bottom <span class="kw">as </span>f32
     }
 }
 
