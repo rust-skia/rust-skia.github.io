@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["BitDepth"],"fn":["deferred_from_encoded_data","deferred_from_generator","deferred_from_picture","raster_from_bitmap","raster_from_compressed_texture_data","raster_from_data"]};
+window.SIDEBAR_ITEMS = {"enum":["BitDepth"],"fn":["deferred_from_encoded_data","deferred_from_generator","deferred_from_picture","make_with_filter","raster_from_bitmap","raster_from_compressed_texture_data","raster_from_data"]};

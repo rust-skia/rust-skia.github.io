@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.1 (d5c2e9c34 2023-09-13)" data-channel="1.72.1" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2419,85 +2419,23 @@
 <a href="#2419" id="2419">2419</a>
 <a href="#2420" id="2420">2420</a>
 <a href="#2421" id="2421">2421</a>
-<a href="#2422" id="2422">2422</a>
-<a href="#2423" id="2423">2423</a>
-<a href="#2424" id="2424">2424</a>
-<a href="#2425" id="2425">2425</a>
-<a href="#2426" id="2426">2426</a>
-<a href="#2427" id="2427">2427</a>
-<a href="#2428" id="2428">2428</a>
-<a href="#2429" id="2429">2429</a>
-<a href="#2430" id="2430">2430</a>
-<a href="#2431" id="2431">2431</a>
-<a href="#2432" id="2432">2432</a>
-<a href="#2433" id="2433">2433</a>
-<a href="#2434" id="2434">2434</a>
-<a href="#2435" id="2435">2435</a>
-<a href="#2436" id="2436">2436</a>
-<a href="#2437" id="2437">2437</a>
-<a href="#2438" id="2438">2438</a>
-<a href="#2439" id="2439">2439</a>
-<a href="#2440" id="2440">2440</a>
-<a href="#2441" id="2441">2441</a>
-<a href="#2442" id="2442">2442</a>
-<a href="#2443" id="2443">2443</a>
-<a href="#2444" id="2444">2444</a>
-<a href="#2445" id="2445">2445</a>
-<a href="#2446" id="2446">2446</a>
-<a href="#2447" id="2447">2447</a>
-<a href="#2448" id="2448">2448</a>
-<a href="#2449" id="2449">2449</a>
-<a href="#2450" id="2450">2450</a>
-<a href="#2451" id="2451">2451</a>
-<a href="#2452" id="2452">2452</a>
-<a href="#2453" id="2453">2453</a>
-<a href="#2454" id="2454">2454</a>
-<a href="#2455" id="2455">2455</a>
-<a href="#2456" id="2456">2456</a>
-<a href="#2457" id="2457">2457</a>
-<a href="#2458" id="2458">2458</a>
-<a href="#2459" id="2459">2459</a>
-<a href="#2460" id="2460">2460</a>
-<a href="#2461" id="2461">2461</a>
-<a href="#2462" id="2462">2462</a>
-<a href="#2463" id="2463">2463</a>
-<a href="#2464" id="2464">2464</a>
-<a href="#2465" id="2465">2465</a>
-<a href="#2466" id="2466">2466</a>
-<a href="#2467" id="2467">2467</a>
-<a href="#2468" id="2468">2468</a>
-<a href="#2469" id="2469">2469</a>
-<a href="#2470" id="2470">2470</a>
-<a href="#2471" id="2471">2471</a>
-<a href="#2472" id="2472">2472</a>
-<a href="#2473" id="2473">2473</a>
-<a href="#2474" id="2474">2474</a>
-<a href="#2475" id="2475">2475</a>
-<a href="#2476" id="2476">2476</a>
-<a href="#2477" id="2477">2477</a>
-<a href="#2478" id="2478">2478</a>
-<a href="#2479" id="2479">2479</a>
-<a href="#2480" id="2480">2480</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{
+    cell::UnsafeCell, convert::TryInto, ffi::CString, fmt, marker::PhantomData, mem, ops::Deref,
+    ptr, slice,
+};
+
+<span class="kw">use </span>skia_bindings::{
+    <span class="self">self </span><span class="kw">as </span>sb, SkAutoCanvasRestore, SkCanvas, SkCanvas_SaveLayerRec, SkImageFilter, SkPaint,
+    SkRect, U8CPU,
+};
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;gpu&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::gpu;
 <span class="kw">use crate</span>::{
     prelude::<span class="kw-2">*</span>, scalar, Bitmap, BlendMode, ClipOp, Color, Color4f, Data, Drawable, FilterMode,
     Font, GlyphId, IPoint, IRect, ISize, Image, ImageFilter, ImageInfo, Matrix, Paint, Path,
     Picture, Pixmap, Point, QuickReject, RRect, RSXform, Rect, Region, SamplingOptions, Shader,
     Surface, SurfaceProps, TextBlob, TextEncoding, Vector, Vertices, M44,
-};
-<span class="kw">use </span>skia_bindings::{
-    <span class="self">self </span><span class="kw">as </span>sb, SkAutoCanvasRestore, SkCanvas, SkCanvas_SaveLayerRec, SkImageFilter, SkPaint,
-    SkRect, U8CPU,
-};
-<span class="kw">use </span>std::{
-    convert::TryInto,
-    ffi::CString,
-    fmt,
-    marker::PhantomData,
-    mem,
-    ops::{Deref, DerefMut},
-    ptr, slice,
 };
 
 <span class="kw">pub use </span>lattice::Lattice;
@@ -2691,18 +2629,17 @@
 ///  [`Canvas`] can be constructed to draw to [`Bitmap`] without first creating raster surface.
 ///  This approach may be deprecated in the future.
 </span><span class="attr">#[repr(transparent)]
-</span><span class="kw">pub struct </span>Canvas(SkCanvas);
+</span><span class="kw">pub struct </span>Canvas(UnsafeCell&lt;SkCanvas&gt;);
 
-<span class="kw">impl </span>NativeAccess <span class="kw">for </span>Canvas {
-    <span class="kw">type </span>Native = SkCanvas;
+<span class="kw">impl </span>Canvas {
+    <span class="kw">pub</span>(<span class="self">self</span>) <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkCanvas {
+        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><span class="self">self</span>.<span class="number">0</span>.get() }
+    }
 
-    <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkCanvas {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
-    </span>}
-
-    <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkCanvas {
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0
-    </span>}
+    <span class="attr">#[allow(clippy::mut_from_ref)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkCanvas {
+        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.get()) }
+    }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Canvas {
@@ -2734,12 +2671,6 @@
     }
 }
 
-<span class="kw">impl </span>DerefMut <span class="kw">for </span>OwnedCanvas&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.as_mut() }
-    }
-}
-
 <span class="kw">impl </span>Drop <span class="kw">for </span>OwnedCanvas&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="doccomment">/// Draws saved layers, if any.
     /// Frees up resources used by [`Canvas`].
@@ -2766,18 +2697,6 @@
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>OwnedCanvas&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
         f.debug_tuple(<span class="string">&quot;OwnedCanvas&quot;</span>).field(<span class="self">self </span><span class="kw">as </span><span class="kw-2">&amp;</span>Canvas).finish()
-    }
-}
-
-<span class="kw">impl </span>AsMut&lt;Canvas&gt; <span class="kw">for </span>Canvas {
-    <span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Canvas {
-        <span class="self">self
-    </span>}
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;lt</span>&gt; AsMut&lt;Canvas&gt; <span class="kw">for </span>OwnedCanvas&lt;<span class="lifetime">&#39;lt</span>&gt; {
-    <span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Canvas {
-        <span class="self">self</span>.deref_mut()
     }
 }
 
@@ -2986,11 +2905,7 @@
     /// Returns [`Surface`] matching info and props, or `None` if no match is available
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_makeSurface&gt;
-    </span><span class="kw">pub fn </span>new_surface(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        info: <span class="kw-2">&amp;</span>ImageInfo,
-        props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
+    </span><span class="kw">pub fn </span>new_surface(<span class="kw-2">&amp;</span><span class="self">self</span>, info: <span class="kw-2">&amp;</span>ImageInfo, props: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SurfaceProps&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
         Surface::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkCanvas_makeSurface(<span class="self">self</span>.native_mut(), info.native(), props.native_ptr_or_null())
         })
@@ -3023,12 +2938,12 @@
     /// This function is unsafe because it is not clear how exactly the lifetime of the canvas
     /// relates to surface returned.
     /// See also [`OwnedCanvas`], [`RCHandle&lt;SkSurface&gt;::canvas()`].
-    </span><span class="kw">pub unsafe fn </span>surface(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
+    </span><span class="kw">pub unsafe fn </span>surface(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
         <span class="comment">// TODO: It might be possible to make this safe by returning a _kind of_ reference to the
         //       Surface that can not be cloned and stays bound to the lifetime of canvas.
         //       But even then, the Surface might exist twice then, which is confusing, but
         //       probably safe, because the first instance is borrowed by the canvas.
-        </span>Surface::from_unshared_ptr(<span class="self">self</span>.native_mut().getSurface())
+        </span>Surface::from_unshared_ptr(<span class="self">self</span>.native().getSurface())
     }
 
     <span class="doccomment">/// Returns the pixel base address, [`ImageInfo`], `row_bytes`, and origin if the pixels
@@ -3041,7 +2956,7 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_accessTopLayerPixels_a&gt;
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_accessTopLayerPixels_b&gt;
-    </span><span class="kw">pub fn </span>access_top_layer_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TopLayerPixels&gt; {
+    </span><span class="kw">pub fn </span>access_top_layer_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TopLayerPixels&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>info = ImageInfo::default();
         <span class="kw">let </span><span class="kw-2">mut </span>row_bytes = <span class="number">0</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>origin = IPoint::default();
@@ -3081,7 +2996,7 @@
     /// Returns [`Pixmap`] if [`Canvas`] has direct access to pixels
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_peekPixels&gt;
-    </span><span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixmap&gt; {
+    </span><span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixmap&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::default();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().peekPixels(pixmap.native_mut()) }.if_true_some(pixmap)
     }
@@ -3123,7 +3038,7 @@
     /// Returns `true` if pixels were copied
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>read_pixels(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         dst_info: <span class="kw-2">&amp;</span>ImageInfo,
         dst_pixels: <span class="kw-2">&amp;mut </span>[u8],
         dst_row_bytes: usize,
@@ -3179,7 +3094,7 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_readPixels_2&gt;
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>read_pixels_to_pixmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pixmap: <span class="kw-2">&amp;mut </span>Pixmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+    </span><span class="kw">pub fn </span>read_pixels_to_pixmap(<span class="kw-2">&amp;</span><span class="self">self</span>, pixmap: <span class="kw-2">&amp;mut </span>Pixmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
         <span class="kw">let </span>src = src.into();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().readPixels1(pixmap.native(), src.x, src.y) }
     }
@@ -3220,7 +3135,7 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_readPixels_3&gt;
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>read_pixels_to_bitmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bitmap: <span class="kw-2">&amp;mut </span>Bitmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+    </span><span class="kw">pub fn </span>read_pixels_to_bitmap(<span class="kw-2">&amp;</span><span class="self">self</span>, bitmap: <span class="kw-2">&amp;mut </span>Bitmap, src: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
         <span class="kw">let </span>src = src.into();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
@@ -3264,7 +3179,7 @@
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_writePixels&gt;
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>write_pixels(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         info: <span class="kw-2">&amp;</span>ImageInfo,
         pixels: <span class="kw-2">&amp;</span>[u8],
         row_bytes: usize,
@@ -3321,7 +3236,7 @@
     /// example: &lt;https://fiddle.skia.org/c/@State_Stack_a&gt;
     /// example: &lt;https://fiddle.skia.org/c/@State_Stack_b&gt;
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>write_pixels_from_bitmap(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bitmap: <span class="kw-2">&amp;</span>Bitmap, offset: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
+    </span><span class="kw">pub fn </span>write_pixels_from_bitmap(<span class="kw-2">&amp;</span><span class="self">self</span>, bitmap: <span class="kw-2">&amp;</span>Bitmap, offset: <span class="kw">impl </span>Into&lt;IPoint&gt;) -&gt; bool {
         <span class="kw">let </span>offset = offset.into();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
@@ -3346,7 +3261,7 @@
     /// Returns depth of saved stack
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_save&gt;
-    </span><span class="kw">pub fn </span>save(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; usize {
+    </span><span class="kw">pub fn </span>save(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().save().try_into().unwrap() }
     }
 
@@ -3374,7 +3289,7 @@
     /// Returns depth of saved stack
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_saveLayerAlpha&gt;
-    </span><span class="kw">pub fn </span>save_layer_alpha_f(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bounds: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Rect&gt;&gt;, alpha: f32) -&gt; usize {
+    </span><span class="kw">pub fn </span>save_layer_alpha_f(<span class="kw-2">&amp;</span><span class="self">self</span>, bounds: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Rect&gt;&gt;, alpha: f32) -&gt; usize {
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .saveLayerAlphaf(bounds.into().native().as_ptr_or_null(), alpha)
@@ -3384,7 +3299,7 @@
     }
 
     <span class="doccomment">/// Helper that accepts an int between 0 and 255, and divides it by 255.0
-    </span><span class="kw">pub fn </span>save_layer_alpha(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bounds: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Rect&gt;&gt;, alpha: U8CPU) -&gt; usize {
+    </span><span class="kw">pub fn </span>save_layer_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, bounds: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Rect&gt;&gt;, alpha: U8CPU) -&gt; usize {
         <span class="self">self</span>.save_layer_alpha_f(bounds, alpha <span class="kw">as </span>f32 * (<span class="number">1.0 </span>/ <span class="number">255.0</span>))
     }
 
@@ -3406,7 +3321,7 @@
     /// Returns depth of save state stack before this call was made.
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_saveLayer_3&gt;
-    </span><span class="kw">pub fn </span>save_layer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, layer_rec: <span class="kw-2">&amp;</span>SaveLayerRec) -&gt; usize {
+    </span><span class="kw">pub fn </span>save_layer(<span class="kw-2">&amp;</span><span class="self">self</span>, layer_rec: <span class="kw-2">&amp;</span>SaveLayerRec) -&gt; usize {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().saveLayer1(layer_rec.native()) }
             .try_into()
             .unwrap()
@@ -3420,7 +3335,7 @@
     /// example: &lt;https://fiddle.skia.org/c/@AutoCanvasRestore_restore&gt;
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_restore&gt;
-    </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().restore() };
         <span class="self">self
     </span>}
@@ -3446,7 +3361,7 @@
     /// - `saveCount` depth of state stack to restore
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_restoreToCount&gt;
-    </span><span class="kw">pub fn </span>restore_to_count(<span class="kw-2">&amp;mut </span><span class="self">self</span>, save_count: usize) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>restore_to_count(<span class="kw-2">&amp;</span><span class="self">self</span>, save_count: usize) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .restoreToCount(save_count.try_into().unwrap())
@@ -3464,7 +3379,7 @@
     /// - `d` distance to translate
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_translate&gt;
-    </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;</span><span class="self">self</span>, d: <span class="kw">impl </span>Into&lt;Vector&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>d = d.into();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().translate(d.x, d.y) }
         <span class="self">self
@@ -3481,7 +3396,7 @@
     /// - `sy` amount to scale on y-axis
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_scale&gt;
-    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;mut </span><span class="self">self</span>, (sx, sy): (scalar, scalar)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, (sx, sy): (scalar, scalar)) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().scale(sx, sy) }
         <span class="self">self
     </span>}
@@ -3500,10 +3415,12 @@
     /// - `p` the point to rotate about
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_rotate_2&gt;
-    </span><span class="kw">pub fn </span>rotate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, degrees: scalar, p: <span class="prelude-ty">Option</span>&lt;Point&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="kw">match </span>p {
-            <span class="prelude-val">Some</span>(point) =&gt; <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().rotate1(degrees, point.x, point.y) },
-            <span class="prelude-val">None </span>=&gt; <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().rotate(degrees) },
+    </span><span class="kw">pub fn </span>rotate(<span class="kw-2">&amp;</span><span class="self">self</span>, degrees: scalar, p: <span class="prelude-ty">Option</span>&lt;Point&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{
+            <span class="kw">match </span>p {
+                <span class="prelude-val">Some</span>(point) =&gt; <span class="self">self</span>.native_mut().rotate1(degrees, point.x, point.y),
+                <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.native_mut().rotate(degrees),
+            }
         }
         <span class="self">self
     </span>}
@@ -3521,7 +3438,7 @@
     /// - `sy` amount to skew on y-axis
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_skew&gt;
-    </span><span class="kw">pub fn </span>skew(<span class="kw-2">&amp;mut </span><span class="self">self</span>, (sx, sy): (scalar, scalar)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>skew(<span class="kw-2">&amp;</span><span class="self">self</span>, (sx, sy): (scalar, scalar)) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().skew(sx, sy) }
         <span class="self">self
     </span>}
@@ -3534,12 +3451,12 @@
     /// - `matrix` matrix to premultiply with existing [`Matrix`]
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_concat&gt;
-    </span><span class="kw">pub fn </span>concat(<span class="kw-2">&amp;mut </span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>concat(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().concat(matrix.native()) }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>concat_44(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: <span class="kw-2">&amp;</span>M44) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>concat_44(<span class="kw-2">&amp;</span><span class="self">self</span>, m: <span class="kw-2">&amp;</span>M44) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().concat1(m.native()) }
         <span class="self">self
     </span>}
@@ -3550,7 +3467,7 @@
     /// - `matrix` matrix to copy, replacing existing [`Matrix`]
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_setMatrix&gt;
-    </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;mut </span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>M44) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>M44) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setMatrix(matrix.native()) }
         <span class="self">self
     </span>}
@@ -3559,7 +3476,7 @@
     /// Any prior matrix state is overwritten.
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_resetMatrix&gt;
-    </span><span class="kw">pub fn </span>reset_matrix(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>reset_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().resetMatrix() }
         <span class="self">self
     </span>}
@@ -3574,11 +3491,11 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_clipRect&gt;
     </span><span class="kw">pub fn </span>clip_rect(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;,
         do_anti_alias: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().clipRect(
                 rect.as_ref().native(),
@@ -3589,11 +3506,7 @@
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>clip_irect(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        irect: <span class="kw">impl </span>AsRef&lt;IRect&gt;,
-        op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>clip_irect(<span class="kw-2">&amp;</span><span class="self">self</span>, irect: <span class="kw">impl </span>AsRef&lt;IRect&gt;, op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>r = Rect::from(<span class="kw-2">*</span>irect.as_ref());
         <span class="self">self</span>.clip_rect(r, op, <span class="bool-val">false</span>)
     }
@@ -3609,11 +3522,11 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_clipRRect&gt;
     </span><span class="kw">pub fn </span>clip_rrect(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         rrect: <span class="kw">impl </span>AsRef&lt;RRect&gt;,
         op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;,
         do_anti_alias: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().clipRRect(
                 rrect.as_ref().native(),
@@ -3636,11 +3549,11 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_clipPath&gt;
     </span><span class="kw">pub fn </span>clip_path(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         path: <span class="kw-2">&amp;</span>Path,
         op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;,
         do_anti_alias: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().clipPath(
                 path.native(),
@@ -3651,11 +3564,7 @@
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>clip_shader(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        shader: <span class="kw">impl </span>Into&lt;Shader&gt;,
-        op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>clip_shader(<span class="kw-2">&amp;</span><span class="self">self</span>, shader: <span class="kw">impl </span>Into&lt;Shader&gt;, op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             sb::C_SkCanvas_clipShader(
                 <span class="self">self</span>.native_mut(),
@@ -3674,7 +3583,7 @@
     /// - `op` [`ClipOp`] to apply to clip
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_clipRegion&gt;
-    </span><span class="kw">pub fn </span>clip_region(<span class="kw-2">&amp;mut </span><span class="self">self</span>, device_rgn: <span class="kw-2">&amp;</span>Region, op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>clip_region(<span class="kw-2">&amp;</span><span class="self">self</span>, device_rgn: <span class="kw-2">&amp;</span>Region, op: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ClipOp&gt;&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .clipRegion(device_rgn.native(), op.into().unwrap_or_default())
@@ -3718,10 +3627,10 @@
     /// - `color` [`Color4f`] representing unpremultiplied color.
     /// - `mode` [`BlendMode`] used to combine source color and destination
     </span><span class="kw">pub fn </span>draw_color(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         color: <span class="kw">impl </span>Into&lt;Color4f&gt;,
         mode: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;BlendMode&gt;&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawColor(<span class="kw-2">&amp;</span>color.into().into_native(), mode.into().unwrap_or_default())
@@ -3733,7 +3642,7 @@
     /// This has the effect of replacing all pixels contained by clip with `color`.
     ///
     /// - `color` [`Color4f`] representing unpremultiplied color.
-    </span><span class="kw">pub fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>, color: <span class="kw">impl </span>Into&lt;Color4f&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>clear(<span class="kw-2">&amp;</span><span class="self">self</span>, color: <span class="kw">impl </span>Into&lt;Color4f&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="self">self</span>.draw_color(color, BlendMode::Src)
     }
 
@@ -3748,7 +3657,7 @@
     /// cached data associated with [`Surface`] or `BaseDevice`.
     /// It is not necessary to call `discard()` once done with [`Canvas`];
     /// any cached data is deleted when owning [`Surface`] or `BaseDevice` is deleted.
-    </span><span class="kw">pub fn </span>discard(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>discard(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ sb::C_SkCanvas_discard(<span class="self">self</span>.native_mut()) }
         <span class="self">self
     </span>}
@@ -3760,7 +3669,7 @@
     /// - `paint` graphics state used to fill [`Canvas`]
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawPaint&gt;
-    </span><span class="kw">pub fn </span>draw_paint(<span class="kw-2">&amp;mut </span><span class="self">self</span>, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_paint(<span class="kw-2">&amp;</span><span class="self">self</span>, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().drawPaint(paint.native()) }
         <span class="self">self
     </span>}
@@ -3794,7 +3703,7 @@
     /// - `paint` stroke, blend, color, and so on, used to draw
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawPoints&gt;
-    </span><span class="kw">pub fn </span>draw_points(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mode: PointMode, pts: <span class="kw-2">&amp;</span>[Point], paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_points(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: PointMode, pts: <span class="kw-2">&amp;</span>[Point], paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawPoints(mode, pts.len(), pts.native().as_ptr(), paint.native())
@@ -3812,7 +3721,7 @@
     ///
     /// - `p` top-left edge of circle or square
     /// - `paint` stroke, blend, color, and so on, used to draw
-    </span><span class="kw">pub fn </span>draw_point(<span class="kw-2">&amp;mut </span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;Point&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_point(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw">impl </span>Into&lt;Point&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>p = p.into();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().drawPoint(p.x, p.y, paint.native()) }
         <span class="self">self
@@ -3826,12 +3735,7 @@
     /// - `p1` start of line segment
     /// - `p2` end of line segment
     /// - `paint` stroke, blend, color, and so on, used to draw
-    </span><span class="kw">pub fn </span>draw_line(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        p1: <span class="kw">impl </span>Into&lt;Point&gt;,
-        p2: <span class="kw">impl </span>Into&lt;Point&gt;,
-        paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_line(<span class="kw-2">&amp;</span><span class="self">self</span>, p1: <span class="kw">impl </span>Into&lt;Point&gt;, p2: <span class="kw">impl </span>Into&lt;Point&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>(p1, p2) = (p1.into(), p2.into());
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
@@ -3849,7 +3753,7 @@
     /// - `paint` stroke or fill, blend, color, and so on, used to draw
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawRect&gt;
-    </span><span class="kw">pub fn </span>draw_rect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawRect(rect.as_ref().native(), paint.native())
@@ -3864,7 +3768,7 @@
     ///
     /// - `rect` rectangle to draw
     /// - `paint` stroke or fill, blend, color, and so on, used to draw
-    </span><span class="kw">pub fn </span>draw_irect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_irect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;IRect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="self">self</span>.draw_rect(Rect::from(<span class="kw-2">*</span>rect.as_ref()), paint)
     }
 
@@ -3877,7 +3781,7 @@
     /// - `paint` [`Paint`] stroke or fill, blend, color, and so on, used to draw
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawRegion&gt;
-    </span><span class="kw">pub fn </span>draw_region(<span class="kw-2">&amp;mut </span><span class="self">self</span>, region: <span class="kw-2">&amp;</span>Region, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_region(<span class="kw-2">&amp;</span><span class="self">self</span>, region: <span class="kw-2">&amp;</span>Region, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawRegion(region.native(), paint.native())
@@ -3893,7 +3797,7 @@
     /// - `paint` [`Paint`] stroke or fill, blend, color, and so on, used to draw
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawOval&gt;
-    </span><span class="kw">pub fn </span>draw_oval(<span class="kw-2">&amp;mut </span><span class="self">self</span>, oval: <span class="kw">impl </span>AsRef&lt;Rect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_oval(<span class="kw-2">&amp;</span><span class="self">self</span>, oval: <span class="kw">impl </span>AsRef&lt;Rect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawOval(oval.as_ref().native(), paint.native())
@@ -3912,7 +3816,7 @@
     /// - `paint` [`Paint`] stroke or fill, blend, color, and so on, used to draw
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawRRect&gt;
-    </span><span class="kw">pub fn </span>draw_rrect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rrect: <span class="kw">impl </span>AsRef&lt;RRect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_rrect(<span class="kw-2">&amp;</span><span class="self">self</span>, rrect: <span class="kw">impl </span>AsRef&lt;RRect&gt;, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawRRect(rrect.as_ref().native(), paint.native())
@@ -3939,11 +3843,11 @@
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawDRRect_a&gt;
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawDRRect_b&gt;
     </span><span class="kw">pub fn </span>draw_drrect(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         outer: <span class="kw">impl </span>AsRef&lt;RRect&gt;,
         inner: <span class="kw">impl </span>AsRef&lt;RRect&gt;,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawDRRect(
                 outer.as_ref().native(),
@@ -3962,12 +3866,7 @@
     /// - `center` circle center
     /// - `radius` half the diameter of circle
     /// - `paint` [`Paint`] stroke or fill, blend, color, and so on, used to draw
-    </span><span class="kw">pub fn </span>draw_circle(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        center: <span class="kw">impl </span>Into&lt;Point&gt;,
-        radius: scalar,
-        paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_circle(<span class="kw-2">&amp;</span><span class="self">self</span>, center: <span class="kw">impl </span>Into&lt;Point&gt;, radius: scalar, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>center = center.into();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
@@ -3996,13 +3895,13 @@
     /// - `use_center` if `true`, include the center of the oval
     /// - `paint` [`Paint`] stroke or fill, blend, color, and so on, used to draw
     </span><span class="kw">pub fn </span>draw_arc(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         oval: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         start_angle: scalar,
         sweep_angle: scalar,
         use_center: bool,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawArc(
                 oval.as_ref().native(),
@@ -4032,12 +3931,12 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawRoundRect&gt;
     </span><span class="kw">pub fn </span>draw_round_rect(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         rx: scalar,
         ry: scalar,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawRoundRect(rect.as_ref().native(), rx, ry, paint.native())
@@ -4058,28 +3957,28 @@
     /// - `paint` stroke, blend, color, and so on, used to draw
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawPath&gt;
-    </span><span class="kw">pub fn </span>draw_path(<span class="kw-2">&amp;mut </span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().drawPath(path.native(), paint.native()) }
         <span class="self">self
     </span>}
 
     <span class="kw">pub fn </span>draw_image(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
         left_top: <span class="kw">impl </span>Into&lt;Point&gt;,
         paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>left_top = left_top.into();
         <span class="self">self</span>.draw_image_with_sampling_options(image, left_top, SamplingOptions::default(), paint)
     }
 
     <span class="kw">pub fn </span>draw_image_rect(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
         src: <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>Rect, SrcRectConstraint)&gt;,
         dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="self">self</span>.draw_image_rect_with_sampling_options(
             image,
             src,
@@ -4090,12 +3989,12 @@
     }
 
     <span class="kw">pub fn </span>draw_image_with_sampling_options(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
         left_top: <span class="kw">impl </span>Into&lt;Point&gt;,
         sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;,
         paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>left_top = left_top.into();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawImage(
@@ -4110,13 +4009,13 @@
     </span>}
 
     <span class="kw">pub fn </span>draw_image_rect_with_sampling_options(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
         src: <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>Rect, SrcRectConstraint)&gt;,
         dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         sampling: <span class="kw">impl </span>Into&lt;SamplingOptions&gt;,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>sampling = sampling.into();
         <span class="kw">match </span>src {
             <span class="prelude-val">Some</span>((src, constraint)) =&gt; <span class="kw">unsafe </span>{
@@ -4164,13 +4063,13 @@
     /// - `paint` [`Paint`] containing [`BlendMode`], [`crate::ColorFilter`], [`ImageFilter`],
     ///    and so on; or `None`
     </span><span class="kw">pub fn </span>draw_image_nine(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
         center: <span class="kw">impl </span>AsRef&lt;IRect&gt;,
         dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         filter_mode: FilterMode,
         paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawImageNine(
                 image.as_ref().native(),
@@ -4210,13 +4109,13 @@
     /// - `paint` [`Paint`] containing [`BlendMode`], [`crate::ColorFilter`], [`ImageFilter`],
     /// and so on; or `None`
     </span><span class="kw">pub fn </span>draw_image_lattice(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
         lattice: <span class="kw-2">&amp;</span>Lattice,
         dst: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         filter: FilterMode,
         paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawImageLattice(
                 image.as_ref().native(),
@@ -4251,12 +4150,12 @@
     /// - `font` typeface, text size and so, used to describe the text
     /// - `paint` blend, color, and so on, used to draw
     </span><span class="kw">pub fn </span>draw_str(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         str: <span class="kw">impl </span>AsRef&lt;str&gt;,
         origin: <span class="kw">impl </span>Into&lt;Point&gt;,
         font: <span class="kw-2">&amp;</span>Font,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="comment">// rust specific, based on drawSimpleText with fixed UTF8 encoding,
         // implementation is similar to Font&#39;s *_str methods.
         </span><span class="kw">let </span>origin = origin.into();
@@ -4297,7 +4196,7 @@
     /// - `paint`           blend, color, and so on, used to draw
     </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">pub fn </span>draw_glyphs_utf8(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         glyphs: <span class="kw-2">&amp;</span>[GlyphId],
         positions: <span class="kw-2">&amp;</span>[Point],
         clusters: <span class="kw-2">&amp;</span>[u32],
@@ -4349,7 +4248,7 @@
     /// - `font`        typeface, text size and so, used to describe the text
     /// - `paint`       blend, color, and so on, used to draw
     </span><span class="kw">pub fn </span>draw_glyphs_at&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         glyphs: <span class="kw-2">&amp;</span>[GlyphId],
         positions: <span class="kw">impl </span>Into&lt;GlyphPositions&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
         origin: <span class="kw">impl </span>Into&lt;Point&gt;,
@@ -4416,11 +4315,11 @@
     /// - `origin` horizontal and vertical offset applied to blob
     /// - `paint` blend, color, stroking, and so on, used to draw
     </span><span class="kw">pub fn </span>draw_text_blob(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         blob: <span class="kw">impl </span>AsRef&lt;TextBlob&gt;,
         origin: <span class="kw">impl </span>Into&lt;Point&gt;,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>origin = origin.into();
         <span class="attr">#[cfg(all(feature = <span class="string">&quot;textlayout&quot;</span>, feature = <span class="string">&quot;embed-icudtl&quot;</span>))]
         </span><span class="kw">crate</span>::icu::init();
@@ -4447,11 +4346,11 @@
     /// - `matrix` [`Matrix`] to rotate, scale, translate, and so on; may be `None`
     /// - `paint` [`Paint`] to apply transparency, filtering, and so on; may be `None`
     </span><span class="kw">pub fn </span>draw_picture(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         picture: <span class="kw">impl </span>AsRef&lt;Picture&gt;,
         matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Matrix&gt;,
         paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawPicture(
                 picture.as_ref().native(),
@@ -4481,12 +4380,7 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawVertices&gt;
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawVertices_2&gt;
-    </span><span class="kw">pub fn </span>draw_vertices(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        vertices: <span class="kw-2">&amp;</span>Vertices,
-        mode: BlendMode,
-        paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_vertices(<span class="kw-2">&amp;</span><span class="self">self</span>, vertices: <span class="kw-2">&amp;</span>Vertices, mode: BlendMode, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawVertices(vertices.native(), mode, paint.native())
@@ -4523,13 +4417,13 @@
     ///    not. Ignored if colors is `None`.
     /// - `paint` [`Shader`], [`crate::ColorFilter`], [`BlendMode`], used to draw
     </span><span class="kw">pub fn </span>draw_patch&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         cubics: <span class="kw-2">&amp;</span>[Point; <span class="number">12</span>],
         colors: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Color; <span class="number">4</span>]&gt;&gt;,
         tex_coords: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[Point; <span class="number">4</span>]&gt;,
         mode: BlendMode,
         paint: <span class="kw-2">&amp;</span>Paint,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    ) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>colors = colors
             .into()
             .map(|c| c.native().as_ptr())
@@ -4562,7 +4456,7 @@
     /// - `matrix` transformation applied to drawing; may be `None`
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawDrawable&gt;
-    </span><span class="kw">pub fn </span>draw_drawable(<span class="kw-2">&amp;mut </span><span class="self">self</span>, drawable: <span class="kw-2">&amp;mut </span>Drawable, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Matrix&gt;) {
+    </span><span class="kw">pub fn </span>draw_drawable(<span class="kw-2">&amp;</span><span class="self">self</span>, drawable: <span class="kw-2">&amp;mut </span>Drawable, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Matrix&gt;) {
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .drawDrawable(drawable.native_mut(), matrix.native_ptr_or_null())
@@ -4580,7 +4474,7 @@
     /// - `offset` offset into [`Canvas`] writable pixels on x,y-axis
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_drawDrawable_2&gt;
-    </span><span class="kw">pub fn </span>draw_drawable_at(<span class="kw-2">&amp;mut </span><span class="self">self</span>, drawable: <span class="kw-2">&amp;mut </span>Drawable, offset: <span class="kw">impl </span>Into&lt;Point&gt;) {
+    </span><span class="kw">pub fn </span>draw_drawable_at(<span class="kw-2">&amp;</span><span class="self">self</span>, drawable: <span class="kw-2">&amp;mut </span>Drawable, offset: <span class="kw">impl </span>Into&lt;Point&gt;) {
         <span class="kw">let </span>offset = offset.into();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
@@ -4597,12 +4491,7 @@
     /// - `rect` [`Rect`] extent of canvas to annotate
     /// - `key` string used for lookup
     /// - `value` data holding value stored in annotation
-    </span><span class="kw">pub fn </span>draw_annotation(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
-        key: <span class="kw-2">&amp;</span>str,
-        value: <span class="kw-2">&amp;</span>Data,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>draw_annotation(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;, key: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>Data) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">let </span>key = CString::new(key).unwrap();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut().drawAnnotation(
@@ -4674,7 +4563,10 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>own_from_native_ptr&lt;<span class="lifetime">&#39;lt</span>&gt;(native: <span class="kw-2">*mut </span>SkCanvas) -&gt; <span class="prelude-ty">Option</span>&lt;OwnedCanvas&lt;<span class="lifetime">&#39;lt</span>&gt;&gt; {
         <span class="kw">if </span>!native.is_null() {
             <span class="prelude-val">Some</span>(OwnedCanvas::&lt;<span class="lifetime">&#39;lt</span>&gt;(
-                ptr::NonNull::new(<span class="self">Self</span>::borrow_from_native_mut(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>native })).unwrap(),
+                ptr::NonNull::new(
+                    <span class="self">Self</span>::borrow_from_native(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>native }) <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_
+                </span>)
+                .unwrap(),
                 PhantomData,
             ))
         } <span class="kw">else </span>{
@@ -4684,10 +4576,6 @@
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>borrow_from_native(native: <span class="kw-2">&amp;</span>SkCanvas) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ transmute_ref(native) }
-    }
-
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>borrow_from_native_mut(native: <span class="kw-2">&amp;mut </span>SkCanvas) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ transmute_ref_mut(native) }
     }
 }
 
@@ -4724,12 +4612,12 @@
 <span class="kw">pub trait </span>SetMatrix {
     <span class="doccomment">/// DEPRECATED -- use [`M44`] version
     </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.38.0&quot;</span>, note = <span class="string">&quot;Use M44 version&quot;</span>)]
-    </span><span class="kw">fn </span>set_matrix(<span class="kw-2">&amp;mut </span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
+    </span><span class="kw">fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>;
 }
 
 <span class="kw">impl </span>SetMatrix <span class="kw">for </span>Canvas {
     <span class="doccomment">/// DEPRECATED -- use [`M44`] version
-    </span><span class="kw">fn </span>set_matrix(<span class="kw-2">&amp;mut </span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().setMatrix1(matrix.native()) }
         <span class="self">self
     </span>}
@@ -4810,19 +4698,13 @@
 /// goes out of scope. Use this to guarantee that the canvas is restored to a known
 /// state.
 </span><span class="kw">pub struct </span>AutoRestoredCanvas&lt;<span class="lifetime">&#39;a</span>&gt; {
-    canvas: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Canvas,
+    canvas: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Canvas,
     restore: SkAutoCanvasRestore,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Deref <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="kw">type </span>Target = Canvas;
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
-        <span class="self">self</span>.canvas
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; DerefMut <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
         <span class="self">self</span>.canvas
     }
 }
@@ -4863,7 +4745,7 @@
     /// - `canvas` [`Canvas`] to guard
     /// - `do_save` call [`Canvas::save()`]
     /// Returns utility to restore [`Canvas`] state on destructor
-    </span><span class="kw">pub fn </span>guard(canvas: <span class="kw-2">&amp;mut </span>Canvas, do_save: bool) -&gt; AutoRestoredCanvas {
+    </span><span class="kw">pub fn </span>guard(canvas: <span class="kw-2">&amp;</span>Canvas, do_save: bool) -&gt; AutoRestoredCanvas {
         <span class="kw">let </span>restore = construct(|acr| <span class="kw">unsafe </span>{
             sb::C_SkAutoCanvasRestore_Construct(acr, canvas.native_mut(), do_save)
         });
@@ -4885,7 +4767,7 @@
         <span class="macro">assert_eq!</span>(<span class="number">8</span>, info.min_row_bytes());
         <span class="kw">let </span><span class="kw-2">mut </span>bytes: [u8; <span class="number">8 </span>* <span class="number">2</span>] = Default::default();
         {
-            <span class="kw">let </span><span class="kw-2">mut </span>canvas = Canvas::from_raster_direct(<span class="kw-2">&amp;</span>info, bytes.as_mut(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
+            <span class="kw">let </span>canvas = Canvas::from_raster_direct(<span class="kw-2">&amp;</span>info, bytes.as_mut(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
             canvas.clear(Color::RED);
         }
 
@@ -4899,7 +4781,7 @@
     </span><span class="kw">fn </span>test_raster_direct_n32_creation_and_clear_in_memory() {
         <span class="kw">let </span><span class="kw-2">mut </span>pixels: [u32; <span class="number">4</span>] = Default::default();
         {
-            <span class="kw">let </span><span class="kw-2">mut </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
+            <span class="kw">let </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
             canvas.clear(Color::RED);
         }
 
@@ -4926,20 +4808,20 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_make_surface() {
         <span class="kw">let </span><span class="kw-2">mut </span>pixels: [u32; <span class="number">4</span>] = Default::default();
-        <span class="kw">let </span><span class="kw-2">mut </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
+        <span class="kw">let </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span>ii = canvas.image_info();
         <span class="kw">let </span><span class="kw-2">mut </span>surface = canvas.new_surface(<span class="kw-2">&amp;</span>ii, <span class="prelude-val">None</span>).unwrap();
-        <span class="macro">dbg!</span>(<span class="kw-2">&amp;mut </span>canvas <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span>canvas <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
         drop(canvas);
 
         <span class="kw">let </span>canvas = surface.canvas();
-        <span class="macro">dbg!</span>(canvas <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="macro">dbg!</span>(canvas <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
         canvas.clear(Color::RED);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>clip_options_overloads() {
-        <span class="kw">let </span><span class="kw-2">mut </span>c = OwnedCanvas::default();
+        <span class="kw">let </span>c = OwnedCanvas::default();
         <span class="comment">// do_anti_alias
         </span>c.clip_rect(Rect::default(), <span class="prelude-val">None</span>, <span class="bool-val">true</span>);
         <span class="comment">// clip_op

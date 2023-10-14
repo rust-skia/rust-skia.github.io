@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_gl_framebuffer_info","make_gl"]};
+window.SIDEBAR_ITEMS = {"fn":["get_gl_framebuffer_info","get_vk_image_info","make_gl","make_vk","set_vk_image_layout"]};
