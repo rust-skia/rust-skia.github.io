@@ -1588,20 +1588,6 @@
 <a href="#1588" id="1588">1588</a>
 <a href="#1589" id="1589">1589</a>
 <a href="#1590" id="1590">1590</a>
-<a href="#1591" id="1591">1591</a>
-<a href="#1592" id="1592">1592</a>
-<a href="#1593" id="1593">1593</a>
-<a href="#1594" id="1594">1594</a>
-<a href="#1595" id="1595">1595</a>
-<a href="#1596" id="1596">1596</a>
-<a href="#1597" id="1597">1597</a>
-<a href="#1598" id="1598">1598</a>
-<a href="#1599" id="1599">1599</a>
-<a href="#1600" id="1600">1600</a>
-<a href="#1601" id="1601">1601</a>
-<a href="#1602" id="1602">1602</a>
-<a href="#1603" id="1603">1603</a>
-<a href="#1604" id="1604">1604</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     gpu, prelude::<span class="kw-2">*</span>, AlphaType, Bitmap, ColorSpace, ColorType, Data, EncodedImageFormat, IPoint,
     IRect, ISize, ImageFilter, ImageGenerator, ImageInfo, Matrix, Paint, Picture, Pixmap,
@@ -3103,26 +3089,12 @@
     </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.67.0&quot;</span>, note = <span class="string">&quot;use images::make_with_filter()&quot;</span>)]
     </span><span class="kw">pub fn </span>new_with_filter(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="kw-2">mut </span>context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>gpu::RecordingContext&gt;,
+        _context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>gpu::RecordingContext&gt;,
         filter: <span class="kw-2">&amp;</span>ImageFilter,
         clip_bounds: <span class="kw">impl </span>Into&lt;IRect&gt;,
         subset: <span class="kw">impl </span>Into&lt;IRect&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;(Image, IRect, IPoint)&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>out_subset = IRect::default();
-        <span class="kw">let </span><span class="kw-2">mut </span>offset = IPoint::default();
-
-        Image::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkImage_makeWithFilter(
-                <span class="self">self</span>.native(),
-                context.native_ptr_or_null_mut(),
-                filter.native(),
-                subset.into().native(),
-                clip_bounds.into().native(),
-                out_subset.native_mut(),
-                offset.native_mut(),
-            )
-        })
-        .map(|image| (image, out_subset, offset))
+        images::make_with_filter(<span class="self">self</span>, filter, subset.into(), clip_bounds.into())
     }
 
     <span class="comment">// TODO: MakeBackendTextureFromSkImage()

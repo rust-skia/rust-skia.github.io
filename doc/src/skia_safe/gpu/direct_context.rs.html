@@ -469,6 +469,8 @@
 <a href="#469" id="469">469</a>
 <a href="#470" id="470">470</a>
 <a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     fmt,
     ops::{Deref, DerefMut},
@@ -486,7 +488,7 @@
 </span><span class="kw">use </span><span class="kw">super</span>::vk;
 <span class="kw">use super</span>::{
     BackendFormat, BackendRenderTarget, BackendTexture, ContextOptions, FlushInfo,
-    MutableTextureState, RecordingContext, SemaphoresSubmitted,
+    MutableTextureState, PurgeResourceOptions, RecordingContext, SemaphoresSubmitted, SyncCpu,
 };
 <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, surfaces, Data, Image, Surface, TextureCompressionType};
 
@@ -554,17 +556,13 @@
 }
 
 <span class="kw">impl </span>DirectContext {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;gl&quot;</span>)]
+    <span class="comment">// Deprecated in Skia
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;gl&quot;</span>)]
     </span><span class="kw">pub fn </span>new_gl&lt;<span class="lifetime">&#39;a</span>&gt;(
         interface: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;gl::Interface&gt;&gt;,
         options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ContextOptions&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;DirectContext&gt; {
-        DirectContext::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_GrDirectContext_MakeGL(
-                interface.into().into_ptr_or_null(),
-                options.into().native_ptr_or_null(),
-            )
-        })
+        <span class="kw">crate</span>::gpu::direct_contexts::make_gl(interface, options)
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;vulkan&quot;</span>)]
@@ -625,6 +623,10 @@
         }
         <span class="self">self
     </span>}
+
+    <span class="kw">pub fn </span>is_device_lost(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().isDeviceLost() }
+    }
 
     <span class="comment">// TODO: threadSafeProxy()
 
@@ -694,33 +696,32 @@
     <span class="kw">pub fn </span>perform_deferred_cleanup(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         not_used: Duration,
-        scratch_resources_only: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
+        opts: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;PurgeResourceOptions&gt;&gt;,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             sb::C_GrDirectContext_performDeferredCleanup(
                 <span class="self">self</span>.native_mut(),
                 not_used.as_millis().try_into().unwrap(),
-                scratch_resources_only.into().unwrap_or(<span class="bool-val">false</span>),
+                opts.into().unwrap_or(PurgeResourceOptions::AllResources),
             )
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>purge_unlocked_resources(
+    <span class="kw">pub fn </span>purge_unlocked_resource_bytes(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        bytes_to_purge: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+        bytes_to_purge: usize,
         prefer_scratch_resources: bool,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">match </span>bytes_to_purge {
-                <span class="prelude-val">Some</span>(bytes_to_purge) =&gt; <span class="self">self
-                    </span>.native_mut()
-                    .purgeUnlockedResources(bytes_to_purge, prefer_scratch_resources),
-                <span class="prelude-val">None </span>=&gt; <span class="self">self
-                    </span>.native_mut()
-                    .purgeUnlockedResources1(prefer_scratch_resources),
-            }
+            <span class="self">self</span>.native_mut()
+                .purgeUnlockedResources(bytes_to_purge, prefer_scratch_resources)
         }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>purge_unlocked_resources(<span class="kw-2">&amp;mut </span><span class="self">self</span>, opts: PurgeResourceOptions) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().purgeUnlockedResources1(opts) }
         <span class="self">self
     </span>}
 
@@ -733,7 +734,7 @@
 
     <span class="kw">pub fn </span>flush_submit_and_sync_cpu(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.flush(<span class="kw-2">&amp;</span>FlushInfo::default());
-        <span class="self">self</span>.submit(<span class="bool-val">true</span>);
+        <span class="self">self</span>.submit(SyncCpu::Yes);
         <span class="self">self
     </span>}
 
@@ -795,7 +796,7 @@
         new_state: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MutableTextureState&gt;,
     ) -&gt; SemaphoresSubmitted {
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.native_mut().flush5(
+            <span class="self">self</span>.native_mut().flush4(
                 surface.native_mut(),
                 info.native(),
                 new_state.native_ptr_or_null(),
@@ -806,20 +807,23 @@
     <span class="kw">pub fn </span>flush_and_submit_surface(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         surface: <span class="kw-2">&amp;mut </span>Surface,
-        sync_cpu: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
+        sync_cpu: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;SyncCpu&gt;&gt;,
     ) {
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
-                .flushAndSubmit1(surface.native_mut(), sync_cpu.into().unwrap_or(<span class="bool-val">false</span>))
+                .flushAndSubmit1(surface.native_mut(), sync_cpu.into().unwrap_or(SyncCpu::No))
         }
     }
 
     <span class="kw">pub fn </span>flush_surface(<span class="kw-2">&amp;mut </span><span class="self">self</span>, surface: <span class="kw-2">&amp;mut </span>Surface) {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().flush7(surface.native_mut()) }
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().flush5(surface.native_mut()) }
     }
 
-    <span class="kw">pub fn </span>submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, sync_cpu: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;) -&gt; bool {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().submit(sync_cpu.into().unwrap_or(<span class="bool-val">false</span>)) }
+    <span class="kw">pub fn </span>submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, sync_cpu: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;SyncCpu&gt;&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .submit(sync_cpu.into().unwrap_or(SyncCpu::No))
+        }
     }
 
     <span class="kw">pub fn </span>check_async_work_completion(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {

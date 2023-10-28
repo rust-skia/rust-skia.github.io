@@ -220,9 +220,8 @@
         <span class="kw">unsafe </span>{
             <span class="comment">// constructor not available.
             </span><span class="kw">let </span><span class="kw-2">mut </span>image_info = ImageInfo::default();
-            texture
-                .native()
-                .getVkImageInfo(image_info.native_mut())
+
+            sb::C_GrBackendTextures_GetVkImageInfo(texture.native(), image_info.native_mut())
                 .if_true_some(image_info)
         }
     }
@@ -231,7 +230,7 @@
         texture: <span class="kw-2">&amp;mut </span>BackendTexture,
         layout: ImageLayout,
     ) -&gt; <span class="kw-2">&amp;mut </span>BackendTexture {
-        <span class="kw">unsafe </span>{ texture.native_mut().setVkImageLayout(layout) }
+        <span class="kw">unsafe </span>{ sb::C_GrBackendTextures_SetVkImageLayout(texture.native_mut(), layout) }
         texture
     }
 }
@@ -255,14 +254,15 @@
 
     <span class="kw">pub fn </span>get_vk_image_info(target: <span class="kw-2">&amp;</span>BackendRenderTarget) -&gt; <span class="prelude-ty">Option</span>&lt;ImageInfo&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>info = ImageInfo::default();
-        <span class="kw">unsafe </span>{ target.native().getVkImageInfo(info.native_mut()) }.if_true_some(info)
+        <span class="kw">unsafe </span>{ sb::C_GrBackendRenderTargets_GetVkImageInfo(target.native(), info.native_mut()) }
+            .if_true_some(info)
     }
 
     <span class="kw">pub fn </span>set_vk_image_layout(
         target: <span class="kw-2">&amp;mut </span>BackendRenderTarget,
         layout: ImageLayout,
     ) -&gt; <span class="kw-2">&amp;mut </span>BackendRenderTarget {
-        <span class="kw">unsafe </span>{ target.native_mut().setVkImageLayout(layout) }
+        <span class="kw">unsafe </span>{ sb::C_GrBackendRenderTargets_SetVkImageLayout(target.native_mut(), layout) }
         target
     }
 }

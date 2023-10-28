@@ -294,14 +294,97 @@
 <a href="#294" id="294">294</a>
 <a href="#295" id="295">295</a>
 <a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
 </pre></div><pre class="rust"><code><span class="kw">pub mod </span>pdf {
     <span class="kw">use crate</span>::{
         interop::{AsStr, DynamicMemoryWStream, SetStr},
         prelude::<span class="kw-2">*</span>,
-        scalar, Document,
+        scalar, Document, MILESTONE,
     };
     <span class="kw">use </span>skia_bindings::{
-        <span class="self">self </span><span class="kw">as </span>sb, SkPDF_AttributeList, SkPDF_Metadata, SkPDF_StructureElementNode,
+        <span class="self">self </span><span class="kw">as </span>sb, SkPDF_AttributeList, SkPDF_DateTime, SkPDF_Metadata, SkPDF_StructureElementNode,
     };
     <span class="kw">use </span>std::{ffi::CString, fmt, mem, ptr};
 
@@ -326,7 +409,12 @@
         }
     }
 
-    <span class="kw">impl </span>AttributeList {
+    <span class="doccomment">/// Attributes for nodes in the PDF tree.
+    ///
+    /// Each attribute must have an owner (e.g. &quot;Layout&quot;, &quot;List&quot;, &quot;Table&quot;, etc)
+    /// and an attribute name (e.g. &quot;BBox&quot;, &quot;RowSpan&quot;, etc.) from PDF32000_2008 14.8.5,
+    /// and then a value of the proper type according to the spec.
+    </span><span class="kw">impl </span>AttributeList {
         <span class="kw">pub fn </span>append_int(
             <span class="kw-2">&amp;mut </span><span class="self">self</span>,
             owner: <span class="kw">impl </span>AsRef&lt;str&gt;,
@@ -417,7 +505,11 @@
         }
     }
 
-    <span class="kw">impl </span>StructureElementNode {
+    <span class="doccomment">/// A node in a PDF structure tree, giving a semantic representation
+    /// of the content.  Each node ID is associated with content
+    /// by passing the [`crate::Canvas`] and node ID to [`Self::set_node_id()`] when drawing.
+    /// NodeIDs should be unique within each tree.
+    </span><span class="kw">impl </span>StructureElementNode {
         <span class="kw">pub fn </span>new(type_string: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="self">Self </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">Self</span>::default();
             node.set_type_string(type_string);
@@ -500,27 +592,104 @@
         }
     }
 
-    <span class="kw">pub use </span><span class="kw">crate</span>::DateTime;
-
-    <span class="attr">#[derive(Default, Debug)]
-    </span><span class="kw">pub struct </span>Metadata {
-        <span class="kw">pub </span>title: String,
-        <span class="kw">pub </span>author: String,
-        <span class="kw">pub </span>subject: String,
-        <span class="kw">pub </span>keywords: String,
-        <span class="kw">pub </span>creator: String,
-        <span class="kw">pub </span>producer: String,
-        <span class="kw">pub </span>creation: <span class="prelude-ty">Option</span>&lt;DateTime&gt;,
-        <span class="kw">pub </span>modified: <span class="prelude-ty">Option</span>&lt;DateTime&gt;,
-        <span class="kw">pub </span>raster_dpi: <span class="prelude-ty">Option</span>&lt;scalar&gt;,
-        <span class="kw">pub </span>pdfa: bool,
-        <span class="kw">pub </span>encoding_quality: <span class="prelude-ty">Option</span>&lt;i32&gt;,
-        <span class="comment">// TODO: this is not supported yet
-        </span>structure_element_tree_root: <span class="prelude-ty">Option</span>&lt;StructureElementNode&gt;,
+    <span class="attr">#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+    #[repr(C)]
+    </span><span class="kw">pub struct </span>DateTime {
+        <span class="doccomment">/// The number of minutes that this is ahead of or behind UTC.
+        </span><span class="kw">pub </span>time_zone_minutes: i16,
+        <span class="doccomment">/// e.g. 2005
+        </span><span class="kw">pub </span>year: u16,
+        <span class="doccomment">/// 1..12
+        </span><span class="kw">pub </span>month: u8,
+        <span class="doccomment">/// 0..6, 0==Sunday
+        </span><span class="kw">pub </span>day_of_week: u8,
+        <span class="doccomment">/// 1..31
+        </span><span class="kw">pub </span>day: u8,
+        <span class="doccomment">/// 0..23
+        </span><span class="kw">pub </span>hour: u8,
+        <span class="doccomment">/// 0..59
+        </span><span class="kw">pub </span>minute: u8,
+        <span class="doccomment">/// 0..59
+        </span><span class="kw">pub </span>second: u8,
     }
 
-    <span class="comment">// TODO: SetNodeId
+    <span class="macro">native_transmutable!</span>(SkPDF_DateTime, DateTime, date_time_layout);
 
+    <span class="doccomment">/// Optional metadata to be passed into the PDF factory function.
+    </span><span class="attr">#[derive(Debug)]
+    </span><span class="kw">pub struct </span>Metadata {
+        <span class="doccomment">/// The document&#39;s title.
+        </span><span class="kw">pub </span>title: String,
+        <span class="doccomment">/// The name of the person who created the document.
+        </span><span class="kw">pub </span>author: String,
+        <span class="doccomment">/// The subject of the document.
+        </span><span class="kw">pub </span>subject: String,
+        <span class="doccomment">/// Keywords associated with the document. Commas may be used to delineate keywords within
+        /// the string.
+        </span><span class="kw">pub </span>keywords: String,
+        <span class="doccomment">/// If the document was converted to PDF from another format, the name of the conforming
+        /// product that created the original document from which it was converted.
+        </span><span class="kw">pub </span>creator: String,
+        <span class="doccomment">/// The product that is converting this document to PDF.
+        </span><span class="kw">pub </span>producer: String,
+        <span class="doccomment">/// The date and time the document was created.
+        </span><span class="kw">pub </span>creation: <span class="prelude-ty">Option</span>&lt;DateTime&gt;,
+        <span class="doccomment">/// The date and time the document was most recently modified.
+        </span><span class="kw">pub </span>modified: <span class="prelude-ty">Option</span>&lt;DateTime&gt;,
+        <span class="doccomment">/// The DPI (pixels-per-inch) at which features without native PDF support
+        /// will be rasterized (e.g. draw image with perspective, draw text with
+        /// perspective, ...)  A larger DPI would create a PDF that reflects the
+        /// original intent with better fidelity, but it can make for larger PDF
+        /// files too, which would use more memory while rendering, and it would be
+        /// slower to be processed or sent online or to printer.
+        </span><span class="kw">pub </span>raster_dpi: <span class="prelude-ty">Option</span>&lt;scalar&gt;,
+        <span class="doccomment">/// If `true`, include XMP metadata, a document UUID, and `s_rgb` output intent
+        /// information.  This adds length to the document and makes it
+        /// non-reproducible, but are necessary features for PDF/A-2b conformance
+        </span><span class="kw">pub </span>pdf_a: bool,
+        <span class="doccomment">/// Encoding quality controls the trade-off between size and quality. By default this is set
+        /// to 101 percent, which corresponds to lossless encoding. If this value is set to a value
+        /// &lt;= 100, and the image is opaque, it will be encoded (using JPEG) with that quality
+        /// setting.
+        </span><span class="kw">pub </span>encoding_quality: <span class="prelude-ty">Option</span>&lt;i32&gt;,
+
+        <span class="kw">pub </span>structure_element_tree_root: <span class="prelude-ty">Option</span>&lt;StructureElementNode&gt;,
+
+        <span class="doccomment">/// PDF streams may be compressed to save space.
+        /// Use this to specify the desired compression vs time tradeoff.
+        </span><span class="kw">pub </span>compression_level: CompressionLevel,
+    }
+
+    <span class="kw">impl </span>Default <span class="kw">for </span>Metadata {
+        <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+            <span class="self">Self </span>{
+                title: Default::default(),
+                author: Default::default(),
+                subject: Default::default(),
+                keywords: Default::default(),
+                creator: Default::default(),
+                producer: <span class="macro">format!</span>(<span class="string">&quot;Skia/PDF m{}&quot;</span>, MILESTONE),
+                creation: Default::default(),
+                modified: Default::default(),
+                raster_dpi: Default::default(),
+                pdf_a: Default::default(),
+                encoding_quality: Default::default(),
+                structure_element_tree_root: <span class="prelude-val">None</span>,
+                compression_level: Default::default(),
+            }
+        }
+    }
+
+    <span class="kw">pub type </span>CompressionLevel = skia_bindings::SkPDF_Metadata_CompressionLevel;
+    <span class="macro">variant_name!</span>(CompressionLevel::HighButSlow);
+
+    <span class="doccomment">/// Create a PDF-backed document.
+    ///
+    /// PDF pages are sized in point units. 1 pt == 1/72 inch == 127/360 mm.
+    ///
+    /// * `metadata` - a PDFmetadata object.  Any fields may be left empty.
+    ///
+    /// @returns NULL if there is an error, otherwise a newly created PDF-backed [`Document`].
     </span><span class="kw">pub fn </span>new_document(metadata: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Metadata&gt;) -&gt; Document {
         <span class="kw">let </span><span class="kw-2">mut </span>md = InternalMetadata::default();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(metadata) = metadata {
@@ -540,14 +709,11 @@
             <span class="kw">if let </span><span class="prelude-val">Some</span>(raster_dpi) = metadata.raster_dpi {
                 internal.fRasterDPI = raster_dpi;
             }
-            internal.fPDFA = metadata.pdfa;
+            internal.fPDFA = metadata.pdf_a;
             <span class="kw">if let </span><span class="prelude-val">Some</span>(encoding_quality) = metadata.encoding_quality {
                 internal.fEncodingQuality = encoding_quality
             }
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(_structure_element_tree_root) = <span class="kw-2">&amp;</span>metadata.structure_element_tree_root {
-                <span class="comment">// TODO: How can we be sure that the tree root is not being dropped while the document is processed?
-                </span><span class="macro">unimplemented!</span>(<span class="string">&quot;&quot;</span>);
-            }
+            internal.fCompressionLevel = metadata.compression_level
         }
 
         <span class="comment">// We enable harfbuzz font sub-setting in PDF documents if textlayout is enabled.

@@ -138,12 +138,45 @@
 <a href="#138" id="138">138</a>
 <a href="#139" id="139">139</a>
 <a href="#140" id="140">140</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    gradient_shader, prelude::<span class="kw-2">*</span>, scalar, Color, ColorFilter, Image, Matrix, NativeFlattenable,
-    TileMode,
-};
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
+
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkFlattenable, SkRefCntBase, SkShader};
-<span class="kw">use </span>std::fmt;
+
+<span class="kw">use crate</span>::{
+    gradient_shader, prelude::<span class="kw-2">*</span>, scalar, Color, ColorFilter, ColorSpace, Image, Matrix,
+    NativeFlattenable, TileMode,
+};
 
 <span class="attr">#[derive(Clone, PartialEq, Debug)]
 </span><span class="kw">pub struct </span>GradientInfo&lt;<span class="lifetime">&#39;a</span>&gt; {
@@ -198,12 +231,24 @@
     }
 }
 
-<span class="kw">impl </span>Shader {
-    <span class="kw">pub fn </span>is_opaque(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+<span class="doccomment">/// Shaders specify the source color(s) for what is being drawn. If a paint
+/// has no shader, then the paint&#39;s color is used. If the paint has a
+/// shader, then the shader&#39;s color(s) are use instead, but they are
+/// modulated by the paint&#39;s alpha. This makes it easy to create a shader
+/// once (e.g. bitmap tiling or gradient) and then change its transparency
+/// w/o having to modify the original shader... only the paint&#39;s alpha needs
+/// to be modified.
+</span><span class="kw">impl </span>Shader {
+    <span class="doccomment">/// Returns `true` if the shader is guaranteed to produce only opaque
+    /// colors, subject to the [`crate::Paint`] using the shader to apply an opaque
+    /// alpha value. Subclasses should override this to allow some
+    /// optimizations.
+    </span><span class="kw">pub fn </span>is_opaque(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ sb::C_SkShader_isOpaque(<span class="self">self</span>.native()) }
     }
-
-    <span class="kw">pub fn </span>image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(Image, Matrix, (TileMode, TileMode))&gt; {
+    <span class="doccomment">/// Returns iff this shader is backed by a single [`Image`].
+    /// If not, returns `None`.
+    </span><span class="kw">pub fn </span>image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(Image, Matrix, (TileMode, TileMode))&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>matrix = Matrix::default();
             <span class="kw">let </span><span class="kw-2">mut </span>tile_mode = [TileMode::default(); <span class="number">2</span>];
@@ -220,7 +265,9 @@
         <span class="kw">unsafe </span>{ sb::C_SkShader_isAImage(<span class="self">self</span>.native()) }
     }
 
-    <span class="attr">#[must_use]
+    <span class="doccomment">/// Return a shader that will apply the specified `local_matrix` to this shader.
+    /// The specified matrix will be applied before any matrix associated with this shader.
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>with_local_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="kw-2">&amp;</span>Matrix) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkShader_makeWithLocalMatrix(<span class="self">self</span>.native(), matrix.native())
@@ -228,10 +275,25 @@
         .unwrap()
     }
 
-    <span class="attr">#[must_use]
+    <span class="doccomment">/// Create a new shader that produces the same colors as invoking this shader and then applying
+    /// the color filter.
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>with_color_filter(<span class="kw-2">&amp;</span><span class="self">self</span>, color_filter: <span class="kw">impl </span>Into&lt;ColorFilter&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkShader_makeWithColorFilter(<span class="self">self</span>.native(), color_filter.into().into_ptr())
+        })
+        .unwrap()
+    }
+
+    <span class="doccomment">/// Return a shader that will compute this shader in a specific color space.
+    /// By default, all shaders operate in the destination (surface) color space.
+    /// The results of a shader are still always converted to the destination - this
+    /// API has no impact on simple shaders or images. Primarily, it impacts shaders
+    /// that perform mathematical operations, like Blend shaders, or runtime shaders.
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>with_working_color_space(<span class="kw-2">&amp;</span><span class="self">self</span>, color_space: <span class="kw">impl </span>Into&lt;ColorSpace&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkShader_makeWithWorkingColorSpace(<span class="self">self</span>.native(), color_space.into().into_ptr())
         })
         .unwrap()
     }
