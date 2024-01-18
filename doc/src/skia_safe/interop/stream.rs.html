@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/interop/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/interop/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -440,39 +440,6 @@
 <a href="#440" id="440">440</a>
 <a href="#441" id="441">441</a>
 <a href="#442" id="442">442</a>
-<a href="#443" id="443">443</a>
-<a href="#444" id="444">444</a>
-<a href="#445" id="445">445</a>
-<a href="#446" id="446">446</a>
-<a href="#447" id="447">447</a>
-<a href="#448" id="448">448</a>
-<a href="#449" id="449">449</a>
-<a href="#450" id="450">450</a>
-<a href="#451" id="451">451</a>
-<a href="#452" id="452">452</a>
-<a href="#453" id="453">453</a>
-<a href="#454" id="454">454</a>
-<a href="#455" id="455">455</a>
-<a href="#456" id="456">456</a>
-<a href="#457" id="457">457</a>
-<a href="#458" id="458">458</a>
-<a href="#459" id="459">459</a>
-<a href="#460" id="460">460</a>
-<a href="#461" id="461">461</a>
-<a href="#462" id="462">462</a>
-<a href="#463" id="463">463</a>
-<a href="#464" id="464">464</a>
-<a href="#465" id="465">465</a>
-<a href="#466" id="466">466</a>
-<a href="#467" id="467">467</a>
-<a href="#468" id="468">468</a>
-<a href="#469" id="469">469</a>
-<a href="#470" id="470">470</a>
-<a href="#471" id="471">471</a>
-<a href="#472" id="472">472</a>
-<a href="#473" id="473">473</a>
-<a href="#474" id="474">474</a>
-<a href="#475" id="475">475</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! `SkStream` and relatives.
 //! This implementation covers the minimal subset to interface with Rust streams.
 //!
@@ -673,158 +640,120 @@
 
 <span class="attr">#[allow(unused)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RustStream&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub fn </span>new&lt;T: io::Read&gt;(val: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>read_trampoline&lt;T&gt;(
-            val: <span class="kw-2">*mut </span>ffi::c_void,
-            buf: <span class="kw-2">*mut </span>ffi::c_void,
-            count: usize,
-        ) -&gt; usize
-        <span class="kw">where
-            </span>T: io::Read,
-        {
-            <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-
-            <span class="kw">if </span>buf.is_null() {
-                <span class="kw">const </span>BUF_SIZE: usize = <span class="number">128</span>;
-
-                <span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0</span>; BUF_SIZE];
-
-                <span class="kw">let </span><span class="kw-2">mut </span>out_bytes = <span class="number">0</span>;
-                <span class="kw">let </span><span class="kw-2">mut </span>count = count;
-
-                <span class="comment">// This is OK because we just abort if it panics anyway.
-                </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
-
-                <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
-                    <span class="kw">while </span>count &gt; <span class="number">0 </span>{
-                        <span class="kw">let </span>bytes = <span class="kw">match </span>val.read(<span class="kw-2">&amp;mut </span>buf[..count.min(BUF_SIZE)]) {
-                            <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="kw">break</span>,
-                            <span class="prelude-val">Ok</span>(bytes) =&gt; bytes,
-                            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="number">0</span>,
-                        };
-
-                        count -= bytes;
-                        out_bytes += bytes;
-                    }
-
-                    out_bytes
-                }) {
-                    <span class="prelude-val">Ok</span>(res) =&gt; res,
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                        <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::read`&quot;</span>);
-                        std::process::abort();
-                    }
-                }
-            } <span class="kw">else </span>{
-                <span class="kw">let </span>buf: <span class="kw-2">&amp;mut </span>[u8] = std::slice::from_raw_parts_mut(buf <span class="kw">as _</span>, count <span class="kw">as _</span>);
-
-                val.read(buf).unwrap_or(<span class="number">0</span>)
-            }
-        }
-
-        <span class="kw">let </span>(length, seek_start, seek_current): (
-            usize,
-            <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span>&gt;,
-            <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span>&gt;,
-        );
-
-        <span class="comment">// Requires feature &quot;specialization&quot; &lt;https://github.com/rust-lang/rust/issues/31844&gt;
-        </span><span class="attr">#[cfg(feature = <span class="string">&quot;nightly&quot;</span>)]
-        </span>{
-            <span class="kw">trait </span>MaybeSeek {
-                <span class="kw">fn </span>maybe_seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, from: io::SeekFrom) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt;;
-            }
-
-            <span class="kw">impl</span>&lt;T&gt; MaybeSeek <span class="kw">for </span>T {
-                default <span class="kw">fn </span>maybe_seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw">_</span>: io::SeekFrom) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
-                    <span class="prelude-val">None
-                </span>}
-            }
-
-            <span class="kw">impl</span>&lt;T&gt; MaybeSeek <span class="kw">for </span>T
-            <span class="kw">where
-                </span>T: io::Seek,
-            {
-                <span class="kw">fn </span>maybe_seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, from: io::SeekFrom) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
-                    <span class="self">self</span>.seek(from).ok()
-                }
-            }
-
-            <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>seek_start_trampoline&lt;T: MaybeSeek&gt;(
-                val: <span class="kw-2">*mut </span>ffi::c_void,
-                pos: usize,
-            ) -&gt; bool {
-                <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-
-                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
-                // to continue at all.
-                </span><span class="kw">let </span>val = std::panic::AssertUnwindSafe(val);
-
-                <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
-                    val.maybe_seek(io::SeekFrom::Start(pos <span class="kw">as _</span>)).is_some()
-                }) {
-                    <span class="prelude-val">Ok</span>(res) =&gt; res,
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                        <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::seek`&quot;</span>);
-                        std::process::abort();
-                    }
-                }
-            }
-
-            <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>seek_current_trampoline&lt;T: MaybeSeek&gt;(
-                val: <span class="kw-2">*mut </span>ffi::c_void,
-                offset: libc::c_long,
-            ) -&gt; bool {
-                <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-
-                <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
-                // to continue at all.
-                </span><span class="kw">let </span>val = std::panic::AssertUnwindSafe(val);
-
-                <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
-                    val.maybe_seek(io::SeekFrom::Current(offset <span class="kw">as _</span>)).is_some()
-                }) {
-                    <span class="prelude-val">Ok</span>(res) =&gt; res,
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                        <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::move`&quot;</span>);
-                        std::process::abort();
-                    }
-                }
-            }
-
-            length = <span class="kw">if let </span><span class="prelude-val">Some</span>(cur) = val.maybe_seek(io::SeekFrom::Current(<span class="number">0</span>)) {
-                <span class="kw">let </span>length = val.maybe_seek(io::SeekFrom::End(<span class="number">0</span>)).unwrap();
-
-                val.maybe_seek(io::SeekFrom::Start(cur));
-
-                length <span class="kw">as </span>usize
-            } <span class="kw">else </span>{
-                std::usize::MAX
-            };
-
-            seek_start = <span class="prelude-val">Some</span>(seek_start_trampoline::&lt;T&gt;);
-            seek_current = <span class="prelude-val">Some</span>(seek_current_trampoline::&lt;T&gt;);
-        }
-
-        <span class="attr">#[cfg(not(feature = <span class="string">&quot;nightly&quot;</span>))]
-        </span>{
-            length = usize::MAX;
-            seek_start = <span class="prelude-val">None</span>;
-            seek_current = <span class="prelude-val">None</span>;
-        }
-
-        RustStream {
+    <span class="kw">pub fn </span>new_seekable&lt;T: io::Read + io::Seek&gt;(val: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
             inner: RefHandle::from_ptr(<span class="kw">unsafe </span>{
                 sb::C_RustStream_new(
                     val <span class="kw">as </span><span class="kw-2">*mut </span>T <span class="kw">as </span><span class="kw-2">*mut </span>ffi::c_void,
-                    length,
+                    usize::MAX,
                     <span class="prelude-val">Some</span>(read_trampoline::&lt;T&gt;),
-                    seek_start,
-                    seek_current,
+                    <span class="prelude-val">Some</span>(seek_start_trampoline::&lt;T&gt;),
+                    <span class="prelude-val">Some</span>(seek_current_trampoline::&lt;T&gt;),
                 )
             })
             .unwrap(),
             _phantom: PhantomData,
+        }
+    }
+
+    <span class="kw">pub fn </span>new&lt;T: io::Read&gt;(val: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            inner: RefHandle::from_ptr(<span class="kw">unsafe </span>{
+                sb::C_RustStream_new(
+                    val <span class="kw">as </span><span class="kw-2">*mut </span>T <span class="kw">as </span><span class="kw-2">*mut </span>ffi::c_void,
+                    usize::MAX,
+                    <span class="prelude-val">Some</span>(read_trampoline::&lt;T&gt;),
+                    <span class="prelude-val">None</span>,
+                    <span class="prelude-val">None</span>,
+                )
+            })
+            .unwrap(),
+            _phantom: PhantomData,
+        }
+    }
+}
+
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>read_trampoline&lt;T&gt;(
+    val: <span class="kw-2">*mut </span>ffi::c_void,
+    buf: <span class="kw-2">*mut </span>ffi::c_void,
+    count: usize,
+) -&gt; usize
+<span class="kw">where
+    </span>T: io::Read,
+{
+    <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+
+    <span class="kw">if </span>buf.is_null() {
+        <span class="kw">const </span>BUF_SIZE: usize = <span class="number">128</span>;
+
+        <span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0</span>; BUF_SIZE];
+
+        <span class="kw">let </span><span class="kw-2">mut </span>out_bytes = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>count = count;
+
+        <span class="comment">// This is OK because we just abort if it panics anyway.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
+
+        <span class="kw">let </span>reader = <span class="kw">move </span>|| {
+            <span class="kw">while </span>count &gt; <span class="number">0 </span>{
+                <span class="kw">let </span>bytes = <span class="kw">match </span>val.read(<span class="kw-2">&amp;mut </span>buf[..count.min(BUF_SIZE)]) {
+                    <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="kw">break</span>,
+                    <span class="prelude-val">Ok</span>(bytes) =&gt; bytes,
+                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="number">0</span>,
+                };
+
+                count -= bytes;
+                out_bytes += bytes;
+            }
+
+            out_bytes
+        };
+
+        <span class="kw">match </span>std::panic::catch_unwind(reader) {
+            <span class="prelude-val">Ok</span>(res) =&gt; res,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+                <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::read`&quot;</span>);
+                std::process::abort();
+            }
+        }
+    } <span class="kw">else </span>{
+        <span class="kw">let </span>buf: <span class="kw-2">&amp;mut </span>[u8] = std::slice::from_raw_parts_mut(buf <span class="kw">as _</span>, count <span class="kw">as _</span>);
+
+        val.read(buf).unwrap_or(<span class="number">0</span>)
+    }
+}
+
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>seek_start_trampoline&lt;T: io::Seek&gt;(val: <span class="kw-2">*mut </span>ffi::c_void, pos: usize) -&gt; bool {
+    <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+
+    <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
+    // to continue at all.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
+
+    <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| val.seek(io::SeekFrom::Start(pos <span class="kw">as _</span>))) {
+        <span class="prelude-val">Ok</span>(res) =&gt; res.is_ok(),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+            <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::start`&quot;</span>);
+            std::process::abort();
+        }
+    }
+}
+
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>seek_current_trampoline&lt;T: io::Seek&gt;(
+    val: <span class="kw-2">*mut </span>ffi::c_void,
+    offset: ffi::c_long,
+) -&gt; bool {
+    <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+
+    <span class="comment">// This is OK because we just abort if it panics anyway, we don&#39;t try
+    // to continue at all.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
+
+    <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| val.seek(io::SeekFrom::Current(offset <span class="kw">as _</span>))) {
+        <span class="prelude-val">Ok</span>(res) =&gt; res.is_ok(),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+            <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkStream::move`&quot;</span>);
+            std::process::abort();
         }
     }
 }
@@ -878,7 +807,7 @@
             <span class="comment">// This is OK because we just abort if it panics anyway.
             </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
 
-            <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
+            <span class="kw">let </span>writer = <span class="kw">move </span>|| {
                 <span class="kw">let </span><span class="kw-2">mut </span>written = <span class="number">0</span>;
                 <span class="kw">while </span>written != count {
                     <span class="kw">match </span>val.write(<span class="kw-2">&amp;</span>buf[written..]) {
@@ -889,7 +818,9 @@
                     }
                 }
                 <span class="bool-val">true
-            </span>}) {
+            </span>};
+
+            <span class="kw">match </span>std::panic::catch_unwind(writer) {
                 <span class="prelude-val">Ok</span>(res) =&gt; res,
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                     <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkWStream::write`&quot;</span>);
@@ -902,12 +833,15 @@
             <span class="kw">let </span>val: <span class="kw-2">&amp;mut </span>T = <span class="kw-2">&amp;mut *</span>(val <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="comment">// This is OK because we just abort if it panics anyway.
             </span><span class="kw">let </span><span class="kw-2">mut </span>val = std::panic::AssertUnwindSafe(val);
-            <span class="kw">match </span>std::panic::catch_unwind(<span class="kw">move </span>|| {
+
+            <span class="kw">let </span>flusher = <span class="kw">move </span>|| {
                 <span class="comment">// Not sure what could be done to handle a flush() error.
                 // Idea: use a with_stream method on the RustWStream that takes a closure, stores
                 // the flush() result and then return a result from with_stream.
                 </span><span class="kw">let </span>_flush_result_ignored = val.flush();
-            }) {
+            };
+
+            <span class="kw">match </span>std::panic::catch_unwind(flusher) {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {}
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                     <span class="macro">println!</span>(<span class="string">&quot;Panic in FFI callback for `SkWStream::flush`&quot;</span>);

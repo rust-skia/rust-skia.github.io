@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/typeface.rs`."><title>typeface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/typeface.rs`."><title>typeface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -397,22 +397,19 @@
 <a href="#397" id="397">397</a>
 <a href="#398" id="398">398</a>
 <a href="#399" id="399">399</a>
-<a href="#400" id="400">400</a>
-<a href="#401" id="401">401</a>
-<a href="#402" id="402">402</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{ffi, fmt, io, ptr};
+
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkRefCntBase, SkTypeface, SkTypeface_LocalizedStrings};
+
+<span class="kw">use crate</span>::{
     font_arguments,
     font_parameters::VariationAxis,
     interop::{<span class="self">self</span>, MemoryStream, NativeStreamBase, RustStream, RustWStream, StreamAsset},
     prelude::<span class="kw-2">*</span>,
-    Data, FontArguments, FontMgr, FontStyle, FourByteTag, GlyphId, Rect, TextEncoding, Unichar,
+    Data, EncodedText, FontArguments, FontMgr, FontStyle, FourByteTag, GlyphId, Rect, Unichar,
 };
-<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkRefCntBase, SkTypeface, SkTypeface_LocalizedStrings};
-<span class="kw">use </span>std::{ffi, fmt, io, mem, ptr};
 
 <span class="kw">pub type </span>TypefaceId = skia_bindings::SkTypefaceID;
-<span class="attr">#[deprecated(since = <span class="string">&quot;0.49.0&quot;</span>, note = <span class="string">&quot;use TypefaceId&quot;</span>)]
-</span><span class="kw">pub type </span>FontId = TypefaceId;
 <span class="kw">pub type </span>FontTableTag = skia_bindings::SkFontTableTag;
 
 <span class="kw">pub use </span>skia_bindings::SkTypeface_SerializeBehavior <span class="kw">as </span>SerializeBehavior;
@@ -432,12 +429,6 @@
 
 <span class="kw">impl </span>NativeRefCountedBase <span class="kw">for </span>SkTypeface {
     <span class="kw">type </span>Base = SkRefCntBase;
-}
-
-<span class="kw">impl </span>Default <span class="kw">for </span>Typeface {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        Typeface::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkTypeface_MakeDefault() }).unwrap()
-    }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Typeface {
@@ -535,7 +526,7 @@
         })
     }
 
-    <span class="attr">#[deprecated(since = <span class="string">&quot;0.69.0&quot;</span>, note = <span class="string">&quot;call FontMgr::make_from_data instead&quot;</span>)]
+    <span class="attr">#[deprecated(since = <span class="string">&quot;0.69.0&quot;</span>, note = <span class="string">&quot;call FontMgr::new_from_data instead&quot;</span>)]
     </span><span class="kw">pub fn </span>from_data(data: <span class="kw">impl </span>Into&lt;Data&gt;, index: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Typeface&gt; {
         Typeface::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkTypeface_MakeFromData(
@@ -594,20 +585,15 @@
     }
 
     <span class="kw">pub fn </span>str_to_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, str: <span class="kw">impl </span>AsRef&lt;str&gt;, glyphs: <span class="kw-2">&amp;mut </span>[GlyphId]) -&gt; usize {
-        <span class="self">self</span>.text_to_glyphs(str.as_ref().as_bytes(), TextEncoding::UTF8, glyphs)
+        <span class="self">self</span>.text_to_glyphs(str.as_ref(), glyphs)
     }
 
-    <span class="kw">pub fn </span>text_to_glyphs&lt;C&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        text: <span class="kw-2">&amp;</span>[C],
-        encoding: TextEncoding,
-        glyphs: <span class="kw-2">&amp;mut </span>[GlyphId],
-    ) -&gt; usize {
-        <span class="kw">let </span>byte_length = mem::size_of_val(text);
+    <span class="kw">pub fn </span>text_to_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw">impl </span>EncodedText, glyphs: <span class="kw-2">&amp;mut </span>[GlyphId]) -&gt; usize {
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native().textToGlyphs(
-                text.as_ptr() <span class="kw">as _</span>,
-                byte_length,
+                ptr,
+                size,
                 encoding.into_native(),
                 glyphs.as_mut_ptr(),
                 glyphs.len().try_into().unwrap(),
@@ -759,11 +745,16 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use </span>std::io::Cursor;
 
+    <span class="kw">use crate</span>::{FontMgr, FontStyle};
+
     <span class="kw">use super</span>::{SerializeBehavior, Typeface};
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>serialize_and_deserialize_default_typeface() {
-        <span class="kw">let </span>tf = Typeface::default();
+        <span class="kw">let </span>tf = FontMgr::new()
+            .legacy_make_typeface(<span class="prelude-val">None</span>, FontStyle::normal())
+            .unwrap();
+
         <span class="kw">let </span>serialized = tf.serialize(SerializeBehavior::DoIncludeData);
         <span class="comment">// On Android, the deserialized typeface name changes from sans-serif to Roboto.
         // (which is probably OK, because Roboto _is_ the default font, so we do another
@@ -783,7 +774,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>family_name_iterator_owns_the_strings_and_returns_at_least_one_name_for_the_default_typeface(
     ) {
-        <span class="kw">let </span>tf = Typeface::default();
+        <span class="kw">let </span>fm = FontMgr::default();
+        <span class="kw">let </span>tf = fm.legacy_make_typeface(<span class="prelude-val">None</span>, FontStyle::normal()).unwrap();
         <span class="kw">let </span>family_names = tf.new_family_name_iterator();
         drop(tf);
 
@@ -797,7 +789,9 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>get_font_data_of_default() {
-        <span class="kw">let </span>tf = Typeface::default();
+        <span class="kw">let </span>tf = FontMgr::new()
+            .legacy_make_typeface(<span class="prelude-val">None</span>, FontStyle::normal())
+            .unwrap();
         <span class="kw">let </span>(data, _ttc_index) = tf.to_font_data().unwrap();
         <span class="macro">assert!</span>(!data.is_empty());
     }

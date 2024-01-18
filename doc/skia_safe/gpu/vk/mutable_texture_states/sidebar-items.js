@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_vk_image_layout","get_vk_queue_family_index","new_vulkan"]};

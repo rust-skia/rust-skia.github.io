@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/font.rs`."><title>font.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/font.rs`."><title>font.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -446,12 +446,18 @@
 <a href="#446" id="446">446</a>
 <a href="#447" id="447">447</a>
 <a href="#448" id="448">448</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    interop::VecSink, prelude::<span class="kw-2">*</span>, scalar, FontHinting, FontMetrics, GlyphId, Paint, Path, Point,
-    Rect, TextEncoding, Typeface, Unichar,
-};
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, ptr};
+
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkFont, SkFont_PrivFlags};
-<span class="kw">use </span>std::{fmt, ptr};
+
+<span class="kw">use crate</span>::{
+    interop::VecSink, prelude::<span class="kw-2">*</span>, scalar, EncodedText, FontHinting, FontMetrics, GlyphId, Paint,
+    Path, Point, Rect, Typeface, Unichar,
+};
 
 <span class="kw">pub use </span>skia_bindings::SkFont_Edging <span class="kw">as </span>Edging;
 <span class="macro">variant_name!</span>(Edging::Alias);
@@ -661,20 +667,16 @@
     </span>}
 
     <span class="kw">pub fn </span>str_to_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, str: <span class="kw">impl </span>AsRef&lt;str&gt;, glyphs: <span class="kw-2">&amp;mut </span>[GlyphId]) -&gt; usize {
-        <span class="self">self</span>.text_to_glyphs(str.as_ref().as_bytes(), TextEncoding::UTF8, glyphs)
+        <span class="self">self</span>.text_to_glyphs(str.as_ref(), glyphs)
     }
 
-    <span class="kw">pub fn </span>text_to_glyphs(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        text: <span class="kw-2">&amp;</span>[u8],
-        encoding: TextEncoding,
-        glyphs: <span class="kw-2">&amp;mut </span>[GlyphId],
-    ) -&gt; usize {
+    <span class="kw">pub fn </span>text_to_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw">impl </span>EncodedText, glyphs: <span class="kw-2">&amp;mut </span>[GlyphId]) -&gt; usize {
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native()
                 .textToGlyphs(
-                    text.as_ptr() <span class="kw">as _</span>,
-                    text.len(),
+                    ptr,
+                    size,
                     encoding.into_native(),
                     glyphs.as_mut_ptr(),
                     <span class="comment">// don&#39;t fail if glyphs.len() is too large to fit into an i32.
@@ -690,15 +692,16 @@
     }
 
     <span class="kw">pub fn </span>count_str(<span class="kw-2">&amp;</span><span class="self">self</span>, str: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; usize {
-        <span class="self">self</span>.count_text(str.as_ref().as_bytes(), TextEncoding::UTF8)
+        <span class="self">self</span>.count_text(str.as_ref())
     }
 
-    <span class="kw">pub fn </span>count_text(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>[u8], encoding: TextEncoding) -&gt; usize {
+    <span class="kw">pub fn </span>count_text(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw">impl </span>EncodedText) -&gt; usize {
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native()
                 .textToGlyphs(
-                    text.as_ptr() <span class="kw">as _</span>,
-                    text.len(),
+                    ptr,
+                    size,
                     encoding.into_native(),
                     ptr::null_mut(),
                     i32::max_value(),
@@ -710,35 +713,29 @@
 
     <span class="comment">// convenience function
     </span><span class="kw">pub fn </span>str_to_glyphs_vec(<span class="kw-2">&amp;</span><span class="self">self</span>, str: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; Vec&lt;GlyphId&gt; {
-        <span class="kw">let </span>str = str.as_ref().as_bytes();
-        <span class="self">self</span>.text_to_glyphs_vec(str, TextEncoding::UTF8)
+        <span class="self">self</span>.text_to_glyphs_vec(str.as_ref())
     }
 
     <span class="comment">// convenience function
-    </span><span class="kw">pub fn </span>text_to_glyphs_vec(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>[u8], encoding: TextEncoding) -&gt; Vec&lt;GlyphId&gt; {
-        <span class="kw">let </span>count = <span class="self">self</span>.count_text(text, encoding);
+    </span><span class="kw">pub fn </span>text_to_glyphs_vec(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw">impl </span>EncodedText) -&gt; Vec&lt;GlyphId&gt; {
+        <span class="kw">let </span>count = <span class="self">self</span>.count_text(<span class="kw-2">&amp;</span>text);
         <span class="kw">let </span><span class="kw-2">mut </span>glyphs: Vec&lt;GlyphId&gt; = <span class="macro">vec!</span>[Default::default(); count];
-        <span class="kw">let </span>resulting_count = <span class="self">self</span>.text_to_glyphs(text, encoding, glyphs.as_mut_slice());
+        <span class="kw">let </span>resulting_count = <span class="self">self</span>.text_to_glyphs(text, glyphs.as_mut_slice());
         <span class="macro">assert_eq!</span>(count, resulting_count);
         glyphs
     }
 
     <span class="kw">pub fn </span>measure_str(<span class="kw-2">&amp;</span><span class="self">self</span>, str: <span class="kw">impl </span>AsRef&lt;str&gt;, paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;) -&gt; (scalar, Rect) {
-        <span class="kw">let </span>bytes = str.as_ref().as_bytes();
-        <span class="self">self</span>.measure_text(bytes, TextEncoding::UTF8, paint)
+        <span class="self">self</span>.measure_text(str.as_ref(), paint)
     }
 
-    <span class="kw">pub fn </span>measure_text(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        text: <span class="kw-2">&amp;</span>[u8],
-        encoding: TextEncoding,
-        paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;,
-    ) -&gt; (scalar, Rect) {
+    <span class="kw">pub fn </span>measure_text(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw">impl </span>EncodedText, paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Paint&gt;) -&gt; (scalar, Rect) {
         <span class="kw">let </span><span class="kw-2">mut </span>bounds = Rect::default();
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         <span class="kw">let </span>width = <span class="kw">unsafe </span>{
             <span class="self">self</span>.native().measureText(
-                text.as_ptr() <span class="kw">as _</span>,
-                text.len(),
+                ptr,
+                size,
                 encoding.into_native(),
                 bounds.native_mut(),
                 paint.native_ptr_or_null(),
@@ -880,18 +877,29 @@
     }
 }
 
-<span class="attr">#[test]
-</span><span class="kw">fn </span>test_flags() {
-    <span class="kw">let </span><span class="kw-2">mut </span>font = Font::new(Typeface::default(), <span class="number">10.0</span>);
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use crate</span>::{FontMgr, FontStyle};
 
-    font.set_force_auto_hinting(<span class="bool-val">true</span>);
-    <span class="macro">assert!</span>(font.is_force_auto_hinting());
-    font.set_force_auto_hinting(<span class="bool-val">false</span>);
-    <span class="macro">assert!</span>(!font.is_force_auto_hinting());
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    font.set_embolden(<span class="bool-val">true</span>);
-    <span class="macro">assert!</span>(font.is_embolden());
-    font.set_embolden(<span class="bool-val">false</span>);
-    <span class="macro">assert!</span>(!font.is_embolden());
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_flags() {
+        <span class="kw">let </span>font_mgr = FontMgr::new();
+        <span class="kw">let </span>typeface = font_mgr
+            .legacy_make_typeface(<span class="prelude-val">None</span>, FontStyle::normal())
+            .unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>font = Font::new(typeface, <span class="number">10.0</span>);
+
+        font.set_force_auto_hinting(<span class="bool-val">true</span>);
+        <span class="macro">assert!</span>(font.is_force_auto_hinting());
+        font.set_force_auto_hinting(<span class="bool-val">false</span>);
+        <span class="macro">assert!</span>(!font.is_force_auto_hinting());
+
+        font.set_embolden(<span class="bool-val">true</span>);
+        <span class="macro">assert!</span>(font.is_embolden());
+        font.set_embolden(<span class="bool-val">false</span>);
+        <span class="macro">assert!</span>(!font.is_embolden());
+    }
 }
 </code></pre></div></section></main></body></html>

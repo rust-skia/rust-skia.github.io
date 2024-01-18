@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/codec/_codec.rs`."><title>_codec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/codec/_codec.rs`."><title>_codec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -373,16 +373,106 @@
 <a href="#373" id="373">373</a>
 <a href="#374" id="374">374</a>
 <a href="#375" id="375">375</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::marker::PhantomData;
-<span class="kw">use </span>std::{ffi, ffi::CStr, fmt, io, mem, ptr, result};
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{
+    ffi::{<span class="self">self</span>, CStr},
+    fmt, io,
+    marker::PhantomData,
+    mem, ptr, result,
+};
 
-<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkCodec, SkCodec_FrameInfo, SkCodec_Options, SkStream};
+<span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkCodec, SkCodec_FrameInfo, SkCodec_Options};
 
 <span class="kw">use </span><span class="kw">super</span>::codec_animation;
-<span class="kw">use </span><span class="kw">crate</span>::interop::RustStream;
 <span class="kw">use crate</span>::{
-    prelude::<span class="kw-2">*</span>, yuva_pixmap_info::SupportedDataTypes, AlphaType, Data, EncodedImageFormat,
-    EncodedOrigin, IRect, ISize, Image, ImageInfo, Pixmap, YUVAPixmapInfo, YUVAPixmaps,
+    interop::RustStream, prelude::<span class="kw-2">*</span>, yuva_pixmap_info::SupportedDataTypes, AlphaType, Data,
+    EncodedImageFormat, EncodedOrigin, IRect, ISize, Image, ImageInfo, Pixmap, YUVAPixmapInfo,
+    YUVAPixmaps,
 };
 
 <span class="kw">pub use </span>sb::SkCodec_Result <span class="kw">as </span><span class="prelude-ty">Result</span>;
@@ -460,11 +550,49 @@
 }
 
 <span class="kw">impl </span>Codec&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="comment">// TODO: wrap MakeFromStream
-    // TODO: wrap from_data with SkPngChunkReader
+    <span class="kw">pub fn </span>from_stream&lt;<span class="lifetime">&#39;a</span>, T: io::Read + io::Seek&gt;(
+        stream: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T,
+        decoders: <span class="kw-2">&amp;</span>[codecs::Decoder],
+        selection_policy: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;SelectionPolicy&gt;&gt;,
+    ) -&gt; result::Result&lt;Codec&lt;<span class="lifetime">&#39;a</span>&gt;, <span class="prelude-ty">Result</span>&gt; {
+        <span class="kw">let </span>stream = RustStream::new_seekable(stream);
+        <span class="kw">let </span><span class="kw-2">mut </span>result = Result::Unimplemented;
+        <span class="kw">let </span>codec = <span class="kw">unsafe </span>{
+            sb::C_SkCodec_MakeFromStream(
+                <span class="comment">// Transfer ownership of the SkStream to the Codec.
+                </span>stream.into_native(),
+                decoders.as_ptr() <span class="kw">as _</span>,
+                decoders.len(),
+                <span class="kw-2">&amp;mut </span>result,
+                selection_policy
+                    .into()
+                    .unwrap_or(SelectionPolicy::PreferStillImage),
+            )
+        };
+        <span class="kw">if </span>result != Result::Success {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(result);
+        }
+        <span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">&quot;Codec is null&quot;</span>))
+    }
 
+    <span class="comment">// TODO: wrap from_data with SkPngChunkReader
+
+    // TODO: Deprecated in Skia
     </span><span class="kw">pub fn </span>from_data(data: <span class="kw">impl </span>Into&lt;Data&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">&#39;static</span>&gt;&gt; {
         <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkCodec_MakeFromData(data.into().into_ptr()) })
+    }
+
+    <span class="kw">pub fn </span>from_data_with_decoders(
+        data: <span class="kw">impl </span>Into&lt;Data&gt;,
+        decoders: <span class="kw-2">&amp;</span>[codecs::Decoder],
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
+            sb::C_SkCodec_MakeFromData2(
+                data.into().into_ptr(),
+                decoders.as_ptr() <span class="kw">as _</span>,
+                decoders.len(),
+            )
+        })
     }
 
     <span class="kw">pub fn </span>info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ImageInfo {
@@ -724,28 +852,72 @@
     }
 }
 
-<span class="kw">pub trait </span>Decoder {
-    <span class="kw">const </span>ID: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
-    <span class="kw">fn </span>is_format(data: <span class="kw-2">&amp;</span>[u8]) -&gt; bool;
+<span class="kw">pub mod </span>codecs {
+    <span class="kw">use </span>std::{fmt, io, ptr, result, str};
 
-    <span class="comment">// TODO: decode_data (use std::io::Cursor in the meantime).
+    <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkCodecs_Decoder};
 
-    </span><span class="kw">fn </span>decode_stream(stream: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>io::Read) -&gt; result::Result&lt;Codec, <span class="prelude-ty">Result</span>&gt;;
-}
+    <span class="kw">use super</span>::{safer, <span class="prelude-ty">Result</span>};
+    <span class="kw">use crate</span>::{interop::RustStream, prelude::<span class="kw-2">*</span>, Codec};
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>decode_stream(
-    stream: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>io::Read,
-    native_decode_fn: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(
-        stream: <span class="kw-2">*mut </span>SkStream,
-        result: <span class="kw-2">*mut </span><span class="prelude-ty">Result</span>,
-    ) -&gt; <span class="kw-2">*mut </span>SkCodec,
-) -&gt; result::Result&lt;Codec, <span class="prelude-ty">Result</span>&gt; {
-    <span class="kw">let </span>stream = RustStream::new(stream);
-    <span class="kw">let </span><span class="kw-2">mut </span>result = Result::Unimplemented;
-    <span class="kw">let </span>codec = <span class="kw">unsafe </span>{ native_decode_fn(stream.into_native(), <span class="kw-2">&amp;mut </span>result) };
-    <span class="kw">if </span>result == Result::Success {
-        <span class="kw">return </span><span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">&quot;codec&quot;</span>));
+    <span class="kw">pub type </span>Decoder = Handle&lt;SkCodecs_Decoder&gt;;
+    <span class="macro">unsafe_send_sync!</span>(Decoder);
+
+    <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Decoder {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+            f.debug_struct(<span class="string">&quot;Decoder&quot;</span>).field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id()).finish()
+        }
     }
-    <span class="prelude-val">Err</span>(result)
+
+    <span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkCodecs_Decoder {
+        <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+            <span class="kw">unsafe </span>{ sb::C_SkCodecs_Decoder_destruct(<span class="self">self</span>) }
+        }
+    }
+
+    <span class="kw">impl </span>NativeClone <span class="kw">for </span>SkCodecs_Decoder {
+        <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+            construct(|d| <span class="kw">unsafe </span>{ sb::C_SkCodecs_Decoder_CopyConstruct(d, <span class="self">self</span>) })
+        }
+    }
+
+    <span class="kw">impl </span>Decoder {
+        <span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+            <span class="kw">let </span><span class="kw-2">mut </span>len: usize = <span class="number">0</span>;
+            <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ sb::C_SkCodecs_Decoder_getId(<span class="self">self</span>.native(), <span class="kw-2">&amp;mut </span>len) };
+            <span class="kw">let </span>chars = <span class="kw">unsafe </span>{ safer::from_raw_parts(ptr <span class="kw">as _</span>, len) };
+            str::from_utf8(chars).expect(<span class="string">&quot;Invalid UTF-8 decoder id&quot;</span>)
+        }
+
+        <span class="kw">pub fn </span>is_format(<span class="kw-2">&amp;</span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8]) -&gt; bool {
+            <span class="kw">unsafe </span>{
+                (<span class="self">self</span>.native().isFormat.expect(<span class="string">&quot;Decoder::isFormat is null&quot;</span>))(
+                    data.as_ptr() <span class="kw">as _</span>,
+                    data.len(),
+                )
+            }
+        }
+
+        <span class="kw">pub fn </span>from_stream&lt;<span class="lifetime">&#39;a</span>&gt;(
+            <span class="kw-2">&amp;</span><span class="self">self</span>,
+            stream: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">impl </span>io::Read,
+        ) -&gt; result::Result&lt;Codec&lt;<span class="lifetime">&#39;a</span>&gt;, <span class="prelude-ty">Result</span>&gt; {
+            <span class="kw">let </span>stream = RustStream::new(stream);
+            <span class="kw">let </span><span class="kw-2">mut </span>result = Result::Unimplemented;
+            <span class="kw">let </span>codec = <span class="kw">unsafe </span>{
+                sb::C_SkCodecs_Decoder_MakeFromStream(
+                    <span class="self">self</span>.native(),
+                    <span class="comment">// Transfer ownership of the SkStream to the Codec.
+                    </span>stream.into_native(),
+                    <span class="kw-2">&amp;mut </span>result,
+                    ptr::null_mut(),
+                )
+            };
+            <span class="kw">if </span>result != Result::Success {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(result);
+            }
+            <span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">&quot;Codec is null&quot;</span>))
+        }
+    }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/text_blob.rs`."><title>text_blob.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/text_blob.rs`."><title>text_blob.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -399,22 +399,15 @@
 <a href="#399" id="399">399</a>
 <a href="#400" id="400">400</a>
 <a href="#401" id="401">401</a>
-<a href="#402" id="402">402</a>
-<a href="#403" id="403">403</a>
-<a href="#404" id="404">404</a>
-<a href="#405" id="405">405</a>
-<a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
-<a href="#409" id="409">409</a>
-<a href="#410" id="410">410</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    prelude::<span class="kw-2">*</span>, scalar, Font, GlyphId, Paint, Point, RSXform, Rect, TextEncoding, Typeface,
-};
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{convert::TryInto, fmt, ptr, slice};
+
 <span class="kw">use </span>skia_bindings::{
     <span class="self">self </span><span class="kw">as </span>sb, SkTextBlob, SkTextBlobBuilder, SkTextBlob_Iter, SkTextBlob_Iter_Run, SkTypeface,
 };
-<span class="kw">use </span>std::{convert::TryInto, fmt, ptr, slice};
+
+<span class="kw">use crate</span>::{
+    prelude::<span class="kw-2">*</span>, scalar, EncodedText, Font, GlyphId, Paint, Point, RSXform, Rect, Typeface,
+};
 
 <span class="kw">pub type </span>TextBlob = RCHandle&lt;SkTextBlob&gt;;
 <span class="macro">unsafe_send_sync!</span>(TextBlob);
@@ -476,34 +469,29 @@
     }
 
     <span class="kw">pub fn </span>from_str(str: <span class="kw">impl </span>AsRef&lt;str&gt;, font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
-        <span class="self">Self</span>::from_text(str.as_ref().as_bytes(), TextEncoding::UTF8, font)
+        <span class="self">Self</span>::from_text(str.as_ref(), font)
     }
 
-    <span class="kw">pub fn </span>from_text(text: <span class="kw-2">&amp;</span>[u8], encoding: TextEncoding, font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+    <span class="kw">pub fn </span>from_text(text: <span class="kw">impl </span>EncodedText, font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         TextBlob::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkTextBlob_MakeFromText(
-                text.as_ptr() <span class="kw">as _</span>,
-                text.len(),
-                font.native(),
-                encoding.into_native(),
-            )
+            sb::C_SkTextBlob_MakeFromText(ptr, size, font.native(), encoding.into_native())
         })
     }
 
     <span class="kw">pub fn </span>from_pos_text_h(
-        text: <span class="kw-2">&amp;</span>[u8],
+        text: <span class="kw">impl </span>EncodedText,
         x_pos: <span class="kw-2">&amp;</span>[scalar],
         const_y: scalar,
         font: <span class="kw-2">&amp;</span>Font,
-        encoding: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;TextEncoding&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
-        <span class="kw">let </span>encoding = encoding.into().unwrap_or_default();
-        <span class="comment">// TODO: avoid that verification somehow.
-        </span><span class="macro">assert_eq!</span>(x_pos.len(), font.count_text(text, encoding));
+        <span class="comment">// TODO: avoid that somehow.
+        </span><span class="macro">assert_eq!</span>(x_pos.len(), font.count_text(<span class="kw-2">&amp;</span>text));
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         TextBlob::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkTextBlob_MakeFromPosTextH(
-                text.as_ptr() <span class="kw">as _</span>,
-                text.len(),
+                ptr,
+                size,
                 x_pos.as_ptr(),
                 const_y,
                 font.native(),
@@ -512,19 +500,14 @@
         })
     }
 
-    <span class="kw">pub fn </span>from_pos_text(
-        text: <span class="kw-2">&amp;</span>[u8],
-        pos: <span class="kw-2">&amp;</span>[Point],
-        font: <span class="kw-2">&amp;</span>Font,
-        encoding: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;TextEncoding&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
-        <span class="kw">let </span>encoding = encoding.into().unwrap_or_default();
-        <span class="comment">// TODO: avoid that verification somehow.
-        </span><span class="macro">assert_eq!</span>(pos.len(), font.count_text(text, encoding));
+    <span class="kw">pub fn </span>from_pos_text(text: <span class="kw">impl </span>EncodedText, pos: <span class="kw-2">&amp;</span>[Point], font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
+        <span class="comment">// TODO: avoid that somehow.
+        </span><span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
+        <span class="macro">assert_eq!</span>(pos.len(), font.count_text(text));
         TextBlob::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkTextBlob_MakeFromPosText(
-                text.as_ptr() <span class="kw">as _</span>,
-                text.len(),
+                ptr,
+                size,
                 pos.native().as_ptr(),
                 font.native(),
                 encoding.into_native(),
@@ -533,18 +516,17 @@
     }
 
     <span class="kw">pub fn </span>from_rsxform(
-        text: <span class="kw-2">&amp;</span>[u8],
+        text: <span class="kw">impl </span>EncodedText,
         xform: <span class="kw-2">&amp;</span>[RSXform],
         font: <span class="kw-2">&amp;</span>Font,
-        encoding: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;TextEncoding&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
-        <span class="kw">let </span>encoding = encoding.into().unwrap_or_default();
-        <span class="comment">// TODO: avoid that verification somehow.
-        </span><span class="macro">assert_eq!</span>(xform.len(), font.count_text(text, encoding));
+        <span class="comment">// TODO: avoid that somehow.
+        </span><span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
+        <span class="macro">assert_eq!</span>(xform.len(), font.count_text(text));
         TextBlob::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkTextBlob_MakeFromRSXform(
-                text.as_ptr() <span class="kw">as _</span>,
-                text.len(),
+                ptr,
+                size,
                 xform.native().as_ptr(),
                 font.native(),
                 encoding.into_native(),
