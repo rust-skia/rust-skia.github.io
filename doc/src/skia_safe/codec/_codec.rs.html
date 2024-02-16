@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/codec/_codec.rs`."><title>_codec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/codec/_codec.rs`."><title>_codec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -480,7 +481,7 @@
 
 <span class="comment">// TODO: implement Display
 
-</span><span class="kw">pub fn </span>result_to_string(result: <span class="prelude-ty">Result</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+</span><span class="kw">pub fn </span>result_to_string(result: <span class="prelude-ty">Result</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
     <span class="kw">unsafe </span>{ CStr::from_ptr(skia_bindings::SkCodec_ResultToString(result)) }
         .to_str()
         .unwrap()
@@ -524,9 +525,9 @@
 <span class="kw">pub use </span>sb::SkCodec_SkScanlineOrder <span class="kw">as </span>ScanlineOrder;
 <span class="macro">variant_name!</span>(ScanlineOrder::BottomUp);
 
-<span class="kw">pub struct </span>Codec&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">pub struct </span>Codec&lt;<span class="lifetime">'a</span>&gt; {
     inner: RefHandle&lt;SkCodec&gt;,
-    pd: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>io::Read&gt;,
+    pd: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>io::Read&gt;,
 }
 
 <span class="kw">impl </span>NativeDrop <span class="kw">for </span>SkCodec {
@@ -535,26 +536,26 @@
     }
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Codec&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Codec&quot;</span>)
-            .field(<span class="string">&quot;info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.info())
-            .field(<span class="string">&quot;dimensions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.dimensions())
-            .field(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
-            .field(<span class="string">&quot;origin&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.origin())
-            .field(<span class="string">&quot;encoded_format&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.encoded_format())
-            .field(<span class="string">&quot;scanline_order&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scanline_order())
-            .field(<span class="string">&quot;next_scanline&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.next_scanline())
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Codec&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Codec"</span>)
+            .field(<span class="string">"info"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.info())
+            .field(<span class="string">"dimensions"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.dimensions())
+            .field(<span class="string">"bounds"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
+            .field(<span class="string">"origin"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.origin())
+            .field(<span class="string">"encoded_format"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.encoded_format())
+            .field(<span class="string">"scanline_order"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scanline_order())
+            .field(<span class="string">"next_scanline"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.next_scanline())
             .finish()
     }
 }
 
-<span class="kw">impl </span>Codec&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">pub fn </span>from_stream&lt;<span class="lifetime">&#39;a</span>, T: io::Read + io::Seek&gt;(
-        stream: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T,
+<span class="kw">impl </span>Codec&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="kw">pub fn </span>from_stream&lt;<span class="lifetime">'a</span>, T: io::Read + io::Seek&gt;(
+        stream: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T,
         decoders: <span class="kw-2">&amp;</span>[codecs::Decoder],
         selection_policy: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;SelectionPolicy&gt;&gt;,
-    ) -&gt; result::Result&lt;Codec&lt;<span class="lifetime">&#39;a</span>&gt;, <span class="prelude-ty">Result</span>&gt; {
+    ) -&gt; result::Result&lt;Codec&lt;<span class="lifetime">'a</span>&gt;, <span class="prelude-ty">Result</span>&gt; {
         <span class="kw">let </span>stream = RustStream::new_seekable(stream);
         <span class="kw">let </span><span class="kw-2">mut </span>result = Result::Unimplemented;
         <span class="kw">let </span>codec = <span class="kw">unsafe </span>{
@@ -572,20 +573,20 @@
         <span class="kw">if </span>result != Result::Success {
             <span class="kw">return </span><span class="prelude-val">Err</span>(result);
         }
-        <span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">&quot;Codec is null&quot;</span>))
+        <span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">"Codec is null"</span>))
     }
 
     <span class="comment">// TODO: wrap from_data with SkPngChunkReader
 
     // TODO: Deprecated in Skia
-    </span><span class="kw">pub fn </span>from_data(data: <span class="kw">impl </span>Into&lt;Data&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">&#39;static</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>from_data(data: <span class="kw">impl </span>Into&lt;Data&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">'static</span>&gt;&gt; {
         <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkCodec_MakeFromData(data.into().into_ptr()) })
     }
 
     <span class="kw">pub fn </span>from_data_with_decoders(
         data: <span class="kw">impl </span>Into&lt;Data&gt;,
         decoders: <span class="kw-2">&amp;</span>[codecs::Decoder],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">&#39;static</span>&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">'static</span>&gt;&gt; {
         <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkCodec_MakeFromData2(
                 data.into().into_ptr(),
@@ -651,8 +652,8 @@
     }
 
     <span class="attr">#[deprecated(
-        since = <span class="string">&quot;0.33.1&quot;</span>,
-        note = <span class="string">&quot;Use the safe variant get_pixels_with_options().&quot;
+        since = <span class="string">"0.33.1"</span>,
+        note = <span class="string">"Use the safe variant get_pixels_with_options()."
     </span>)]
     #[allow(clippy::missing_safety_doc)]
     </span><span class="kw">pub unsafe fn </span>get_pixels(
@@ -687,15 +688,15 @@
             fFrameIndex: options.frame_index.try_into().unwrap(),
             fPriorFrame: <span class="kw">match </span>options.prior_frame {
                 <span class="prelude-val">None </span>=&gt; sb::SkCodec_kNoFrame,
-                <span class="prelude-val">Some</span>(frame) =&gt; frame.try_into().expect(<span class="string">&quot;invalid prior frame&quot;</span>),
+                <span class="prelude-val">Some</span>(frame) =&gt; frame.try_into().expect(<span class="string">"invalid prior frame"</span>),
             },
         }
     }
 
-    <span class="kw">pub fn </span>get_image&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>get_image&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         info: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ImageInfo&gt;&gt;,
-        options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Options&gt;&gt;,
+        options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Options&gt;&gt;,
     ) -&gt; std::result::Result&lt;Image, <span class="prelude-ty">Result</span>&gt; {
         <span class="kw">let </span>info = info.into().unwrap_or_else(|| <span class="self">self</span>.info());
         <span class="kw">let </span>options = options
@@ -727,12 +728,12 @@
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native_mut().getYUVAPlanes(pixmaps.native()) }
     }
 
-    <span class="kw">pub fn </span>start_incremental_decode&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>start_incremental_decode&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         dst_info: <span class="kw-2">&amp;</span>ImageInfo,
         dst: <span class="kw-2">&amp;mut </span>[u8],
         row_bytes: usize,
-        options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Options&gt;&gt;,
+        options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Options&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result </span>{
         <span class="kw">if </span>!dst_info.valid_pixels(row_bytes, dst) {
             <span class="kw">return </span>Result::InvalidParameters;
@@ -760,10 +761,10 @@
         }
     }
 
-    <span class="kw">pub fn </span>start_scanline_decode&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>start_scanline_decode&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         dst_info: <span class="kw-2">&amp;</span>ImageInfo,
-        options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Options&gt;&gt;,
+        options: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Options&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result </span>{
         <span class="kw">let </span>options = options
             .into()
@@ -844,7 +845,7 @@
         <span class="self">self</span>.inner.native_mut()
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_ptr&lt;<span class="lifetime">&#39;a</span>&gt;(codec: <span class="kw-2">*mut </span>SkCodec) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">&#39;a</span>&gt;&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_ptr&lt;<span class="lifetime">'a</span>&gt;(codec: <span class="kw-2">*mut </span>SkCodec) -&gt; <span class="prelude-ty">Option</span>&lt;Codec&lt;<span class="lifetime">'a</span>&gt;&gt; {
         RefHandle::from_ptr(codec).map(|inner| Codec {
             inner,
             pd: PhantomData,
@@ -864,8 +865,8 @@
     <span class="macro">unsafe_send_sync!</span>(Decoder);
 
     <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Decoder {
-        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-            f.debug_struct(<span class="string">&quot;Decoder&quot;</span>).field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id()).finish()
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            f.debug_struct(<span class="string">"Decoder"</span>).field(<span class="string">"id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id()).finish()
         }
     }
 
@@ -882,26 +883,26 @@
     }
 
     <span class="kw">impl </span>Decoder {
-        <span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+        <span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
             <span class="kw">let </span><span class="kw-2">mut </span>len: usize = <span class="number">0</span>;
             <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ sb::C_SkCodecs_Decoder_getId(<span class="self">self</span>.native(), <span class="kw-2">&amp;mut </span>len) };
             <span class="kw">let </span>chars = <span class="kw">unsafe </span>{ safer::from_raw_parts(ptr <span class="kw">as _</span>, len) };
-            str::from_utf8(chars).expect(<span class="string">&quot;Invalid UTF-8 decoder id&quot;</span>)
+            str::from_utf8(chars).expect(<span class="string">"Invalid UTF-8 decoder id"</span>)
         }
 
         <span class="kw">pub fn </span>is_format(<span class="kw-2">&amp;</span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8]) -&gt; bool {
             <span class="kw">unsafe </span>{
-                (<span class="self">self</span>.native().isFormat.expect(<span class="string">&quot;Decoder::isFormat is null&quot;</span>))(
+                (<span class="self">self</span>.native().isFormat.expect(<span class="string">"Decoder::isFormat is null"</span>))(
                     data.as_ptr() <span class="kw">as _</span>,
                     data.len(),
                 )
             }
         }
 
-        <span class="kw">pub fn </span>from_stream&lt;<span class="lifetime">&#39;a</span>&gt;(
+        <span class="kw">pub fn </span>from_stream&lt;<span class="lifetime">'a</span>&gt;(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            stream: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">impl </span>io::Read,
-        ) -&gt; result::Result&lt;Codec&lt;<span class="lifetime">&#39;a</span>&gt;, <span class="prelude-ty">Result</span>&gt; {
+            stream: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">impl </span>io::Read,
+        ) -&gt; result::Result&lt;Codec&lt;<span class="lifetime">'a</span>&gt;, <span class="prelude-ty">Result</span>&gt; {
             <span class="kw">let </span>stream = RustStream::new(stream);
             <span class="kw">let </span><span class="kw-2">mut </span>result = Result::Unimplemented;
             <span class="kw">let </span>codec = <span class="kw">unsafe </span>{
@@ -916,7 +917,7 @@
             <span class="kw">if </span>result != Result::Success {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(result);
             }
-            <span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">&quot;Codec is null&quot;</span>))
+            <span class="prelude-val">Ok</span>(Codec::from_ptr(codec).expect(<span class="string">"Codec is null"</span>))
         }
     }
 }

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/svg.rs`."><title>svg.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/svg.rs`."><title>svg.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -352,21 +353,21 @@
     }
 }
 
-<span class="doccomment">/// Error when something goes wrong when loading an SVG file. Sadly, Skia doesn&#39;t give further
-/// details so we can&#39;t return a more expressive error type, but we still use this instead of
+<span class="doccomment">/// Error when something goes wrong when loading an SVG file. Sadly, Skia doesn't give further
+/// details so we can't return a more expressive error type, but we still use this instead of
 /// `Option` to express the intent and allow for `Try`.
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 </span><span class="kw">pub struct </span>LoadError;
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>LoadError {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;Failed to load svg (reason unknown)&quot;</span>)
+        <span class="macro">write!</span>(f, <span class="string">"Failed to load svg (reason unknown)"</span>)
     }
 }
 
 <span class="kw">impl </span>Error <span class="kw">for </span>LoadError {
     <span class="kw">fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="string">&quot;Failed to load svg (reason unknown)&quot;
+        <span class="string">"Failed to load svg (reason unknown)"
     </span>}
 }
 
@@ -392,7 +393,7 @@
     </span>}
 }
 
-<span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>handle_load_type_face(
+<span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>handle_load_type_face(
     resource_path: <span class="kw-2">*const </span>raw::c_char,
     resource_name: <span class="kw-2">*const </span>raw::c_char,
     load_context: <span class="kw-2">*mut </span>raw::c_void,
@@ -412,7 +413,7 @@
         .into_ptr()
 }
 
-<span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>handle_load(
+<span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>handle_load(
     resource_path: <span class="kw-2">*const </span>raw::c_char,
     resource_name: <span class="kw-2">*const </span>raw::c_char,
     _load_context: <span class="kw-2">*mut </span>raw::c_void,
@@ -430,7 +431,7 @@
             is_base64 = <span class="bool-val">true</span>;
         }
 
-        <span class="kw">if </span><span class="macro">cfg!</span>(windows) &amp;&amp; !resource_name.to_string_lossy().starts_with(<span class="string">&quot;data:&quot;</span>) {
+        <span class="kw">if </span><span class="macro">cfg!</span>(windows) &amp;&amp; !resource_name.to_string_lossy().starts_with(<span class="string">"data:"</span>) {
             is_base64 = <span class="bool-val">false</span>;
         }
 
@@ -444,7 +445,7 @@
                 resource_name.to_string_lossy().to_string()
             } <span class="kw">else </span>{
                 <span class="macro">format!</span>(
-                    <span class="string">&quot;{}/{}&quot;</span>,
+                    <span class="string">"{}/{}"</span>,
                     resource_path.to_string_lossy(),
                     resource_name.to_string_lossy()
                 )
@@ -470,8 +471,8 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Dom {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Dom&quot;</span>).finish()
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Dom"</span>).finish()
     }
 }
 
@@ -517,7 +518,7 @@
 
     <span class="kw">pub fn </span>render(<span class="kw-2">&amp;</span><span class="self">self</span>, canvas: <span class="kw-2">&amp;</span>Canvas) {
         <span class="comment">// TODO: may be we should init ICU whenever we expose a Canvas?
-        </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;embed-icudtl&quot;</span>, feature = <span class="string">&quot;textlayout&quot;</span>))]
+        </span><span class="attr">#[cfg(all(feature = <span class="string">"embed-icudtl"</span>, feature = <span class="string">"textlayout"</span>))]
         </span><span class="kw">crate</span>::icu::init();
 
         <span class="kw">unsafe </span>{ sb::SkSVGDOM::render(<span class="self">self</span>.native() <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">_</span>, canvas.native_mut()) }
@@ -529,7 +530,7 @@
     }
 
     <span class="kw">fn </span>handle_load_base64(data: <span class="kw-2">&amp;</span>str) -&gt; Data {
-        <span class="kw">let </span>data: Vec&lt;<span class="kw">_</span>&gt; = data.split(<span class="string">&#39;,&#39;</span>).collect();
+        <span class="kw">let </span>data: Vec&lt;<span class="kw">_</span>&gt; = data.split(<span class="string">','</span>).collect();
         <span class="kw">if </span>data.len() &gt; <span class="number">1 </span>{
             <span class="kw">let </span>result = decode_base64(data[<span class="number">1</span>]);
             <span class="kw">return </span>Data::new_copy(result.as_slice());
@@ -538,10 +539,10 @@
     }
 }
 
-<span class="kw">type </span>StaticCharVec = <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[char];
+<span class="kw">type </span>StaticCharVec = <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[char];
 
 <span class="kw">const </span>HTML_SPACE_CHARACTERS: StaticCharVec =
-    <span class="kw-2">&amp;</span>[<span class="string">&#39;\u{0020}&#39;</span>, <span class="string">&#39;\u{0009}&#39;</span>, <span class="string">&#39;\u{000a}&#39;</span>, <span class="string">&#39;\u{000c}&#39;</span>, <span class="string">&#39;\u{000d}&#39;</span>];
+    <span class="kw-2">&amp;</span>[<span class="string">'\u{0020}'</span>, <span class="string">'\u{0009}'</span>, <span class="string">'\u{000a}'</span>, <span class="string">'\u{000c}'</span>, <span class="string">'\u{000d}'</span>];
 
 <span class="comment">// https://github.com/servo/servo/blob/1610bd2bc83cea8ff0831cf999c4fba297788f64/components/script/dom/window.rs#L575
 </span><span class="kw">fn </span>decode_base64(value: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;u8&gt; {
@@ -587,11 +588,11 @@
     </span><span class="kw">fn </span>render_simple_svg() {
         <span class="comment">// https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/410.svg
         // Note: height and width must be set
-        </span><span class="kw">let </span>svg = <span class="string">r##&quot;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot; height = &quot;256&quot; width = &quot;256&quot;&gt;
-            &lt;path d=&quot;M30,1h40l29,29v40l-29,29h-40l-29-29v-40z&quot; stroke=&quot;#;000&quot; fill=&quot;none&quot;/&gt;
-            &lt;path d=&quot;M31,3h38l28,28v38l-28,28h-38l-28-28v-38z&quot; fill=&quot;#a23&quot;/&gt;
-            &lt;text x=&quot;50&quot; y=&quot;68&quot; font-size=&quot;48&quot; fill=&quot;#FFF&quot; text-anchor=&quot;middle&quot;&gt;&lt;![CDATA[410]]&gt;&lt;/text&gt;
-            &lt;/svg&gt;&quot;##</span>;
+        </span><span class="kw">let </span>svg = <span class="string">r##"&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" height = "256" width = "256"&gt;
+            &lt;path d="M30,1h40l29,29v40l-29,29h-40l-29-29v-40z" stroke="#;000" fill="none"/&gt;
+            &lt;path d="M31,3h38l28,28v38l-28,28h-38l-28-28v-38z" fill="#a23"/&gt;
+            &lt;text x="50" y="68" font-size="48" fill="#FFF" text-anchor="middle"&gt;&lt;![CDATA[410]]&gt;&lt;/text&gt;
+            &lt;/svg&gt;"##</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>surface = surfaces::raster_n32_premul((<span class="number">256</span>, <span class="number">256</span>)).unwrap();
         <span class="kw">let </span>canvas = surface.canvas();
         <span class="kw">let </span>font_mgr = FontMgr::new();
@@ -604,11 +605,11 @@
     </span><span class="kw">fn </span>save_surface_to_tmp(surface: <span class="kw-2">&amp;mut </span>Surface) {
         <span class="kw">let </span>image = surface.image_snapshot();
         <span class="kw">let </span>data = image.encode(<span class="prelude-val">None</span>, EncodedImageFormat::PNG, <span class="prelude-val">None</span>).unwrap();
-        write_file(data.as_bytes(), Path::new(<span class="string">&quot;/tmp/test.png&quot;</span>));
+        write_file(data.as_bytes(), Path::new(<span class="string">"/tmp/test.png"</span>));
 
         <span class="kw">pub fn </span>write_file(bytes: <span class="kw-2">&amp;</span>[u8], path: <span class="kw-2">&amp;</span>Path) {
-            <span class="kw">let </span><span class="kw-2">mut </span>file = File::create(path).expect(<span class="string">&quot;failed to create file&quot;</span>);
-            file.write_all(bytes).expect(<span class="string">&quot;failed to write to file&quot;</span>);
+            <span class="kw">let </span><span class="kw-2">mut </span>file = File::create(path).expect(<span class="string">"failed to create file"</span>);
+            file.write_all(bytes).expect(<span class="string">"failed to write to file"</span>);
         }
     }
 
@@ -617,23 +618,23 @@
         <span class="kw">use </span>std::str::from_utf8;
 
         <span class="comment">// padding length of 0-2 should be supported
-        </span><span class="macro">assert_eq!</span>(<span class="string">&quot;Hello&quot;</span>, from_utf8(<span class="kw-2">&amp;</span>decode_base64(<span class="string">&quot;SGVsbG8=&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="string">&quot;Hello!&quot;</span>, from_utf8(<span class="kw-2">&amp;</span>decode_base64(<span class="string">&quot;SGVsbG8h&quot;</span>)).unwrap());
+        </span><span class="macro">assert_eq!</span>(<span class="string">"Hello"</span>, from_utf8(<span class="kw-2">&amp;</span>decode_base64(<span class="string">"SGVsbG8="</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="string">"Hello!"</span>, from_utf8(<span class="kw-2">&amp;</span>decode_base64(<span class="string">"SGVsbG8h"</span>)).unwrap());
         <span class="macro">assert_eq!</span>(
-            <span class="string">&quot;Hello!!&quot;</span>,
-            from_utf8(<span class="kw-2">&amp;</span>decode_base64(<span class="string">&quot;SGVsbG8hIQ==&quot;</span>)).unwrap()
+            <span class="string">"Hello!!"</span>,
+            from_utf8(<span class="kw-2">&amp;</span>decode_base64(<span class="string">"SGVsbG8hIQ=="</span>)).unwrap()
         );
 
         <span class="comment">// padding length of 3 is invalid
-        </span><span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">&quot;SGVsbG8hIQ===&quot;</span>).len());
+        </span><span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">"SGVsbG8hIQ==="</span>).len());
 
-        <span class="comment">// if input length divided by 4 gives a remainder of 1 after padding removal, it&#39;s invalid
-        </span><span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">&quot;SGVsbG8hh&quot;</span>).len());
-        <span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">&quot;SGVsbG8hh=&quot;</span>).len());
-        <span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">&quot;SGVsbG8hh==&quot;</span>).len());
+        <span class="comment">// if input length divided by 4 gives a remainder of 1 after padding removal, it's invalid
+        </span><span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">"SGVsbG8hh"</span>).len());
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">"SGVsbG8hh="</span>).len());
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">"SGVsbG8hh=="</span>).len());
 
         <span class="comment">// invalid characters in the input
-        </span><span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">&quot;$GVsbG8h&quot;</span>).len());
+        </span><span class="macro">assert_eq!</span>(<span class="number">0</span>, decode_base64(<span class="string">"$GVsbG8h"</span>).len());
     }
 }
 </code></pre></div></section></main></body></html>

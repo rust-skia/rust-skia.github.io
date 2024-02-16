@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/paragraph.rs`."><title>paragraph.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/paragraph.rs`."><title>paragraph.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -776,17 +777,17 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Paragraph {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Paragraph&quot;</span>)
-            .field(<span class="string">&quot;max_width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_width())
-            .field(<span class="string">&quot;height&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.height())
-            .field(<span class="string">&quot;min_intrinsic_width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.min_intrinsic_width())
-            .field(<span class="string">&quot;max_intrinsic_width&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_intrinsic_width())
-            .field(<span class="string">&quot;alphabetic_baseline&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.alphabetic_baseline())
-            .field(<span class="string">&quot;ideographic_baseline&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.ideographic_baseline())
-            .field(<span class="string">&quot;longest_line&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.longest_line())
-            .field(<span class="string">&quot;did_exceed_max_lines&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.did_exceed_max_lines())
-            .field(<span class="string">&quot;line_number&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.line_number())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Paragraph"</span>)
+            .field(<span class="string">"max_width"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_width())
+            .field(<span class="string">"height"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.height())
+            .field(<span class="string">"min_intrinsic_width"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.min_intrinsic_width())
+            .field(<span class="string">"max_intrinsic_width"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_intrinsic_width())
+            .field(<span class="string">"alphabetic_baseline"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.alphabetic_baseline())
+            .field(<span class="string">"ideographic_baseline"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.ideographic_baseline())
+            .field(<span class="string">"longest_line"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.longest_line())
+            .field(<span class="string">"did_exceed_max_lines"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.did_exceed_max_lines())
+            .field(<span class="string">"line_number"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.line_number())
             .finish()
     }
 }
@@ -946,19 +947,19 @@
         result
     }
 
-    <span class="kw">pub fn </span>visit&lt;<span class="lifetime">&#39;a</span>, F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>visitor: F)
+    <span class="kw">pub fn </span>visit&lt;<span class="lifetime">'a</span>, F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>visitor: F)
     <span class="kw">where
-        </span>F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>VisitorInfo&gt;),
+        </span>F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>VisitorInfo&gt;),
     {
         <span class="kw">unsafe </span>{
             sb::C_Paragraph_visit(
                 <span class="self">self</span>.native_mut(),
                 <span class="kw-2">&amp;mut </span>visitor <span class="kw">as </span><span class="kw-2">*mut </span>F <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(visitor_trampoline::&lt;<span class="lifetime">&#39;a</span>, F&gt;),
+                <span class="prelude-val">Some</span>(visitor_trampoline::&lt;<span class="lifetime">'a</span>, F&gt;),
             );
         }
 
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>visitor_trampoline&lt;<span class="lifetime">&#39;a</span>, F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>VisitorInfo&gt;)&gt;(
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>visitor_trampoline&lt;<span class="lifetime">'a</span>, F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>VisitorInfo&gt;)&gt;(
             ctx: <span class="kw-2">*mut </span>ffi::c_void,
             index: usize,
             info: <span class="kw-2">*const </span>sb::skia_textlayout_Paragraph_VisitorInfo,
@@ -972,21 +973,21 @@
         }
     }
 
-    <span class="kw">pub fn </span>extended_visit&lt;<span class="lifetime">&#39;a</span>, F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>visitor: F)
+    <span class="kw">pub fn </span>extended_visit&lt;<span class="lifetime">'a</span>, F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>visitor: F)
     <span class="kw">where
-        </span>F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ExtendedVisitorInfo&gt;),
+        </span>F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>ExtendedVisitorInfo&gt;),
     {
         <span class="kw">unsafe </span>{
             sb::C_Paragraph_extendedVisit(
                 <span class="self">self</span>.native_mut(),
                 <span class="kw-2">&amp;mut </span>visitor <span class="kw">as </span><span class="kw-2">*mut </span>F <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(visitor_trampoline::&lt;<span class="lifetime">&#39;a</span>, F&gt;),
+                <span class="prelude-val">Some</span>(visitor_trampoline::&lt;<span class="lifetime">'a</span>, F&gt;),
             );
         }
 
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>visitor_trampoline&lt;
-            <span class="lifetime">&#39;a</span>,
-            F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ExtendedVisitorInfo&gt;),
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>visitor_trampoline&lt;
+            <span class="lifetime">'a</span>,
+            F: FnMut(usize, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>ExtendedVisitorInfo&gt;),
         &gt;(
             ctx: <span class="kw-2">*mut </span>ffi::c_void,
             index: usize,
@@ -1226,21 +1227,21 @@
 
 <span class="kw">impl </span>NativeDrop <span class="kw">for </span>sb::skia_textlayout_Paragraph_VisitorInfo {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">panic!</span>(<span class="string">&quot;Internal error, Paragraph visitor can&#39;t be created in Rust&quot;</span>)
+        <span class="macro">panic!</span>(<span class="string">"Internal error, Paragraph visitor can't be created in Rust"</span>)
     }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>VisitorInfo {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;VisitorInfo&quot;</span>)
-            .field(<span class="string">&quot;font&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font())
-            .field(<span class="string">&quot;origin&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.origin())
-            .field(<span class="string">&quot;advance_x&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.advance_x())
-            .field(<span class="string">&quot;count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.count())
-            .field(<span class="string">&quot;glyphs&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.glyphs())
-            .field(<span class="string">&quot;positions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.positions())
-            .field(<span class="string">&quot;utf8_starts&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.utf8_starts())
-            .field(<span class="string">&quot;flags&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.flags())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"VisitorInfo"</span>)
+            .field(<span class="string">"font"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font())
+            .field(<span class="string">"origin"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.origin())
+            .field(<span class="string">"advance_x"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.advance_x())
+            .field(<span class="string">"count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.count())
+            .field(<span class="string">"glyphs"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.glyphs())
+            .field(<span class="string">"positions"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.positions())
+            .field(<span class="string">"utf8_starts"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.utf8_starts())
+            .field(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.flags())
             .finish()
     }
 }
@@ -1288,22 +1289,22 @@
 
 <span class="kw">impl </span>NativeDrop <span class="kw">for </span>sb::skia_textlayout_Paragraph_ExtendedVisitorInfo {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">panic!</span>(<span class="string">&quot;Internal error, Paragraph extended visitor info can&#39;t be created in Rust&quot;</span>)
+        <span class="macro">panic!</span>(<span class="string">"Internal error, Paragraph extended visitor info can't be created in Rust"</span>)
     }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ExtendedVisitorInfo {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;VisitorInfo&quot;</span>)
-            .field(<span class="string">&quot;font&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font())
-            .field(<span class="string">&quot;origin&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.origin())
-            .field(<span class="string">&quot;advance&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.advance())
-            .field(<span class="string">&quot;count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.count())
-            .field(<span class="string">&quot;glyphs&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.glyphs())
-            .field(<span class="string">&quot;positions&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.positions())
-            .field(<span class="string">&quot;bounds&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
-            .field(<span class="string">&quot;utf8_starts&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.utf8_starts())
-            .field(<span class="string">&quot;flags&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.flags())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"VisitorInfo"</span>)
+            .field(<span class="string">"font"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font())
+            .field(<span class="string">"origin"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.origin())
+            .field(<span class="string">"advance"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.advance())
+            .field(<span class="string">"count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.count())
+            .field(<span class="string">"glyphs"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.glyphs())
+            .field(<span class="string">"positions"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.positions())
+            .field(<span class="string">"bounds"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bounds())
+            .field(<span class="string">"utf8_starts"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.utf8_starts())
+            .field(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.flags())
             .finish()
     }
 }
@@ -1434,7 +1435,7 @@
         <span class="kw">let </span>paragraph = mk_lorem_ipsum_paragraph();
         <span class="kw">let </span>line_metrics = paragraph.get_line_metrics();
         <span class="kw">for </span>(line, lm) <span class="kw">in </span>line_metrics.iter().enumerate() {
-            <span class="macro">println!</span>(<span class="string">&quot;line {}: width: {}&quot;</span>, line + <span class="number">1</span>, lm.width)
+            <span class="macro">println!</span>(<span class="string">"line {}: width: {}"</span>, line + <span class="number">1</span>, lm.width)
         }
     }
 
@@ -1450,7 +1451,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>font_collection = FontCollection::new();
         font_collection.set_default_font_manager(FontMgr::default(), <span class="prelude-val">None</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>paragraph_builder = ParagraphBuilder::new(<span class="kw-2">&amp;</span>style, font_collection);
-        paragraph_builder.add_text(<span class="string">&quot;Lorem ipsum dolor sit amet\n&quot;</span>);
+        paragraph_builder.add_text(<span class="string">"Lorem ipsum dolor sit amet\n"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>paragraph = paragraph_builder.build();
         paragraph.layout(<span class="number">100.0</span>);
 
@@ -1471,7 +1472,7 @@
     </span><span class="kw">fn </span>test_visit() {
         <span class="kw">let </span><span class="kw-2">mut </span>paragraph = mk_lorem_ipsum_paragraph();
         <span class="kw">let </span>visitor = |line, info| {
-            <span class="macro">println!</span>(<span class="string">&quot;line {}: {:?}&quot;</span>, line, info);
+            <span class="macro">println!</span>(<span class="string">"line {}: {:?}"</span>, line, info);
         };
         paragraph.visit(visitor);
     }
@@ -1481,7 +1482,7 @@
     </span><span class="kw">fn </span>test_extended_visit() {
         <span class="kw">let </span><span class="kw-2">mut </span>paragraph = mk_lorem_ipsum_paragraph();
         <span class="kw">let </span>visitor = |line, info| {
-            <span class="macro">println!</span>(<span class="string">&quot;line {}: {:?}&quot;</span>, line, info);
+            <span class="macro">println!</span>(<span class="string">"line {}: {:?}"</span>, line, info);
         };
         paragraph.extended_visit(visitor);
     }
@@ -1501,7 +1502,7 @@
 
         <span class="kw">return </span>paragraph;
 
-        <span class="kw">static </span>LOREM_IPSUM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at leo at nulla tincidunt placerat. Proin eget purus augue. Quisque et est ullamcorper, pellentesque felis nec, pulvinar massa. Aliquam imperdiet, nulla ut dictum euismod, purus dui pulvinar risus, eu suscipit elit neque ac est. Nullam eleifend justo quis placerat ultricies. Vestibulum ut elementum velit. Praesent et dolor sit amet purus bibendum mattis. Aliquam erat volutpat.&quot;</span>;
+        <span class="kw">static </span>LOREM_IPSUM: <span class="kw-2">&amp;</span>str = <span class="string">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at leo at nulla tincidunt placerat. Proin eget purus augue. Quisque et est ullamcorper, pellentesque felis nec, pulvinar massa. Aliquam imperdiet, nulla ut dictum euismod, purus dui pulvinar risus, eu suscipit elit neque ac est. Nullam eleifend justo quis placerat ultricies. Vestibulum ut elementum velit. Praesent et dolor sit amet purus bibendum mattis. Aliquam erat volutpat."</span>;
     }
 }
 </code></pre></div></section></main></body></html>

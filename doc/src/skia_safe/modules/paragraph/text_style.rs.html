@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/text_style.rs`."><title>text_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../skia_safe/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/paragraph/text_style.rs`."><title>text_style.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -839,8 +840,8 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>FontFeature {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_tuple(<span class="string">&quot;FontFeature&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_tuple(<span class="string">"FontFeature"</span>)
             .field(<span class="kw-2">&amp;</span><span class="self">self</span>.name())
             .field(<span class="kw-2">&amp;</span><span class="self">self</span>.value())
             .finish()
@@ -933,29 +934,29 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>TextStyle {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;TextStyle&quot;</span>)
-            .field(<span class="string">&quot;color&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.color())
-            .field(<span class="string">&quot;has_foreground&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.has_foreground())
-            .field(<span class="string">&quot;foreground&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.foreground())
-            .field(<span class="string">&quot;has_background&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.has_background())
-            .field(<span class="string">&quot;background&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.background())
-            .field(<span class="string">&quot;decoration&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.decoration())
-            .field(<span class="string">&quot;font_style&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_style())
-            .field(<span class="string">&quot;shadows&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.shadows())
-            .field(<span class="string">&quot;font_features&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_features())
-            .field(<span class="string">&quot;font_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_size())
-            .field(<span class="string">&quot;font_families&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_families())
-            .field(<span class="string">&quot;baseline_shift&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.baseline_shift())
-            .field(<span class="string">&quot;height&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.height())
-            .field(<span class="string">&quot;height_override&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.height_override())
-            .field(<span class="string">&quot;half_leading&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.half_leading())
-            .field(<span class="string">&quot;letter_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.letter_spacing())
-            .field(<span class="string">&quot;word_spacing&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.word_spacing())
-            .field(<span class="string">&quot;typeface&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.typeface())
-            .field(<span class="string">&quot;locale&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.locale())
-            .field(<span class="string">&quot;text_baseline&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.text_baseline())
-            .field(<span class="string">&quot;is_placeholder&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_placeholder())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"TextStyle"</span>)
+            .field(<span class="string">"color"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.color())
+            .field(<span class="string">"has_foreground"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.has_foreground())
+            .field(<span class="string">"foreground"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.foreground())
+            .field(<span class="string">"has_background"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.has_background())
+            .field(<span class="string">"background"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.background())
+            .field(<span class="string">"decoration"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.decoration())
+            .field(<span class="string">"font_style"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_style())
+            .field(<span class="string">"shadows"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.shadows())
+            .field(<span class="string">"font_features"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_features())
+            .field(<span class="string">"font_size"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_size())
+            .field(<span class="string">"font_families"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.font_families())
+            .field(<span class="string">"baseline_shift"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.baseline_shift())
+            .field(<span class="string">"height"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.height())
+            .field(<span class="string">"height_override"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.height_override())
+            .field(<span class="string">"half_leading"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.half_leading())
+            .field(<span class="string">"letter_spacing"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.letter_spacing())
+            .field(<span class="string">"word_spacing"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.word_spacing())
+            .field(<span class="string">"typeface"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.typeface())
+            .field(<span class="string">"locale"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.locale())
+            .field(<span class="string">"text_baseline"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.text_baseline())
+            .field(<span class="string">"is_placeholder"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_placeholder())
             .finish()
     }
 }
@@ -965,7 +966,7 @@
         TextStyle::construct(|ts| <span class="kw">unsafe </span>{ sb::C_TextStyle_Construct(ts) })
     }
 
-    <span class="attr">#[deprecated(since = <span class="string">&quot;0.51.0&quot;</span>, note = <span class="string">&quot;Use clone_for_placeholder&quot;</span>)]
+    <span class="attr">#[deprecated(since = <span class="string">"0.51.0"</span>, note = <span class="string">"Use clone_for_placeholder"</span>)]
     #[must_use]
     </span><span class="kw">pub fn </span>to_placeholder(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.clone_for_placeholder()
@@ -1010,7 +1011,7 @@
         <span class="self">self
     </span>}
 
-    <span class="attr">#[deprecated(since = <span class="string">&quot;0.64.0&quot;</span>, note = <span class="string">&quot;use set_foreground_paint()&quot;</span>)]
+    <span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use set_foreground_paint()"</span>)]
     </span><span class="kw">pub fn </span>set_foreground_color(<span class="kw-2">&amp;mut </span><span class="self">self</span>, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.set_foreground_paint(paint)
     }
@@ -1033,7 +1034,7 @@
         <span class="self">self
     </span>}
 
-    <span class="attr">#[deprecated(since = <span class="string">&quot;0.64.0&quot;</span>, note = <span class="string">&quot;use set_background_paint()&quot;</span>)]
+    <span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use set_background_paint()"</span>)]
     </span><span class="kw">pub fn </span>set_background_color(<span class="kw-2">&amp;mut </span><span class="self">self</span>, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.set_background_paint(paint)
     }
@@ -1091,7 +1092,7 @@
         <span class="self">self</span>.decoration_mut_internal().thickness_multiplier = multiplier;
     }
 
-    <span class="attr">#[deprecated(since = <span class="string">&quot;0.63.1&quot;</span>, note = <span class="string">&quot;use set_decoration()&quot;</span>)]
+    <span class="attr">#[deprecated(since = <span class="string">"0.63.1"</span>, note = <span class="string">"use set_decoration()"</span>)]
     </span><span class="kw">pub fn </span>decoration_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Decoration {
         <span class="self">self</span>.decoration_mut_internal()
     }
@@ -1151,9 +1152,9 @@
     }
 
     <span class="doccomment">/// The contents of the [`crate::FontArguments`] will be copied into the [`TextStyle`].
-    </span><span class="kw">pub fn </span>set_font_arguments&lt;<span class="lifetime">&#39;fa</span>&gt;(
+    </span><span class="kw">pub fn </span>set_font_arguments&lt;<span class="lifetime">'fa</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        arguments: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;fa </span><span class="kw">crate</span>::FontArguments&lt;<span class="lifetime">&#39;fa</span>, <span class="lifetime">&#39;fa</span>&gt;&gt;&gt;,
+        arguments: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'fa </span><span class="kw">crate</span>::FontArguments&lt;<span class="lifetime">'fa</span>, <span class="lifetime">'fa</span>&gt;&gt;&gt;,
     ) {
         <span class="kw">unsafe </span>{
             sb::C_TextStyle_setFontArguments(

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/effects/image_filters.rs`."><title>image_filters.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../skia_safe/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/effects/image_filters.rs`."><title>image_filters.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1168,7 +1169,7 @@
 };
 
 <span class="doccomment">/// This is just a convenience type to allow passing [`IRect`]s, [`Rect`]s, and optional references
-/// to those types as a crop rect for the image filter factories. It&#39;s not intended to be used
+/// to those types as a crop rect for the image filter factories. It's not intended to be used
 /// directly.
 </span><span class="attr">#[repr(C)]
 #[derive(Copy, Clone, PartialEq, Debug)]
@@ -1323,8 +1324,8 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that composes &#39;inner&#39; with &#39;outer&#39;, such that the results of &#39;inner&#39; are
-/// treated as the source bitmap passed to &#39;outer&#39;, i.e. result = outer(inner(source)).
+<span class="doccomment">/// Create a filter that composes 'inner' with 'outer', such that the results of 'inner' are
+/// treated as the source bitmap passed to 'outer', i.e. result = outer(inner(source)).
 /// * `outer` - The outer filter that evaluates the results of inner.
 /// * `inner` - The inner filter that produces the input to outer.
 </span><span class="kw">pub fn </span>compose(
@@ -1336,12 +1337,12 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that applies a crop to the result of the &#39;input&#39; filter. Pixels within the
-/// crop rectangle are unmodified from what &#39;input&#39; produced. Pixels outside of crop match the
+<span class="doccomment">/// Create a filter that applies a crop to the result of the 'input' filter. Pixels within the
+/// crop rectangle are unmodified from what 'input' produced. Pixels outside of crop match the
 /// provided [`TileMode`] (defaulting to `Decal`).
 ///
 /// * `rect` - The cropping geometry
-/// * `tile_mode` - The tile mode applied to pixels *outside* of &#39;crop&#39;
+/// * `tile_mode` - The tile mode applied to pixels *outside* of 'crop'
 /// * `input` - The input filter that is cropped, uses source image if this is `None`
 </span><span class="kw">pub fn </span>crop(
     rect: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
@@ -1388,7 +1389,7 @@
 }
 
 <span class="doccomment">/// Create a filter that draws a drop shadow under the input content. This filter produces an
-/// image that includes the inputs&#39; content.
+/// image that includes the inputs' content.
 /// * `offset` - The offset of the shadow.
 /// * `sigma_x` - The blur radius for the shadow, along the X axis.
 /// * `sigma_y` - The blur radius for the shadow, along the Y axis.
@@ -1452,17 +1453,17 @@
 </span><span class="kw">pub fn </span>empty() -&gt; ImageFilter {
     ImageFilter::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkImageFilters_Empty() }).unwrap()
 }
-<span class="doccomment">/// Create a filter that draws the &#39;src_rect&#39; portion of image into &#39;dst_rect&#39; using the given
+<span class="doccomment">/// Create a filter that draws the 'src_rect' portion of image into 'dst_rect' using the given
 /// filter quality. Similar to [`crate::Canvas::draw_image_rect()`].
 ///
-/// * `image` - The image that is output by the filter, subset by &#39;srcRect&#39;.
-/// * `src_rect` - The source pixels sampled into &#39;dstRect&#39;
+/// * `image` - The image that is output by the filter, subset by 'srcRect'.
+/// * `src_rect` - The source pixels sampled into 'dstRect'
 /// * `dst_rect` - The local rectangle to draw the image into.
 /// * `sampling` - The sampling to use when drawing the image.
-</span><span class="kw">pub fn </span>image&lt;<span class="lifetime">&#39;a</span>&gt;(
+</span><span class="kw">pub fn </span>image&lt;<span class="lifetime">'a</span>&gt;(
     image: <span class="kw">impl </span>Into&lt;Image&gt;,
-    src_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Rect&gt;&gt;,
-    dst_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Rect&gt;&gt;,
+    src_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Rect&gt;&gt;,
+    dst_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Rect&gt;&gt;,
     sampling: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;SamplingOptions&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Option</span>&lt;ImageFilter&gt; {
     <span class="kw">let </span>image = image.into();
@@ -1487,7 +1488,7 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that fills &#39;lens_bounds&#39; with a magnification of the input.
+<span class="doccomment">/// Create a filter that fills 'lens_bounds' with a magnification of the input.
 ///
 /// * `lens_bounds` - The outer bounds of the magnifier effect
 /// * `zoom_amount` - The amount of magnification applied to the input image
@@ -1562,7 +1563,7 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that transforms the input image by &#39;matrix&#39;. This matrix transforms the
+<span class="doccomment">/// Create a filter that transforms the input image by 'matrix'. This matrix transforms the
 /// local space, which means it effectively happens prior to any transformation coming from the
 /// [`crate::Canvas`] initiating the filtering.
 /// * `matrix` - The matrix to apply to the original content.
@@ -1622,14 +1623,14 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that produces the [`Picture`] as its output, clipped to both &#39;target_rect&#39; and
-/// the picture&#39;s internal cull rect.
+<span class="doccomment">/// Create a filter that produces the [`Picture`] as its output, clipped to both 'target_rect' and
+/// the picture's internal cull rect.
 ///
 /// * `pic` - The picture that is drawn for the filter output.
 /// * `target_rect` - The drawing region for the picture.
-</span><span class="kw">pub fn </span>picture&lt;<span class="lifetime">&#39;a</span>&gt;(
+</span><span class="kw">pub fn </span>picture&lt;<span class="lifetime">'a</span>&gt;(
     pic: <span class="kw">impl </span>Into&lt;Picture&gt;,
-    target_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Rect&gt;&gt;,
+    target_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Rect&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Option</span>&lt;ImageFilter&gt; {
     <span class="kw">let </span>picture = pic.into();
     <span class="kw">let </span>picture_rect = picture.cull_rect();
@@ -1646,8 +1647,8 @@
 <span class="macro">variant_name!</span>(Dither::Yes);
 
 <span class="doccomment">/// Create a filter that fills the output with the per-pixel evaluation of the [`Shader`]. The
-/// shader is defined in the image filter&#39;s local coordinate system, so will automatically
-/// be affected by [`Canvas&#39;`] transform.
+/// shader is defined in the image filter's local coordinate system, so will automatically
+/// be affected by [`Canvas'`] transform.
 ///
 /// Like `image()` and Picture(), this is a leaf filter that can be used to introduce inputs to
 /// a complex filter graph, but should generally be combined with a filter that as at least
@@ -1686,7 +1687,7 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that dilates each input pixel&#39;s channel values to the max value within the
+<span class="doccomment">/// Create a filter that dilates each input pixel's channel values to the max value within the
 /// given radii along the x and y axes.
 /// * `radius_x` - The distance to dilate along the x axis to either side of each pixel.
 /// * `radius_y` - The distance to dilate along the y axis to either side of each pixel.
@@ -1707,7 +1708,7 @@
     })
 }
 
-<span class="doccomment">/// Create a filter that erodes each input pixel&#39;s channel values to the minimum channel value
+<span class="doccomment">/// Create a filter that erodes each input pixel's channel values to the minimum channel value
 /// within the given radii along the x and y axes.
 /// * `radius_x` - The distance to erode along the x axis to either side of each pixel.
 /// * `radius_y` - The distance to erode along the y axis to either side of each pixel.
@@ -1790,7 +1791,7 @@
 
 <span class="doccomment">/// Create a filter that calculates the diffuse illumination from a spot light source, using
 /// alpha channel of the input as the height profile of the surface (to approximate normal
-/// vectors). The spot light is restricted to be within &#39;cutoff_angle&#39; of the vector between
+/// vectors). The spot light is restricted to be within 'cutoff_angle' of the vector between
 /// the location and target.
 /// * `location` - The location of the spot light.
 /// * `target` - The location that the spot light is point towards
@@ -1897,7 +1898,7 @@
 
 <span class="doccomment">/// Create a filter that calculates the specular illumination from a spot light source, using
 /// alpha channel of the input as the height profile of the surface (to approximate normal
-/// vectors). The spot light is restricted to be within &#39;cutoff_angle&#39; of the vector between
+/// vectors). The spot light is restricted to be within 'cutoff_angle' of the vector between
 /// the location and target.
 /// * `location` - The location of the spot light.
 /// * `target` - The location that the spot light is point towards
@@ -1941,11 +1942,11 @@
 
 <span class="kw">impl </span>ImageFilter {
     <span class="doccomment">/// [`arithmetic()`]
-    </span><span class="kw">pub fn </span>arithmetic&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>arithmetic&lt;<span class="lifetime">'a</span>&gt;(
         inputs: <span class="kw">impl </span>Into&lt;ArithmeticFPInputs&gt;,
         background: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;&gt;,
         foreground: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;&gt;,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>inputs = inputs.into();
         arithmetic(
@@ -1961,9 +1962,9 @@
     }
 
     <span class="doccomment">/// [`blur()`]
-    </span><span class="kw">pub fn </span>blur&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>blur&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         sigma: (scalar, scalar),
         tile_mode: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::TileMode&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
@@ -1971,9 +1972,9 @@
     }
 
     <span class="doccomment">/// [`color_filter()`]
-    </span><span class="kw">pub fn </span>color_filter&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>color_filter&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         cf: <span class="kw">impl </span>Into&lt;ColorFilter&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         color_filter(cf, <span class="self">self</span>, crop_rect.into().map(|r| r.into()))
@@ -1994,12 +1995,12 @@
     }
 
     <span class="doccomment">/// [`displacement_map()`]
-    </span><span class="kw">pub fn </span>displacement_map_effect&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>displacement_map_effect&lt;<span class="lifetime">'a</span>&gt;(
         channel_selectors: (ColorChannel, ColorChannel),
         scale: scalar,
         displacement: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ImageFilter&gt;&gt;,
         color: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ImageFilter&gt;&gt;,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         displacement_map(
             channel_selectors,
@@ -2011,9 +2012,9 @@
     }
 
     <span class="doccomment">/// [`distant_lit_diffuse()`]
-    </span><span class="kw">pub fn </span>distant_lit_diffuse_lighting&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>distant_lit_diffuse_lighting&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         direction: <span class="kw">impl </span>Into&lt;Point3&gt;,
         light_color: <span class="kw">impl </span>Into&lt;Color&gt;,
         surface_scale: scalar,
@@ -2030,9 +2031,9 @@
     }
 
     <span class="doccomment">/// [`point_lit_diffuse()`]
-    </span><span class="kw">pub fn </span>point_lit_diffuse_lighting&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>point_lit_diffuse_lighting&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         location: <span class="kw">impl </span>Into&lt;Point3&gt;,
         light_color: <span class="kw">impl </span>Into&lt;Color&gt;,
         surface_scale: scalar,
@@ -2050,9 +2051,9 @@
 
     <span class="doccomment">/// [`spot_lit_diffuse()`]
     </span><span class="attr">#[allow(clippy::too_many_arguments)]
-    </span><span class="kw">pub fn </span>spot_lit_diffuse_lighting&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>spot_lit_diffuse_lighting&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         location: <span class="kw">impl </span>Into&lt;Point3&gt;,
         target: <span class="kw">impl </span>Into&lt;Point3&gt;,
         specular_exponent: scalar,
@@ -2075,9 +2076,9 @@
     }
 
     <span class="doccomment">/// [`distant_lit_specular()`]
-    </span><span class="kw">pub fn </span>distant_lit_specular_lighting&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>distant_lit_specular_lighting&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         direction: <span class="kw">impl </span>Into&lt;Point3&gt;,
         light_color: <span class="kw">impl </span>Into&lt;Color&gt;,
         surface_scale: scalar,
@@ -2096,9 +2097,9 @@
     }
 
     <span class="doccomment">/// [`point_lit_specular()`]
-    </span><span class="kw">pub fn </span>point_lit_specular_lighting&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>point_lit_specular_lighting&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         location: <span class="kw">impl </span>Into&lt;Point3&gt;,
         light_color: <span class="kw">impl </span>Into&lt;Color&gt;,
         surface_scale: scalar,
@@ -2118,9 +2119,9 @@
 
     <span class="doccomment">/// [`spot_lit_specular()`]
     </span><span class="attr">#[allow(clippy::too_many_arguments)]
-    </span><span class="kw">pub fn </span>spot_lit_specular_lighting&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>spot_lit_specular_lighting&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         location: <span class="kw">impl </span>Into&lt;Point3&gt;,
         target: <span class="kw">impl </span>Into&lt;Point3&gt;,
         specular_exponent: scalar,
@@ -2145,13 +2146,13 @@
     }
 
     <span class="doccomment">/// [`magnifier()`]
-    </span><span class="kw">pub fn </span>magnifier&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>magnifier&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
         lens_bounds: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
         zoom_amount: scalar,
         inset: scalar,
         sampling_options: SamplingOptions,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         magnifier(
             lens_bounds,
@@ -2165,9 +2166,9 @@
 
     <span class="doccomment">/// [`matrix_convolution()`]
     </span><span class="attr">#[allow(clippy::too_many_arguments)]
-    </span><span class="kw">pub fn </span>matrix_convolution&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>matrix_convolution&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         kernel_size: <span class="kw">impl </span>Into&lt;ISize&gt;,
         kernel: <span class="kw-2">&amp;</span>[scalar],
         gain: scalar,
@@ -2190,44 +2191,44 @@
     }
 
     <span class="doccomment">/// [`merge()`]
-    </span><span class="kw">pub fn </span>merge&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>merge&lt;<span class="lifetime">'a</span>&gt;(
         filters: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;&gt;,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         merge(filters, crop_rect.into().map(|r| r.into()))
     }
 
     <span class="doccomment">/// [`dilate()`]
-    </span><span class="kw">pub fn </span>dilate&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>dilate&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         radii: (scalar, scalar),
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         dilate(radii, <span class="self">self</span>, crop_rect.into().map(|r| r.into()))
     }
 
     <span class="doccomment">/// [`erode()`]
-    </span><span class="kw">pub fn </span>erode&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>erode&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         radii: (scalar, scalar),
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         erode(radii, <span class="self">self</span>, crop_rect.into().map(|r| r.into()))
     }
 
     <span class="doccomment">/// [`offset()`]
-    </span><span class="kw">pub fn </span>offset&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>offset&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>IRect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IRect&gt;&gt;,
         delta: <span class="kw">impl </span>Into&lt;Vector&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         offset(delta, <span class="self">self</span>, crop_rect.into().map(|r| r.into()))
     }
 
     <span class="doccomment">/// [`self::picture()`]
-    </span><span class="kw">pub fn </span>from_picture&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>from_picture&lt;<span class="lifetime">'a</span>&gt;(
         picture: <span class="kw">impl </span>Into&lt;Picture&gt;,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Rect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Rect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="self">self</span>::picture(picture, crop_rect)
     }
@@ -2263,16 +2264,16 @@
 }
 
 <span class="kw">impl </span>Picture {
-    <span class="kw">pub fn </span>as_image_filter&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>as_image_filter&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Rect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Rect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;ImageFilter&gt; {
         <span class="self">self</span>.clone().into_image_filter(crop_rect)
     }
 
-    <span class="kw">pub fn </span>into_image_filter&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>into_image_filter&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Rect&gt;&gt;,
+        crop_rect: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Rect&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;ImageFilter&gt; {
         picture(<span class="self">self</span>, crop_rect)
     }
