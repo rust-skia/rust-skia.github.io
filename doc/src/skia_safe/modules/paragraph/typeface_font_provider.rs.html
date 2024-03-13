@@ -285,15 +285,15 @@
         <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_TypefaceFontProvider_new() }).unwrap()
     }
 
-    <span class="kw">pub fn </span>register_typeface(
+    <span class="kw">pub fn </span>register_typeface&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         typeface: Typeface,
-        alias: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span>AsRef&lt;str&gt;&gt;,
+        alias: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;&gt;,
     ) -&gt; usize {
         <span class="kw">unsafe </span>{
-            <span class="kw">match </span>alias {
+            <span class="kw">match </span>alias.into() {
                 <span class="prelude-val">Some</span>(alias) =&gt; {
-                    <span class="kw">let </span>alias = interop::String::from_str(alias.as_ref());
+                    <span class="kw">let </span>alias = interop::String::from_str(alias);
                     sb::C_TypefaceFontProvider_registerTypeface(
                         <span class="self">self</span>.native_mut(),
                         typeface.into_ptr(),

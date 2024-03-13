@@ -58,6 +58,24 @@
 <a href="#57" id="57">57</a>
 <a href="#58" id="58">58</a>
 <a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
 
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, skgpu_MutableTextureState, SkRefCntBase};
@@ -83,8 +101,14 @@
         <span class="kw">let </span><span class="kw-2">mut </span>str = f.debug_struct(<span class="string">"MutableTextureState"</span>);
         <span class="attr">#[cfg(feature = <span class="string">"vulkan"</span>)]
         </span>{
-            str.field(<span class="string">"image_layout"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.vk_image_layout())
-                .field(<span class="string">"queue_family_index"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.queue_family_index());
+            str.field(
+                <span class="string">"image_layout"</span>,
+                <span class="kw-2">&amp;</span><span class="kw">crate</span>::gpu::vk::mutable_texture_states::get_vk_image_layout(<span class="self">self</span>),
+            )
+            .field(
+                <span class="string">"queue_family_index"</span>,
+                <span class="kw-2">&amp;</span><span class="kw">crate</span>::gpu::vk::mutable_texture_states::get_vk_queue_family_index(<span class="self">self</span>),
+            );
         }
         str.field(<span class="string">"backend"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.backend()).finish()
     }
@@ -99,18 +123,30 @@
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"vulkan"</span>)]
+    #[deprecated(
+        since = <span class="string">"0.72.0"</span>,
+        note = <span class="string">"use gpu::vk::mutable_texture_states::new_vulkan()"
+    </span>)]
     </span><span class="kw">pub fn </span>new_vk(layout: <span class="kw">crate</span>::gpu::vk::ImageLayout, queue_family_index: u32) -&gt; <span class="self">Self </span>{
         <span class="kw">crate</span>::gpu::vk::mutable_texture_states::new_vulkan(layout, queue_family_index)
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"vulkan"</span>)]
+    #[deprecated(
+        since = <span class="string">"0.72.0"</span>,
+        note = <span class="string">"use gpu::vk::mutable_texture_states::get_vk_image_layout()"
+    </span>)]
     </span><span class="kw">pub fn </span>vk_image_layout(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; sb::VkImageLayout {
-        <span class="kw">unsafe </span>{ sb::C_MutableTextureState_getVkImageLayout(<span class="self">self</span>.native()) }
+        <span class="kw">crate</span>::gpu::vk::mutable_texture_states::get_vk_image_layout(<span class="self">self</span>)
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"vulkan"</span>)]
+    #[deprecated(
+        since = <span class="string">"0.72.0"</span>,
+        note = <span class="string">"use gpu::vk::mutable_texture_states::get_vk_queue_family_index()"
+    </span>)]
     </span><span class="kw">pub fn </span>queue_family_index(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ sb::C_MutableTextureState_getQueueFamilyIndex(<span class="self">self</span>.native()) }
+        <span class="kw">crate</span>::gpu::vk::mutable_texture_states::get_vk_queue_family_index(<span class="self">self</span>)
     }
 
     <span class="kw">pub fn </span>backend(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BackendApi {

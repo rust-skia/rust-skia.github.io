@@ -132,11 +132,42 @@
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
 <a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
 
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkPixelGeometry, SkSurfaceProps};
 
-<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar};
 
 <span class="comment">// TODO: use the enum rewriter and strip underscores?
 </span><span class="attr">#[derive(Copy, Clone, PartialEq, Eq, Debug, Default)]
@@ -173,6 +204,8 @@
 <span class="macro">bitflags! </span>{
     <span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     </span><span class="kw">pub struct </span>SurfacePropsFlags: u32 {
+        <span class="attr">#[allow(clippy::unnecessary_cast)]
+        </span><span class="kw">const </span>DEFAULT = sb::SkSurfaceProps_Flags_kDefault_Flag <span class="kw">as </span>u32;
         <span class="attr">#[allow(clippy::unnecessary_cast)]
         </span><span class="kw">const </span>USE_DEVICE_INDEPENDENT_FONTS =
             sb::SkSurfaceProps_Flags_kUseDeviceIndependentFonts_Flag <span class="kw">as </span>u32;
@@ -216,16 +249,32 @@
         f.debug_struct(<span class="string">"SurfaceProps"</span>)
             .field(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.flags())
             .field(<span class="string">"pixel_geometry"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.pixel_geometry())
+            .field(<span class="string">"text_contrast"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.text_contrast())
+            .field(<span class="string">"text_gamma"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.text_gamma())
             .finish()
     }
 }
 
 <span class="kw">impl </span>SurfaceProps {
-    <span class="comment">// TODO: do we need to wrap the constructor(s) with InitType?
-
-    </span><span class="kw">pub fn </span>new(flags: SurfacePropsFlags, pixel_geometry: PixelGeometry) -&gt; SurfaceProps {
+    <span class="kw">pub fn </span>new(flags: SurfacePropsFlags, pixel_geometry: PixelGeometry) -&gt; SurfaceProps {
         <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{
             SkSurfaceProps::new1(flags.bits(), pixel_geometry.into_native())
+        })
+    }
+
+    <span class="kw">pub fn </span>new_with_text_properties(
+        flags: SurfacePropsFlags,
+        pixel_geometry: PixelGeometry,
+        text_contrast: scalar,
+        text_gamma: scalar,
+    ) -&gt; SurfaceProps {
+        <span class="self">Self</span>::from_native_c(<span class="kw">unsafe </span>{
+            SkSurfaceProps::new2(
+                flags.bits(),
+                pixel_geometry.into_native(),
+                text_contrast,
+                text_gamma,
+            )
         })
     }
 
@@ -235,11 +284,24 @@
 
     <span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>clone_with_pixel_geometry(<span class="kw-2">&amp;</span><span class="self">self</span>, new_pixel_geometry: PixelGeometry) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new(<span class="self">self</span>.flags(), new_pixel_geometry)
+        <span class="self">Self</span>::new_with_text_properties(
+            <span class="self">self</span>.flags(),
+            new_pixel_geometry,
+            <span class="self">self</span>.text_contrast(),
+            <span class="self">self</span>.text_gamma(),
+        )
     }
 
     <span class="kw">pub fn </span>pixel_geometry(<span class="self">self</span>) -&gt; PixelGeometry {
         PixelGeometry::from_native_c(<span class="self">self</span>.native().fPixelGeometry)
+    }
+
+    <span class="kw">pub fn </span>text_contrast(<span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fTextContrast
+    }
+
+    <span class="kw">pub fn </span>text_gamma(<span class="self">self</span>) -&gt; scalar {
+        <span class="self">self</span>.native().fTextGamma
     }
 
     <span class="kw">pub fn </span>is_use_device_independent_fonts(<span class="self">self</span>) -&gt; bool {

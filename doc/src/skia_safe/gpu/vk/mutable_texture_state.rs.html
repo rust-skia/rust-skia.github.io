@@ -22,11 +22,13 @@
 <a href="#21" id="21">21</a>
 <a href="#22" id="22">22</a>
 <a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
 </pre></div><pre class="rust"><code><span class="kw">pub mod </span>mutable_texture_states {
     <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
     <span class="kw">use crate</span>::{
-        gpu::{vk::ImageLayout, MutableTextureState},
+        gpu::{vk::ImageLayout, BackendApi, MutableTextureState},
         prelude::<span class="kw-2">*</span>,
     };
 
@@ -38,10 +40,12 @@
     }
 
     <span class="kw">pub fn </span>get_vk_image_layout(state: <span class="kw-2">&amp;</span>MutableTextureState) -&gt; sb::VkImageLayout {
+        <span class="macro">assert_eq!</span>(state.backend(), BackendApi::Vulkan);
         <span class="kw">unsafe </span>{ sb::C_MutableTextureStates_getVkImageLayout(state.native()) }
     }
 
     <span class="kw">pub fn </span>get_vk_queue_family_index(state: <span class="kw-2">&amp;</span>MutableTextureState) -&gt; u32 {
+        <span class="macro">assert_eq!</span>(state.backend(), BackendApi::Vulkan);
         <span class="kw">unsafe </span>{ sb::C_MutableTextureStates_getVkQueueFamilyIndex(state.native()) }
     }
 }
