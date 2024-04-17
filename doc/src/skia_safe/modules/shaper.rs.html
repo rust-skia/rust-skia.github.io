@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/shaper.rs`."><title>shaper.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/modules/shaper.rs`."><title>shaper.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.2 (25ef9e3d8 2024-04-09)" data-channel="1.77.2" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../skia_safe/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -779,13 +780,54 @@
 <a href="#778" id="778">778</a>
 <a href="#779" id="779">779</a>
 <a href="#780" id="780">780</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Font, FontMgr, FourByteTag, Point, TextBlob};
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{
+    ffi::{CStr, CString},
+    fmt,
+    marker::PhantomData,
+    os::raw,
+};
+
 <span class="kw">use </span>skia_bindings::{
     <span class="self">self </span><span class="kw">as </span>sb, RustRunHandler, SkShaper, SkShaper_BiDiRunIterator, SkShaper_FontRunIterator,
     SkShaper_LanguageRunIterator, SkShaper_RunHandler, SkShaper_RunIterator,
     SkShaper_ScriptRunIterator, SkTextBlobBuilderRunHandler,
 };
-<span class="kw">use </span>std::{ffi::CStr, fmt, marker::PhantomData, os::raw};
+
+<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, scalar, Font, FontMgr, FourByteTag, Point, TextBlob};
+
+<span class="kw">pub mod </span>core_text;
+<span class="kw">pub mod </span>harfbuzz;
 
 <span class="kw">pub use </span>run_handler::RunHandler;
 
@@ -812,7 +854,7 @@
 
 <span class="kw">impl </span>Shaper {
     <span class="kw">pub fn </span>new_primitive() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaper_MakePrimitive() }).unwrap()
+        shapers::primitive()
     }
 
     <span class="kw">pub fn </span>new_shaper_driven_wrapper(font_mgr: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;FontMgr&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
@@ -1093,13 +1135,13 @@
         })
     }
 
-    <span class="kw">pub fn </span>new_trivial_language_run_iterator(language: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; LanguageRunIterator {
-        <span class="kw">let </span>bytes = language.as_ref().as_bytes();
+    <span class="kw">pub fn </span>new_trivial_language_run_iterator(
+        language: <span class="kw">impl </span>AsRef&lt;str&gt;,
+        utf8_bytes: usize,
+    ) -&gt; LanguageRunIterator {
+        <span class="kw">let </span>language = CString::new(language.as_ref()).unwrap();
         LanguageRunIterator::from_ptr(<span class="kw">unsafe </span>{
-            sb::C_SkShaper_TrivialLanguageRunIterator_new(
-                bytes.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>raw::c_char,
-                bytes.len(),
-            )
+            sb::C_SkShaper_TrivialLanguageRunIterator_new(language.as_ptr(), utf8_bytes)
         })
         .unwrap()
     }
@@ -1345,15 +1387,18 @@
 }
 
 <span class="kw">mod </span>rust_run_handler {
-    <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
-    <span class="kw">use </span><span class="kw">crate</span>::shaper::run_handler::RunInfo;
-    <span class="kw">use </span><span class="kw">crate</span>::shaper::{AsNativeRunHandler, RunHandler};
+    <span class="kw">use </span>std::mem;
+
     <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
     <span class="kw">use </span>skia_bindings::{
         RustRunHandler, RustRunHandler_Param, SkShaper_RunHandler, SkShaper_RunHandler_Buffer,
         SkShaper_RunHandler_RunInfo, TraitObject,
     };
-    <span class="kw">use </span>std::mem;
+
+    <span class="kw">use crate</span>::{
+        prelude::<span class="kw-2">*</span>,
+        shaper::{run_handler::RunInfo, AsNativeRunHandler, RunHandler},
+    };
 
     <span class="kw">impl </span>NativeBase&lt;SkShaper_RunHandler&gt; <span class="kw">for </span>RustRunHandler {}
 
@@ -1505,6 +1550,24 @@
             )
         };
         builder.make_blob().map(|tb| (tb, builder.end_point()))
+    }
+}
+
+<span class="kw">pub mod </span>shapers {
+    <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
+
+    <span class="kw">use super</span>::{BiDiRunIterator, ScriptRunIterator, Shaper};
+
+    <span class="kw">pub fn </span>primitive() -&gt; Shaper {
+        Shaper::from_ptr(<span class="kw">unsafe </span>{ sb::C_SkShaper_MakePrimitive() }).unwrap()
+    }
+
+    <span class="kw">pub fn </span>trivial_bidi_run_iterator(bidi_level: u8, utf8_bytes: usize) -&gt; BiDiRunIterator {
+        Shaper::new_trivial_bidi_run_iterator(bidi_level, utf8_bytes)
+    }
+
+    <span class="kw">pub fn </span>trivial_script_run_iterator(bidi_level: u8, utf8_bytes: usize) -&gt; ScriptRunIterator {
+        Shaper::new_trivial_script_run_iterator(bidi_level, utf8_bytes)
     }
 }
 

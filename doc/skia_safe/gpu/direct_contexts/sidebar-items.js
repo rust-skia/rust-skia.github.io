@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["make_gl","make_vulkan"]};
+window.SIDEBAR_ITEMS = {"fn":["make_gl","make_metal","make_vulkan"]};

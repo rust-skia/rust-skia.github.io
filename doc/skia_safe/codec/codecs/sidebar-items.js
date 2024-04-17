@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"type":["Decoder"]};
+window.SIDEBAR_ITEMS = {"fn":["deferred_image"],"type":["Decoder"]};
