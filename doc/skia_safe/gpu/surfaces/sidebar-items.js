@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_backend_render_target","get_backend_texture","render_target","resolve_msaa","wrap_backend_render_target","wrap_backend_texture","wrap_ca_metal_layer","wrap_mtk_view"],"mod":["direct_contexts"],"struct":["SurfaceInfo"],"type":["BackendContext","Handle","PixelFormat","StorageMode","TextureInfo","TextureUsage"]};
+window.SIDEBAR_ITEMS = {"fn":["get_backend_render_target","get_backend_texture","render_target","resolve_msaa","wrap_backend_render_target","wrap_backend_texture","wrap_ca_metal_layer","wrap_mtk_view"]};

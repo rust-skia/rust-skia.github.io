@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["primitive","trivial_bidi_run_iterator","trivial_script_run_iterator"],"mod":["ct","hb"]};
+window.SIDEBAR_ITEMS = {"fn":["primitive","trivial_bidi_run_iterator","trivial_script_run_iterator"],"mod":["ct","hb","primitive","unicode"]};

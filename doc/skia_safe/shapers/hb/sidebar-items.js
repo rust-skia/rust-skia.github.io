@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["script_run_iterator"]};
+window.SIDEBAR_ITEMS = {"fn":["script_run_iterator","shape_dont_wrap_or_reorder","shape_then_wrap","shaper_driven_wrapper"]};

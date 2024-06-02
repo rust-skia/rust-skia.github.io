@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["primitive_text","trivial_bidi_run_iterator","trivial_script_run_iterator"]};

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/path.rs`."><title>path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.2 (25ef9e3d8 2024-04-09)" data-channel="1.77.2" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/path.rs`."><title>path.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../skia_safe/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -2005,12 +2005,85 @@
 <a href="#2003" id="2003">2003</a>
 <a href="#2004" id="2004">2004</a>
 <a href="#2005" id="2005">2005</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    interop::DynamicMemoryWStream, matrix::ApplyPerspectiveClip, path_types, prelude::<span class="kw-2">*</span>, scalar,
-    Data, Matrix, PathDirection, PathFillType, Point, RRect, Rect, Vector,
-};
+<a href="#2006" id="2006">2006</a>
+<a href="#2007" id="2007">2007</a>
+<a href="#2008" id="2008">2008</a>
+<a href="#2009" id="2009">2009</a>
+<a href="#2010" id="2010">2010</a>
+<a href="#2011" id="2011">2011</a>
+<a href="#2012" id="2012">2012</a>
+<a href="#2013" id="2013">2013</a>
+<a href="#2014" id="2014">2014</a>
+<a href="#2015" id="2015">2015</a>
+<a href="#2016" id="2016">2016</a>
+<a href="#2017" id="2017">2017</a>
+<a href="#2018" id="2018">2018</a>
+<a href="#2019" id="2019">2019</a>
+<a href="#2020" id="2020">2020</a>
+<a href="#2021" id="2021">2021</a>
+<a href="#2022" id="2022">2022</a>
+<a href="#2023" id="2023">2023</a>
+<a href="#2024" id="2024">2024</a>
+<a href="#2025" id="2025">2025</a>
+<a href="#2026" id="2026">2026</a>
+<a href="#2027" id="2027">2027</a>
+<a href="#2028" id="2028">2028</a>
+<a href="#2029" id="2029">2029</a>
+<a href="#2030" id="2030">2030</a>
+<a href="#2031" id="2031">2031</a>
+<a href="#2032" id="2032">2032</a>
+<a href="#2033" id="2033">2033</a>
+<a href="#2034" id="2034">2034</a>
+<a href="#2035" id="2035">2035</a>
+<a href="#2036" id="2036">2036</a>
+<a href="#2037" id="2037">2037</a>
+<a href="#2038" id="2038">2038</a>
+<a href="#2039" id="2039">2039</a>
+<a href="#2040" id="2040">2040</a>
+<a href="#2041" id="2041">2041</a>
+<a href="#2042" id="2042">2042</a>
+<a href="#2043" id="2043">2043</a>
+<a href="#2044" id="2044">2044</a>
+<a href="#2045" id="2045">2045</a>
+<a href="#2046" id="2046">2046</a>
+<a href="#2047" id="2047">2047</a>
+<a href="#2048" id="2048">2048</a>
+<a href="#2049" id="2049">2049</a>
+<a href="#2050" id="2050">2050</a>
+<a href="#2051" id="2051">2051</a>
+<a href="#2052" id="2052">2052</a>
+<a href="#2053" id="2053">2053</a>
+<a href="#2054" id="2054">2054</a>
+<a href="#2055" id="2055">2055</a>
+<a href="#2056" id="2056">2056</a>
+<a href="#2057" id="2057">2057</a>
+<a href="#2058" id="2058">2058</a>
+<a href="#2059" id="2059">2059</a>
+<a href="#2060" id="2060">2060</a>
+<a href="#2061" id="2061">2061</a>
+<a href="#2062" id="2062">2062</a>
+<a href="#2063" id="2063">2063</a>
+<a href="#2064" id="2064">2064</a>
+<a href="#2065" id="2065">2065</a>
+<a href="#2066" id="2066">2066</a>
+<a href="#2067" id="2067">2067</a>
+<a href="#2068" id="2068">2068</a>
+<a href="#2069" id="2069">2069</a>
+<a href="#2070" id="2070">2070</a>
+<a href="#2071" id="2071">2071</a>
+<a href="#2072" id="2072">2072</a>
+<a href="#2073" id="2073">2073</a>
+<a href="#2074" id="2074">2074</a>
+<a href="#2075" id="2075">2075</a>
+<a href="#2076" id="2076">2076</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, marker::PhantomData, mem::forget, ptr};
+
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkPath, SkPath_Iter, SkPath_RawIter};
-<span class="kw">use </span>std::{fmt, marker::PhantomData, mem::forget, ptr};
+
+<span class="kw">use crate</span>::{
+    interop::DynamicMemoryWStream, matrix::ApplyPerspectiveClip, path_types, prelude::<span class="kw-2">*</span>, scalar,
+    Arc, Data, Matrix, PathDirection, PathFillType, Point, RRect, Rect, Vector,
+};
 
 <span class="attr">#[deprecated(since = <span class="string">"0.25.0"</span>, note = <span class="string">"use PathDirection"</span>)]
 </span><span class="kw">pub use </span>path_types::PathDirection <span class="kw">as </span>Direction;
@@ -2020,12 +2093,12 @@
 
 <span class="doccomment">/// Four oval parts with radii (rx, ry) start at last [`Path`] [`Point`] and ends at (x, y).
 /// ArcSize and Direction select one of the four oval parts.
-</span><span class="kw">pub use </span>skia_bindings::SkPath_ArcSize <span class="kw">as </span>ArcSize;
+</span><span class="kw">pub use </span>sb::SkPath_ArcSize <span class="kw">as </span>ArcSize;
 <span class="macro">variant_name!</span>(ArcSize::Small);
 
 <span class="doccomment">/// AddPathMode chooses how `add_path()` appends. Adding one [`Path`] to another can extend
 /// the last contour or start a new contour.
-</span><span class="kw">pub use </span>skia_bindings::SkPath_AddPathMode <span class="kw">as </span>AddPathMode;
+</span><span class="kw">pub use </span>sb::SkPath_AddPathMode <span class="kw">as </span>AddPathMode;
 <span class="macro">variant_name!</span>(AddPathMode::Append);
 
 <span class="doccomment">/// SegmentMask constants correspond to each drawing Verb type in [`crate::Path`]; for instance, if
@@ -2034,7 +2107,7 @@
 
 <span class="doccomment">/// Verb instructs [`Path`] how to interpret one or more [`Point`] and optional conic weight;
 /// manage contour, and terminate [`Path`].
-</span><span class="kw">pub use </span>skia_bindings::SkPath_Verb <span class="kw">as </span>Verb;
+</span><span class="kw">pub use </span>sb::SkPath_Verb <span class="kw">as </span>Verb;
 <span class="macro">variant_name!</span>(Verb::Line);
 
 <span class="doccomment">/// Iterates through verb array, and associated [`Point`] array and conic weight.
@@ -2155,7 +2228,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>Iter&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>Iterator <span class="kw">for </span>Iter&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Item = (Verb, Vec&lt;Point&gt;);
 
     <span class="doccomment">/// Returns next [`Verb`] in verb array, and advances [`Iter`].
@@ -2487,6 +2560,18 @@
         <span class="self">Self</span>::construct(|path| <span class="kw">unsafe </span>{ sb::C_SkPath_Construct(path) })
     }
 
+    <span class="doccomment">/// Returns a copy of this path in the current state.
+    </span><span class="kw">pub fn </span>snapshot(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.clone()
+    }
+
+    <span class="doccomment">/// Returns a copy of this path in the current state, and resets the path to empty.
+    </span><span class="kw">pub fn </span>detach(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>result = <span class="self">self</span>.clone();
+        <span class="self">self</span>.reset();
+        result
+    }
+
     <span class="doccomment">/// Returns `true` if [`Path`] contain equal verbs and equal weights.
     /// If [`Path`] contain one or more conics, the weights must match.
     ///
@@ -2605,6 +2690,18 @@
     </span><span class="kw">pub fn </span>is_rrect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RRect&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>rrect = RRect::default();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isRRect(rrect.native_mut()) }.if_true_some(rrect)
+    }
+
+    <span class="doccomment">///  Returns `true` if path is representable as an oval arc. In other words, could this
+    ///  path be drawn using [`crate::Canvas::draw_arc`].
+    ///
+    ///  arc  receives parameters of arc
+    ///
+    /// * `arc` - storage for arc; may be `None`
+    /// Returns: `true` if [`Path`] contains only a single arc from an oval
+    </span><span class="kw">pub fn </span>is_arc(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>arc = Arc::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isArc(arc.native_mut()) }.if_true_some(arc)
     }
 
     <span class="doccomment">/// Sets [`Path`] to its initial state.
@@ -2955,10 +3052,36 @@
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Path_incReserve&gt;
     </span><span class="kw">pub fn </span>inc_reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extra_pt_count: usize) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.inc_reserve_with_verb_and_conic(extra_pt_count, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Grows [`Path`] verb array and [`Point`] array to contain `extra_pt_count` additional [`Point`].
+    /// May improve performance and use less memory by
+    /// reducing the number and size of allocations when creating [`Path`].
+    ///
+    /// * `extra_pt_count` - number of additional [`Point`] to allocate
+    /// * `extra_verb_count` - number of additional verbs
+    /// * `extra_conic_count` - number of additional conics
+    ///
+    /// example: &lt;https://fiddle.skia.org/c/@Path_incReserve&gt;
+    </span><span class="kw">pub fn </span>inc_reserve_with_verb_and_conic(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        extra_pt_count: usize,
+        extra_verb_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+        extract_conic_count: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>extra_verb_count = extra_verb_count.into().unwrap_or_default();
+        <span class="kw">let </span>extra_conic_count = extract_conic_count.into().unwrap_or_default();
+
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.native_mut()
-                .incReserve(extra_pt_count.try_into().unwrap())
+            <span class="self">self</span>.native_mut().incReserve(
+                extra_pt_count.try_into().unwrap(),
+                extra_verb_count.try_into().unwrap(),
+                extra_conic_count.try_into().unwrap(),
+            )
         }
+
         <span class="self">self
     </span>}
 
@@ -3532,6 +3655,25 @@
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.native_mut()
                 .addOval1(oval.as_ref().native(), dir, start.try_into().unwrap())
+        };
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Experimental, subject to change or removal.
+    ///
+    /// Adds an "open" oval to [`Path`]. This follows canvas2D semantics: The oval is not
+    /// a separate contour. If the path was empty, then [`Verb::Move`] is appended. Otherwise,
+    /// [`Verb::Line`] is appended. Four [`Verb::Conic`] are appended. [`Verb::Close`] is not appended.
+    </span><span class="kw">pub fn </span>add_open_oval(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        oval: <span class="kw">impl </span>AsRef&lt;Rect&gt;,
+        dir_start: <span class="prelude-ty">Option</span>&lt;(PathDirection, usize)&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span>dir = dir_start.map(|ds| ds.<span class="number">0</span>).unwrap_or_default();
+        <span class="kw">let </span>start = dir_start.map(|ds| ds.<span class="number">1</span>).unwrap_or_default();
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.native_mut()
+                .addOpenOval(oval.as_ref().native(), dir, start.try_into().unwrap())
         };
         <span class="self">self
     </span>}
