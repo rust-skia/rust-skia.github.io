@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../skia_safe/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2492,6 +2490,25 @@
 <a href="#2490" id="2490">2490</a>
 <a href="#2491" id="2491">2491</a>
 <a href="#2492" id="2492">2492</a>
+<a href="#2493" id="2493">2493</a>
+<a href="#2494" id="2494">2494</a>
+<a href="#2495" id="2495">2495</a>
+<a href="#2496" id="2496">2496</a>
+<a href="#2497" id="2497">2497</a>
+<a href="#2498" id="2498">2498</a>
+<a href="#2499" id="2499">2499</a>
+<a href="#2500" id="2500">2500</a>
+<a href="#2501" id="2501">2501</a>
+<a href="#2502" id="2502">2502</a>
+<a href="#2503" id="2503">2503</a>
+<a href="#2504" id="2504">2504</a>
+<a href="#2505" id="2505">2505</a>
+<a href="#2506" id="2506">2506</a>
+<a href="#2507" id="2507">2507</a>
+<a href="#2508" id="2508">2508</a>
+<a href="#2509" id="2509">2509</a>
+<a href="#2510" id="2510">2510</a>
+<a href="#2511" id="2511">2511</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{cell::UnsafeCell, ffi::CString, fmt, marker::PhantomData, mem, ops::Deref, ptr, slice};
 
 <span class="kw">use </span>sb::SkCanvas_FilterSpan;
@@ -2786,6 +2803,7 @@
     /// - `row_bytes` interval from one [`Surface`] row to the next, or zero
     /// - `props` LCD striping orientation and setting for device independent fonts;
     ///   may be `None`
+    ///
     /// Returns [`OwnedCanvas`] if all parameters are valid; otherwise, `None`.
     </span><span class="kw">pub fn </span>from_raster_direct&lt;<span class="lifetime">'pixels</span>&gt;(
         info: <span class="kw-2">&amp;</span>ImageInfo,
@@ -2830,6 +2848,7 @@
     /// - `pixels` pointer to destination pixels buffer; buffer size should be height times
     ///   `row_bytes`
     /// - `row_bytes` interval from one [`Surface`] row to the next, or zero
+    ///
     /// Returns [`OwnedCanvas`] if all parameters are valid; otherwise, `None`
     </span><span class="kw">pub fn </span>from_raster_direct_n32&lt;<span class="lifetime">'pixels</span>&gt;(
         size: <span class="kw">impl </span>Into&lt;ISize&gt;,
@@ -2854,6 +2873,7 @@
     /// - `size` with and height zero or greater
     /// - `props` LCD striping orientation and setting for device independent fonts;
     ///   may be `None`
+    ///
     /// Returns [`Canvas`] placeholder with dimensions
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_int_int_const_SkSurfaceProps_star&gt;
@@ -2885,6 +2905,7 @@
     /// - `bitmap` width, height, [`crate::ColorType`], [`crate::AlphaType`], and pixel storage of
     ///   raster surface
     /// - `props` order and orientation of RGB striping; and whether to use device independent fonts
+    ///
     /// Returns [`Canvas`] that can be used to draw into bitmap
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_const_SkBitmap_const_SkSurfaceProps&gt;
@@ -2921,6 +2942,7 @@
     /// returns `true`. Otherwise, returns `false` and leave props unchanged.
     ///
     /// - `props` storage for writable [`SurfaceProps`]
+    ///
     /// Returns `true` if [`SurfaceProps`] was copied
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_getProps&gt;
@@ -2965,6 +2987,7 @@
     /// - `info` width, height, [`crate::ColorType`], [`crate::AlphaType`], and
     ///   [`crate::ColorSpace`]
     /// - `props` [`SurfaceProps`] to match; may be `None` to match [`Canvas`]
+    ///
     /// Returns [`Surface`] matching info and props, or `None` if no match is available
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_makeSurface&gt;
@@ -3015,6 +3038,7 @@
     /// - `info` storage for writable pixels' [`ImageInfo`]
     /// - `row_bytes` storage for writable pixels' row bytes
     /// - `origin` storage for [`Canvas`] top layer origin, its top-left corner
+    ///
     /// Returns address of pixels, or `None` if inaccessible
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_accessTopLayerPixels_a&gt;
@@ -3098,6 +3122,7 @@
     /// - `dst_row_bytes` size of one destination row; `dst_info.width()` times pixel size, or
     ///   larger
     /// - `src_point` offset into readable pixels; may be negative
+    ///
     /// Returns `true` if pixels were copied
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>read_pixels(
@@ -3153,6 +3178,7 @@
     ///
     /// - `pixmap` storage for pixels copied from [`Canvas`]
     /// - `src` offset into readable pixels ; may be negative
+    ///
     /// Returns `true` if pixels were copied
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_readPixels_2&gt;
@@ -3194,6 +3220,7 @@
     ///
     /// - `bitmap` storage for pixels copied from [`Canvas`]
     /// - `src` offset into readable pixels; may be negative
+    ///
     /// Returns `true` if pixels were copied
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_readPixels_3&gt;
@@ -3237,6 +3264,7 @@
     /// - `pixels` pixels to copy, of size `info.height()` times `row_bytes`, or larger
     /// - `row_bytes` size of one row of pixels; info.width() times pixel size, or larger
     /// - `offset` offset into [`Canvas`] writable pixels; may be negative
+    ///
     /// Returns `true` if pixels were written to [`Canvas`]
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_writePixels&gt;
@@ -3287,12 +3315,13 @@
     /// - Source and destination rectangles do not intersect.
     /// - bitmap does not have allocated pixels.
     /// - bitmap pixels could not be converted to [`Canvas`] `image_info().color_type()` or
-    /// `image_info().alpha_type()`.
+    ///   `image_info().alpha_type()`.
     /// - [`Canvas`] pixels are not writable; for instance, [`Canvas`] is document based.
     /// - bitmap pixels are inaccessible; for instance, bitmap wraps a texture.
     ///
     /// - `bitmap` contains pixels copied to [`Canvas`]
     /// - `offset` offset into [`Canvas`] writable pixels; may be negative
+    ///
     /// Returns `true` if pixels were written to [`Canvas`]
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_writePixels_2&gt;
@@ -3349,6 +3378,7 @@
     ///
     /// - `bounds` hint to limit the size of layer; may be `None`
     /// - `alpha` opacity of layer
+    ///
     /// Returns depth of saved stack
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_saveLayerAlpha&gt;
@@ -3381,6 +3411,7 @@
     /// Call [`Self::restore_to_count()`] with result to restore this and subsequent saves.
     ///
     /// - `layer_rec` layer state
+    ///
     /// Returns depth of save state stack before this call was made.
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_saveLayer_3&gt;
@@ -4198,7 +4229,7 @@
     /// - `dst` destination [`Rect`] of image to draw to
     /// - `filter` what technique to use when sampling the image
     /// - `paint` [`Paint`] containing [`BlendMode`], [`crate::ColorFilter`], [`ImageFilter`],
-    /// and so on; or `None`
+    ///   and so on; or `None`
     </span><span class="kw">pub fn </span>draw_image_lattice(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         image: <span class="kw">impl </span>AsRef&lt;Image&gt;,
@@ -4459,6 +4490,7 @@
     /// [`BlendMode`] is ignored if [`Vertices`] does not have colors. Otherwise, it combines
     ///   - the [`Shader`] if [`Paint`] contains [`Shader`
     ///   - or the opaque [`Paint`] color if [`Paint`] does not contain [`Shader`]
+    ///
     /// as the src of the blend and the interpolated vertex colors as the dst.
     ///
     /// [`crate::MaskFilter`], [`crate::PathEffect`], and antialiasing on [`Paint`] are ignored.
@@ -4496,6 +4528,7 @@
     /// [`BlendMode`] is ignored if colors is `None`. Otherwise, it combines
     ///   - the [`Shader`] if [`Paint`] contains [`Shader`]
     ///   - or the opaque [`Paint`] color if [`Paint`] does not contain [`Shader`]
+    ///
     /// as the src of the blend and the interpolated patch colors as the dst.
     ///
     /// [`crate::MaskFilter`], [`crate::PathEffect`], and antialiasing on [`Paint`] are ignored.
@@ -4730,6 +4763,7 @@
     /// Use to check if an area to be drawn is clipped out, to skip subsequent draw calls.
     ///
     /// - `rect` [`Rect`] to compare with clip
+    ///
     /// Returns `true` if `rect`, transformed by [`Matrix`], does not intersect clip
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_quickReject&gt;
@@ -4745,6 +4779,7 @@
     /// Use to check if an area to be drawn is clipped out, to skip subsequent draw calls.
     ///
     /// - `path` [`Path`] to compare with clip
+    ///
     /// Returns `true` if `path`, transformed by [`Matrix`], does not intersect clip
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Canvas_quickReject_2&gt;
@@ -4888,6 +4923,7 @@
     ///
     /// - `canvas` [`Canvas`] to guard
     /// - `do_save` call [`Canvas::save()`]
+    ///
     /// Returns utility to restore [`Canvas`] state on destructor
     </span><span class="kw">pub fn </span>guard(canvas: <span class="kw-2">&amp;</span>Canvas, do_save: bool) -&gt; AutoRestoredCanvas {
         <span class="kw">let </span>restore = construct(|acr| <span class="kw">unsafe </span>{

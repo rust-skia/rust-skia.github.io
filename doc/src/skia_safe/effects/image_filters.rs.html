@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/effects/image_filters.rs`."><title>image_filters.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../skia_safe/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/effects/image_filters.rs`."><title>image_filters.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1159,14 +1157,20 @@
 <a href="#1157" id="1157">1157</a>
 <a href="#1158" id="1158">1158</a>
 <a href="#1159" id="1159">1159</a>
+<a href="#1160" id="1160">1160</a>
+<a href="#1161" id="1161">1161</a>
+<a href="#1162" id="1162">1162</a>
+<a href="#1163" id="1163">1163</a>
+<a href="#1164" id="1164">1164</a>
+<a href="#1165" id="1165">1165</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ptr;
 
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkImageFilter, SkRect};
 
 <span class="kw">use crate</span>::{
-    prelude::<span class="kw-2">*</span>, scalar, Blender, Color, ColorChannel, ColorFilter, CubicResampler, IPoint, IRect,
-    ISize, Image, ImageFilter, Matrix, Picture, Point3, Rect, SamplingOptions, Shader, TileMode,
-    Vector,
+    prelude::<span class="kw-2">*</span>, scalar, Blender, Color, Color4f, ColorChannel, ColorFilter, ColorSpace,
+    CubicResampler, IPoint, IRect, ISize, Image, ImageFilter, Matrix, Picture, Point3, Rect,
+    SamplingOptions, Shader, TileMode, Vector,
 };
 
 <span class="doccomment">/// This is just a convenience type to allow passing [`IRect`]s, [`Rect`]s, and optional references
@@ -1395,12 +1399,14 @@
 /// * `sigma_x` - The blur radius for the shadow, along the X axis.
 /// * `sigma_y` - The blur radius for the shadow, along the Y axis.
 /// * `color` - The color of the drop shadow.
+/// * `color_space` - The color space of the drop shadow color.
 /// * `input` - The input filter, or will use the source bitmap if this is null.
 /// * `crop_rect` - Optional rectangle that crops the input and output.
 </span><span class="kw">pub fn </span>drop_shadow(
     offset: <span class="kw">impl </span>Into&lt;Vector&gt;,
     (sigma_x, sigma_y): (scalar, scalar),
-    color: <span class="kw">impl </span>Into&lt;Color&gt;,
+    color: <span class="kw">impl </span>Into&lt;Color4f&gt;,
+    color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     input: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ImageFilter&gt;&gt;,
     crop_rect: <span class="kw">impl </span>Into&lt;CropRect&gt;,
 ) -&gt; <span class="prelude-ty">Option</span>&lt;ImageFilter&gt; {
@@ -1413,6 +1419,7 @@
             sigma_x,
             sigma_y,
             color.into_native(),
+            color_space.into().into_ptr_or_null(),
             input.into().into_ptr_or_null(),
             crop_rect.into().native(),
         )
@@ -1426,12 +1433,14 @@
 /// * `sigma_x` - The blur radius for the shadow, along the X axis.
 /// * `sigma_y` - The blur radius for the shadow, along the Y axis.
 /// * `color` - The color of the drop shadow.
+/// * `color_space` - The color space of the drop shadow color.
 /// * `input` - The input filter, or will use the source bitmap if this is null.
 /// * `crop_rect` - Optional rectangle that crops the input and output.
 </span><span class="kw">pub fn </span>drop_shadow_only(
     offset: <span class="kw">impl </span>Into&lt;Vector&gt;,
     (sigma_x, sigma_y): (scalar, scalar),
-    color: <span class="kw">impl </span>Into&lt;Color&gt;,
+    color: <span class="kw">impl </span>Into&lt;Color4f&gt;,
+    color_space: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ColorSpace&gt;&gt;,
     input: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;ImageFilter&gt;&gt;,
     crop_rect: <span class="kw">impl </span>Into&lt;CropRect&gt;,
 ) -&gt; <span class="prelude-ty">Option</span>&lt;ImageFilter&gt; {
@@ -1444,6 +1453,7 @@
             sigma_x,
             sigma_y,
             color.into_native(),
+            color_space.into().into_ptr_or_null(),
             input.into().into_ptr_or_null(),
             crop_rect.into().native(),
         )

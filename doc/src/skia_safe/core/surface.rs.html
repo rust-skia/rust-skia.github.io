@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/surface.rs`."><title>surface.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../skia_safe/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/surface.rs`."><title>surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -980,6 +978,29 @@
 <a href="#978" id="978">978</a>
 <a href="#979" id="979">979</a>
 <a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
+<a href="#993" id="993">993</a>
+<a href="#994" id="994">994</a>
+<a href="#995" id="995">995</a>
+<a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+<a href="#998" id="998">998</a>
+<a href="#999" id="999">999</a>
+<a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
+<a href="#1002" id="1002">1002</a>
+<a href="#1003" id="1003">1003</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, ptr};
 
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkRefCntBase, SkSurface};
@@ -1002,8 +1023,9 @@
     /// returns `None`.
     ///
     /// * `width` - one or greater
-    /// * `height` - one or greater Returns: [`Surface`] if width and height are positive;
-    /// otherwise, `None`
+    /// * `height` - one or greater
+    ///
+    /// Returns: [`Surface`] if width and height are positive; otherwise, `None`
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Surface_MakeNull&gt;
     </span><span class="kw">pub fn </span>null(size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
@@ -1026,8 +1048,9 @@
     /// * `width` - pixel column count; must be greater than zero
     /// * `height` - pixel row count; must be greater than zero
     /// * `surface_props` - LCD striping orientation and setting for device independent fonts; may
-    ///                      be `None` Returns: [`Surface`] if all parameters are valid; otherwise,
-    /// `None`
+    ///    be `None`
+    ///
+    /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="kw">pub fn </span>raster_n32_premul(size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Surface&gt; {
         raster(<span class="kw-2">&amp;</span>ImageInfo::new_n32_premul(size, <span class="prelude-val">None</span>), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
     }
@@ -1049,8 +1072,9 @@
     ///                      greater than zero
     /// * `row_bytes` - interval from one [`Surface`] row to the next; may be zero
     /// * `surface_props` - LCD striping orientation and setting for device independent fonts; may
-    ///                      be `None` Returns: [`Surface`] if all parameters are valid; otherwise,
-    /// `None`
+    ///   be `None`
+    ///
+    /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="kw">pub fn </span>raster(
         image_info: <span class="kw-2">&amp;</span>ImageInfo,
         row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
@@ -1083,8 +1107,9 @@
     /// * `pixels` - pointer to destination pixels buffer
     /// * `row_bytes` - interval from one [`Surface`] row to the next
     /// * `surface_props` - LCD striping orientation and setting for device independent fonts; may
-    ///                      be `None` Returns: [`Surface`] if all parameters are valid; otherwise,
-    /// `None`
+    ///                      be `None`
+    ///
+    /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="kw">pub fn </span>wrap_pixels&lt;<span class="lifetime">'pixels</span>&gt;(
         image_info: <span class="kw-2">&amp;</span>ImageInfo,
         pixels: <span class="kw-2">&amp;</span><span class="lifetime">'pixels </span><span class="kw-2">mut </span>[u8],
@@ -1167,6 +1192,7 @@
     /// * `row_bytes` - interval from one [`Surface`] row to the next
     /// * `surface_props` - LCD striping orientation and setting for device independent fonts;
     ///                      may be `None`
+    ///
     /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use surfaces::wrap_pixels()"</span>)]
     </span><span class="kw">pub fn </span>new_raster_direct&lt;<span class="lifetime">'pixels</span>&gt;(
@@ -1196,6 +1222,7 @@
     /// * `row_bytes` - interval from one [`Surface`] row to the next; may be zero
     /// * `surface_props` - LCD striping orientation and setting for device independent fonts;
     ///                      may be `None`
+    ///
     /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use surfaces::raster()"</span>)]
     </span><span class="kw">pub fn </span>new_raster(
@@ -1222,6 +1249,7 @@
     /// * `height` - pixel row count; must be greater than zero
     /// * `surface_props` - LCD striping orientation and setting for device independent
     ///                      fonts; may be `None`
+    ///
     /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use surfaces::raster_n32_premul()"</span>)]
     </span><span class="kw">pub fn </span>new_raster_n32_premul(size: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
@@ -1248,6 +1276,7 @@
     /// * `color_space` - range of colors; may be `None`
     /// * `surface_props` - LCD striping orientation and setting for device independent
     ///                            fonts; may be `None`
+    ///
     /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use gpu::surfaces::wrap_backend_texture()"</span>)]
     </span><span class="kw">pub fn </span>from_backend_texture(
@@ -1285,6 +1314,7 @@
     /// * `color_space` - range of colors
     /// * `surface_props` - LCD striping orientation and setting for device independent
     ///                                 fonts; may be `None`
+    ///
     /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="attr">#[deprecated(
         since = <span class="string">"0.64.0"</span>,
@@ -1330,6 +1360,7 @@
     /// * `surface_props` - LCD striping orientation and setting for device independent
     ///                              fonts; may be `None`
     /// * `should_create_with_mips` - hint that [`Surface`] will host mip map images
+    ///
     /// Returns: [`Surface`] if all parameters are valid; otherwise, `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.64.0"</span>, note = <span class="string">"use gpu::surfaces::render_target()"</span>)]
     </span><span class="kw">pub fn </span>new_render_target(
@@ -1370,6 +1401,7 @@
     ///                        fonts; may be `None`
     /// * `drawable` - Pointer to drawable to be filled in when this surface is
     ///                        instantiated; may not be `None`
+    ///
     /// Returns: created [`Surface`], or `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.65.0"</span>, note = <span class="string">"Use gpu::surfaces::wrap_ca_metal_layer"</span>)]
     #[allow(clippy::missing_safety_doc)]
@@ -1412,6 +1444,7 @@
     /// * `color_space` - range of colors; may be `None`
     /// * `surface_props` - LCD striping orientation and setting for device independent
     ///                        fonts; may be `None`
+    ///
     /// Returns: created [`Surface`], or `None`
     </span><span class="attr">#[deprecated(since = <span class="string">"0.65.0"</span>, note = <span class="string">"Use gpu::surfaces::wrap_mtk_view"</span>)]
     #[allow(clippy::missing_safety_doc)]
@@ -1443,6 +1476,7 @@
     ///
     /// * `width` - one or greater
     /// * `height` - one or greater
+    ///
     /// Returns: [`Surface`] if width and height are positive; otherwise, `None`
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Surface_MakeNull&gt;
@@ -1622,6 +1656,7 @@
     ///
     /// * `image_info` - width, height, [`crate::ColorType`], [`crate::AlphaType`], [`crate::ColorSpace`],
     ///                   of [`Surface`]; width and height must be greater than zero
+    ///
     /// Returns: compatible [`Surface`] or `None`
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Surface_makeSurface&gt;
@@ -1717,7 +1752,9 @@
     /// Copies each readable pixel intersecting both rectangles, without scaling,
     /// converting to `dst_color_type()` and `dst_alpha_type()` if required.
     ///
-    /// Pixels are readable when [`Surface`] is raster, or backed by a GPU.
+    /// Pixels are readable when [`Surface`] is raster, or backed by a Ganesh GPU backend. Graphite
+    /// has deprecated this API in favor of the equivalent asynchronous API on
+    /// `skgpu::graphite::Context` (with an optional explicit synchonization).
     ///
     /// The destination pixel storage must be allocated by the caller.
     ///
@@ -1735,6 +1772,7 @@
     /// * `dst` - storage for pixels copied from [`Surface`]
     /// * `src_x` - offset into readable pixels on x-axis; may be negative
     /// * `src_y` - offset into readable pixels on y-axis; may be negative
+    ///
     /// Returns: `true` if pixels were copied
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Surface_readPixels&gt;    
@@ -1750,7 +1788,9 @@
     /// Copies each readable pixel intersecting both rectangles, without scaling,
     /// converting to `dst_info_color_type()` and `dst_info_alpha_type()` if required.
     ///
-    /// Pixels are readable when [`Surface`] is raster, or backed by a GPU.
+    /// Pixels are readable when [`Surface`] is raster, or backed by a Ganesh GPU backend. Graphite
+    /// has deprecated this API in favor of the equivalent asynchronous API on
+    /// `skgpu::graphite::Context` (with an optional explicit synchonization).
     ///
     /// The destination pixel storage must be allocated by the caller.
     ///
@@ -1770,6 +1810,7 @@
     /// * `dst_row_bytes` - size of one destination row; `dst_info.width()` times pixel size, or larger
     /// * `src.x` - offset into readable pixels on x-axis; may be negative
     /// * `src.y` - offset into readable pixels on y-axis; may be negative
+    ///
     /// Returns: `true` if pixels were copied
     </span><span class="kw">pub fn </span>read_pixels(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1803,7 +1844,9 @@
     /// Copies each readable pixel intersecting both rectangles, without scaling,
     /// converting to `bitmap.color_type()` and `bitmap.alpha_type()` if required.
     ///
-    /// Pixels are readable when [`Surface`] is raster, or backed by a GPU.
+    /// Pixels are readable when [`Surface`] is raster, or backed by a Ganesh GPU backend. Graphite
+    /// has deprecated this API in favor of the equivalent asynchronous API on
+    /// `skgpu::graphite::Context` (with an optional explicit synchonization).
     ///
     /// The destination pixel storage must be allocated by the caller.
     ///
@@ -1822,6 +1865,7 @@
     /// * `dst` - storage for pixels copied from [`Surface`]
     /// * `src.x` - offset into readable pixels on x-axis; may be negative
     /// * `src.y` - offset into readable pixels on y-axis; may be negative
+    ///
     /// Returns: `true` if pixels were copied
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Surface_readPixels_3&gt;
