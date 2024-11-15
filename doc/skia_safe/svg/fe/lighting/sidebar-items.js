@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["KernelUnitLength"],"type":["Diffuse","Lighting","Specular"]};

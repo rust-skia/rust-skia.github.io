@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["make_mac"]};
+window.SIDEBAR_ITEMS = {};

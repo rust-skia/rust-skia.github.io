@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/path.rs`."><title>path.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/path.rs`."><title>path.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0 (f6e511eec 2024-10-15)" data-channel="1.82.0" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2086,6 +2086,12 @@
 <a href="#2086" id="2086">2086</a>
 <a href="#2087" id="2087">2087</a>
 <a href="#2088" id="2088">2088</a>
+<a href="#2089" id="2089">2089</a>
+<a href="#2090" id="2090">2090</a>
+<a href="#2091" id="2091">2091</a>
+<a href="#2092" id="2092">2092</a>
+<a href="#2093" id="2093">2093</a>
+<a href="#2094" id="2094">2094</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, marker::PhantomData, mem::forget, ptr};
 
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkPath, SkPath_Iter, SkPath_RawIter};
@@ -2118,6 +2124,8 @@
 <span class="doccomment">/// Verb instructs [`Path`] how to interpret one or more [`Point`] and optional conic weight;
 /// manage contour, and terminate [`Path`].
 </span><span class="kw">pub use </span>sb::SkPath_Verb <span class="kw">as </span>Verb;
+
+<span class="kw">use </span><span class="kw">super</span>::Arc;
 <span class="macro">variant_name!</span>(Verb::Line);
 
 <span class="doccomment">/// Iterates through verb array, and associated [`Point`] array and conic weight.
@@ -2392,6 +2400,7 @@
             .field(<span class="string">"is_convex"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_convex())
             .field(<span class="string">"is_oval"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_oval())
             .field(<span class="string">"is_rrect"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_rrect())
+            .field(<span class="string">"is_arc"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_arc())
             .field(<span class="string">"is_empty"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_empty())
             .field(<span class="string">"is_last_contour_closed"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_last_contour_closed())
             .field(<span class="string">"is_finite"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_finite())
@@ -2693,21 +2702,24 @@
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isOval(bounds.native_mut()) }.if_true_some(bounds)
     }
 
-    <span class="doccomment">/// Returns `true` if path is representable as [`RRect`].
-    /// Returns `false` if path is representable as oval, circle, or [`Rect`].
+    <span class="doccomment">/// Returns [`RRect`] if path is representable as [`RRect`].
+    /// Returns `None` if path is representable as oval, circle, or [`Rect`].
     ///
-    /// rrect receives bounds of [`RRect`].
-    ///
-    /// rrect is unmodified if [`RRect`] is not found.
-    ///
-    /// * `rrect` - storage for bounding [`Rect`] of [`RRect`]; may be `None`
-    ///
-    /// Returns: `true` if [`Path`] contains only [`RRect`]
+    /// Returns: [`RRect`] if [`Path`] contains only [`RRect`]
     ///
     /// example: &lt;https://fiddle.skia.org/c/@Path_isRRect&gt;
     </span><span class="kw">pub fn </span>is_rrect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RRect&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>rrect = RRect::default();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isRRect(rrect.native_mut()) }.if_true_some(rrect)
+    }
+
+    <span class="doccomment">/// Returns [`Arc`] if path is representable as an oval arc. In other words, could this
+    /// path be drawn using `Canvas::draw_arc()`.
+    ///
+    /// Returns: [`Arc`] if [`Path`] contains only a single arc from an oval
+    </span><span class="kw">pub fn </span>is_arc(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>arc = Arc::default();
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isArc(arc.native_mut()) }.if_true_some(arc)
     }
 
     <span class="doccomment">/// Sets [`Path`] to its initial state.

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ChildPtr","ChildType"],"mod":["uniform"],"struct":["Options"],"type":["Child","RuntimeEffect","Uniform","Variable","Varying"]};
+window.SIDEBAR_ITEMS = {"enum":["ChildPtr","ChildType","ShaderBuilderError"],"mod":["uniform"],"struct":["Options"],"type":["Child","RuntimeEffect","RuntimeShaderBuilder","Uniform","Variable","Varying"]};

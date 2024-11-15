@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["backend_formats","backend_render_targets","backend_textures","direct_contexts","vk_types"],"type":["BackendDrawableInfo"]};

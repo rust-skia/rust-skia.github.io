@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_mtl_texture_info","make_mtl"]};

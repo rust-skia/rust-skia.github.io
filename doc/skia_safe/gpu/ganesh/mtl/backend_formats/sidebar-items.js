@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["as_mtl_format","make_mtl"]};

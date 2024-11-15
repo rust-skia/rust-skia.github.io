@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0 (f6e511eec 2024-10-15)" data-channel="1.82.0" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2509,6 +2509,16 @@
 <a href="#2509" id="2509">2509</a>
 <a href="#2510" id="2510">2510</a>
 <a href="#2511" id="2511">2511</a>
+<a href="#2512" id="2512">2512</a>
+<a href="#2513" id="2513">2513</a>
+<a href="#2514" id="2514">2514</a>
+<a href="#2515" id="2515">2515</a>
+<a href="#2516" id="2516">2516</a>
+<a href="#2517" id="2517">2517</a>
+<a href="#2518" id="2518">2518</a>
+<a href="#2519" id="2519">2519</a>
+<a href="#2520" id="2520">2520</a>
+<a href="#2521" id="2521">2521</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{cell::UnsafeCell, ffi::CString, fmt, marker::PhantomData, mem, ops::Deref, ptr, slice};
 
 <span class="kw">use </span>sb::SkCanvas_FilterSpan;
@@ -2523,7 +2533,7 @@
     prelude::<span class="kw-2">*</span>, scalar, Bitmap, BlendMode, ClipOp, Color, Color4f, Data, Drawable, FilterMode,
     Font, GlyphId, IPoint, IRect, ISize, Image, ImageFilter, ImageInfo, Matrix, Paint, Path,
     Picture, Pixmap, Point, QuickReject, RRect, RSXform, Rect, Region, SamplingOptions, Shader,
-    Surface, SurfaceProps, TextBlob, TextEncoding, Vector, Vertices, M44,
+    Surface, SurfaceProps, TextBlob, TextEncoding, TileMode, Vector, Vertices, M44,
 };
 <span class="kw">use crate</span>::{Arc, ColorSpace};
 
@@ -2552,6 +2562,7 @@
     paint: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>SkPaint&gt;,
     filters: SkCanvas_FilterSpan,
     backdrop: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>SkImageFilter&gt;,
+    backdrop_tile_mode: sb::SkTileMode,
     color_space: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>SkColorSpace&gt;,
     flags: SaveLayerFlags,
     experimental_backdrop_scale: scalar,
@@ -2563,7 +2574,7 @@
     save_layer_rec_layout
 );
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Default <span class="kw">for </span>SaveLayerRec&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>Default <span class="kw">for </span>SaveLayerRec&lt;<span class="lifetime">'_</span>&gt; {
     <span class="doccomment">/// Sets [`Self::bounds`], [`Self::paint`], and [`Self::backdrop`] to `None`. Clears
     /// [`Self::flags`].
     ///
@@ -2588,6 +2599,7 @@
                 <span class="string">"backdrop"</span>,
                 <span class="kw-2">&amp;</span>ImageFilter::from_unshared_ptr_ref(<span class="kw-2">&amp;</span>(<span class="self">self</span>.backdrop.as_ptr_or_null() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)),
             )
+            .field(<span class="string">"backdrop_tile_mode"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.backdrop_tile_mode)
             .field(
                 <span class="string">"color_space"</span>,
                 <span class="kw-2">&amp;</span>ColorSpace::from_unshared_ptr_ref(<span class="kw-2">&amp;</span>(<span class="self">self</span>.color_space.as_ptr_or_null() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)),
@@ -2623,6 +2635,15 @@
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>backdrop(<span class="kw-2">mut </span><span class="self">self</span>, backdrop: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>ImageFilter) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.backdrop = <span class="prelude-val">Some</span>(backdrop.native());
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// If the layer is initialized with prior content (and/or with a backdrop filter) and this
+    /// would require sampling outside of the available backdrop, this is the tilemode applied
+    /// to the boundary of the prior layer's image.
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>backdrop_tile_mode(<span class="kw-2">mut </span><span class="self">self</span>, backdrop_tile_mode: TileMode) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.backdrop_tile_mode = backdrop_tile_mode;
         <span class="self">self
     </span>}
 
@@ -4024,7 +4045,6 @@
     ///
     /// - `arc` [`Arc`] SkArc specifying oval, startAngle, sweepAngle, and arc-vs-wedge
     /// - `paint` [`Paint`] stroke or fill, blend, color, and so on, used to draw
-
     </span><span class="kw">pub fn </span>draw_arc_2(<span class="kw-2">&amp;</span><span class="self">self</span>, arc: <span class="kw-2">&amp;</span>Arc, paint: <span class="kw-2">&amp;</span>Paint) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="self">self</span>.draw_arc(
             arc.oval,
@@ -4838,7 +4858,7 @@
         pd: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Lattice&lt;<span class="lifetime">'a</span>&gt;&gt;,
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Lattice&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">impl </span>Lattice&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Ref {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(rect_types) = <span class="self">self</span>.rect_types {
                 <span class="kw">let </span>rect_count = (<span class="self">self</span>.x_divs.len() + <span class="number">1</span>) * (<span class="self">self</span>.y_divs.len() + <span class="number">1</span>);
@@ -4881,14 +4901,14 @@
     restore: SkAutoCanvasRestore,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Deref <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>Deref <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Target = Canvas;
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
         <span class="self">self</span>.canvas
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; NativeAccess <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>NativeAccess <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Native = SkAutoCanvasRestore;
 
     <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkAutoCanvasRestore {
@@ -4900,14 +4920,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Drop <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>Drop <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
     <span class="doccomment">/// Restores [`Canvas`] to saved state. Drop is called when container goes out of scope.
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{ sb::C_SkAutoCanvasRestore_destruct(<span class="self">self</span>.native_mut()) }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; AutoRestoredCanvas&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
     <span class="doccomment">/// Restores [`Canvas`] to saved state immediately. Subsequent calls and [`Self::drop()`] have
     /// no effect.
     </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
