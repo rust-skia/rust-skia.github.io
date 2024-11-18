@@ -398,8 +398,6 @@
 <a href="#398" id="398">398</a>
 <a href="#399" id="399">399</a>
 <a href="#400" id="400">400</a>
-<a href="#401" id="401">401</a>
-<a href="#402" id="402">402</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, ptr, slice};
 
 <span class="kw">use </span>skia_bindings::{
@@ -502,9 +500,8 @@
     }
 
     <span class="kw">pub fn </span>from_pos_text(text: <span class="kw">impl </span>EncodedText, pos: <span class="kw-2">&amp;</span>[Point], font: <span class="kw-2">&amp;</span>Font) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
-        <span class="comment">// TODO: avoid that somehow.
-        </span><span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
-        <span class="macro">assert_eq!</span>(pos.len(), font.count_text(text));
+        <span class="macro">assert_eq!</span>(pos.len(), font.count_text(<span class="kw-2">&amp;</span>text));
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         TextBlob::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkTextBlob_MakeFromPosText(
                 ptr,
@@ -521,9 +518,8 @@
         xform: <span class="kw-2">&amp;</span>[RSXform],
         font: <span class="kw-2">&amp;</span>Font,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;TextBlob&gt; {
-        <span class="comment">// TODO: avoid that somehow.
-        </span><span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
-        <span class="macro">assert_eq!</span>(xform.len(), font.count_text(text));
+        <span class="macro">assert_eq!</span>(xform.len(), font.count_text(<span class="kw-2">&amp;</span>text));
+        <span class="kw">let </span>(ptr, size, encoding) = text.as_raw();
         TextBlob::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkTextBlob_MakeFromRSXform(
                 ptr,
