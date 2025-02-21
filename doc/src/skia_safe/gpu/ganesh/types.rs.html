@@ -98,9 +98,15 @@
 <a href="#97" id="97">97</a>
 <a href="#98" id="98">98</a>
 <a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::ptr;
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::ptr;
 
 <span class="kw">use </span><span class="kw">crate</span>::gpu;
+<span class="kw">use </span><span class="kw">crate</span>::gpu::GpuStatsFlags;
 <span class="kw">use </span>skia_bindings <span class="kw">as </span>sb;
 
 <span class="kw">pub use </span>skia_bindings::GrBackendApi <span class="kw">as </span>BackendApi;
@@ -128,8 +134,10 @@
 </span><span class="kw">pub struct </span>FlushInfo {
     <span class="comment">// TODO: wrap access to the following fields in a safe way:
     </span>num_semaphores: usize,
+    gpu_stats_flags: GpuStatsFlags,
     signal_semaphores: <span class="kw-2">*mut </span>sb::GrBackendSemaphore,
     finished_proc: sb::GrGpuFinishedProc,
+    finished_with_stats_proc: sb::GrGpuFinishedWithStatsProc,
     finished_context: sb::GrGpuFinishedContext,
     submitted_proc: sb::GrGpuSubmittedProc,
     submitted_context: sb::GrGpuSubmittedContext,
@@ -139,8 +147,10 @@
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             num_semaphores: <span class="number">0</span>,
+            gpu_stats_flags: GpuStatsFlags::NONE,
             signal_semaphores: ptr::null_mut(),
             finished_proc: <span class="prelude-val">None</span>,
+            finished_with_stats_proc: <span class="prelude-val">None</span>,
             finished_context: ptr::null_mut(),
             submitted_proc: <span class="prelude-val">None</span>,
             submitted_context: ptr::null_mut(),

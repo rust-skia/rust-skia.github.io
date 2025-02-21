@@ -279,7 +279,10 @@
 <a href="#278" id="278">278</a>
 <a href="#279" id="279">279</a>
 <a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a></pre></div><pre class="rust"><code><span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkFontMgr, SkFontStyleSet, SkRefCntBase};
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a></pre></div><pre class="rust"><code><span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkFontMgr, SkFontStyleSet, SkRefCntBase};
 <span class="kw">use </span>std::{ffi::CString, fmt, mem, os::raw::c_char, ptr};
 
 <span class="kw">use crate</span>::{
@@ -523,7 +526,10 @@
         Typeface::from_ptr(<span class="kw">unsafe </span>{
             sb::C_SkFontMgr_legacyMakeTypeface(
                 <span class="self">self</span>.native(),
-                family_name.map(|n| n.as_ptr()).unwrap_or(ptr::null()),
+                family_name
+                    .as_ref()
+                    .map(|n| n.as_ptr())
+                    .unwrap_or(ptr::null()),
                 style.into_native(),
             )
         })

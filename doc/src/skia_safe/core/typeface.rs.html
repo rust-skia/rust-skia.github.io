@@ -358,7 +358,16 @@
 <a href="#357" id="357">357</a>
 <a href="#358" id="358">358</a>
 <a href="#359" id="359">359</a>
-<a href="#360" id="360">360</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, io, ptr};
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::{fmt, io, ptr};
 
 <span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkRefCntBase, SkTypeface, SkTypeface_LocalizedStrings};
 
@@ -405,19 +414,19 @@
 
 <span class="kw">impl </span>Typeface {
     <span class="kw">pub fn </span>font_style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; FontStyle {
-        FontStyle::from_native_c(<span class="self">self</span>.native().fStyle)
+        FontStyle::construct(|fs| <span class="kw">unsafe </span>{ sb::C_SkTypeface_fontStyle(<span class="self">self</span>.native(), fs) })
     }
 
     <span class="kw">pub fn </span>is_bold(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ sb::C_SkTypeface_isBold(<span class="self">self</span>.native()) }
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isBold() }
     }
 
     <span class="kw">pub fn </span>is_italic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ sb::C_SkTypeface_isItalic(<span class="self">self</span>.native()) }
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isItalic() }
     }
 
     <span class="kw">pub fn </span>is_fixed_pitch(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.native().fIsFixedPitch
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().isFixedPitch() }
     }
 
     <span class="kw">pub fn </span>variation_design_position(
@@ -603,6 +612,15 @@
         <span class="kw">let </span><span class="kw-2">mut </span>name = interop::String::default();
         <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getPostScriptName(name.native_mut()) }
             .if_true_then_some(|| name.as_str().into())
+    }
+
+    <span class="kw">pub fn </span>resource_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>name = interop::String::default();
+        <span class="kw">let </span>num_resources = <span class="kw">unsafe </span>{ <span class="self">self</span>.native().getResourceName(name.native_mut()) };
+        <span class="kw">if </span>num_resources == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
+        <span class="prelude-val">Some</span>(name.as_str().into())
     }
 
     <span class="kw">pub fn </span>to_font_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(Vec&lt;u8&gt;, usize)&gt; {

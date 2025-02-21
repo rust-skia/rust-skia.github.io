@@ -363,7 +363,8 @@
 <a href="#362" id="362">362</a>
 <a href="#363" id="363">363</a>
 <a href="#364" id="364">364</a>
-<a href="#365" id="365">365</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::{borrow::Cow, ffi::CStr, mem, os::raw, ptr};
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::{borrow::Cow, ffi::CStr, mem, os::raw, ptr};
 
 <span class="kw">use </span>helpers::ResourceKind;
 <span class="kw">use </span>skia_bindings::{
@@ -587,8 +588,9 @@
             ResourceKind::Base64(data) =&gt; <span class="prelude-val">Some</span>(data),
             ResourceKind::DownloadFromUrl(url) =&gt; <span class="kw">match </span>ureq::get(<span class="kw-2">&amp;</span>url).call() {
                 <span class="prelude-val">Ok</span>(response) =&gt; {
-                    <span class="kw">let </span><span class="kw-2">mut </span>reader = response.into_reader();
+                    <span class="kw">let </span><span class="kw-2">mut </span>reader = response.into_body().into_reader();
                     <span class="kw">let </span><span class="kw-2">mut </span>data = Vec::new();
+                    <span class="kw">use </span>std::io::Read;
                     <span class="kw">if </span>reader.read_to_end(<span class="kw-2">&amp;mut </span>data).is_err() {
                         data.clear();
                     };
