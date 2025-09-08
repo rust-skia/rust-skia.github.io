@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/bitmap.rs`."><title>bitmap.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-1a91846b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0 (6b00bc388 2025-06-23)" data-channel="1.88.0" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">skia_safe/core/</div>bitmap.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::{ffi, fmt, ptr};
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/bitmap.rs`."><title>bitmap.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">skia_safe/core/</div>bitmap.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::{ffi, fmt, ptr};
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>skia_bindings::{<span class="self">self </span><span class="kw">as </span>sb, SkBitmap};
 <a href=#4 id=4 data-nosnippet>4</a>
@@ -335,9 +335,9 @@
 <a href=#335 id=335 data-nosnippet>335</a>    /// memory to hold pixels; allocation does not take place until the pixels are written to. The
 <a href=#336 id=336 data-nosnippet>336</a>    /// actual behavior depends on the platform implementation of `calloc()`.
 <a href=#337 id=337 data-nosnippet>337</a>    </span><span class="kw">pub fn </span>alloc_pixels_flags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, image_info: <span class="kw-2">&amp;</span>ImageInfo) {
-<a href=#338 id=338 data-nosnippet>338</a>        <span class="self">self</span>.try_alloc_pixels_flags(image_info)
-<a href=#339 id=339 data-nosnippet>339</a>            .into_option()
-<a href=#340 id=340 data-nosnippet>340</a>            .expect(<span class="string">"Bitmap::alloc_pixels_flags failed"</span>);
+<a href=#338 id=338 data-nosnippet>338</a>        <span class="kw">if </span>!<span class="self">self</span>.try_alloc_pixels_flags(image_info) {
+<a href=#339 id=339 data-nosnippet>339</a>            <span class="macro">panic!</span>(<span class="string">"Bitmap::alloc_pixels_flags failed"</span>);
+<a href=#340 id=340 data-nosnippet>340</a>        }
 <a href=#341 id=341 data-nosnippet>341</a>    }
 <a href=#342 id=342 data-nosnippet>342</a>
 <a href=#343 id=343 data-nosnippet>343</a>    <span class="doccomment">/// Sets [`ImageInfo`] to info following the rules in `set_info()` and allocates pixel memory.
@@ -380,9 +380,9 @@
 <a href=#380 id=380 data-nosnippet>380</a>        image_info: <span class="kw-2">&amp;</span>ImageInfo,
 <a href=#381 id=381 data-nosnippet>381</a>        row_bytes: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
 <a href=#382 id=382 data-nosnippet>382</a>    ) {
-<a href=#383 id=383 data-nosnippet>383</a>        <span class="self">self</span>.try_alloc_pixels_info(image_info, row_bytes.into())
-<a href=#384 id=384 data-nosnippet>384</a>            .into_option()
-<a href=#385 id=385 data-nosnippet>385</a>            .expect(<span class="string">"Bitmap::alloc_pixels_info failed"</span>);
+<a href=#383 id=383 data-nosnippet>383</a>        <span class="kw">if </span>!<span class="self">self</span>.try_alloc_pixels_info(image_info, row_bytes.into()) {
+<a href=#384 id=384 data-nosnippet>384</a>            <span class="macro">panic!</span>(<span class="string">"Bitmap::alloc_pixels_info failed"</span>);
+<a href=#385 id=385 data-nosnippet>385</a>        }
 <a href=#386 id=386 data-nosnippet>386</a>    }
 <a href=#387 id=387 data-nosnippet>387</a>
 <a href=#388 id=388 data-nosnippet>388</a>    <span class="doccomment">/// Sets [`ImageInfo`] to width, height, and native color type; and allocates pixel memory. If
@@ -425,9 +425,9 @@
 <a href=#425 id=425 data-nosnippet>425</a>        (width, height): (i32, i32),
 <a href=#426 id=426 data-nosnippet>426</a>        is_opaque: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;&gt;,
 <a href=#427 id=427 data-nosnippet>427</a>    ) {
-<a href=#428 id=428 data-nosnippet>428</a>        <span class="self">self</span>.try_alloc_n32_pixels((width, height), is_opaque.into().unwrap_or(<span class="bool-val">false</span>))
-<a href=#429 id=429 data-nosnippet>429</a>            .into_option()
-<a href=#430 id=430 data-nosnippet>430</a>            .expect(<span class="string">"Bitmap::alloc_n32_pixels_failed"</span>)
+<a href=#428 id=428 data-nosnippet>428</a>        <span class="kw">if </span>!<span class="self">self</span>.try_alloc_n32_pixels((width, height), is_opaque.into().unwrap_or(<span class="bool-val">false</span>)) {
+<a href=#429 id=429 data-nosnippet>429</a>            <span class="macro">panic!</span>(<span class="string">"Bitmap::alloc_n32_pixels_failed"</span>);
+<a href=#430 id=430 data-nosnippet>430</a>        }
 <a href=#431 id=431 data-nosnippet>431</a>    }
 <a href=#432 id=432 data-nosnippet>432</a>
 <a href=#433 id=433 data-nosnippet>433</a>    <span class="comment">// TODO: wrap installPixels with releaseProc.
@@ -470,9 +470,9 @@
 <a href=#470 id=470 data-nosnippet>470</a>    ///
 <a href=#471 id=471 data-nosnippet>471</a>    /// Aborts if `info().color_type()` is [`ColorType::Unknown`], or allocation fails.
 <a href=#472 id=472 data-nosnippet>472</a>    </span><span class="kw">pub fn </span>alloc_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-<a href=#473 id=473 data-nosnippet>473</a>        <span class="self">self</span>.try_alloc_pixels()
-<a href=#474 id=474 data-nosnippet>474</a>            .into_option()
-<a href=#475 id=475 data-nosnippet>475</a>            .expect(<span class="string">"Bitmap::alloc_pixels failed"</span>)
+<a href=#473 id=473 data-nosnippet>473</a>        <span class="kw">if </span>!<span class="self">self</span>.try_alloc_pixels() {
+<a href=#474 id=474 data-nosnippet>474</a>            <span class="macro">panic!</span>(<span class="string">"Bitmap::alloc_pixels failed"</span>);
+<a href=#475 id=475 data-nosnippet>475</a>        }
 <a href=#476 id=476 data-nosnippet>476</a>    }
 <a href=#477 id=477 data-nosnippet>477</a>
 <a href=#478 id=478 data-nosnippet>478</a>    <span class="comment">// TODO: allocPixels(Allocator*)
@@ -723,7 +723,7 @@
 <a href=#723 id=723 data-nosnippet>723</a>                offset.native_mut(),
 <a href=#724 id=724 data-nosnippet>724</a>            )
 <a href=#725 id=725 data-nosnippet>725</a>        }
-<a href=#726 id=726 data-nosnippet>726</a>        .if_true_some(offset)
+<a href=#726 id=726 data-nosnippet>726</a>        .then_some(offset)
 <a href=#727 id=727 data-nosnippet>727</a>    }
 <a href=#728 id=728 data-nosnippet>728</a>
 <a href=#729 id=729 data-nosnippet>729</a>    <span class="doccomment">/// Copies [`Bitmap`] pixel address, row bytes, and [`ImageInfo`] to pixmap, if address is
@@ -733,7 +733,7 @@
 <a href=#733 id=733 data-nosnippet>733</a>    /// example: &lt;https://fiddle.skia.org/c/@Bitmap_peekPixels&gt;
 <a href=#734 id=734 data-nosnippet>734</a>    </span><span class="kw">pub fn </span>peek_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixmap&gt; {
 <a href=#735 id=735 data-nosnippet>735</a>        <span class="kw">let </span><span class="kw-2">mut </span>pixmap = Pixmap::default();
-<a href=#736 id=736 data-nosnippet>736</a>        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().peekPixels(pixmap.native_mut()) }.if_true_some(pixmap)
+<a href=#736 id=736 data-nosnippet>736</a>        <span class="kw">unsafe </span>{ <span class="self">self</span>.native().peekPixels(pixmap.native_mut()) }.then_some(pixmap)
 <a href=#737 id=737 data-nosnippet>737</a>    }
 <a href=#738 id=738 data-nosnippet>738</a>
 <a href=#739 id=739 data-nosnippet>739</a>    <span class="doccomment">/// Make a shader with the specified tiling, matrix and sampling.  
