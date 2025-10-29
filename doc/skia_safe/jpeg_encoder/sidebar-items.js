@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Downsample"],"fn":["encode","encode_image"],"struct":["Options"],"type":["AlphaOption"]};
+window.SIDEBAR_ITEMS = {"enum":["Downsample"],"fn":["encode","encode_image","encode_pixmap","encode_yuva_pixmaps"],"struct":["Options"],"type":["AlphaOption"]};

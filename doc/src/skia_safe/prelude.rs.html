@@ -297,7 +297,7 @@
 <a href=#297 id=297 data-nosnippet>297</a><span class="attr">#[must_use]
 <a href=#298 id=298 data-nosnippet>298</a></span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>try_construct&lt;N&gt;(construct: <span class="kw">impl </span>FnOnce(<span class="kw-2">*mut </span>N) -&gt; bool) -&gt; <span class="prelude-ty">Option</span>&lt;UnsafeCell&lt;N&gt;&gt; {
 <a href=#299 id=299 data-nosnippet>299</a>    <span class="kw">let </span><span class="kw-2">mut </span>instance = mem::MaybeUninit::uninit();
-<a href=#300 id=300 data-nosnippet>300</a>    construct(instance.as_mut_ptr()).then_some(<span class="kw">unsafe </span>{ instance.assume_init() }.into())
+<a href=#300 id=300 data-nosnippet>300</a>    construct(instance.as_mut_ptr()).then(|| <span class="kw">unsafe </span>{ instance.assume_init() }.into())
 <a href=#301 id=301 data-nosnippet>301</a>}
 <a href=#302 id=302 data-nosnippet>302</a>
 <a href=#303 id=303 data-nosnippet>303</a><span class="kw">impl</span>&lt;N: NativeDrop&gt; Drop <span class="kw">for </span>Handle&lt;N&gt; {
@@ -751,7 +751,7 @@
 <a href=#751 id=751 data-nosnippet>751</a>    </span>);
 <a href=#752 id=752 data-nosnippet>752</a>    <span class="macro">assert!</span>(
 <a href=#753 id=753 data-nosnippet>753</a>        mem::align_of::&lt;T1&gt;() == mem::align_of::&lt;T2&gt;(),
-<a href=#754 id=754 data-nosnippet>754</a>        <span class="string">"Type layout verficiation failed: Alignment mismatch"
+<a href=#754 id=754 data-nosnippet>754</a>        <span class="string">"Type layout verification failed: Alignment mismatch"
 <a href=#755 id=755 data-nosnippet>755</a>    </span>);
 <a href=#756 id=756 data-nosnippet>756</a>}
 <a href=#757 id=757 data-nosnippet>757</a>
@@ -1014,4 +1014,19 @@
 <a href=#1014 id=1014 data-nosnippet>1014</a>        };
 <a href=#1015 id=1015 data-nosnippet>1015</a>        slice::from_raw_parts_mut(ptr, len)
 <a href=#1016 id=1016 data-nosnippet>1016</a>    }
-<a href=#1017 id=1017 data-nosnippet>1017</a>}</code></pre></div></section></main></body></html>
+<a href=#1017 id=1017 data-nosnippet>1017</a>}
+<a href=#1018 id=1018 data-nosnippet>1018</a>
+<a href=#1019 id=1019 data-nosnippet>1019</a><span class="attr">#[cfg(test)]
+<a href=#1020 id=1020 data-nosnippet>1020</a></span><span class="kw">mod </span>tests {
+<a href=#1021 id=1021 data-nosnippet>1021</a>    <span class="kw">struct </span>PanicOnDrop {}
+<a href=#1022 id=1022 data-nosnippet>1022</a>    <span class="kw">impl </span>Drop <span class="kw">for </span>PanicOnDrop {
+<a href=#1023 id=1023 data-nosnippet>1023</a>        <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+<a href=#1024 id=1024 data-nosnippet>1024</a>            <span class="macro">panic!</span>(<span class="string">"Shall not drop"</span>)
+<a href=#1025 id=1025 data-nosnippet>1025</a>        }
+<a href=#1026 id=1026 data-nosnippet>1026</a>    }
+<a href=#1027 id=1027 data-nosnippet>1027</a>    <span class="attr">#[test]
+<a href=#1028 id=1028 data-nosnippet>1028</a>
+<a href=#1029 id=1029 data-nosnippet>1029</a>    </span><span class="kw">fn </span>try_construct_does_not_drop_when_construction_attempt_fails() {
+<a href=#1030 id=1030 data-nosnippet>1030</a>        <span class="kw">_ </span>= <span class="kw">super</span>::try_construct::&lt;PanicOnDrop&gt;(|<span class="kw">_</span>| <span class="bool-val">false</span>);
+<a href=#1031 id=1031 data-nosnippet>1031</a>    }
+<a href=#1032 id=1032 data-nosnippet>1032</a>}</code></pre></div></section></main></body></html>

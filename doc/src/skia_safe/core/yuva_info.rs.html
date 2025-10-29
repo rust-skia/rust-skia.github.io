@@ -275,19 +275,19 @@
 <a href=#275 id=275 data-nosnippet>275</a>    /// compatible with chroma subsampling (because Y is in the same plane as UV) then the result
 <a href=#276 id=276 data-nosnippet>276</a>    /// will be `None`.
 <a href=#277 id=277 data-nosnippet>277</a>    </span><span class="kw">pub fn </span>with_subsampling(<span class="kw-2">&amp;</span><span class="self">self</span>, subsampling: Subsampling) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-<a href=#278 id=278 data-nosnippet>278</a>        <span class="self">Self</span>::try_construct(|info| <span class="kw">unsafe </span>{
-<a href=#279 id=279 data-nosnippet>279</a>            sb::C_SkYUVAInfo_makeSubsampling(<span class="self">self</span>.native(), subsampling.into_native(), info);
-<a href=#280 id=280 data-nosnippet>280</a>            <span class="self">Self</span>::native_is_valid(<span class="kw-2">&amp;*</span>info)
-<a href=#281 id=281 data-nosnippet>281</a>        })
+<a href=#278 id=278 data-nosnippet>278</a>        <span class="kw">let </span>r = construct(|info| <span class="kw">unsafe </span>{
+<a href=#279 id=279 data-nosnippet>279</a>            sb::C_SkYUVAInfo_makeSubsampling(<span class="self">self</span>.native(), subsampling.into_native(), info)
+<a href=#280 id=280 data-nosnippet>280</a>        });
+<a href=#281 id=281 data-nosnippet>281</a>        <span class="self">Self</span>::native_is_valid(<span class="kw-2">&amp;</span>r).then(|| <span class="self">Self</span>::from_native_c(r))
 <a href=#282 id=282 data-nosnippet>282</a>    }
 <a href=#283 id=283 data-nosnippet>283</a>
 <a href=#284 id=284 data-nosnippet>284</a>    <span class="doccomment">/// Returns a [YUVAInfo] that is identical to this one but with the passed dimensions. If the
 <a href=#285 id=285 data-nosnippet>285</a>    /// passed dimensions is empty then the result will be `None`.
 <a href=#286 id=286 data-nosnippet>286</a>    </span><span class="kw">pub fn </span>with_dimensions(<span class="kw-2">&amp;</span><span class="self">self</span>, dimensions: <span class="kw">impl </span>Into&lt;ISize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-<a href=#287 id=287 data-nosnippet>287</a>        <span class="self">Self</span>::try_construct(|info| <span class="kw">unsafe </span>{
+<a href=#287 id=287 data-nosnippet>287</a>        <span class="kw">let </span>r = construct(|info| <span class="kw">unsafe </span>{
 <a href=#288 id=288 data-nosnippet>288</a>            sb::C_SkYUVAInfo_makeDimensions(<span class="self">self</span>.native(), dimensions.into().native(), info);
-<a href=#289 id=289 data-nosnippet>289</a>            <span class="self">Self</span>::native_is_valid(<span class="kw-2">&amp;*</span>info)
-<a href=#290 id=290 data-nosnippet>290</a>        })
+<a href=#289 id=289 data-nosnippet>289</a>        });
+<a href=#290 id=290 data-nosnippet>290</a>        <span class="self">Self</span>::native_is_valid(<span class="kw-2">&amp;</span>r).then(|| <span class="self">Self</span>::from_native_c(r))
 <a href=#291 id=291 data-nosnippet>291</a>    }
 <a href=#292 id=292 data-nosnippet>292</a>
 <a href=#293 id=293 data-nosnippet>293</a>    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>native_is_valid(info: <span class="kw-2">&amp;</span>SkYUVAInfo) -&gt; bool {

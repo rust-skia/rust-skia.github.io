@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["bitmap","image","pixmap"]};
+window.SIDEBAR_ITEMS = {"fn":["bitmap","image","pixmap"],"struct":["Comment"]};

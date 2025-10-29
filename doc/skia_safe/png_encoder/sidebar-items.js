@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["encode","encode_image"],"struct":["Comment","FilterFlag","Options"]};
+window.SIDEBAR_ITEMS = {"fn":["encode","encode_image","encode_pixmap"],"struct":["FilterFlag","Options"],"type":["Comment"]};
