@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AddPathMode","ArcSize"],"struct":["Iter","RawIter"],"type":["Path","SegmentMask","Verb"]};
+window.SIDEBAR_ITEMS = {"enum":["AddPathMode"],"struct":["Iter","RawIter"],"type":["Path","SegmentMask","Verb"]};

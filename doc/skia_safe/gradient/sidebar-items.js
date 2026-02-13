@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["interpolation","shaders"],"struct":["Colors","Gradient","Interpolation"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["blend","color","color_in_space","coord_clamp","empty","fractal_noise","image","raw_image","turbulence"]};
+window.SIDEBAR_ITEMS = {"fn":["blend","color","color_in_space","coord_clamp","empty","fractal_noise","image","linear_gradient","radial_gradient","raw_image","sweep_gradient","turbulence","two_point_conical_gradient"]};

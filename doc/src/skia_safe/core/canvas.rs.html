@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0 (ded5c06cf 2025-12-08)" data-channel="1.92.0" data-search-js="search-d69d8955.js" data-stringdex-js="stringdex-c3e638e9.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">skia_safe/core/</div>canvas.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::{cell::UnsafeCell, ffi::CString, fmt, marker::PhantomData, mem, ops::Deref, ptr, slice};
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `skia-safe/src/core/canvas.rs`."><title>canvas.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="skia_safe" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.1 (01f6ddf75 2026-02-11)" data-channel="1.93.1" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">skia_safe/core/</div>canvas.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::{cell::UnsafeCell, ffi::CString, fmt, marker::PhantomData, mem, ops::Deref, ptr, slice};
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>sb::SkCanvas_FilterSpan;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>skia_bindings::{
@@ -2376,151 +2376,153 @@
 <a href=#2376 id=2376 data-nosnippet>2376</a>    <span class="macro">variant_name!</span>(RectType::FixedColor);
 <a href=#2377 id=2377 data-nosnippet>2377</a>}
 <a href=#2378 id=2378 data-nosnippet>2378</a>
-<a href=#2379 id=2379 data-nosnippet>2379</a><span class="attr">#[derive(Debug)]
-<a href=#2380 id=2380 data-nosnippet>2380</a></span><span class="doccomment">/// Stack helper class calls [`Canvas::restore_to_count()`] when [`AutoCanvasRestore`]
-<a href=#2381 id=2381 data-nosnippet>2381</a>/// goes out of scope. Use this to guarantee that the canvas is restored to a known
-<a href=#2382 id=2382 data-nosnippet>2382</a>/// state.
-<a href=#2383 id=2383 data-nosnippet>2383</a></span><span class="kw">pub struct </span>AutoRestoredCanvas&lt;<span class="lifetime">'a</span>&gt; {
-<a href=#2384 id=2384 data-nosnippet>2384</a>    canvas: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Canvas,
-<a href=#2385 id=2385 data-nosnippet>2385</a>    restore: SkAutoCanvasRestore,
-<a href=#2386 id=2386 data-nosnippet>2386</a>}
-<a href=#2387 id=2387 data-nosnippet>2387</a>
-<a href=#2388 id=2388 data-nosnippet>2388</a><span class="kw">impl </span>Deref <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#2389 id=2389 data-nosnippet>2389</a>    <span class="kw">type </span>Target = Canvas;
-<a href=#2390 id=2390 data-nosnippet>2390</a>    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
-<a href=#2391 id=2391 data-nosnippet>2391</a>        <span class="self">self</span>.canvas
-<a href=#2392 id=2392 data-nosnippet>2392</a>    }
-<a href=#2393 id=2393 data-nosnippet>2393</a>}
-<a href=#2394 id=2394 data-nosnippet>2394</a>
-<a href=#2395 id=2395 data-nosnippet>2395</a><span class="kw">impl </span>NativeAccess <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#2396 id=2396 data-nosnippet>2396</a>    <span class="kw">type </span>Native = SkAutoCanvasRestore;
-<a href=#2397 id=2397 data-nosnippet>2397</a>
-<a href=#2398 id=2398 data-nosnippet>2398</a>    <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkAutoCanvasRestore {
-<a href=#2399 id=2399 data-nosnippet>2399</a>        <span class="kw-2">&amp;</span><span class="self">self</span>.restore
-<a href=#2400 id=2400 data-nosnippet>2400</a>    }
-<a href=#2401 id=2401 data-nosnippet>2401</a>
-<a href=#2402 id=2402 data-nosnippet>2402</a>    <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkAutoCanvasRestore {
-<a href=#2403 id=2403 data-nosnippet>2403</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>.restore
-<a href=#2404 id=2404 data-nosnippet>2404</a>    }
-<a href=#2405 id=2405 data-nosnippet>2405</a>}
-<a href=#2406 id=2406 data-nosnippet>2406</a>
-<a href=#2407 id=2407 data-nosnippet>2407</a><span class="kw">impl </span>Drop <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#2408 id=2408 data-nosnippet>2408</a>    <span class="doccomment">/// Restores [`Canvas`] to saved state. Drop is called when container goes out of scope.
-<a href=#2409 id=2409 data-nosnippet>2409</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-<a href=#2410 id=2410 data-nosnippet>2410</a>        <span class="kw">unsafe </span>{ sb::C_SkAutoCanvasRestore_destruct(<span class="self">self</span>.native_mut()) }
-<a href=#2411 id=2411 data-nosnippet>2411</a>    }
-<a href=#2412 id=2412 data-nosnippet>2412</a>}
-<a href=#2413 id=2413 data-nosnippet>2413</a>
-<a href=#2414 id=2414 data-nosnippet>2414</a><span class="kw">impl </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#2415 id=2415 data-nosnippet>2415</a>    <span class="doccomment">/// Restores [`Canvas`] to saved state immediately. Subsequent calls and [`Self::drop()`] have
-<a href=#2416 id=2416 data-nosnippet>2416</a>    /// no effect.
-<a href=#2417 id=2417 data-nosnippet>2417</a>    </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-<a href=#2418 id=2418 data-nosnippet>2418</a>        <span class="kw">unsafe </span>{ sb::C_SkAutoCanvasRestore_restore(<span class="self">self</span>.native_mut()) }
-<a href=#2419 id=2419 data-nosnippet>2419</a>    }
-<a href=#2420 id=2420 data-nosnippet>2420</a>}
-<a href=#2421 id=2421 data-nosnippet>2421</a>
-<a href=#2422 id=2422 data-nosnippet>2422</a><span class="kw">pub enum </span>AutoCanvasRestore {}
-<a href=#2423 id=2423 data-nosnippet>2423</a>
-<a href=#2424 id=2424 data-nosnippet>2424</a><span class="kw">impl </span>AutoCanvasRestore {
-<a href=#2425 id=2425 data-nosnippet>2425</a>    <span class="comment">// TODO: rename to save(), add a method to Canvas, perhaps named auto_restored()?
-<a href=#2426 id=2426 data-nosnippet>2426</a>    </span><span class="doccomment">/// Preserves [`Canvas::save()`] count. Optionally saves [`Canvas`] clip and [`Canvas`] matrix.
-<a href=#2427 id=2427 data-nosnippet>2427</a>    ///
-<a href=#2428 id=2428 data-nosnippet>2428</a>    /// - `canvas` [`Canvas`] to guard
-<a href=#2429 id=2429 data-nosnippet>2429</a>    /// - `do_save` call [`Canvas::save()`]
-<a href=#2430 id=2430 data-nosnippet>2430</a>    ///
-<a href=#2431 id=2431 data-nosnippet>2431</a>    /// Returns utility to restore [`Canvas`] state on destructor
-<a href=#2432 id=2432 data-nosnippet>2432</a>    </span><span class="kw">pub fn </span>guard(canvas: <span class="kw-2">&amp;</span>Canvas, do_save: bool) -&gt; AutoRestoredCanvas {
-<a href=#2433 id=2433 data-nosnippet>2433</a>        <span class="kw">let </span>restore = construct(|acr| <span class="kw">unsafe </span>{
-<a href=#2434 id=2434 data-nosnippet>2434</a>            sb::C_SkAutoCanvasRestore_Construct(acr, canvas.native_mut(), do_save)
-<a href=#2435 id=2435 data-nosnippet>2435</a>        });
-<a href=#2436 id=2436 data-nosnippet>2436</a>
-<a href=#2437 id=2437 data-nosnippet>2437</a>        AutoRestoredCanvas { canvas, restore }
-<a href=#2438 id=2438 data-nosnippet>2438</a>    }
-<a href=#2439 id=2439 data-nosnippet>2439</a>}
-<a href=#2440 id=2440 data-nosnippet>2440</a>
-<a href=#2441 id=2441 data-nosnippet>2441</a><span class="attr">#[cfg(test)]
-<a href=#2442 id=2442 data-nosnippet>2442</a></span><span class="kw">mod </span>tests {
-<a href=#2443 id=2443 data-nosnippet>2443</a>    <span class="kw">use crate</span>::{
-<a href=#2444 id=2444 data-nosnippet>2444</a>        canvas::SaveLayerFlags, canvas::SaveLayerRec, surfaces, AlphaType, Canvas, ClipOp, Color,
-<a href=#2445 id=2445 data-nosnippet>2445</a>        ColorType, ImageInfo, OwnedCanvas, Rect,
-<a href=#2446 id=2446 data-nosnippet>2446</a>    };
-<a href=#2447 id=2447 data-nosnippet>2447</a>
-<a href=#2448 id=2448 data-nosnippet>2448</a>    <span class="attr">#[test]
-<a href=#2449 id=2449 data-nosnippet>2449</a>    </span><span class="kw">fn </span>test_raster_direct_creation_and_clear_in_memory() {
-<a href=#2450 id=2450 data-nosnippet>2450</a>        <span class="kw">let </span>info = ImageInfo::new((<span class="number">2</span>, <span class="number">2</span>), ColorType::RGBA8888, AlphaType::Unpremul, <span class="prelude-val">None</span>);
-<a href=#2451 id=2451 data-nosnippet>2451</a>        <span class="macro">assert_eq!</span>(<span class="number">8</span>, info.min_row_bytes());
-<a href=#2452 id=2452 data-nosnippet>2452</a>        <span class="kw">let </span><span class="kw-2">mut </span>bytes: [u8; <span class="number">8 </span>* <span class="number">2</span>] = Default::default();
-<a href=#2453 id=2453 data-nosnippet>2453</a>        {
-<a href=#2454 id=2454 data-nosnippet>2454</a>            <span class="kw">let </span>canvas = Canvas::from_raster_direct(<span class="kw-2">&amp;</span>info, bytes.as_mut(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
-<a href=#2455 id=2455 data-nosnippet>2455</a>            canvas.clear(Color::RED);
-<a href=#2456 id=2456 data-nosnippet>2456</a>        }
-<a href=#2457 id=2457 data-nosnippet>2457</a>
-<a href=#2458 id=2458 data-nosnippet>2458</a>        <span class="macro">assert_eq!</span>(<span class="number">0xff</span>, bytes[<span class="number">0</span>]);
-<a href=#2459 id=2459 data-nosnippet>2459</a>        <span class="macro">assert_eq!</span>(<span class="number">0x00</span>, bytes[<span class="number">1</span>]);
-<a href=#2460 id=2460 data-nosnippet>2460</a>        <span class="macro">assert_eq!</span>(<span class="number">0x00</span>, bytes[<span class="number">2</span>]);
-<a href=#2461 id=2461 data-nosnippet>2461</a>        <span class="macro">assert_eq!</span>(<span class="number">0xff</span>, bytes[<span class="number">3</span>]);
-<a href=#2462 id=2462 data-nosnippet>2462</a>    }
-<a href=#2463 id=2463 data-nosnippet>2463</a>
-<a href=#2464 id=2464 data-nosnippet>2464</a>    <span class="attr">#[test]
-<a href=#2465 id=2465 data-nosnippet>2465</a>    </span><span class="kw">fn </span>test_raster_direct_n32_creation_and_clear_in_memory() {
-<a href=#2466 id=2466 data-nosnippet>2466</a>        <span class="kw">let </span><span class="kw-2">mut </span>pixels: [u32; <span class="number">4</span>] = Default::default();
-<a href=#2467 id=2467 data-nosnippet>2467</a>        {
-<a href=#2468 id=2468 data-nosnippet>2468</a>            <span class="kw">let </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
-<a href=#2469 id=2469 data-nosnippet>2469</a>            canvas.clear(Color::RED);
-<a href=#2470 id=2470 data-nosnippet>2470</a>        }
-<a href=#2471 id=2471 data-nosnippet>2471</a>
-<a href=#2472 id=2472 data-nosnippet>2472</a>        <span class="comment">// TODO: equals to 0xff0000ff on macOS, but why? Endianness should be the same.
-<a href=#2473 id=2473 data-nosnippet>2473</a>        // assert_eq!(0xffff0000, pixels[0]);
-<a href=#2474 id=2474 data-nosnippet>2474</a>    </span>}
-<a href=#2475 id=2475 data-nosnippet>2475</a>
-<a href=#2476 id=2476 data-nosnippet>2476</a>    <span class="attr">#[test]
-<a href=#2477 id=2477 data-nosnippet>2477</a>    </span><span class="kw">fn </span>test_empty_canvas_creation() {
-<a href=#2478 id=2478 data-nosnippet>2478</a>        <span class="kw">let </span>canvas = OwnedCanvas::default();
-<a href=#2479 id=2479 data-nosnippet>2479</a>        drop(canvas)
-<a href=#2480 id=2480 data-nosnippet>2480</a>    }
-<a href=#2481 id=2481 data-nosnippet>2481</a>
-<a href=#2482 id=2482 data-nosnippet>2482</a>    <span class="attr">#[test]
-<a href=#2483 id=2483 data-nosnippet>2483</a>    </span><span class="kw">fn </span>test_save_layer_rec_lifetimes() {
-<a href=#2484 id=2484 data-nosnippet>2484</a>        <span class="kw">let </span>rect = Rect::default();
-<a href=#2485 id=2485 data-nosnippet>2485</a>        {
-<a href=#2486 id=2486 data-nosnippet>2486</a>            <span class="kw">let </span>_rec = SaveLayerRec::default()
-<a href=#2487 id=2487 data-nosnippet>2487</a>                .flags(SaveLayerFlags::PRESERVE_LCD_TEXT)
-<a href=#2488 id=2488 data-nosnippet>2488</a>                .bounds(<span class="kw-2">&amp;</span>rect);
-<a href=#2489 id=2489 data-nosnippet>2489</a>        }
-<a href=#2490 id=2490 data-nosnippet>2490</a>    }
-<a href=#2491 id=2491 data-nosnippet>2491</a>
-<a href=#2492 id=2492 data-nosnippet>2492</a>    <span class="attr">#[test]
-<a href=#2493 id=2493 data-nosnippet>2493</a>    </span><span class="kw">fn </span>test_make_surface() {
-<a href=#2494 id=2494 data-nosnippet>2494</a>        <span class="kw">let </span><span class="kw-2">mut </span>pixels: [u32; <span class="number">4</span>] = Default::default();
-<a href=#2495 id=2495 data-nosnippet>2495</a>        <span class="kw">let </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
-<a href=#2496 id=2496 data-nosnippet>2496</a>        <span class="kw">let </span>ii = canvas.image_info();
-<a href=#2497 id=2497 data-nosnippet>2497</a>        <span class="kw">let </span><span class="kw-2">mut </span>surface = canvas.new_surface(<span class="kw-2">&amp;</span>ii, <span class="prelude-val">None</span>).unwrap();
-<a href=#2498 id=2498 data-nosnippet>2498</a>        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span>canvas <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
-<a href=#2499 id=2499 data-nosnippet>2499</a>        drop(canvas);
-<a href=#2500 id=2500 data-nosnippet>2500</a>
-<a href=#2501 id=2501 data-nosnippet>2501</a>        <span class="kw">let </span>canvas = surface.canvas();
-<a href=#2502 id=2502 data-nosnippet>2502</a>        <span class="macro">dbg!</span>(canvas <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
-<a href=#2503 id=2503 data-nosnippet>2503</a>        canvas.clear(Color::RED);
-<a href=#2504 id=2504 data-nosnippet>2504</a>    }
-<a href=#2505 id=2505 data-nosnippet>2505</a>
-<a href=#2506 id=2506 data-nosnippet>2506</a>    <span class="attr">#[test]
-<a href=#2507 id=2507 data-nosnippet>2507</a>    </span><span class="kw">fn </span>clip_options_overloads() {
-<a href=#2508 id=2508 data-nosnippet>2508</a>        <span class="kw">let </span>c = OwnedCanvas::default();
-<a href=#2509 id=2509 data-nosnippet>2509</a>        <span class="comment">// do_anti_alias
-<a href=#2510 id=2510 data-nosnippet>2510</a>        </span>c.clip_rect(Rect::default(), <span class="prelude-val">None</span>, <span class="bool-val">true</span>);
-<a href=#2511 id=2511 data-nosnippet>2511</a>        <span class="comment">// clip_op
-<a href=#2512 id=2512 data-nosnippet>2512</a>        </span>c.clip_rect(Rect::default(), ClipOp::Difference, <span class="prelude-val">None</span>);
-<a href=#2513 id=2513 data-nosnippet>2513</a>        <span class="comment">// both
-<a href=#2514 id=2514 data-nosnippet>2514</a>        </span>c.clip_rect(Rect::default(), ClipOp::Difference, <span class="bool-val">true</span>);
-<a href=#2515 id=2515 data-nosnippet>2515</a>    }
-<a href=#2516 id=2516 data-nosnippet>2516</a>
-<a href=#2517 id=2517 data-nosnippet>2517</a>    <span class="doccomment">/// Regression test for: &lt;https://github.com/rust-skia/rust-skia/issues/427&gt;
-<a href=#2518 id=2518 data-nosnippet>2518</a>    </span><span class="attr">#[test]
-<a href=#2519 id=2519 data-nosnippet>2519</a>    </span><span class="kw">fn </span>test_local_and_device_clip_bounds() {
-<a href=#2520 id=2520 data-nosnippet>2520</a>        <span class="kw">let </span><span class="kw-2">mut </span>surface =
-<a href=#2521 id=2521 data-nosnippet>2521</a>            surfaces::raster(<span class="kw-2">&amp;</span>ImageInfo::new_n32_premul((<span class="number">100</span>, <span class="number">100</span>), <span class="prelude-val">None</span>), <span class="number">0</span>, <span class="prelude-val">None</span>).unwrap();
-<a href=#2522 id=2522 data-nosnippet>2522</a>        <span class="kw">let _ </span>= surface.canvas().device_clip_bounds();
-<a href=#2523 id=2523 data-nosnippet>2523</a>        <span class="kw">let _ </span>= surface.canvas().local_clip_bounds();
-<a href=#2524 id=2524 data-nosnippet>2524</a>        <span class="kw">let _ </span>= surface.canvas().local_to_device();
-<a href=#2525 id=2525 data-nosnippet>2525</a>    }
-<a href=#2526 id=2526 data-nosnippet>2526</a>}</code></pre></div></section></main></body></html>
+<a href=#2379 id=2379 data-nosnippet>2379</a><span class="attr">#[must_use]
+<a href=#2380 id=2380 data-nosnippet>2380</a>#[derive(Debug)]
+<a href=#2381 id=2381 data-nosnippet>2381</a></span><span class="doccomment">/// Stack helper class calls [`Canvas::restore_to_count()`] when [`AutoCanvasRestore`]
+<a href=#2382 id=2382 data-nosnippet>2382</a>/// goes out of scope. Use this to guarantee that the canvas is restored to a known
+<a href=#2383 id=2383 data-nosnippet>2383</a>/// state.
+<a href=#2384 id=2384 data-nosnippet>2384</a></span><span class="kw">pub struct </span>AutoRestoredCanvas&lt;<span class="lifetime">'a</span>&gt; {
+<a href=#2385 id=2385 data-nosnippet>2385</a>    canvas: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Canvas,
+<a href=#2386 id=2386 data-nosnippet>2386</a>    restore: SkAutoCanvasRestore,
+<a href=#2387 id=2387 data-nosnippet>2387</a>}
+<a href=#2388 id=2388 data-nosnippet>2388</a>
+<a href=#2389 id=2389 data-nosnippet>2389</a><span class="kw">impl </span>Deref <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#2390 id=2390 data-nosnippet>2390</a>    <span class="kw">type </span>Target = Canvas;
+<a href=#2391 id=2391 data-nosnippet>2391</a>    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+<a href=#2392 id=2392 data-nosnippet>2392</a>        <span class="self">self</span>.canvas
+<a href=#2393 id=2393 data-nosnippet>2393</a>    }
+<a href=#2394 id=2394 data-nosnippet>2394</a>}
+<a href=#2395 id=2395 data-nosnippet>2395</a>
+<a href=#2396 id=2396 data-nosnippet>2396</a><span class="kw">impl </span>NativeAccess <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#2397 id=2397 data-nosnippet>2397</a>    <span class="kw">type </span>Native = SkAutoCanvasRestore;
+<a href=#2398 id=2398 data-nosnippet>2398</a>
+<a href=#2399 id=2399 data-nosnippet>2399</a>    <span class="kw">fn </span>native(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>SkAutoCanvasRestore {
+<a href=#2400 id=2400 data-nosnippet>2400</a>        <span class="kw-2">&amp;</span><span class="self">self</span>.restore
+<a href=#2401 id=2401 data-nosnippet>2401</a>    }
+<a href=#2402 id=2402 data-nosnippet>2402</a>
+<a href=#2403 id=2403 data-nosnippet>2403</a>    <span class="kw">fn </span>native_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>SkAutoCanvasRestore {
+<a href=#2404 id=2404 data-nosnippet>2404</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>.restore
+<a href=#2405 id=2405 data-nosnippet>2405</a>    }
+<a href=#2406 id=2406 data-nosnippet>2406</a>}
+<a href=#2407 id=2407 data-nosnippet>2407</a>
+<a href=#2408 id=2408 data-nosnippet>2408</a><span class="kw">impl </span>Drop <span class="kw">for </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#2409 id=2409 data-nosnippet>2409</a>    <span class="doccomment">/// Restores [`Canvas`] to saved state. Drop is called when container goes out of scope.
+<a href=#2410 id=2410 data-nosnippet>2410</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+<a href=#2411 id=2411 data-nosnippet>2411</a>        <span class="kw">unsafe </span>{ sb::C_SkAutoCanvasRestore_destruct(<span class="self">self</span>.native_mut()) }
+<a href=#2412 id=2412 data-nosnippet>2412</a>    }
+<a href=#2413 id=2413 data-nosnippet>2413</a>}
+<a href=#2414 id=2414 data-nosnippet>2414</a>
+<a href=#2415 id=2415 data-nosnippet>2415</a><span class="kw">impl </span>AutoRestoredCanvas&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#2416 id=2416 data-nosnippet>2416</a>    <span class="doccomment">/// Restores [`Canvas`] to saved state immediately. Subsequent calls and [`Self::drop()`] have
+<a href=#2417 id=2417 data-nosnippet>2417</a>    /// no effect.
+<a href=#2418 id=2418 data-nosnippet>2418</a>    </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+<a href=#2419 id=2419 data-nosnippet>2419</a>        <span class="kw">unsafe </span>{ sb::C_SkAutoCanvasRestore_restore(<span class="self">self</span>.native_mut()) }
+<a href=#2420 id=2420 data-nosnippet>2420</a>    }
+<a href=#2421 id=2421 data-nosnippet>2421</a>}
+<a href=#2422 id=2422 data-nosnippet>2422</a>
+<a href=#2423 id=2423 data-nosnippet>2423</a><span class="kw">pub enum </span>AutoCanvasRestore {}
+<a href=#2424 id=2424 data-nosnippet>2424</a>
+<a href=#2425 id=2425 data-nosnippet>2425</a><span class="kw">impl </span>AutoCanvasRestore {
+<a href=#2426 id=2426 data-nosnippet>2426</a>    <span class="comment">// TODO: rename to save(), add a method to Canvas, perhaps named auto_restored()?
+<a href=#2427 id=2427 data-nosnippet>2427</a>    </span><span class="doccomment">/// Preserves [`Canvas::save()`] count. Optionally saves [`Canvas`] clip and [`Canvas`] matrix.
+<a href=#2428 id=2428 data-nosnippet>2428</a>    ///
+<a href=#2429 id=2429 data-nosnippet>2429</a>    /// - `canvas` [`Canvas`] to guard
+<a href=#2430 id=2430 data-nosnippet>2430</a>    /// - `do_save` call [`Canvas::save()`]
+<a href=#2431 id=2431 data-nosnippet>2431</a>    ///
+<a href=#2432 id=2432 data-nosnippet>2432</a>    /// Returns utility to restore [`Canvas`] state on destructor
+<a href=#2433 id=2433 data-nosnippet>2433</a>    </span><span class="kw">pub fn </span>guard(canvas: <span class="kw-2">&amp;</span>Canvas, do_save: bool) -&gt; AutoRestoredCanvas {
+<a href=#2434 id=2434 data-nosnippet>2434</a>        <span class="kw">let </span>restore = construct(|acr| <span class="kw">unsafe </span>{
+<a href=#2435 id=2435 data-nosnippet>2435</a>            sb::C_SkAutoCanvasRestore_Construct(acr, canvas.native_mut(), do_save)
+<a href=#2436 id=2436 data-nosnippet>2436</a>        });
+<a href=#2437 id=2437 data-nosnippet>2437</a>
+<a href=#2438 id=2438 data-nosnippet>2438</a>        AutoRestoredCanvas { canvas, restore }
+<a href=#2439 id=2439 data-nosnippet>2439</a>    }
+<a href=#2440 id=2440 data-nosnippet>2440</a>}
+<a href=#2441 id=2441 data-nosnippet>2441</a>
+<a href=#2442 id=2442 data-nosnippet>2442</a><span class="attr">#[cfg(test)]
+<a href=#2443 id=2443 data-nosnippet>2443</a></span><span class="kw">mod </span>tests {
+<a href=#2444 id=2444 data-nosnippet>2444</a>    <span class="kw">use crate</span>::{
+<a href=#2445 id=2445 data-nosnippet>2445</a>        canvas::SaveLayerFlags, canvas::SaveLayerRec, surfaces, AlphaType, Canvas, ClipOp, Color,
+<a href=#2446 id=2446 data-nosnippet>2446</a>        ColorType, ImageInfo, OwnedCanvas, Rect,
+<a href=#2447 id=2447 data-nosnippet>2447</a>    };
+<a href=#2448 id=2448 data-nosnippet>2448</a>
+<a href=#2449 id=2449 data-nosnippet>2449</a>    <span class="attr">#[test]
+<a href=#2450 id=2450 data-nosnippet>2450</a>    </span><span class="kw">fn </span>test_raster_direct_creation_and_clear_in_memory() {
+<a href=#2451 id=2451 data-nosnippet>2451</a>        <span class="kw">let </span>info = ImageInfo::new((<span class="number">2</span>, <span class="number">2</span>), ColorType::RGBA8888, AlphaType::Unpremul, <span class="prelude-val">None</span>);
+<a href=#2452 id=2452 data-nosnippet>2452</a>        <span class="macro">assert_eq!</span>(<span class="number">8</span>, info.min_row_bytes());
+<a href=#2453 id=2453 data-nosnippet>2453</a>        <span class="kw">let </span><span class="kw-2">mut </span>bytes: [u8; <span class="number">8 </span>* <span class="number">2</span>] = Default::default();
+<a href=#2454 id=2454 data-nosnippet>2454</a>        {
+<a href=#2455 id=2455 data-nosnippet>2455</a>            <span class="kw">let </span>canvas = Canvas::from_raster_direct(<span class="kw-2">&amp;</span>info, bytes.as_mut(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
+<a href=#2456 id=2456 data-nosnippet>2456</a>            canvas.clear(Color::RED);
+<a href=#2457 id=2457 data-nosnippet>2457</a>        }
+<a href=#2458 id=2458 data-nosnippet>2458</a>
+<a href=#2459 id=2459 data-nosnippet>2459</a>        <span class="macro">assert_eq!</span>(<span class="number">0xff</span>, bytes[<span class="number">0</span>]);
+<a href=#2460 id=2460 data-nosnippet>2460</a>        <span class="macro">assert_eq!</span>(<span class="number">0x00</span>, bytes[<span class="number">1</span>]);
+<a href=#2461 id=2461 data-nosnippet>2461</a>        <span class="macro">assert_eq!</span>(<span class="number">0x00</span>, bytes[<span class="number">2</span>]);
+<a href=#2462 id=2462 data-nosnippet>2462</a>        <span class="macro">assert_eq!</span>(<span class="number">0xff</span>, bytes[<span class="number">3</span>]);
+<a href=#2463 id=2463 data-nosnippet>2463</a>    }
+<a href=#2464 id=2464 data-nosnippet>2464</a>
+<a href=#2465 id=2465 data-nosnippet>2465</a>    <span class="attr">#[test]
+<a href=#2466 id=2466 data-nosnippet>2466</a>    </span><span class="kw">fn </span>test_raster_direct_n32_creation_and_clear_in_memory() {
+<a href=#2467 id=2467 data-nosnippet>2467</a>        <span class="kw">let </span><span class="kw-2">mut </span>pixels: [u32; <span class="number">4</span>] = Default::default();
+<a href=#2468 id=2468 data-nosnippet>2468</a>        {
+<a href=#2469 id=2469 data-nosnippet>2469</a>            <span class="kw">let </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
+<a href=#2470 id=2470 data-nosnippet>2470</a>            canvas.clear(Color::RED);
+<a href=#2471 id=2471 data-nosnippet>2471</a>        }
+<a href=#2472 id=2472 data-nosnippet>2472</a>
+<a href=#2473 id=2473 data-nosnippet>2473</a>        <span class="comment">// TODO: equals to 0xff0000ff on macOS, but why? Endianness should be the same.
+<a href=#2474 id=2474 data-nosnippet>2474</a>        // assert_eq!(0xffff0000, pixels[0]);
+<a href=#2475 id=2475 data-nosnippet>2475</a>    </span>}
+<a href=#2476 id=2476 data-nosnippet>2476</a>
+<a href=#2477 id=2477 data-nosnippet>2477</a>    <span class="attr">#[test]
+<a href=#2478 id=2478 data-nosnippet>2478</a>    </span><span class="kw">fn </span>test_empty_canvas_creation() {
+<a href=#2479 id=2479 data-nosnippet>2479</a>        <span class="kw">let </span>canvas = OwnedCanvas::default();
+<a href=#2480 id=2480 data-nosnippet>2480</a>        drop(canvas)
+<a href=#2481 id=2481 data-nosnippet>2481</a>    }
+<a href=#2482 id=2482 data-nosnippet>2482</a>
+<a href=#2483 id=2483 data-nosnippet>2483</a>    <span class="attr">#[test]
+<a href=#2484 id=2484 data-nosnippet>2484</a>    </span><span class="kw">fn </span>test_save_layer_rec_lifetimes() {
+<a href=#2485 id=2485 data-nosnippet>2485</a>        <span class="kw">let </span>rect = Rect::default();
+<a href=#2486 id=2486 data-nosnippet>2486</a>        {
+<a href=#2487 id=2487 data-nosnippet>2487</a>            <span class="kw">let </span>_rec = SaveLayerRec::default()
+<a href=#2488 id=2488 data-nosnippet>2488</a>                .flags(SaveLayerFlags::PRESERVE_LCD_TEXT)
+<a href=#2489 id=2489 data-nosnippet>2489</a>                .bounds(<span class="kw-2">&amp;</span>rect);
+<a href=#2490 id=2490 data-nosnippet>2490</a>        }
+<a href=#2491 id=2491 data-nosnippet>2491</a>    }
+<a href=#2492 id=2492 data-nosnippet>2492</a>
+<a href=#2493 id=2493 data-nosnippet>2493</a>    <span class="attr">#[test]
+<a href=#2494 id=2494 data-nosnippet>2494</a>    </span><span class="kw">fn </span>test_make_surface() {
+<a href=#2495 id=2495 data-nosnippet>2495</a>        <span class="kw">let </span><span class="kw-2">mut </span>pixels: [u32; <span class="number">4</span>] = Default::default();
+<a href=#2496 id=2496 data-nosnippet>2496</a>        <span class="kw">let </span>canvas = Canvas::from_raster_direct_n32((<span class="number">2</span>, <span class="number">2</span>), pixels.as_mut(), <span class="prelude-val">None</span>).unwrap();
+<a href=#2497 id=2497 data-nosnippet>2497</a>        <span class="kw">let </span>ii = canvas.image_info();
+<a href=#2498 id=2498 data-nosnippet>2498</a>        <span class="kw">let </span><span class="kw-2">mut </span>surface = canvas.new_surface(<span class="kw-2">&amp;</span>ii, <span class="prelude-val">None</span>).unwrap();
+<a href=#2499 id=2499 data-nosnippet>2499</a>        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span>canvas <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+<a href=#2500 id=2500 data-nosnippet>2500</a>        drop(canvas);
+<a href=#2501 id=2501 data-nosnippet>2501</a>
+<a href=#2502 id=2502 data-nosnippet>2502</a>        <span class="kw">let </span>canvas = surface.canvas();
+<a href=#2503 id=2503 data-nosnippet>2503</a>        <span class="macro">dbg!</span>(canvas <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+<a href=#2504 id=2504 data-nosnippet>2504</a>        canvas.clear(Color::RED);
+<a href=#2505 id=2505 data-nosnippet>2505</a>    }
+<a href=#2506 id=2506 data-nosnippet>2506</a>
+<a href=#2507 id=2507 data-nosnippet>2507</a>    <span class="attr">#[test]
+<a href=#2508 id=2508 data-nosnippet>2508</a>    </span><span class="kw">fn </span>clip_options_overloads() {
+<a href=#2509 id=2509 data-nosnippet>2509</a>        <span class="kw">let </span>c = OwnedCanvas::default();
+<a href=#2510 id=2510 data-nosnippet>2510</a>        <span class="comment">// do_anti_alias
+<a href=#2511 id=2511 data-nosnippet>2511</a>        </span>c.clip_rect(Rect::default(), <span class="prelude-val">None</span>, <span class="bool-val">true</span>);
+<a href=#2512 id=2512 data-nosnippet>2512</a>        <span class="comment">// clip_op
+<a href=#2513 id=2513 data-nosnippet>2513</a>        </span>c.clip_rect(Rect::default(), ClipOp::Difference, <span class="prelude-val">None</span>);
+<a href=#2514 id=2514 data-nosnippet>2514</a>        <span class="comment">// both
+<a href=#2515 id=2515 data-nosnippet>2515</a>        </span>c.clip_rect(Rect::default(), ClipOp::Difference, <span class="bool-val">true</span>);
+<a href=#2516 id=2516 data-nosnippet>2516</a>    }
+<a href=#2517 id=2517 data-nosnippet>2517</a>
+<a href=#2518 id=2518 data-nosnippet>2518</a>    <span class="doccomment">/// Regression test for: &lt;https://github.com/rust-skia/rust-skia/issues/427&gt;
+<a href=#2519 id=2519 data-nosnippet>2519</a>    </span><span class="attr">#[test]
+<a href=#2520 id=2520 data-nosnippet>2520</a>    </span><span class="kw">fn </span>test_local_and_device_clip_bounds() {
+<a href=#2521 id=2521 data-nosnippet>2521</a>        <span class="kw">let </span><span class="kw-2">mut </span>surface =
+<a href=#2522 id=2522 data-nosnippet>2522</a>            surfaces::raster(<span class="kw-2">&amp;</span>ImageInfo::new_n32_premul((<span class="number">100</span>, <span class="number">100</span>), <span class="prelude-val">None</span>), <span class="number">0</span>, <span class="prelude-val">None</span>).unwrap();
+<a href=#2523 id=2523 data-nosnippet>2523</a>        <span class="kw">let _ </span>= surface.canvas().device_clip_bounds();
+<a href=#2524 id=2524 data-nosnippet>2524</a>        <span class="kw">let _ </span>= surface.canvas().local_clip_bounds();
+<a href=#2525 id=2525 data-nosnippet>2525</a>        <span class="kw">let _ </span>= surface.canvas().local_to_device();
+<a href=#2526 id=2526 data-nosnippet>2526</a>    }
+<a href=#2527 id=2527 data-nosnippet>2527</a>}
+</code></pre></div></section></main></body></html>

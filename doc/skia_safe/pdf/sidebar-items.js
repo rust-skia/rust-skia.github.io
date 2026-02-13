@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["new_document","set_node_id"],"mod":["node_id"],"struct":["DateTime","Metadata","StructureElementNode"],"type":["AttributeList","CompressionLevel","Outline"]};
+window.SIDEBAR_ITEMS = {"fn":["new_document","set_node_id"],"mod":["node_id"],"struct":["AttributeList","DateTime","Metadata","StructureElementNode"],"type":["CompressionLevel","Outline"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["BuilderFlags","RenderFlags"],"type":["Animation","Builder"]};
