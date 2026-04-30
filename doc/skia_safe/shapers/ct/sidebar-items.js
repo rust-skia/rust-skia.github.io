@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["core_text"]};
+window.SIDEBAR_ITEMS = {"enum":["LineBreakMode"],"fn":["core_text"]};
